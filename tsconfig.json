@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": [
+      "ESNext",
+      "dom",
+      "dom.iterable"
+    ],
+    "strict": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

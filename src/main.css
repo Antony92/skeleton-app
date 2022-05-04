@@ -1,0 +1,14 @@
+@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+:root {
+	--header-background: #673ab7;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+    font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
+}
