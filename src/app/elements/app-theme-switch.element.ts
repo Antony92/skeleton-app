@@ -11,13 +11,15 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 export class AppThemeSwitch extends LitElement {
 	static styles = css``
 
-	private preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-	private preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-
 	@property({ type: String, reflect: true })
 	theme: 'auto' | 'light' | 'dark' = 'auto'
 
 	@query('sl-dropdown') dropdown!: any
+
+	private icon = 'moon-stars-fill'
+
+	private preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+	private preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
 
 	constructor() {
 		super()
@@ -34,11 +36,13 @@ export class AppThemeSwitch extends LitElement {
 			if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) {
 				body?.classList.add('theme-light')
 				body?.classList.remove('theme-dark', 'sl-theme-dark')
+				this.icon = 'sun-fill'
 			}
 
 			if (this.theme === 'dark'|| (this.theme === 'auto' && this.preferedDark)) {
 				body?.classList.add('theme-dark', 'sl-theme-dark')
 				body?.classList.remove('theme-light')
+				this.icon = 'moon-stars-fill'
 			}
 
 		})
@@ -48,7 +52,7 @@ export class AppThemeSwitch extends LitElement {
 		return html`
 			<sl-dropdown>
 				<sl-button slot="trigger" caret pill>
-					<sl-icon name="moon-stars-fill"></sl-icon>
+					<sl-icon name="${this.icon}"></sl-icon>
 				</sl-button>
 				<sl-menu>
 					<sl-menu-item value="light" ?checked=${this.theme === 'light'}>Light</sl-menu-item>
