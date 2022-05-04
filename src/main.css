@@ -1,14 +1,40 @@
 @import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap';
-@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 :root {
-	--header-background: #673ab7;
+	--theme-background: #ffffff;
+	--theme-color: black;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	height: 100vh;
-    font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	box-sizing: border-box;
+	background-color: var(--theme-background);
+	color: var(--theme-color);
+}
+
+.theme-dark {
+	--theme-background: #1a1a1e;
+	--theme-color: whitesmoke;
+}
+
+.theme-light {
+	--theme-background: #ffffff;
+	--theme-color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--theme-background: #1a1a1e;
+		--theme-color: whitesmoke;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--theme-background: #ffffff;
+		--theme-color: black;
+	}
 }

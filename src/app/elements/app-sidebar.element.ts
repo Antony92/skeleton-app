@@ -19,7 +19,7 @@ export class AppSidebar extends LitElement {
 		}
 	`
 
-	protected render() {
+	override render() {
 		return html`
 			<nav>
 				<ul>
@@ -27,7 +27,7 @@ export class AppSidebar extends LitElement {
 						<a href="/">Home</a>
 					</li>
 					<li>
-						<a href="/showcase/table">Showcase Table</a>
+						<a href="/showcase/default">Showcase Table</a>
 					</li>
 					<li>
 						<a href="/showcase/form">Showcase Form</a>
