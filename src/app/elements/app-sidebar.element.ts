@@ -30,7 +30,7 @@ export class AppSidebar extends LitElement {
 						<a href="/showcase/default">Showcase Table</a>
 					</li>
 					<li>
-						<a href="/showcase/form">Showcase Form</a>
+						<a href="/form">Showcase Form</a>
 					</li>
 					<li>
 						<a href="/showcase/autocomplete">Showcase Autocomplete</a>

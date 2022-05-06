@@ -3,7 +3,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import './elements/app-sidebar.element'
-import './elements/app-theme-switch.element'
+import './elements/app-theme.element'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -12,7 +12,7 @@ export class AppRoot extends LitElement {
 			height: 100vh;
 			display: grid;
 			grid-template-columns: auto 1fr;
-			grid-template-rows: auto 1fr;
+			grid-template-rows: auto-fill;
 			grid-template-areas:
 				'sidebar main';
 		}
@@ -22,7 +22,7 @@ export class AppRoot extends LitElement {
 			overflow: auto;
 			display: grid;
 			justify-content: center;
-			padding-top: 10px;
+  			align-content: center;
 		}
 
 		.sidebar {
@@ -30,7 +30,7 @@ export class AppRoot extends LitElement {
 			z-index: 4;
 		}
 
-		app-theme-switch {
+		app-theme {
 			position: absolute;
 			right: 10px;
 			top: 10px;
@@ -41,10 +41,10 @@ export class AppRoot extends LitElement {
 	private router = new Router(this, [
 		{ path: '/', render: () => html`<h1>Welcome Lit</h1>` },
 		{
-			path: '/showcase/:component',
-			render: ({ component }) => html`<app-showcase component="${component}"></app-showcase>`,
+			path: '/form',
+			render: () => html`<app-form></app-form>`,
 			enter: async () => {
-				await import('./elements/app-showcase.element')
+				await import('./elements/app-form.element')
 				return true
 			},
 		},
@@ -53,10 +53,10 @@ export class AppRoot extends LitElement {
 
 	override render() {
 		return html`
-			<app-theme-switch></app-theme-switch>
 			<div class="container">
 				<app-sidebar class="sidebar"></app-sidebar>
 				<main class="main">${this.router.outlet()}</main>
+				<app-theme></app-theme>
 			</div>
 		`
 	}
