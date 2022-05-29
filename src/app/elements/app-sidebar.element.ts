@@ -1,5 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -24,19 +25,10 @@ export class AppSidebar extends LitElement {
 			<nav>
 				<ul>
 					<li>
-						<a href="/">Home</a>
+						<sl-button variant="text" href="/">Home</sl-button>
 					</li>
 					<li>
-						<a href="/showcase/default">Showcase Table</a>
-					</li>
-					<li>
-						<a href="/form">Showcase Form</a>
-					</li>
-					<li>
-						<a href="/showcase/autocomplete">Showcase Autocomplete</a>
-					</li>
-					<li>
-						<a href="/showcase/dialog">Showcase Dialog</a>
+						<sl-button variant="text" href="/form">Form</sl-button>
 					</li>
 				</ul>
 			</nav>
