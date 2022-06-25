@@ -9,6 +9,17 @@ export const getProducts = async () => {
 	}
 }
 
+export const getUsers = async () => {
+	try {
+		const req = await fetch(`https://dummyjson.com/users?limit=10`)
+		const res = await req.json()
+		return res?.users ?? []
+	} catch (error) {
+		console.error(error)
+		return []
+	}
+}
+
 export const searchForProducts = async (search?: string) => {
 	try {
 		const req = await fetch(`https://dummyjson.com/products/search${search ? `?q=${search}` : ``}`)

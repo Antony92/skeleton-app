@@ -3,7 +3,6 @@ import { customElement, property, query } from 'lit/decorators.js'
 import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
-import '@shoelace-style/shoelace/dist/components/menu-label/menu-label.js'
 import '@shoelace-style/shoelace/dist/components/divider/divider.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
@@ -36,7 +35,7 @@ export class AppForm extends LitElement {
 			<form>
 				<sl-input name="name" label="Name" required></sl-input>
 				<br />
-				<sl-select name="animal" label="Favorite Animal" clearable required multiple>
+				<sl-select name="animal" label="Favorite Animal" clearable required>
 					<sl-menu-item value="birds">Birds</sl-menu-item>
 					<sl-menu-item value="cats">Cats</sl-menu-item>
 					<sl-menu-item value="dogs">Dogs</sl-menu-item>

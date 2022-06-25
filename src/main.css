@@ -13,6 +13,7 @@ body {
 	box-sizing: border-box;
 	background-color: var(--theme-background);
 	color: var(--theme-color);
+	overflow: hidden;
 }
 
 .theme-dark {

@@ -28,6 +28,9 @@ export class AppSidebar extends LitElement {
 						<sl-button variant="text" href="/">Home</sl-button>
 					</li>
 					<li>
+						<sl-button variant="text" href="/select">Select</sl-button>
+					</li>
+					<li>
 						<sl-button variant="text" href="/form">Form</sl-button>
 					</li>
 				</ul>

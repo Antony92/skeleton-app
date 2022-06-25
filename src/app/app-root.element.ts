@@ -28,11 +28,13 @@ export class AppRoot extends LitElement {
 		.sidebar {
 			grid-area: sidebar;
 			z-index: 4;
+			width: 260px;
+    		border-right: 1px solid dimgrey;
 		}
 
 		app-theme {
 			position: absolute;
-			right: 10px;
+			right: 25px;
 			top: 10px;
 			z-index: 10;
 		}
@@ -40,6 +42,14 @@ export class AppRoot extends LitElement {
 
 	private router = new Router(this, [
 		{ path: '/', render: () => html`<h1>Welcome Lit</h1>` },
+		{
+			path: '/select',
+			render: () => html`<app-select></app-select>`,
+			enter: async () => {
+				await import('./elements/app-select.element')
+				return true
+			},
+		},
 		{
 			path: '/form',
 			render: () => html`<app-form></app-form>`,
