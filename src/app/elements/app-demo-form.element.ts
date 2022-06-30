@@ -12,8 +12,8 @@ import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 
-@customElement('app-form')
-export class AppForm extends LitElement {
+@customElement('app-demo-form')
+export class AppDemoForm extends LitElement {
 	static styles = css``
 
 	@query('form') form!: HTMLFormElement

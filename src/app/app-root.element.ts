@@ -44,17 +44,33 @@ export class AppRoot extends LitElement {
 		{ path: '/', render: () => html`<h1>Welcome Lit</h1>` },
 		{
 			path: '/select',
-			render: () => html`<app-select></app-select>`,
+			render: () => html`<app-demo-select></app-demo-select>`,
 			enter: async () => {
-				await import('./elements/app-select.element')
+				await import('./elements/app-demo-select.element')
 				return true
 			},
 		},
 		{
 			path: '/form',
-			render: () => html`<app-form></app-form>`,
+			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
-				await import('./elements/app-form.element')
+				await import('./elements/app-demo-form.element')
+				return true
+			},
+		},
+		{
+			path: '/toast',
+			render: () => html`<app-demo-toast></app-demo-toast>`,
+			enter: async () => {
+				await import('./elements/app-demo-toast.element')
+				return true
+			},
+		},
+		{
+			path: '/confirm-dialog',
+			render: () => html`<app-demo-confirm-dialog></app-demo-confirm-dialog>`,
+			enter: async () => {
+				await import('./elements/app-demo-confirm-dialog.element')
 				return true
 			},
 		},

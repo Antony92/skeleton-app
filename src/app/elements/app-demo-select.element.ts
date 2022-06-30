@@ -4,8 +4,8 @@ import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import { getProducts } from '../services/api.service'
 
-@customElement('app-select')
-export class AppSelect extends LitElement {
+@customElement('app-demo-select')
+export class AppDemoSelect extends LitElement {
 	static styles = css`
 		sl-select {
 			width: 300px;

@@ -33,6 +33,12 @@ export class AppSidebar extends LitElement {
 					<li>
 						<sl-button variant="text" href="/form">Form</sl-button>
 					</li>
+					<li>
+						<sl-button variant="text" href="/toast">Toast</sl-button>
+					</li>
+					<li>
+						<sl-button variant="text" href="/confirm-dialog">Confirm Dialog</sl-button>
+					</li>
 				</ul>
 			</nav>
 		`
