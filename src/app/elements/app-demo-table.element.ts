@@ -1,7 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { getUsers } from '../services/api.service'
 
 @customElement('app-demo-table')
