@@ -9,7 +9,7 @@ export class AppDemoConfirmDialog extends LitElement {
 
 	override render() {
 		return html`
-            <sl-button @click="${() => confirmDialog('Confirm', 'Are you sure?').then(console.log)}" variant="primary">Confirm</sl-button>
+            <sl-button @click=${() => confirmDialog('Confirm', 'Are you sure?').then(console.log)} variant="primary">Confirm</sl-button>
 		`
 	}
     

@@ -41,7 +41,7 @@ export class AppRoot extends LitElement {
 	`
 
 	private router = new Router(this, [
-		{ path: '/', render: () => html`<h1>Welcome Lit</h1>` },
+		{ path: '/', render: () => html`<img src="assets/images/astro.svg"/>` },
 		{
 			path: '/select',
 			render: () => html`<app-demo-select></app-demo-select>`,
@@ -74,7 +74,15 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ path: '/*', render: () => html`<h1>Not found</h1>` },
+		{
+			path: '/table',
+			render: () => html`<app-demo-table></app-demo-table>`,
+			enter: async () => {
+				await import('./elements/app-demo-table.element')
+				return true
+			},
+		},
+		{ path: '/*', render: () => html`<img src="assets/images/page-not-found.svg"/>` },
 	])
 
 	override render() {

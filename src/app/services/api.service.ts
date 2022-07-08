@@ -9,11 +9,11 @@ export const getProducts = async () => {
 	}
 }
 
-export const getUsers = async () => {
+export const getUsers = async (skip?: number, limit = 10) => {
 	try {
-		const req = await fetch(`https://dummyjson.com/users?limit=10`)
+		const req = await fetch(`https://dummyjson.com/users${toQueryParams({ skip, limit })}`)
 		const res = await req.json()
-		return res?.users ?? []
+		return res
 	} catch (error) {
 		console.error(error)
 		return []
@@ -36,6 +36,6 @@ const toQueryParams = (params: any) => {
 	Object.keys(params)
 		.filter((key) => params[key])
 		.map((key) => searchParams.append(key, params[key]))
-	const format = searchParams.toString()
-	return format ? `?${format}` : ``
+	const query = searchParams.toString()
+	return query ? `?${query}` : ``
 }
