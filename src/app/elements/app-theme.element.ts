@@ -1,10 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
-import '@shoelace-style/shoelace/dist/components/menu/menu.js'
-import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
 import '@shoelace-style/shoelace/dist/components/divider/divider.js'
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
 
 @customElement('app-theme')
 export class AppTheme extends LitElement {
@@ -13,7 +10,7 @@ export class AppTheme extends LitElement {
 	@property({ type: String, reflect: true })
 	theme: 'auto' | 'light' | 'dark' = 'auto'
 
-	@query('sl-dropdown') dropdown!: any
+	@query('sl-dropdown') dropdown!: HTMLElementTagNameMap['sl-dropdown']
 
 	private icon = 'moon-stars-fill'
 
@@ -26,8 +23,8 @@ export class AppTheme extends LitElement {
 	}
 
 	override firstUpdated() {
-		this.dropdown.addEventListener('sl-select', (event: CustomEvent) => {
-			const selectedItem = event.detail.item
+		this.dropdown.addEventListener('sl-select', (event: Event) => {
+			const selectedItem = (event as CustomEvent).detail.item
 			this.theme = selectedItem.value
 			localStorage.setItem('theme', this.theme)
 			const body = document.querySelector('body')

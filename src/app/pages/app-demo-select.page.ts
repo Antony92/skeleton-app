@@ -16,10 +16,10 @@ export class AppDemoSelect extends LitElement {
 	private products = []
 
 	@query('#select-single')
-  	selectSingle: any;
+  	selectSingle!: HTMLElementTagNameMap['sl-select']
 
 	@query('#select-multiple')
-  	selectMultiple: any;
+  	selectMultiple!: HTMLElementTagNameMap['sl-select']
 
 	override connectedCallback() {
 		super.connectedCallback()
