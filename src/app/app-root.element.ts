@@ -46,7 +46,7 @@ export class AppRoot extends LitElement {
 			path: '/select',
 			render: () => html`<app-demo-select></app-demo-select>`,
 			enter: async () => {
-				await import('./elements/app-demo-select.element')
+				await import('./pages/app-demo-select.page')
 				return true
 			},
 		},
@@ -54,7 +54,7 @@ export class AppRoot extends LitElement {
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
-				await import('./elements/app-demo-form.element')
+				await import('./pages/app-demo-form.page')
 				return true
 			},
 		},
@@ -62,7 +62,7 @@ export class AppRoot extends LitElement {
 			path: '/toast',
 			render: () => html`<app-demo-toast></app-demo-toast>`,
 			enter: async () => {
-				await import('./elements/app-demo-toast.element')
+				await import('./pages/app-demo-toast.page')
 				return true
 			},
 		},
@@ -70,7 +70,7 @@ export class AppRoot extends LitElement {
 			path: '/confirm-dialog',
 			render: () => html`<app-demo-confirm-dialog></app-demo-confirm-dialog>`,
 			enter: async () => {
-				await import('./elements/app-demo-confirm-dialog.element')
+				await import('./pages/app-demo-confirm-dialog.page')
 				return true
 			},
 		},
@@ -78,7 +78,7 @@ export class AppRoot extends LitElement {
 			path: '/table',
 			render: () => html`<app-demo-table></app-demo-table>`,
 			enter: async () => {
-				await import('./elements/app-demo-table.element')
+				await import('./pages/app-demo-table.page')
 				return true
 			},
 		},
