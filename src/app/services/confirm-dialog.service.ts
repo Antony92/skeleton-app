@@ -27,11 +27,11 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 			resolve(true)
 		})
 
-        if (!document.body.contains(dialog)) {
-            document.body.append(dialog)
-		    setTimeout(() => dialog.show(), 0)
-        } else {
-            reject('Dialog already opened')
-        }
+		if (!document.body.contains(dialog)) {
+			document.body.append(dialog)
+			setTimeout(() => dialog.show(), 0)
+		} else {
+			reject('Dialog already opened')
+		}
 	})
 }
