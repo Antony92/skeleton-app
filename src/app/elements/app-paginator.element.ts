@@ -87,7 +87,7 @@ export class AppPaginator extends LitElement {
 			<sl-icon-button 
 				library="material" 
 				name="navigate_before" 
-				label="Next" 
+				label="Previous" 
 				title="Previous"
 				@click=${() => this.paginate(-this.limit)} 
 				?disabled=${this.skip === 0 || this.length === 0}>
