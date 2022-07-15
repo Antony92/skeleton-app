@@ -28,95 +28,132 @@ export class AppPaginator extends LitElement {
 	length = 0
 
 	@property({ type: Number, reflect: true })
-	limit = 10
+	page = 0
+
+	@property({ type: Number, reflect: true })
+	pageSize = 0
 
 	@property({ type: Array })
-	itemsPerPageOptions = [10, 15, 20]
+	pageSizeOptions = [5, 10, 20]
 
-	@query('sl-select') 
-	select!: HTMLElementTagNameMap['sl-select'] 
+	@query('sl-select')
+	select!: HTMLElementTagNameMap['sl-select']
 
-	@state()
-	private skip = 0
+	override connectedCallback() {
+		super.connectedCallback()
+		if (this.pageSize === 0 && this.pageSizeOptions.length > 0) {
+			this.pageSize = this.pageSizeOptions[0]
+		}
+	}
 
 	override firstUpdated() {
 		this.select.addEventListener('sl-change', (event) => {
-			this.limit = parseInt(this.select.value?.toString())
-			if ((this.limit + this.skip) > this.length) this.skip = this.length - this.limit
-			this.sendEvent()
+			const pageSize = parseInt(this.select.value?.toString())
+			const startIndex = this.page * this.pageSize
+			const previousPage = this.page
+			this.page = Math.floor(startIndex / pageSize) || 0
+			this.pageSize = pageSize
+			this.emitPageEvent()
 		})
 	}
 
-	paginate(skip = 0) {
-		this.skip += skip
-		if (this.skip < 0) this.skip = 0
-		if ((this.limit + this.skip) > this.length) this.skip = this.length - this.limit
-		this.sendEvent()
+	hasPreviousPage() {
+		return this.page >= 1 && this.pageSize != 0
 	}
 
-	sendEvent() {
-		this.dispatchEvent(new CustomEvent('app-paginate', { 
-			bubbles: true, 
-			composed: true, 
-			detail: { 
-				limit: this.limit,
-				skip: this.skip,
-				length: this.length
-			}
-		}))
+	hasNextPage() {
+		const maxPageIndex = this.getNumberOfPages() - 1
+		return this.page < maxPageIndex && this.pageSize != 0
+	}
+
+	getNumberOfPages() {
+		return Math.ceil(this.length / this.pageSize)
+	}
+
+	firstPage() {
+		if (!this.hasPreviousPage()) return
+		const previousPage = this.page
+		this.page = 0
+		this.emitPageEvent()
+	}
+
+	lastPage() {
+		if (!this.hasNextPage()) return
+		const previousPage = this.page
+		this.page = this.getNumberOfPages() - 1
+		this.emitPageEvent()
+	}
+
+	nextPage() {
+		if (!this.hasNextPage()) return
+		const previousPage = this.page
+		this.page = this.page + 1
+		this.emitPageEvent()
+	}
+
+	previousPage() {
+		if (!this.hasPreviousPage()) return
+		const previousPage = this.page
+		this.page = this.page - 1
+		this.emitPageEvent()
+	}
+
+	getRangeLabel() {
+		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
+		const startIndex = this.page * this.pageSize
+		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
+		return `${startIndex + 1} – ${endIndex} of ${this.length}`
+	}
+
+	emitPageEvent() {
+		this.dispatchEvent(
+			new CustomEvent('app-paginate', {
+				bubbles: true,
+				composed: true,
+				detail: {
+					pageSize: this.pageSize,
+					page: this.page,
+					length: this.length,
+				},
+			})
+		)
 	}
 
 	override render() {
 		return html`
-			Items per page:  
-			<sl-select value=${this.limit} size="small">
-				${this.itemsPerPageOptions.map(value => html`<sl-menu-item value=${value}>${value}</sl-menu-item>`)}
-            </sl-select>
-			${this.skip + (this.length > 0 ? 1 : 0)} - ${this.length > 0 ? this.skip + this.limit : 0} of ${this.length}
-			<sl-icon-button 
-				library="material" 
-				name="first_page" 
-				label="First" 
+			Items per page:
+			<sl-select value=${this.pageSize} size="small">
+				${this.pageSizeOptions.map((value) => html`<sl-menu-item value=${value}>${value}</sl-menu-item>`)}
+			</sl-select>
+			${this.getRangeLabel()}
+			<sl-icon-button
+				library="material"
+				name="first_page"
+				label="First"
 				title="First"
-				@click=${() => {
-					this.skip = 0
-					this.paginate(0)
-				}}
-				?disabled=${this.skip === 0 || this.length === 0}>
+				@click=${this.firstPage}
+				?disabled=${!this.hasPreviousPage()}
+			>
 			</sl-icon-button>
-			<sl-icon-button 
-				library="material" 
-				name="navigate_before" 
-				label="Previous" 
+			<sl-icon-button
+				library="material"
+				name="navigate_before"
+				label="Previous"
 				title="Previous"
-				@click=${() => this.paginate(-this.limit)} 
-				?disabled=${this.skip === 0 || this.length === 0}>
+				@click=${this.previousPage}
+				?disabled=${!this.hasPreviousPage()}
+			>
 			</sl-icon-button>
-			<sl-icon-button 
-				library="material" 
-				name="navigate_next" 
-				label="Next" 
-				title="Next"
-				@click=${() => this.paginate(this.limit)} 
-				?disabled=${this.skip === this.length - this.limit || this.length === 0}>
+			<sl-icon-button library="material" name="navigate_next" label="Next" title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
 			</sl-icon-button>
-			<sl-icon-button 
-				library="material" 
-				name="last_page" 
-				label="Last" 
-				title="Last"
-				@click=${() => {
-					this.skip = 0
-					this.paginate(this.length - this.limit)
-				}} 
-				?disabled=${this.skip === this.length - this.limit || this.length === 0}>
+			<sl-icon-button library="material" name="last_page" label="Last" title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
 			</sl-icon-button>
 		`
 	}
 }
 
 declare global {
-    interface HTMLElementTagNameMap {
-        'app-paginator': AppPaginator;
-    }
+	interface HTMLElementTagNameMap {
+		'app-paginator': AppPaginator
+	}
 }

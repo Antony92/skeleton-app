@@ -43,8 +43,8 @@ export class AppDemoTable extends LitElement {
 
 	protected override firstUpdated() {
 		this.paginator.addEventListener('app-paginate', async (event) => {
-            const { skip, limit } = (event as CustomEvent).detail
-            await this.loadUsers(skip, limit)
+            const { pageSize, page } = (event as CustomEvent).detail
+            await this.loadUsers(pageSize * page, pageSize)
         })
 	}
 
@@ -76,7 +76,7 @@ export class AppDemoTable extends LitElement {
 				<tfoot>
 					<tr>
 						<td colspan="${this.columns.length}">
-							<app-paginator limit="5" itemsPerPageOptions="[5, 10, 15]" length=${this.users?.total}></app-paginator>
+							<app-paginator pageSizeOptions="[5, 10, 15]" length=${this.users?.total}></app-paginator>
 						</td>
 					</tr>
 				</tfoot>
