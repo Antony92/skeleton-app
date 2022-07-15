@@ -19,12 +19,10 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 		})
 
 		dialog.querySelector('#cancel')?.addEventListener('click', (event) => {
-			dialog.hide()
-			resolve(false)
+			dialog.hide().then(() => resolve(false))
 		})
 		dialog.querySelector('#confirm')?.addEventListener('click', (event) => {
-			dialog.hide()
-			resolve(true)
+			dialog.hide().then(() => resolve(true))
 		})
 
 		if (!document.body.contains(dialog)) {
