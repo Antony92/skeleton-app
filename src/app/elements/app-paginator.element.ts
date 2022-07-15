@@ -42,6 +42,7 @@ export class AppPaginator extends LitElement {
 	override firstUpdated() {
 		this.select.addEventListener('sl-change', (event) => {
 			this.limit = parseInt(this.select.value?.toString())
+			if ((this.limit + this.skip) > this.length) this.skip = this.length - this.limit
 			this.sendEvent()
 		})
 	}
