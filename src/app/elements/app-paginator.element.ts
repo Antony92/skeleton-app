@@ -31,7 +31,7 @@ export class AppPaginator extends LitElement {
 	page = 0
 
 	@property({ type: Number, reflect: true })
-	pageSize = 0
+	pageSize = 5
 
 	@property({ type: Array })
 	pageSizeOptions = [5, 10, 20]
@@ -41,7 +41,7 @@ export class AppPaginator extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback()
-		if (this.pageSize === 0 && this.pageSizeOptions.length > 0) {
+		if (this.pageSizeOptions.length > 0) {
 			this.pageSize = this.pageSizeOptions[0]
 		}
 	}
