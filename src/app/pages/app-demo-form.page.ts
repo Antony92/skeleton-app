@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, query } from 'lit/decorators.js'
 import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'

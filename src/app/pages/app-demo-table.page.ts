@@ -1,4 +1,4 @@
-import { html, LitElement, css, PropertyValueMap } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
