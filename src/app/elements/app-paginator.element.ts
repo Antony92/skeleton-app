@@ -102,7 +102,7 @@ export class AppPaginator extends LitElement {
 		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
 		const startIndex = this.page * this.pageSize
 		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
-		return `${startIndex + 1} – ${endIndex} of ${this.length}`
+		return `${startIndex + 1} - ${endIndex} of ${this.length}`
 	}
 
 	emitPageEvent() {
