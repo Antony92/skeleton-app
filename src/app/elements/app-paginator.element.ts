@@ -50,6 +50,7 @@ export class AppPaginator extends LitElement {
 	paginate(skip = 0) {
 		this.skip += skip
 		if (this.skip < 0) this.skip = 0
+		if ((this.limit + this.skip) > this.length) this.skip = this.length - this.limit
 		this.sendEvent()
 	}
 
