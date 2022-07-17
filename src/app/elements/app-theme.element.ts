@@ -39,7 +39,7 @@ export class AppTheme extends LitElement {
 				this.icon = 'sun-fill'
 			}
 
-			if (this.theme === 'dark'|| (this.theme === 'auto' && this.preferedDark)) {
+			if (this.theme === 'dark' || (this.theme === 'auto' && this.preferedDark)) {
 				body?.classList.add('theme-dark', 'sl-theme-dark')
 				body?.classList.remove('theme-light')
 				this.icon = 'moon-stars-fill'
