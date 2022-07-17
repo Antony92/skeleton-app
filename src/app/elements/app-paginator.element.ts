@@ -28,7 +28,7 @@ export class AppPaginator extends LitElement {
 	length = 0
 
 	@property({ type: Number, reflect: true })
-	page = 0
+	pageIndex = 0
 
 	@property({ type: Number, reflect: true })
 	pageSize = 5
@@ -39,24 +39,26 @@ export class AppPaginator extends LitElement {
 	@query('sl-select')
 	select!: HTMLElementTagNameMap['sl-select']
 
+	private previousPageIndex = 0
+
 	override firstUpdated() {
 		this.select.addEventListener('sl-change', (event) => {
 			const pageSize = parseInt(this.select.value?.toString())
-			const startIndex = this.page * this.pageSize
-			const previousPage = this.page
-			this.page = Math.floor(startIndex / pageSize) || 0
+			const startIndex = this.pageIndex * this.pageSize
+			this.previousPageIndex = this.pageIndex
+			this.pageIndex = Math.floor(startIndex / pageSize) || 0
 			this.pageSize = pageSize
 			this.emitPageEvent()
 		})
 	}
 
 	hasPreviousPage() {
-		return this.page >= 1 && this.pageSize != 0
+		return this.pageIndex >= 1 && this.pageSize != 0
 	}
 
 	hasNextPage() {
 		const maxPageIndex = this.getNumberOfPages() - 1
-		return this.page < maxPageIndex && this.pageSize != 0
+		return this.pageIndex < maxPageIndex && this.pageSize != 0
 	}
 
 	getNumberOfPages() {
@@ -65,35 +67,35 @@ export class AppPaginator extends LitElement {
 
 	firstPage() {
 		if (!this.hasPreviousPage()) return
-		const previousPage = this.page
-		this.page = 0
+		this.previousPageIndex = this.pageIndex
+		this.pageIndex = 0
 		this.emitPageEvent()
 	}
 
 	lastPage() {
 		if (!this.hasNextPage()) return
-		const previousPage = this.page
-		this.page = this.getNumberOfPages() - 1
+		this.previousPageIndex = this.pageIndex
+		this.pageIndex = this.getNumberOfPages() - 1
 		this.emitPageEvent()
 	}
 
 	nextPage() {
 		if (!this.hasNextPage()) return
-		const previousPage = this.page
-		this.page = this.page + 1
+		this.previousPageIndex = this.pageIndex
+		this.pageIndex = this.pageIndex + 1
 		this.emitPageEvent()
 	}
 
 	previousPage() {
 		if (!this.hasPreviousPage()) return
-		const previousPage = this.page
-		this.page = this.page - 1
+		this.previousPageIndex = this.pageIndex
+		this.pageIndex = this.pageIndex - 1
 		this.emitPageEvent()
 	}
 
 	getRangeLabel() {
 		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
-		const startIndex = this.page * this.pageSize
+		const startIndex = this.pageIndex * this.pageSize
 		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
 		return `${startIndex + 1} - ${endIndex} of ${this.length}`
 	}
@@ -105,7 +107,8 @@ export class AppPaginator extends LitElement {
 				composed: true,
 				detail: {
 					pageSize: this.pageSize,
-					page: this.page,
+					pageIndex: this.pageIndex,
+					previousPageIndex: this.previousPageIndex,
 					length: this.length,
 				},
 			})

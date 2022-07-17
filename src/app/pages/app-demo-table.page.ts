@@ -43,8 +43,8 @@ export class AppDemoTable extends LitElement {
 
 	protected override firstUpdated() {
 		this.paginator.addEventListener('app-paginate', async (event) => {
-            const { pageSize, page } = (event as CustomEvent).detail
-            await this.loadUsers(pageSize * page, pageSize)
+            const { pageSize, pageIndex } = (event as CustomEvent).detail
+            await this.loadUsers(pageSize * pageIndex, pageSize)
         })
 	}
 
