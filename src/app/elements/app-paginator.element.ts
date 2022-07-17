@@ -39,13 +39,6 @@ export class AppPaginator extends LitElement {
 	@query('sl-select')
 	select!: HTMLElementTagNameMap['sl-select']
 
-	override connectedCallback() {
-		super.connectedCallback()
-		if (this.pageSizeOptions.length > 0) {
-			this.pageSize = this.pageSizeOptions[0]
-		}
-	}
-
 	override firstUpdated() {
 		this.select.addEventListener('sl-change', (event) => {
 			const pageSize = parseInt(this.select.value?.toString())
