@@ -144,9 +144,23 @@ export class AppPaginator extends LitElement {
 				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
-			<sl-icon-button library="material" name="navigate_next" label="Next" title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
+			<sl-icon-button
+				library="material"
+				name="navigate_next"
+				label="Next"
+				title="Next"
+				@click=${this.nextPage}
+				?disabled=${!this.hasNextPage()}
+			>
 			</sl-icon-button>
-			<sl-icon-button library="material" name="last_page" label="Last" title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
+			<sl-icon-button 
+				library="material" 
+				name="last_page" 
+				label="Last" 
+				title="Last" 
+				@click=${this.lastPage} 
+				?disabled=${!this.hasNextPage()}
+			>
 			</sl-icon-button>
 		`
 	}
