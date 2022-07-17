@@ -1,3 +1,5 @@
+import { toQueryParams } from '../utils/http'
+
 export const getProducts = async () => {
 	try {
 		const req = await fetch(`https://dummyjson.com/products?limit=10`)
@@ -29,13 +31,4 @@ export const searchForProducts = async (search?: string) => {
 		console.error(error)
 		return []
 	}
-}
-
-const toQueryParams = (params: any) => {
-	const searchParams = new URLSearchParams()
-	Object.keys(params)
-		.filter((key) => params[key])
-		.map((key) => searchParams.append(key, params[key]))
-	const query = searchParams.toString()
-	return query ? `?${query}` : ``
 }
