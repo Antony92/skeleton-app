@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {

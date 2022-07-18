@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js'
 
 import './elements/app-sidebar.element'
 import './elements/app-theme.element'
+import './elements/app-global-message.element'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -91,6 +92,7 @@ export class AppRoot extends LitElement {
 				<app-sidebar class="sidebar"></app-sidebar>
 				<main class="main">${this.router.outlet()}</main>
 				<app-theme></app-theme>
+				<app-global-message></app-global-message>
 			</div>
 		`
 	}
