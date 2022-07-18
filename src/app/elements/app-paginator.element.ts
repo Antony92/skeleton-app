@@ -154,7 +154,7 @@ export class AppPaginator extends LitElement {
 				name="last_page" 
 				label="Last" 
 				title="Last" 
-				@click=${this.lastPage} 
+				@click=${this.lastPage}
 				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>

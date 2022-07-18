@@ -21,8 +21,8 @@ export class AppDemoForm extends LitElement {
 	override firstUpdated() {
 		this.form.addEventListener('submit', (event) => {
 			event.preventDefault()
-            const json = serialize(this.form)
-            console.log(json)
+			const json = serialize(this.form)
+			console.log(json)
 		})
 	}
 

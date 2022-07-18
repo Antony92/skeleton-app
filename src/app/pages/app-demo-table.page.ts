@@ -75,7 +75,7 @@ export class AppDemoTable extends LitElement {
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="${this.columns.length}">
+						<td colspan=${this.columns.length}>
 							<app-paginator pageSizeOptions="[5, 10, 15]" length=${this.users?.total}></app-paginator>
 						</td>
 					</tr>

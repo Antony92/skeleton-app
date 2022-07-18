@@ -16,10 +16,10 @@ export class AppDemoSelect extends LitElement {
 	private products = []
 
 	@query('#select-single')
-  	selectSingle!: HTMLElementTagNameMap['sl-select']
+	selectSingle!: HTMLElementTagNameMap['sl-select']
 
 	@query('#select-multiple')
-  	selectMultiple!: HTMLElementTagNameMap['sl-select']
+	selectMultiple!: HTMLElementTagNameMap['sl-select']
 
 	override connectedCallback() {
 		super.connectedCallback()
@@ -43,11 +43,11 @@ export class AppDemoSelect extends LitElement {
 		return html`
 			<sl-select id="select-single" name="animal" label="Product" placeholder="Select one" clearable>
 				${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
-            </sl-select>
-			<br/><br/>
-            <sl-select id="select-multiple" name="animal" label="Products" placeholder="Select multiple" clearable multiple>
+			</sl-select>
+			<br /><br />
+			<sl-select id="select-multiple" name="animal" label="Products" placeholder="Select multiple" clearable multiple>
 				${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
-            </sl-select>
+			</sl-select>
 		`
 	}
 }
