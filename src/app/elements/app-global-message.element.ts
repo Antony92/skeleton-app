@@ -52,7 +52,7 @@ export class AppGlobalMessage extends LitElement {
 	@state()
 	message = ''
 
-    show(message: string, type: 'info' | 'warning' | 'danger' = 'info') {
+    show(type: 'info' | 'warning' | 'danger' = 'info', message: string) {
         this.message = message
         this.container.className = type
         this.container.hidden = false
@@ -64,7 +64,7 @@ export class AppGlobalMessage extends LitElement {
 
 	override firstUpdated() {
 		this.closeIcon.addEventListener('click', () => this.hide())
-        window.addEventListener('offline', () => this.show('No internet connection', 'danger'))
+        window.addEventListener('offline', () => this.show('danger', 'No internet connection'))
 		window.addEventListener('online', () => this.hide())
 	}
 
