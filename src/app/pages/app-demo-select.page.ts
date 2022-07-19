@@ -42,11 +42,11 @@ export class AppDemoSelect extends LitElement {
 	override render() {
 		return html`
 			<sl-select id="select-single" name="animal" label="Product" placeholder="Select one" clearable>
-				${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
+				${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 			</sl-select>
 			<br /><br />
 			<sl-select id="select-multiple" name="animal" label="Products" placeholder="Select multiple" clearable multiple>
-				${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
+				${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 			</sl-select>
 		`
 	}

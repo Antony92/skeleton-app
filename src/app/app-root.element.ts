@@ -3,7 +3,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import './elements/app-sidebar.element'
-import './elements/app-theme.element'
+import './elements/app-theme-swticher.element'
 import './elements/app-global-message.element'
 
 @customElement('app-root')
@@ -33,7 +33,7 @@ export class AppRoot extends LitElement {
     		border-right: 1px solid dimgrey;
 		}
 
-		app-theme {
+		app-theme-switcher {
 			position: absolute;
 			right: 25px;
 			top: 10px;
@@ -91,7 +91,7 @@ export class AppRoot extends LitElement {
 			<div class="container">
 				<app-sidebar class="sidebar"></app-sidebar>
 				<main class="main">${this.router.outlet()}</main>
-				<app-theme></app-theme>
+				<app-theme-switcher></app-theme-switcher>
 				<app-global-message></app-global-message>
 			</div>
 		`
