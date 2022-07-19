@@ -10,7 +10,7 @@ export class AppGlobalMessage extends LitElement {
 			top: 10px;
 			left: 50%;
 			transform: translateX(-50%);
-			z-index: 10;
+			z-index: var(--sl-z-index-alert-group);
 		}
 
 		div {
