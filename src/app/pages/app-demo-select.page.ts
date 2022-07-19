@@ -8,7 +8,7 @@ import { getProducts } from '../services/api.service'
 export class AppDemoSelect extends LitElement {
 	static styles = css`
 		sl-select {
-			width: 300px;
+			min-width: 300px;
 		}
 	`
 
