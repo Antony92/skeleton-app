@@ -14,10 +14,6 @@ export class AppDemoForm extends LitElement {
 
 	@query('form') form!: HTMLFormElement
 
-	constructor() {
-		super()
-	}
-
 	override firstUpdated() {
 		this.form.addEventListener('submit', (event) => {
 			event.preventDefault()
