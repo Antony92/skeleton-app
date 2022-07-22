@@ -22,10 +22,6 @@ export class AppDemoTable extends LitElement {
 		table td {
 			padding: 10px;
 		}
-
-		table tbody tr:hover {
-			background-color: dimgrey;
-		}
 	`
 
 	@query('app-paginator') 
