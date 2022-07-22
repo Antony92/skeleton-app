@@ -15,7 +15,7 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 		dialog.addEventListener('sl-request-close', (event) => {
 			const source = (event as CustomEvent).detail.source
 			if (source === 'overlay') event.preventDefault()
-			if (source === 'close-button') resolve(false)
+			if (source === 'close-button' || source === 'keyboard') resolve(false)
 		})
 
 		dialog.querySelector('#cancel')?.addEventListener('click', (event) => {
