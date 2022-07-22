@@ -39,7 +39,7 @@ export class AppRoot extends LitElement {
 	`
 
 	private router = new Router(this, [
-		{ path: '/', render: () => html`<img src="assets/images/astro.svg"/>` },
+		{ path: '/', render: () => html`<img alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
 		{
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
@@ -64,7 +64,7 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ path: '/*', render: () => html`<img src="assets/images/page-not-found.svg"/>` },
+		{ path: '/*', render: () => html`<img alt="Not found 404" src="assets/images/page-not-found.svg"/>` },
 	])
 
 	override render() {

@@ -51,7 +51,7 @@ export class AppThemeSwitcher extends LitElement {
 	override render() {
 		return html`
 			<sl-dropdown>
-				<sl-button slot="trigger" caret pill size="small">
+				<sl-button name="Theme" slot="trigger" caret pill size="small">
 					<sl-icon name="${this.icon}"></sl-icon>
 				</sl-button>
 				<sl-menu>
