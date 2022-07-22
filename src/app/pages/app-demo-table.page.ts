@@ -34,7 +34,7 @@ export class AppDemoTable extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.loadUsers(0, 5)
+		this.loadUsers()
 	}
 
 	protected override firstUpdated() {
@@ -72,7 +72,7 @@ export class AppDemoTable extends LitElement {
 				<tfoot>
 					<tr>
 						<td colspan=${this.columns.length}>
-							<app-paginator pageSize="5" pageSizeOptions="[5, 10, 15]" length=${this.users?.total}></app-paginator>
+							<app-paginator pageSize="10" pageSizeOptions="[5, 10, 15]" length=${this.users?.total}></app-paginator>
 						</td>
 					</tr>
 				</tfoot>
