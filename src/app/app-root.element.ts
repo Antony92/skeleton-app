@@ -3,7 +3,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import './elements/app-sidebar.element'
-import './elements/app-theme-swticher.element'
+import './elements/app-theme-switcher.element'
 import './elements/app-global-message.element'
 
 @customElement('app-root')
