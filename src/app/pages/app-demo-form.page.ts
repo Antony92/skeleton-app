@@ -19,12 +19,6 @@ export class AppDemoForm extends LitElement {
 	@query('form') 
 	form!: HTMLFormElement
 
-	@query('sl-select[name="product"]')
-	productSelect!: HTMLElementTagNameMap['sl-select']
-
-	@query('sl-select[name="products"]')
-	productsSelect!: HTMLElementTagNameMap['sl-select']
-
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadProducts()
