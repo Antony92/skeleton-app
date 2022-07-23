@@ -45,17 +45,23 @@ export class AppDemoForm extends LitElement {
 	override render() {
 		return html`
 			<form>
-				<sl-input name="name" label="Name" required></sl-input>
+				<sl-input name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
 				<br />
-				<sl-select name="product" label="Favorite product" clearable required>
+				<sl-input type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
+				<br />
+				<sl-input type="date" name="date" label="Date" placeholder="Enter date" required clearable></sl-input>
+				<br />
+				<sl-input type="number" name="number" label="Number" placeholder="Enter number" required clearable></sl-input>
+				<br />
+				<sl-select name="product" label="Favorite product" placeholder="Select one product" clearable required>
 					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 				</sl-select>
 				<br />
-				<sl-select name="products" label="Favorite products" clearable required multiple>
+				<sl-select name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple>
 					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 				</sl-select>
 				<br />
-				<sl-textarea name="comment" label="Comment" required></sl-textarea>
+				<sl-textarea name="comment" label="Comment" placeholder="Add comment" required></sl-textarea>
 				<br />
 				<sl-checkbox name="check" required>Check me before submitting</sl-checkbox>
 				<br /><br />
