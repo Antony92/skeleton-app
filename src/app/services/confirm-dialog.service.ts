@@ -1,3 +1,5 @@
+import { escapeHtml } from '../utils/html'
+
 export const confirmDialog = (title: string, message: string): Promise<boolean> => {
 	return new Promise(async (resolve, reject) => {
 		await import('@shoelace-style/shoelace/dist/components/dialog/dialog.js')
@@ -5,7 +7,7 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 		const dialog = Object.assign(document.createElement('sl-dialog'), {
 			label: title,
 			innerHTML: `
-                ${message}
+                ${escapeHtml(message)}
                 <sl-button slot="footer" id="cancel" variant="text">Cancel</sl-button>
                 <sl-button slot="footer" id="confirm" variant="primary">Confirm</sl-button>
             `,

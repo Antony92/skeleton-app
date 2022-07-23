@@ -1,3 +1,5 @@
+import { escapeHtml } from '../utils/html'
+
 export const notify = async (
 	message: string,
 	variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' = 'primary',
@@ -12,7 +14,7 @@ export const notify = async (
 		duration,
 		innerHTML: `
             <sl-icon name="${icon}" slot="icon"></sl-icon>
-            ${message}
+            ${escapeHtml(message)}
         `,
 	})
 
