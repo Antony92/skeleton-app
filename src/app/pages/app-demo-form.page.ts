@@ -60,6 +60,7 @@ export class AppDemoForm extends LitElement {
 				<sl-checkbox name="check" required>Check me before submitting</sl-checkbox>
 				<br /><br />
 				<sl-button type="submit" variant="primary">Submit</sl-button>
+				<sl-button type="reset" variant="neutral">Clear</sl-button>
 			</form>
 		`
 	}
