@@ -13,7 +13,7 @@ export const notify = async (
 		closable: true,
 		duration,
 		innerHTML: `
-            <sl-icon name="${icon}" slot="icon"></sl-icon>
+            <sl-icon name=${icon} slot="icon"></sl-icon>
             ${escapeHtml(message)}
         `,
 	})
