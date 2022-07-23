@@ -9,7 +9,7 @@ import './main.css'
 import './app/app-root.element'
 
 // Theme utils
-import { initTheme } from './app/utils/theme.js'
+import { applyTheme } from './app/utils/theme.js'
 
 // set up theme
-initTheme()
+applyTheme()
