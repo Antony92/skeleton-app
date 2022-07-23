@@ -64,7 +64,6 @@ export class AppSidebar extends LitElement {
 
 	override firstUpdated() {
 		const path = location.pathname.split('/')[1]
-		console.log(path)
 		if (path) {
 			this.shadowRoot?.querySelector(`a[href="/${path}"]`)?.classList.add('active')
 		} else {
