@@ -15,7 +15,7 @@
   "dependencies": {
     "@lit-labs/router": "~0.1.1",
     "urlpattern-polyfill": "~5.0.5",
-    "@shoelace-style/shoelace": "~2.0.0-beta.78",
+    "@shoelace-style/shoelace": "~2.0.0-beta.79",
     "lit": "~2.2.8",
     "rxjs": "~7.5.6"
   },
