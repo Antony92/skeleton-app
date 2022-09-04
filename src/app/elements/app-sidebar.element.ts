@@ -53,7 +53,7 @@ export class AppSidebar extends LitElement {
 			overflow: hidden;
 		}
 
-		sl-icon {
+		ul li a sl-icon {
 			margin: 0 20px;
 		}
 
