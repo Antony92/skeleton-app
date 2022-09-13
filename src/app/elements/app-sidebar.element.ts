@@ -19,11 +19,11 @@ export class AppSidebar extends LitElement {
 			width: 100%;
 		}
 
-		li {
+		ul li {
 			width: 100%;
 		}
 
-		a {
+		ul li a {
 			display: flex;
 			align-items: center;
 			color: var(--sl-color-neutral-1000);
@@ -35,25 +35,25 @@ export class AppSidebar extends LitElement {
 			cursor: pointer;
 		}
 
-		a.active {
+		ul li a.active {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
 			background: var(--sl-color-primary-300);
 			color: white;
 		}
 
-		a:hover {
+		ul li a:hover {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
 			background: var(--sl-color-primary-300);
 			color: white;
 		}
 
-		span {
+		ul li a span {
 			display: inline-block;
 			white-space: nowrap;
 			overflow: hidden;
 		}
 
-		sl-icon {
+		ul li a sl-icon {
 			margin: 0 20px;
 		}
 

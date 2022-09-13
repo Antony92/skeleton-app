@@ -13,7 +13,7 @@ export class AppThemeSwitcher extends LitElement {
 	@query('sl-dropdown') dropdown!: HTMLElementTagNameMap['sl-dropdown']
 
 	@state()
-	private theme: 'auto' | 'light' | 'dark' = 'auto'
+	private theme: 'auto' | 'light' | 'dark' | string = 'auto'
 	
 	@state()
 	private icon = 'moon-stars-fill'
@@ -23,7 +23,7 @@ export class AppThemeSwitcher extends LitElement {
 
 	constructor() {
 		super()
-		this.theme = localStorage.getItem('theme') as any ?? 'auto'
+		this.theme = localStorage.getItem('theme') ?? 'auto'
 		if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) this.icon = 'sun-fill'
 		if (this.theme === 'dark'|| (this.theme === 'auto' && this.preferedDark)) this.icon = 'moon-stars-fill'
 	}
