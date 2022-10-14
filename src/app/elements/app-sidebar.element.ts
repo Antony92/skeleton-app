@@ -6,6 +6,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 export class AppSidebar extends LitElement {
 	static styles = css`
 		nav {
+			display: flex;
 			width: 260px;
 			height: 100%;
     		border-right: solid 1px var(--sl-color-neutral-200);
@@ -27,7 +28,7 @@ export class AppSidebar extends LitElement {
 		ul li a {
 			display: flex;
 			align-items: center;
-			color: var(--sl-color-neutral-1000);
+			color: var(--sl-color-neutral-700);
 			text-decoration: none;
 			margin: 10px 15px;
 			padding: 15px 0;
@@ -71,6 +72,10 @@ export class AppSidebar extends LitElement {
 				justify-content: center;
 				margin: 0;
 				border-radius: 0;
+			}
+
+			ul li a:hover, ul li a.active {
+				box-shadow: none;
 			}
 
 			ul li a span {
