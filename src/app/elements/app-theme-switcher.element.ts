@@ -3,8 +3,6 @@ import { customElement, query, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/divider/divider.js'
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/menu/menu.js'
-import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
 
 @customElement('app-theme-switcher')
 export class AppThemeSwitcher extends LitElement {
