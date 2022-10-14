@@ -123,7 +123,7 @@ export class AppPaginator extends LitElement {
 			</sl-select>
 			${this.getRangeLabel()}
 			<sl-icon-button
-				name="arrow-left-square-fill"
+				name="chevron-bar-left"
 				label="First"
 				title="First"
 				@click=${this.firstPage}
@@ -131,7 +131,7 @@ export class AppPaginator extends LitElement {
 			>
 			</sl-icon-button>
 			<sl-icon-button
-				name="arrow-left-circle-fill"
+				name="chevron-left"
 				label="Previous"
 				title="Previous"
 				@click=${this.previousPage}
@@ -139,7 +139,7 @@ export class AppPaginator extends LitElement {
 			>
 			</sl-icon-button>
 			<sl-icon-button
-				name="arrow-right-circle-fill"
+				name="chevron-right"
 				label="Next"
 				title="Next"
 				@click=${this.nextPage}
@@ -147,7 +147,7 @@ export class AppPaginator extends LitElement {
 			>
 			</sl-icon-button>
 			<sl-icon-button 
-				name="arrow-right-square-fill" 
+				name="chevron-bar-right" 
 				label="Last" 
 				title="Last" 
 				@click=${this.lastPage}

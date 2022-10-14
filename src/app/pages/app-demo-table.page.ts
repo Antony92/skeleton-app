@@ -16,10 +16,6 @@ export class AppDemoTable extends LitElement {
 		table tbody td {
 			text-align: left;
 			border-bottom: 1px solid grey;
-		}
-
-		table th,
-		table td {
 			padding: 10px;
 		}
 	`

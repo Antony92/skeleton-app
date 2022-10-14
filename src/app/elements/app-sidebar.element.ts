@@ -37,13 +37,13 @@ export class AppSidebar extends LitElement {
 
 		ul li a.active {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
-			background: var(--sl-color-primary-300);
+			background: #0284c7;
 			color: white;
 		}
 
 		ul li a:hover {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
-			background: var(--sl-color-primary-300);
+			background: #0284c7;
 			color: white;
 		}
 
