@@ -112,19 +112,19 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a variant="text" href="/form">
+						<a href="/form">
 							<sl-icon name="postcard-fill"></sl-icon>
 							<span>Form</span>
 						</a>
 					</li>
 					<li>
-						<a variant="text" href="/alerts">
+						<a href="/alerts">
 							<sl-icon name="exclamation-square-fill"></sl-icon>
 							<span>Alerts</span>
 						</a>
 					</li>
 					<li>
-						<a variant="text" href="/table">
+						<a href="/table">
 							<sl-icon name="table"></sl-icon>
 							<span>Table</span>
 						</a>
