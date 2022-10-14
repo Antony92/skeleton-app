@@ -29,7 +29,7 @@ export class AppSidebar extends LitElement {
         }
 
         .title {
-            font-size: var(--sl-font-size-medium)
+            font-size: var(--sl-font-size-large)
         }
 
         sl-avatar {
@@ -42,7 +42,7 @@ export class AppSidebar extends LitElement {
 	override render() {
 		return html`
 			<header>
-                <span class="title">${this.appTitle}</span>
+                <h1 class="title">${this.appTitle}</h1>
                 <div class="spacer"></div>
                 <sl-dropdown>
                     <sl-icon-button title="Help" slot="trigger" name="question-circle-fill" label="Help"></sl-icon-button>
