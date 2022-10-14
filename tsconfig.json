@@ -9,7 +9,6 @@
     "strict": true,
     "noEmit": true,
     "moduleResolution": "Node",
-    "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false
