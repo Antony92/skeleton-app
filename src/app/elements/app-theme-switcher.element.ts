@@ -55,10 +55,10 @@ export class AppThemeSwitcher extends LitElement {
 					<sl-icon name="${this.icon}"></sl-icon>
 				</sl-button>
 				<sl-menu>
-					<sl-menu-item value="light" ?checked=${this.theme === 'light'}>Light</sl-menu-item>
-					<sl-menu-item value="dark" ?checked=${this.theme === 'dark'}>Dark</sl-menu-item>
+					<sl-menu-item value="light" ?checked="${this.theme === 'light'}">Light</sl-menu-item>
+					<sl-menu-item value="dark" ?checked="${this.theme === 'dark'}">Dark</sl-menu-item>
 					<sl-divider></sl-divider>
-					<sl-menu-item value="auto" ?checked=${this.theme === 'auto'}>Auto</sl-menu-item>
+					<sl-menu-item value="auto" ?checked="${this.theme === 'auto'}">Auto</sl-menu-item>
 				</sl-menu>
 			</sl-dropdown>
 		`
