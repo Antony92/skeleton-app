@@ -36,10 +36,21 @@ export class AppRoot extends LitElement {
 			grid-area: header;
 			z-index: 5;
 		}
+
+		@media only screen and (max-width: 800px) {
+
+			.container {
+				grid-template-columns: auto;
+				grid-template-areas:
+					"header"
+					"main"
+					"sidebar";
+			}
+		}
 	`
 
 	private router = new Router(this, [
-		{ path: '/', render: () => html`<img alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
+		{ path: '/', render: () => html`<img height="100%" width="100%" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
 		{
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
