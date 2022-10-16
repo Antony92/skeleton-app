@@ -5,11 +5,14 @@ import '@shoelace-style/shoelace/dist/themes/dark.css'
 // Import main styles
 import './main.css'
 
-// Import root element
-import './app/app-root.element'
+// HTTP Interceptor
+import './http.interceptor'
 
 // Theme utils
-import { applyTheme } from './app/utils/theme.js'
+import { applyTheme } from './app/utils/theme'
+
+// Import root element
+import './app/app-root.element'
 
 // set up theme
 applyTheme()
