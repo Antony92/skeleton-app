@@ -58,7 +58,7 @@ export class AppSidebar extends LitElement {
             if (state) {
                 const user = getUser()
                 this.fullname = `${user?.firstName} ${user?.lastName}`
-                this.initials = this.fullname?.match(/\b(\w)/g)?.join('').toUpperCase()
+                this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
     }
@@ -79,7 +79,7 @@ export class AppSidebar extends LitElement {
                         <sl-menu-item>Feedback</sl-menu-item>
                     </sl-menu>
                 </sl-dropdown>
-                <app-theme-switcher title="Theme"></app-theme-switcher>
+                <app-theme-switcher></app-theme-switcher>
                 ${when(this.authenticated, 
                     () => html`
                         <sl-dropdown>

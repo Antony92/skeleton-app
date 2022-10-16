@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js'
 
 import './elements/app-header.element'
 import './elements/app-sidebar.element'
+import { removeGlobalMessage, showGlobalMessage } from './services/global-message.service'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -76,6 +77,12 @@ export class AppRoot extends LitElement {
 		},
 		{ path: '/*', render: () => html`<img alt="404 Not found" src="assets/images/page-not-found.svg"/>` },
 	])
+
+	override connectedCallback() {
+		super.connectedCallback()
+		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
+		window.addEventListener('online', () => removeGlobalMessage())
+	}
 
 	override render() {
 		return html`
