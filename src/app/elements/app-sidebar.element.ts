@@ -133,3 +133,9 @@ export class AppSidebar extends LitElement {
 		`
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'app-sidebar': AppSidebar
+	}
+}

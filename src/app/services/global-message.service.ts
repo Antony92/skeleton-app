@@ -1,37 +1,23 @@
-export const showGlobalMessage = async (message: string, type: 'primary' | 'warning' | 'danger' = 'primary') => {
+export const showGlobalMessage = async (message: string, type: 'info' | 'warning' | 'danger' = 'info') => {
+    await import('../elements/app-global-message.element')
 
-    removeGlobalMessage()
+    const globalMessage = document.body.querySelector('app-global-message')
 
-    const wrapper = document.createElement('div')
-    const closeIcon = document.createElement('span')
+    if (globalMessage) {
+        globalMessage.show(message, type)
+    } else {
+        const element = document.createElement('app-global-message')
+        element.addEventListener('app-after-hide', () => element.remove())
 
-    closeIcon.addEventListener('click', () => document.body.removeChild(wrapper))
-
-    wrapper.id = 'global-message'
-    wrapper.textContent = message
-    wrapper.style.cssText = `
-        position: fixed;
-        top: 10px;
-        left: 50%;
-        translate: -50%;
-        z-index: 6;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: var(--sl-shadow-x-large);
-        padding: 20px;
-        border-radius: 0.25rem;
-        background-color: var(--sl-color-${type}-200);
-    `
-
-    closeIcon.style.cssText = `cursor: pointer;`
-    closeIcon.textContent = '✕'
-
-    wrapper.appendChild(closeIcon)
-    document.body.appendChild(wrapper)
+        document.body.appendChild(element)
+        requestAnimationFrame(() => {
+            element.getBoundingClientRect()
+            element.show(message, type)
+        })
+        
+    } 
 }
 
 export const removeGlobalMessage = () => {
-    const globalMessage = document.querySelector('#global-message')
-    if (globalMessage) globalMessage.remove()
+    document.querySelector('app-global-message')?.remove()
 }

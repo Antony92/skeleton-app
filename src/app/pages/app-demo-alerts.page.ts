@@ -9,26 +9,13 @@ import { showGlobalMessage } from '../services/global-message.service'
 export class AppDemoAlerts extends LitElement {
 	static styles = css``
 
-	@query('#confirm-button') 
-	confirmButton!: HTMLElementTagNameMap['sl-button']
-
-	override firstUpdated() {
-		this.confirmButton.addEventListener('click', (event) => {
-			this.confirmButton.disabled = true
-			confirmDialog('Confirm', 'Are you sure?').then((result) => {
-				this.confirmButton.disabled = false
-				console.log(result)
-			})
-		})
-	}
-
 	override render() {
 		return html`
 			Global message
 			<sl-button variant="primary" @click="${() => showGlobalMessage('This is global message')}">Global message</sl-button>
 			<br /><br />
 			Confirm dialog
-			<sl-button id="confirm-button" variant="primary">Confirm</sl-button>
+			<sl-button variant="primary" @click="${() => confirmDialog('Confirm', 'Are you sure?').then((result) => console.log(result))}">Confirm</sl-button>
 			<br /><br />
 			Alerts
 			<sl-button @click="${() => notify('Hello', 'primary', 3000, 'info-circle')}" variant="primary">Primary</sl-button>

@@ -16,7 +16,7 @@ import './app-theme-switcher.element'
 import { authState, getUser, login, logout } from '../services/auth.service'
 
 @customElement('app-header')
-export class AppSidebar extends LitElement {
+export class AppHeader extends LitElement {
 	static styles = css`
         header {
             display: flex;
@@ -46,10 +46,10 @@ export class AppSidebar extends LitElement {
     authenticated = false
 
     @state()
-    fullname: string | undefined = ''
+    fullname: string = ''
 
     @state()
-    initials: string | undefined = ''
+    initials: string | undefined  = ''
 
     override connectedCallback() {
         super.connectedCallback()
@@ -108,5 +108,11 @@ export class AppSidebar extends LitElement {
                 
             </header>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'app-header': AppHeader
 	}
 }

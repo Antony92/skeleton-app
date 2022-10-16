@@ -26,20 +26,19 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 			if (source === 'close-button' || source === 'keyboard') resolve(false)
 		})
 
+		dialog.addEventListener('sl-after-hide', () => dialog.remove())
+
 		dialog.querySelector('#cancel')?.addEventListener('click', (event) => {
-			dialog.hide().then(() => {
-				dialog.remove()
-				resolve(false)
-			})
+			dialog.hide().then(() => resolve(false))
 		})
 		dialog.querySelector('#confirm')?.addEventListener('click', (event) => {
-			dialog.hide().then(() => {
-				dialog.remove()
-				resolve(true)
-			})
+			dialog.hide().then(() => resolve(true))
 		})
 
 		document.body.appendChild(dialog)
-		setTimeout(() => dialog.show(), 0)
+		requestAnimationFrame(() => {
+			dialog.getBoundingClientRect()
+			dialog.show()
+		})
 	})
 }

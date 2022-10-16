@@ -18,6 +18,6 @@ export const notify = async (
         `,
 	})
 
-	document.body.append(alert)
+	document.body.appendChild(alert)
 	return alert.toast()
 }

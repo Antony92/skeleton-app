@@ -66,3 +66,9 @@ export class AppThemeSwitcher extends LitElement {
 		`
 	}
 }
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'app-theme-switcher': AppThemeSwitcher
+	}
+}
