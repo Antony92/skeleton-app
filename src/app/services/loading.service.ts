@@ -1,14 +1,13 @@
 export const loading = async (show = false) => {
-	await import('@shoelace-style/shoelace/dist/components/spinner/spinner.js')
+    await import('@shoelace-style/shoelace/dist/components/spinner/spinner.js')
 
-    const wrap = document.querySelector('#loading')
+    const loadingState = document.body.querySelector('#loading-state')
 
-    if (show && !wrap) {
+    if (show && !loadingState) {
         const wrapper = document.createElement('div')
         const spinner = document.createElement('sl-spinner')
-        wrapper.appendChild(spinner)
     
-        wrapper.id = 'loading'
+        wrapper.id = 'loading-state'
         wrapper.style.cssText = `
             position: fixed;
             width: 100%;
@@ -20,11 +19,15 @@ export const loading = async (show = false) => {
             display: grid;
             align-items: center;
             justify-items: center;
+            z-index: 10000;
         `
         spinner.style.cssText = `font-size: 3rem;`
 
-        document.body.append(wrapper)
+        wrapper.appendChild(spinner)
+        document.body.appendChild(wrapper)
     }
 
-    if (!show && wrap) document.body.removeChild(wrap)
+    if (!show && loadingState) {
+        document.body.removeChild(loadingState)
+    }
 }

@@ -13,7 +13,7 @@ import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
-import { authState, login, logout } from '../services/auth.service'
+import { authState, getUser, login, logout } from '../services/auth.service'
 
 @customElement('app-header')
 export class AppSidebar extends LitElement {
@@ -51,16 +51,18 @@ export class AppSidebar extends LitElement {
     @state()
     initials: string | undefined = ''
 
-    override firstUpdated() {
+    override connectedCallback() {
+        super.connectedCallback()
         authState.subscribe(state => {
             this.authenticated = state
             if (state) {
-                const user = JSON.parse(localStorage.getItem('user')!)
+                const user = getUser()
                 this.fullname = `${user?.firstName} ${user?.lastName}`
                 this.initials = this.fullname?.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
     }
+
 
 	override render() {
 		return html`

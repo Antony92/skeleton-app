@@ -3,6 +3,7 @@ import { customElement, query } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import { notify } from '../services/notify.service'
 import { confirmDialog } from '../services/confirm-dialog.service'
+import { showGlobalMessage } from '../services/global-message.service'
 
 @customElement('app-demo-alerts')
 export class AppDemoAlerts extends LitElement {
@@ -23,6 +24,9 @@ export class AppDemoAlerts extends LitElement {
 
 	override render() {
 		return html`
+			Global message
+			<sl-button variant="primary" @click="${() => showGlobalMessage('This is global message')}">Global message</sl-button>
+			<br /><br />
 			Confirm dialog
 			<sl-button id="confirm-button" variant="primary">Confirm</sl-button>
 			<br /><br />
