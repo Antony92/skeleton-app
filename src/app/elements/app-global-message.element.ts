@@ -76,7 +76,7 @@ export class AppGlobalMessage extends LitElement {
 
 	override render() {
 		return html`
-			<div class="info">
+			<div>
 				${this.message}
 				<sl-icon name="x-lg"></sl-icon>
 			</div>

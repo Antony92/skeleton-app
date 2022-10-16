@@ -12,7 +12,7 @@ export class AppDemoAlerts extends LitElement {
 	override render() {
 		return html`
 			Global message
-			<sl-button variant="primary" @click="${() => showGlobalMessage('This is global message')}">Global message</sl-button>
+			<sl-button variant="primary" @click="${() => showGlobalMessage('🔥This is global message🔥')}">Global message</sl-button>
 			<br /><br />
 			Confirm dialog
 			<sl-button variant="primary" @click="${() => confirmDialog('Confirm', 'Are you sure?').then((result) => console.log(result))}">Confirm</sl-button>

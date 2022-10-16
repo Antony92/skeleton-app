@@ -19,5 +19,5 @@ export const showGlobalMessage = async (message: string, type: 'info' | 'warning
 }
 
 export const removeGlobalMessage = () => {
-    document.querySelector('app-global-message')?.remove()
+    document.body.querySelector('app-global-message')?.hide()
 }
