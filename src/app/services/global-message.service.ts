@@ -8,6 +8,7 @@ export const showGlobalMessage = async (message: string, type: 'primary' | 'warn
     closeIcon.addEventListener('click', () => document.body.removeChild(wrapper))
 
     wrapper.id = 'global-message'
+    wrapper.textContent = message
     wrapper.style.cssText = `
         position: fixed;
         top: 10px;
@@ -22,17 +23,15 @@ export const showGlobalMessage = async (message: string, type: 'primary' | 'warn
         border-radius: 0.25rem;
         background-color: var(--sl-color-${type}-200);
     `
-    closeIcon.style.cssText = `cursor: pointer;`
 
-    wrapper.textContent = message
+    closeIcon.style.cssText = `cursor: pointer;`
     closeIcon.textContent = '✕'
 
     wrapper.appendChild(closeIcon)
-
     document.body.appendChild(wrapper)
 }
 
 export const removeGlobalMessage = () => {
     const globalMessage = document.querySelector('#global-message')
-    if (globalMessage) document.body.removeChild(globalMessage)
+    if (globalMessage) globalMessage.remove()
 }

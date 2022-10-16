@@ -28,6 +28,6 @@ export const loading = async (show = false) => {
     }
 
     if (!show && loadingState) {
-        document.body.removeChild(loadingState)
+        loadingState.remove()
     }
 }

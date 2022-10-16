@@ -4,7 +4,13 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 	return new Promise(async (resolve, reject) => {
 		await import('@shoelace-style/shoelace/dist/components/dialog/dialog.js')
 
+		if (document.body.querySelector('#confirm-dialog')) {
+			reject('Dialog already opened')
+			return
+		}
+
 		const dialog = Object.assign(document.createElement('sl-dialog'), {
+			id: 'confirm-dialog',
 			label: title,
 			innerHTML: `
                 ${escapeHtml(message)}
@@ -33,11 +39,7 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 			})
 		})
 
-		if (!document.body.contains(dialog)) {
-			document.body.appendChild(dialog)
-			setTimeout(() => dialog.show(), 0)
-		} else {
-			reject('Dialog already opened')
-		}
+		document.body.appendChild(dialog)
+		setTimeout(() => dialog.show(), 0)
 	})
 }
