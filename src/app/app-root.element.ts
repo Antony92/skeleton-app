@@ -25,6 +25,7 @@ export class AppRoot extends LitElement {
 			display: grid;
 			justify-content: center;
   			align-content: center;
+			padding: 50px
 		}
 
 		.sidebar {

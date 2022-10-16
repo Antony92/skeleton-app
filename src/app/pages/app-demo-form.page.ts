@@ -12,7 +12,7 @@ import { getProducts } from '../services/api.service'
 export class AppDemoForm extends LitElement {
 	static styles = css`
 		sl-input, sl-select, sl-textarea {
-			min-width: 300px;
+			width: 300px;
 		}
 	`
 

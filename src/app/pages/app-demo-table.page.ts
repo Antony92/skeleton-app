@@ -8,8 +8,9 @@ import '../elements/app-paginator.element'
 export class AppDemoTable extends LitElement {
 	static styles = css`
 		table {
-			width: 800px;
+			width: 100%;
 			border-collapse: collapse;
+			table-layout: fixed;
 		}
 
 		table thead th,
