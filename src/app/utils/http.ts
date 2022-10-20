@@ -1,4 +1,4 @@
-export const toQueryParams = (params: { [key: string]: string | boolean | number }) => {
+export const toQueryParams = (params: { [key: string]: any }) => {
 	const searchParams = new URLSearchParams()
 	Object.keys(params)
 		.filter((key) => params[key] != null && params[key] != undefined)
