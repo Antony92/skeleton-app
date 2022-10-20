@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs'
 import { loading } from './loading.service'
+import { notify } from './notify.service'
 
 export const isAuthenticated = () => {
     const user = JSON.parse(localStorage.getItem('user')!)
@@ -34,10 +35,12 @@ export const login = async () => {
             body: JSON.stringify({ username: 'kminchelle', password: '0lelplR' })
         })
         const res = await req.json()
-        if (req.ok) setUser(res)
+        if (!req.ok) throw { message: res?.message }
+        setUser(res)
         return res
-	} catch (error) {
+	} catch (error: any) {
 		console.error(error)
+        notify(error?.message, 'danger', 10000)
 		return null
 	} finally {
         loading(false)
