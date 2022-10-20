@@ -10,6 +10,7 @@ export const showGlobalMessage = async (message: string, type: 'info' | 'warning
         element.addEventListener('app-after-hide', () => element.remove())
 
         document.body.appendChild(element)
+        
         requestAnimationFrame(() => {
             element.getBoundingClientRect()
             element.show(message, type)

@@ -30,7 +30,7 @@ export class AppGlobalMessage extends LitElement {
 			visibility: visible;
 		}
 
-		sl-icon {
+		.close {
 			cursor: pointer;
 		}
 
@@ -50,9 +50,6 @@ export class AppGlobalMessage extends LitElement {
 	@query('div')
 	container!: HTMLDivElement
 
-	@query('sl-icon')
-	closeIcon!: HTMLElementTagNameMap['sl-icon']
-
 	@state()
 	message = ''
 
@@ -66,7 +63,6 @@ export class AppGlobalMessage extends LitElement {
 	}
 
 	override firstUpdated() {
-		this.closeIcon.addEventListener('click', () => this.hide())
 		this.container.addEventListener('transitionend', (event) => {
 			if (!this.container.classList.contains('visible')) {
 				this.dispatchEvent(new CustomEvent('app-after-hide', { bubbles: true, composed: true }))
@@ -78,7 +74,7 @@ export class AppGlobalMessage extends LitElement {
 		return html`
 			<div>
 				${this.message}
-				<sl-icon name="x-lg"></sl-icon>
+				<span class="close" @click="${() => this.hide()}">✕</span>
 			</div>
 		`
 	}

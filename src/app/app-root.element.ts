@@ -1,10 +1,12 @@
 import { Router } from '@lit-labs/router'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
+import { Subscription } from 'rxjs'
 
 import './elements/app-header.element'
 import './elements/app-sidebar.element'
 import { removeGlobalMessage, showGlobalMessage } from './services/global-message.service'
+import { getNavigation } from './utils/navigation'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -50,6 +52,8 @@ export class AppRoot extends LitElement {
 		}
 	`
 
+	private navigationSubscription: Subscription | null = null
+
 	private router = new Router(this, [
 		{ path: '/', render: () => html`<img height="100%" width="100%" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
 		{
@@ -76,13 +80,27 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ path: '/*', render: () => html`<img alt="404 Not found" src="assets/images/page-not-found.svg"/>` },
+		{
+			path: '/profile',
+			render: () => html`<app-demo-table></app-demo-table>`,
+			enter: async () => {
+				await import('./pages/app-demo-table.page')
+				return true
+			},
+		},
+		{ path: '/*', render: () => html`<img height="100%" width="100%" alt="404 Not found" src="assets/images/page-not-found.svg"/>` },
 	])
 
 	override connectedCallback() {
 		super.connectedCallback()
 		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
 		window.addEventListener('online', () => removeGlobalMessage())
+		this.navigationSubscription = getNavigation().subscribe(path => this.router.goto(path))
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
+		this.navigationSubscription?.unsubscribe()
 	}
 
 	override render() {

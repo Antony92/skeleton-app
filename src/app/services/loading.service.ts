@@ -1,12 +1,10 @@
 export const loading = async (show = false) => {
-    await import('../elements/app-loading.element')
+    await import('../elements/app-loading-status.element')
 
-    const loadingState = document.body.querySelector('#loading-state')
+    const loadingState = document.body.querySelector('app-loading-status')
 
     if (show && !loadingState) {
-        const element = Object.assign(document.createElement('app-loading'), {
-            id: 'loading-state'
-        })
+        const element = document.createElement('app-loading-status')
         document.body.appendChild(element)
     }
 

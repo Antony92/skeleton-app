@@ -36,6 +36,7 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 		})
 
 		document.body.appendChild(dialog)
+		
 		requestAnimationFrame(() => {
 			dialog.getBoundingClientRect()
 			dialog.show()

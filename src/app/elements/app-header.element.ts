@@ -14,6 +14,7 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
 import { authState, getUser, login, logout } from '../services/auth.service'
+import { navigate } from '../utils/navigation';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -86,7 +87,7 @@ export class AppHeader extends LitElement {
                             <sl-avatar slot="trigger" initials="${ifDefined(this.initials)}" label="User avatar"></sl-avatar>
                             <sl-menu>
                                 <sl-menu-label>${this.fullname}</sl-menu-label>
-                                <sl-menu-item>
+                                <sl-menu-item @click="${() => navigate('/table')}">
                                     <sl-icon slot="prefix" name="person-fill"></sl-icon>
                                     Profile
                                 </sl-menu-item>
