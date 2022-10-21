@@ -4,7 +4,6 @@ import { customElement } from 'lit/decorators.js'
 import { Subscription } from 'rxjs'
 
 // Preload some elements
-import '@shoelace-style/shoelace/dist/components/alert/alert.js'
 import './elements/app-global-message.element'
 import './elements/app-loading-status.element'
 import './interceptors/http.interceptor'
