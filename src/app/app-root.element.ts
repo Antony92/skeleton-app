@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs'
 import './elements/app-header.element'
 import './elements/app-sidebar.element'
 import { removeGlobalMessage, showGlobalMessage } from './services/global-message.service'
-import { getNavigation } from './utils/navigation'
+import { getNavigation } from './services/navigation.service'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
