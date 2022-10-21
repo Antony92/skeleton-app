@@ -8,7 +8,7 @@ test('escapeHtml(html: string)', () => {
     expect(escapedHtml).to.not.include('>')
 })
 
-test('toQueryParams(params: { [key: string]: string | boolean | number })', () => {
+test('toQueryParams(params: { [key: string]: any })', () => {
     const queryParams = toQueryParams({ limit: 10, search: 'user' })
     expect(queryParams).to.contain('?')
     expect(queryParams).to.contain('limit=10')
