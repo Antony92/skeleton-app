@@ -95,7 +95,10 @@ export class AppRoot extends LitElement {
 		super.connectedCallback()
 		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
 		window.addEventListener('online', () => removeGlobalMessage())
-		this.navigationSubscription = getNavigation().subscribe(path => this.router.goto(path))
+		this.navigationSubscription = getNavigation().subscribe(path => {
+			history.pushState(null, '', path)
+			this.router.goto(path)
+		})
 	}
 
 	disconnectedCallback() {
