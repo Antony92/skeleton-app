@@ -8,6 +8,7 @@ export const isAuthenticated = () => {
 }
 
 export const setUser = (user: unknown) => {
+    if (!user) return
     localStorage.setItem('user', JSON.stringify(user))
     $auth.next(true)
 }
@@ -31,7 +32,7 @@ export const login = async () => {
         const req = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'kminchelle', password: '0lelp2lR' })
+            body: JSON.stringify({ username: 'kminchelle', password: '0lelplR' })
         })
         const res = await req.json()
         setUser(res)
