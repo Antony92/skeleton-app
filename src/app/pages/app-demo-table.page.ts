@@ -3,6 +3,7 @@ import { customElement, query, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
+import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '../elements/app-paginator.element'
 
 
@@ -21,10 +22,13 @@ export class AppDemoTable extends LitElement {
 			border-bottom: 1px solid grey;
 			padding: 10px;
 		}
-	`
 
-	@query('app-paginator') 
-    paginator!: HTMLElementTagNameMap['app-paginator']
+		table tbody td {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	`
 
 	@state()
 	private data: any = null
@@ -36,15 +40,20 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 	}
 
-	protected override firstUpdated() {
-		this.paginator.addEventListener('app-paginate', async (event) => {
-            const { pageSize, pageIndex } = (event as CustomEvent).detail
-            await this.loadUsers(pageSize * pageIndex, pageSize)
-        })
-	}
-
 	private async loadUsers(skip = 0, limit = 10) {
 		this.data = await getUsers(skip, limit)
+	}
+
+	async page(event: CustomEvent) {
+		const { pageSize, pageIndex } = event.detail
+		await this.loadUsers(pageSize * pageIndex, pageSize)
+	}
+
+	filterTable(event: Event, column: string) {
+		const input = (event.target as HTMLInputElement)
+		if (input.value.length > 3) {
+			console.log(column)
+		}
 	}
 
 	override render() {
@@ -52,7 +61,12 @@ export class AppDemoTable extends LitElement {
 			<table>
 				<thead>
 					<tr>
-						${this.columns.map((column) => html`<th>${column}</th>`)}
+						${this.columns.map((column) => html`
+							<th>
+								${column} <br/>
+								<sl-input @input=${(event: Event) => this.filterTable(event, column)} placeholder="Filter value"></sl-input>
+							</th>
+						`)}
 					</tr>
 				</thead>
 				<tbody>
@@ -82,7 +96,12 @@ export class AppDemoTable extends LitElement {
 				<tfoot>
 					<tr>
 						<td colspan=${this.columns.length}>
-							<app-paginator pageSize="10" .pageSizeOptions=${[5,10,15]} length=${this.data?.total}></app-paginator>
+							<app-paginator 
+								@app-paginate=${(event: CustomEvent) => this.page(event)} 
+								pageSize="10" 
+								.pageSizeOptions=${[5,10,15]} 
+								length=${this.data?.total}>
+							</app-paginator>
 						</td>
 					</tr>
 				</tfoot>

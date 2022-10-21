@@ -10,8 +10,6 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 export class AppThemeSwitcher extends LitElement {
 	static styles = css``
 
-	@query('sl-dropdown') dropdown!: HTMLElementTagNameMap['sl-dropdown']
-
 	@state()
 	private theme: 'auto' | 'light' | 'dark' | string = 'auto'
 	
@@ -28,31 +26,28 @@ export class AppThemeSwitcher extends LitElement {
 		if (this.theme === 'dark'|| (this.theme === 'auto' && this.preferedDark)) this.icon = 'moon-stars-fill'
 	}
 
-	override firstUpdated() {
-		this.dropdown.addEventListener('sl-select', (event: Event) => {
-			const selectedItem = (event as CustomEvent).detail.item
-			this.theme = selectedItem.value
-			localStorage.setItem('theme', this.theme)
-			const body = document.querySelector('body')
+	changeTheme(event: CustomEvent) {
+		const selectedItem = event.detail.item
+		this.theme = selectedItem.value
+		localStorage.setItem('theme', this.theme)
+		const body = document.querySelector('body')
 
-			if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) {
-				body?.classList.add('theme-light')
-				body?.classList.remove('theme-dark', 'sl-theme-dark')
-				this.icon = 'sun-fill'
-			}
+		if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) {
+			body?.classList.add('theme-light')
+			body?.classList.remove('theme-dark', 'sl-theme-dark')
+			this.icon = 'sun-fill'
+		}
 
-			if (this.theme === 'dark' || (this.theme === 'auto' && this.preferedDark)) {
-				body?.classList.add('theme-dark', 'sl-theme-dark')
-				body?.classList.remove('theme-light')
-				this.icon = 'moon-stars-fill'
-			}
-
-		})
+		if (this.theme === 'dark' || (this.theme === 'auto' && this.preferedDark)) {
+			body?.classList.add('theme-dark', 'sl-theme-dark')
+			body?.classList.remove('theme-light')
+			this.icon = 'moon-stars-fill'
+		}
 	}
 
 	override render() {
 		return html`
-			<sl-dropdown>
+			<sl-dropdown @sl-select=${(event: CustomEvent) => this.changeTheme(event)}>
 				<sl-button name="Theme" slot="trigger" caret pill size="small">
 					<sl-icon name=${this.icon}></sl-icon>
 				</sl-button>

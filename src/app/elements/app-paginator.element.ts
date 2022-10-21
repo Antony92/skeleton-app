@@ -37,20 +37,16 @@ export class AppPaginator extends LitElement {
 	@property({ type: Array })
 	pageSizeOptions = [5, 10, 20]
 
-	@query('sl-select')
-	select!: HTMLElementTagNameMap['sl-select']
-
 	private previousPageIndex = 0
 
-	override firstUpdated() {
-		this.select.addEventListener('sl-change', (event) => {
-			const pageSize = parseInt(this.select.value?.toString())
-			const startIndex = this.pageIndex * this.pageSize
-			this.previousPageIndex = this.pageIndex
-			this.pageIndex = Math.floor(startIndex / pageSize) || 0
-			this.pageSize = pageSize
-			this.emitPageEvent()
-		})
+	pageSizeChange(event: CustomEvent) {
+		const value = (event.target as HTMLElementTagNameMap['sl-select']).value
+		const pageSize = parseInt(value.toString())
+		const startIndex = this.pageIndex * this.pageSize
+		this.previousPageIndex = this.pageIndex
+		this.pageIndex = Math.floor(startIndex / pageSize) || 0
+		this.pageSize = pageSize
+		this.emitPageEvent()
 	}
 
 	hasPreviousPage() {
@@ -119,7 +115,7 @@ export class AppPaginator extends LitElement {
 	override render() {
 		return html`
 			Items per page:
-			<sl-select value=${this.pageSize} size="small">
+			<sl-select value=${this.pageSize} size="small" @sl-change=${(event: CustomEvent) => this.pageSizeChange(event)}>
 				${this.pageSizeOptions.map((value) => html`<sl-menu-item value=${value}>${value}</sl-menu-item>`)}
 			</sl-select>
 			${this.getRangeLabel()}
