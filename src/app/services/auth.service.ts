@@ -1,6 +1,4 @@
 import { BehaviorSubject } from 'rxjs'
-import { loading } from './loading.service'
-import { notify } from './notify.service'
 
 export const isAuthenticated = () => {
     const user = getUser()
