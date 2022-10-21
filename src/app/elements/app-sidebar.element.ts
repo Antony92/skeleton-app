@@ -98,6 +98,7 @@ export class AppSidebar extends LitElement {
 				link.classList.add('active')
 			})
 		})
+		// navigation.addEventListener('navigate', (navigateEvent) => console.log(navigateEvent))
 	}
 
 	override render() {

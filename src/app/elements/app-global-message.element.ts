@@ -1,6 +1,5 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {
