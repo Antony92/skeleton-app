@@ -51,11 +51,11 @@ export class AppDemoForm extends LitElement {
 				<sl-input type="number" name="number" label="Number" placeholder="Enter number" required clearable></sl-input>
 				<br />
 				<sl-select name="product" label="Favorite product" placeholder="Select one product" clearable required>
-					${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
+					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 				</sl-select>
 				<br />
 				<sl-select name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple>
-					${this.products.map((product: any) => html`<sl-menu-item value="${product.title}">${product.title}</sl-menu-item>`)}
+					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
 				</sl-select>
 				<br />
 				<sl-textarea name="comment" label="Comment" placeholder="Add comment" required></sl-textarea>

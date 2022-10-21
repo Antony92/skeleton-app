@@ -119,40 +119,40 @@ export class AppPaginator extends LitElement {
 	override render() {
 		return html`
 			Items per page:
-			<sl-select value="${this.pageSize}" size="small">
-				${this.pageSizeOptions.map((value) => html`<sl-menu-item value="${value}">${value}</sl-menu-item>`)}
+			<sl-select value=${this.pageSize} size="small">
+				${this.pageSizeOptions.map((value) => html`<sl-menu-item value=${value}>${value}</sl-menu-item>`)}
 			</sl-select>
 			${this.getRangeLabel()}
 			<sl-icon-button
 				name="chevron-bar-left"
 				label="First"
 				title="First"
-				@click="${this.firstPage}"
-				?disabled="${!this.hasPreviousPage()}"
+				@click=${this.firstPage}
+				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
 			<sl-icon-button
 				name="chevron-left"
 				label="Previous"
 				title="Previous"
-				@click="${this.previousPage}"
-				?disabled="${!this.hasPreviousPage()}"
+				@click=${this.previousPage}
+				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
 			<sl-icon-button
 				name="chevron-right"
 				label="Next"
 				title="Next"
-				@click="${this.nextPage}"
-				?disabled="${!this.hasNextPage()}"
+				@click=${this.nextPage}
+				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>
 			<sl-icon-button 
 				name="chevron-bar-right" 
 				label="Last" 
 				title="Last" 
-				@click="${this.lastPage}"
-				?disabled="${!this.hasNextPage()}"
+				@click=${this.lastPage}
+				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>
 		`

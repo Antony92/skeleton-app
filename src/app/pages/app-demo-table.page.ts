@@ -71,11 +71,12 @@ export class AppDemoTable extends LitElement {
 						)}
 					`, 
 					() => html`
-					<tr>
-						<td colspan=${this.columns.length}>
-							No results found
-						</td>
-					</tr>`
+						<tr>
+							<td colspan=${this.columns.length}>
+								No results found
+							</td>
+						</tr>
+					`
 				)} 
 				</tbody>
 				<tfoot>

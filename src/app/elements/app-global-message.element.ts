@@ -73,7 +73,7 @@ export class AppGlobalMessage extends LitElement {
 		return html`
 			<div>
 				${this.message}
-				<span class="close" @click="${() => this.hide()}">✕</span>
+				<span class="close" @click=${() => this.hide()}>✕</span>
 			</div>
 		`
 	}

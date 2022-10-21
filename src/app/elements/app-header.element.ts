@@ -80,10 +80,10 @@ export class AppHeader extends LitElement {
                 ${whenLogged( 
                     () => html`
                         <sl-dropdown>
-                            <sl-avatar slot="trigger" initials="${ifDefined(this.initials)}" label="User avatar"></sl-avatar>
+                            <sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
                             <sl-menu>
                                 <sl-menu-label>${this.fullname}</sl-menu-label>
-                                <sl-menu-item @click="${() => navigate('/table')}">
+                                <sl-menu-item @click=${() => navigate('/table')}>
                                     <sl-icon slot="prefix" name="person-fill"></sl-icon>
                                     Profile
                                 </sl-menu-item>
@@ -93,14 +93,14 @@ export class AppHeader extends LitElement {
                                     <sl-badge slot="suffix" variant="primary" pulse pill>4</sl-badge>
                                 </sl-menu-item>
                                 <sl-divider></sl-divider>
-                                <sl-menu-item @click="${() => logout()}">
+                                <sl-menu-item @click=${() => logout()}>
                                     <sl-icon slot="prefix" name="box-arrow-right"></sl-icon>
                                     Logout
                                 </sl-menu-item>
                             </sl-menu>
                         </sl-dropdown>
                     `, 
-                    () => html`<sl-button variant="primary" pill @click="${() => login()}">Sign in</sl-button>`
+                    () => html`<sl-button variant="primary" pill @click=${() => login()}>Sign in</sl-button>`
                 )}
                 
             </header>
