@@ -1,6 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { when } from 'lit/directives/when.js'
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/avatar/avatar.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
@@ -15,6 +14,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
 import { authState, getUser, login, logout } from '../services/auth.service'
 import { navigate } from '../services/navigation.service';
+import { whenLogged } from '../directives/when-logged.directive'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -44,9 +44,6 @@ export class AppHeader extends LitElement {
 	appTitle = ''
 
     @state()
-    authenticated = false
-
-    @state()
     fullname: string = ''
 
     @state()
@@ -55,7 +52,6 @@ export class AppHeader extends LitElement {
     override connectedCallback() {
         super.connectedCallback()
         authState.subscribe(state => {
-            this.authenticated = state
             if (state) {
                 const user = getUser()
                 this.fullname = `${user?.firstName} ${user?.lastName}`
@@ -81,7 +77,7 @@ export class AppHeader extends LitElement {
                     </sl-menu>
                 </sl-dropdown>
                 <app-theme-switcher></app-theme-switcher>
-                ${when(this.authenticated, 
+                ${whenLogged( 
                     () => html`
                         <sl-dropdown>
                             <sl-avatar slot="trigger" initials="${ifDefined(this.initials)}" label="User avatar"></sl-avatar>

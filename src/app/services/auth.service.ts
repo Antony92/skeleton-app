@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs'
 
 export const isAuthenticated = () => {
     const user = getUser()
-    return user && user.token
+    return user && user.token ? true : false
 }
 
 export const setUser = (user: unknown) => {
