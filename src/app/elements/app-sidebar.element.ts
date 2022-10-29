@@ -90,10 +90,10 @@ export class AppSidebar extends LitElement {
 
 	override firstUpdated() {
 		const path = location.pathname.split('/')[1]
-		this.shadowRoot?.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
 		this.links.forEach(link => {
 			link.addEventListener('click', () => {
-				const activeLink = this.shadowRoot?.querySelector('a.active')
+				const activeLink = this.renderRoot.querySelector('a.active')
 				activeLink?.classList.remove('active')
 				link.classList.add('active')
 			})
