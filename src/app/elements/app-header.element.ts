@@ -13,7 +13,7 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
 import { authState, getUser, login, logout } from '../services/auth.service'
-import { navigate } from '../services/navigation.service';
+import { navigate } from '../services/navigation.service'
 import { whenLogged } from '../directives/when-logged.directive'
 
 @customElement('app-header')
