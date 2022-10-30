@@ -8,7 +8,7 @@ class WhenHasRole extends AsyncDirective {
 
 	private subscription: Subscription | null = null
 
-	render(roles: string[] = [], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	override render(roles: string[] = [], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
 			this.subscription = authState.subscribe((state) => {
                 if (state && getUser()?.roles?.some((role: string) => roles.includes(role))) {

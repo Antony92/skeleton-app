@@ -8,7 +8,7 @@ class WhenLogged extends AsyncDirective {
 
 	private subscription: Subscription | null = null
 
-	render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	override render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
 			this.subscription = authState.subscribe((state) => {
                 if (state) this.setValue(trueCase())
