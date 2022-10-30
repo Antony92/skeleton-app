@@ -5,6 +5,7 @@ import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '../elements/app-paginator.element'
+import { debounceTime, Subject } from 'rxjs'
 
 
 @customElement('app-demo-table')
@@ -33,11 +34,28 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
-	private columns = ['Id', 'Email', 'Username', 'Address', 'IP']
+	private $filterEvent = new Subject<{ field: string, value: string }>()
+
+	private filter: { [key: string]: string } = {}
+
+	private columns = [
+		{ header: 'Id', field: 'id' },
+		{ header: 'Email', field: 'email' },
+		{ header: 'Username', field: 'username' },
+		{ header: 'User agent', field: 'userAgent' },
+		{ header: 'IP', field: 'ip' },
+	]
 
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers()
+		this.$filterEvent
+			.asObservable()
+			.pipe(debounceTime(300))
+			.subscribe(column => {
+				this.filter[column.field] = column.value
+				console.log(this.filter)
+			})
 	}
 
 	private async loadUsers(skip = 0, limit = 10) {
@@ -49,11 +67,9 @@ export class AppDemoTable extends LitElement {
 		await this.loadUsers(pageSize * pageIndex, pageSize)
 	}
 
-	filterTable(event: Event, column: string) {
+	filterTable(event: Event, field: string) {
 		const input = (event.target as HTMLInputElement)
-		if (input.value.length > 3) {
-			console.log(column)
-		}
+		this.$filterEvent.next({ field, value: input.value })
 	}
 
 	override render() {
@@ -63,8 +79,13 @@ export class AppDemoTable extends LitElement {
 					<tr>
 						${this.columns.map((column) => html`
 							<th>
-								${column} <br/>
-								<sl-input @input=${(event: Event) => this.filterTable(event, column)} placeholder="Filter value"></sl-input>
+								${column.header} <br/>
+								<sl-input 
+									clearable 
+									@sl-input=${(event: Event) => this.filterTable(event, column.field)} 
+									placeholder="Filter by ${column.header}"
+								>
+								</sl-input>
 							</th>
 						`)}
 					</tr>
@@ -78,7 +99,7 @@ export class AppDemoTable extends LitElement {
 									<td>${user.id}</td>
 									<td>${user.email}</td>
 									<td>${user.username}</td>
-									<td>${user.address.address}</td>
+									<td>${user.userAgent}</td>
 									<td>${user.ip}</td>
 								</tr>
 							`
