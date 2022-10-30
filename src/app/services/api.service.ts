@@ -6,7 +6,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 		const res = await req.json()
 		return res?.products ?? []
 	} catch (error) {
-		console.log(error)
+		console.error(error)
 	}
 	return []
 }
