@@ -12,9 +12,10 @@ import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
-import { authState, getUser, login, logout } from '../services/auth.service'
+import { login, logout } from '../services/login.service'
 import { navigate } from '../services/navigation.service'
 import { whenLogged } from '../directives/when-logged.directive'
+import { getUser } from '../services/user.service';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -51,10 +52,9 @@ export class AppHeader extends LitElement {
 
     override connectedCallback() {
         super.connectedCallback()
-        authState.subscribe(state => {
-            if (state) {
-                const user = getUser()
-                this.fullname = `${user?.firstName} ${user?.lastName}`
+        getUser().subscribe(user => {
+            if (user) {
+                this.fullname = `${user.firstName} ${user.lastName}`
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
