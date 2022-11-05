@@ -127,17 +127,17 @@ export class AppDemoTable extends LitElement {
 									<sl-input 
 										clearable
 										type="text"
-										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
 										placeholder="Filter by ${column.header}"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
 									>
 									</sl-input>
 								`)}
 								${when(column.type === 'number', () => html`
 									<sl-input 
 										clearable
-										type="number"
-										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
+										type="number" 
 										placeholder="Filter by ${column.header}"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
 									>
 									</sl-input>
 								`)}
@@ -145,15 +145,15 @@ export class AppDemoTable extends LitElement {
 									<sl-input 
 										clearable
 										type="date"
-										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
 										placeholder="Filter by ${column.header}"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
 									>
 									</sl-input>
 								`)}
 								${when(column.type === 'select', () => html`
 									<sl-select 
-										placeholder="Clearable" 
 										clearable 
+										placeholder="Filter by ${column.header}"
 										@sl-change=${(event: CustomEvent) => this.filterEvent(column, (event.target as HTMLElementTagNameMap['sl-select']).value as string)}>
 
 										<sl-menu-item value="option-1">Option 1</sl-menu-item>
