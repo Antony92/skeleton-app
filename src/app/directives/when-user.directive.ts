@@ -4,14 +4,14 @@ import { Subscription } from 'rxjs'
 import { getUser } from '../services/user.service'
 import { noChange, nothing, TemplateResult } from 'lit'
 
-class WhenHasRole extends AsyncDirective {
+class WhenUser extends AsyncDirective {
 
 	private subscription: Subscription | null = null
 
-	override render(roles: string[] = [], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	override render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
 			this.subscription = getUser().subscribe((user) => {
-                if (user?.roles?.some((role: string) => roles.includes(role))) {
+                if (user) {
 					this.setValue(trueCase())
 				} else if (falseCase) {
 					this.setValue(falseCase())
@@ -28,4 +28,4 @@ class WhenHasRole extends AsyncDirective {
 	}
 }
 
-export const whenHasRole = directive(WhenHasRole)
+export const whenUser = directive(WhenUser)

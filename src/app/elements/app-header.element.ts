@@ -14,7 +14,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import './app-theme-switcher.element'
 import { login, logout } from '../services/login.service'
 import { navigate } from '../services/navigation.service'
-import { whenLogged } from '../directives/when-logged.directive'
+import { whenUser } from '../directives/when-user.directive'
 import { getUser } from '../services/user.service';
 
 @customElement('app-header')
@@ -77,7 +77,7 @@ export class AppHeader extends LitElement {
                     </sl-menu>
                 </sl-dropdown>
                 <app-theme-switcher></app-theme-switcher>
-                ${whenLogged( 
+                ${whenUser( 
                     () => html`
                         <sl-dropdown>
                             <sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
