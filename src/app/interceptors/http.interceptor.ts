@@ -4,10 +4,10 @@ import { notify } from '../services/notify.service'
 const { fetch: originalFetch } = window
 
 window.fetch = async (...args) => {
-    loading(true)
     let [resource, config] = args
     let response = new Response()
     try {
+        loading(true)
         response = await originalFetch(resource, config)
         if (!response.ok) {
             const error = await response.clone().json()
