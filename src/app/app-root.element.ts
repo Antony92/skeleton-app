@@ -4,8 +4,6 @@ import { customElement } from 'lit/decorators.js'
 
 // Preload some elements
 import './elements/app-global-message.element'
-import './elements/app-loading-status.element'
-import './interceptors/http.interceptor'
 
 // Imports
 import './elements/app-header.element'
