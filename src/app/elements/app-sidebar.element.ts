@@ -56,10 +56,14 @@ export class AppSidebar extends LitElement {
 			transition: scale 300ms;
 		}
 
-		ul li a:hover span:first-child, ul li a.active span:first-child {
+		ul li a.active span:first-child {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
 			background: #0284c7;
-			color: white;
+			color: var(--sl-color-neutral-0);
+		}
+
+		ul li a:hover:not(.active) span:first-child {
+			background: rgba(182, 182, 190, 0.3);
 		}
 
 		ul li a:hover span:first-child sl-icon {
@@ -71,7 +75,7 @@ export class AppSidebar extends LitElement {
 		}
 
 		ul li a.active span:nth-child(2) {
-			color: white
+			color: #0284c7;
 		}
 
 		@media only screen and (max-width: 800px) {
