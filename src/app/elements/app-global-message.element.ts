@@ -64,7 +64,10 @@ export class AppGlobalMessage extends LitElement {
 	override firstUpdated() {
 		this.container.addEventListener('transitionend', (event) => {
 			if (!this.container.classList.contains('visible')) {
-				this.dispatchEvent(new CustomEvent('app-after-hide', { bubbles: true, composed: true }))
+				this.dispatchEvent(new CustomEvent('app-after-hide', { 
+					bubbles: true, 
+					composed: true 
+				}))
 			}
 		})
 	}
