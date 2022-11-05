@@ -90,7 +90,7 @@ export class AppDemoTable extends LitElement {
 						`)}
 					</tr>
 				</thead>
-				<tbody>
+				<tbody>	
 				${when(this.data?.users?.length > 0, 
 					() => html`
 						${this.data?.users?.map(
@@ -108,7 +108,7 @@ export class AppDemoTable extends LitElement {
 					() => html`
 						<tr>
 							<td colspan=${this.columns.length}>
-								No results found
+								${!this.data ? 'Loading...' : 'No results found'}
 							</td>
 						</tr>
 					`
