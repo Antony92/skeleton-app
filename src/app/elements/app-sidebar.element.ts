@@ -7,7 +7,7 @@ export class AppSidebar extends LitElement {
 	static styles = css`
 		nav {
 			display: flex;
-			width: 260px;
+			width: 90px;
 			height: 100%;
     		border-right: solid 1px var(--sl-color-neutral-200);
 		}
@@ -22,35 +22,43 @@ export class AppSidebar extends LitElement {
 		}
 
 		ul li {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 5px;
 			width: 100%;
 		}
 
 		ul li a {
 			display: flex;
+			flex-direction: column;
 			align-items: center;
 			color: var(--sl-color-neutral-700);
 			text-decoration: none;
-			margin: 10px 15px;
-			padding: 15px 0;
-			transition: 300ms;
-			border-radius: 3px;
 			cursor: pointer;
+			margin-bottom: 20px;
 		}
 
-		ul li a:hover, ul li a.active {
+		ul li a:hover sl-icon, ul li a.active sl-icon {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
 			background: #0284c7;
 			color: white;
 		}
 
+		ul li a.active span {
+			color: white
+		}
+
 		ul li a span {
-			display: inline-block;
-			white-space: nowrap;
-			overflow: hidden;
+			font-size: 12px;
 		}
 
 		ul li a sl-icon {
-			margin: 0 20px;
+			padding: 10px 20px;
+			transition: 300ms;
+			border-radius: 20px;
+			margin-bottom: 5px;
 		}
 
 		@media only screen and (max-width: 800px) {
@@ -69,17 +77,7 @@ export class AppSidebar extends LitElement {
 			}
 
 			ul li a {
-				justify-content: center;
-				margin: 0;
-				border-radius: 0;
-			}
-
-			ul li a:hover, ul li a.active {
-				box-shadow: none;
-			}
-
-			ul li a span {
-				display: none;
+				margin: 10px 0px;
 			}
 		}
 
