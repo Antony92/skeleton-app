@@ -1,9 +1,10 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
+import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
 import { debounceTime, Subject } from 'rxjs'
 
@@ -29,6 +30,15 @@ export class AppDemoTable extends LitElement {
 			overflow: hidden;
 			text-overflow: ellipsis;
 		}
+
+		table thead th.sortable {
+			cursor: pointer;
+		}
+
+		table thead th.sortable sl-icon {
+			position: relative;
+    		top: 3px;
+		}
 	`
 
 	@state()
@@ -39,11 +49,11 @@ export class AppDemoTable extends LitElement {
 	private filter: { [key: string]: string } = {}
 
 	private columns = [
-		{ header: 'Id', field: 'id' },
-		{ header: 'Email', field: 'email' },
-		{ header: 'Username', field: 'username' },
-		{ header: 'User agent', field: 'userAgent' },
-		{ header: 'IP', field: 'ip' },
+		{ header: 'Id', field: 'id', sort: 0 },
+		{ header: 'Email', field: 'email', sort: 0 },
+		{ header: 'Username', field: 'username', sort: 0 },
+		{ header: 'User agent', field: 'userAgent', sort: 0 },
+		{ header: 'IP', field: 'ip', sort: 0 },
 	]
 
 	override connectedCallback() {
@@ -67,9 +77,25 @@ export class AppDemoTable extends LitElement {
 		await this.loadUsers(pageSize * pageIndex, pageSize)
 	}
 
-	filterTable(event: Event, field: string) {
+	filterEvent(event: Event, field: string) {
 		const input = (event.target as HTMLInputElement)
 		this.$filterEvent.next({ field, value: input.value })
+	}
+
+	async sortEvent(column: { field: string, sort: number }) {
+		this.columns
+			.filter(col => col.field !== column.field)
+			.forEach(col => col.sort = 0)
+
+		if (column.sort === 0) {
+			column.sort = 1
+		} else if (column.sort === 1) {
+			column.sort = -1
+		} else if (column.sort === -1) {
+			column.sort = 0
+		}
+
+		this.requestUpdate()
 	}
 
 	override render() {
@@ -78,11 +104,19 @@ export class AppDemoTable extends LitElement {
 				<thead>
 					<tr>
 						${this.columns.map((column) => html`
+							<th class="sortable" @click=${() => this.sortEvent(column)}>
+								${column.header}
+								${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+								${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
+							</th>
+						`)}
+					</tr>
+					<tr>
+						${this.columns.map((column) => html`
 							<th>
-								${column.header} <br/>
 								<sl-input 
 									clearable 
-									@sl-input=${(event: Event) => this.filterTable(event, column.field)} 
+									@sl-input=${(event: Event) => this.filterEvent(event, column.field)} 
 									placeholder="Filter by ${column.header}"
 								>
 								</sl-input>

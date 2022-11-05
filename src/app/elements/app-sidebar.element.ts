@@ -34,31 +34,44 @@ export class AppSidebar extends LitElement {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			gap: 5px;
 			color: var(--sl-color-neutral-700);
 			text-decoration: none;
 			cursor: pointer;
 			margin-bottom: 20px;
 		}
 
-		ul li a:hover sl-icon, ul li a.active sl-icon {
+		ul li a span:first-child {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 56px;
+    		height: 32px;
+			border-radius: 16px;
+			transition: all 300ms;
+		}
+
+		ul li a span:first-child sl-icon {
+			font-size: 20px;
+			transition: scale 300ms;
+		}
+
+		ul li a:hover span:first-child, ul li a.active span:first-child {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
 			background: #0284c7;
 			color: white;
 		}
 
-		ul li a.active span {
-			color: white
+		ul li a:hover span:first-child sl-icon {
+			scale: 1.1;
 		}
 
-		ul li a span {
+		ul li a span:nth-child(2) {
 			font-size: 12px;
 		}
 
-		ul li a sl-icon {
-			padding: 10px 20px;
-			transition: 300ms;
-			border-radius: 20px;
-			margin-bottom: 5px;
+		ul li a.active span:nth-child(2) {
+			color: white
 		}
 
 		@media only screen and (max-width: 800px) {
@@ -105,25 +118,33 @@ export class AppSidebar extends LitElement {
 				<ul>
 					<li>
 						<a href="/">
-							<sl-icon name="house-door-fill"></sl-icon>
+							<span>
+								<sl-icon name="house-door-fill"></sl-icon>
+							</span>
 							<span>Home</span>
 						</a>
 					</li>
 					<li>
 						<a href="/form">
-							<sl-icon name="postcard-fill"></sl-icon>
+							<span>
+								<sl-icon name="postcard-fill"></sl-icon>
+							</span>
 							<span>Form</span>
 						</a>
 					</li>
 					<li>
 						<a href="/alerts">
-							<sl-icon name="exclamation-square-fill"></sl-icon>
+							<span>
+								<sl-icon name="exclamation-square-fill"></sl-icon>
+							</span>
 							<span>Alerts</span>
 						</a>
 					</li>
 					<li>
 						<a href="/table">
-							<sl-icon name="table"></sl-icon>
+							<span>
+								<sl-icon name="table"></sl-icon>
+							</span>
 							<span>Table</span>
 						</a>
 					</li>
