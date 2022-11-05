@@ -96,6 +96,8 @@ export class AppDemoTable extends LitElement {
 		}
 
 		this.requestUpdate()
+
+		console.log({ field: column.field, sort: column.sort })
 	}
 
 	override render() {
