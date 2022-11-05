@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounceTime, Subject } from 'rxjs'
+import { debounce, Subject, timer } from 'rxjs'
 
 
 @customElement('app-demo-table')
@@ -44,16 +44,16 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
-	private $filterEvent = new Subject<{ field: string, value: string }>()
+	private $filterEvent = new Subject<{ column: Column, value: string}>()
 
-	private filter: { [key: string]: string } = {}
+	private filter: { [key: string]: string | number } = {}
 
-	private columns = [
-		{ header: 'Id', field: 'id', sort: 0 },
-		{ header: 'Email', field: 'email', sort: 0 },
-		{ header: 'Username', field: 'username', sort: 0 },
-		{ header: 'User agent', field: 'userAgent', sort: 0 },
-		{ header: 'IP', field: 'ip', sort: 0 },
+	private columns: Column[] = [
+		{ header: 'Id', field: 'id', type: 'number' },
+		{ header: 'Email', field: 'email', type: 'text' },
+		{ header: 'Username', field: 'username', type: 'text' },
+		{ header: 'User agent', field: 'userAgent', type: 'select' },
+		{ header: 'IP', field: 'ip', type: 'date' },
 	]
 
 	override connectedCallback() {
@@ -61,9 +61,9 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 		this.$filterEvent
 			.asObservable()
-			.pipe(debounceTime(300))
-			.subscribe(column => {
-				this.filter[column.field] = column.value
+			.pipe(debounce(event => ['number', 'text'].includes(event.column.type) ? timer(300) : timer(0)))
+			.subscribe(event => {
+				this.filter[event.column.field] = event.value
 				console.log(this.filter)
 			})
 	}
@@ -77,17 +77,16 @@ export class AppDemoTable extends LitElement {
 		await this.loadUsers(pageSize * pageIndex, pageSize)
 	}
 
-	filterEvent(event: Event, field: string) {
-		const input = (event.target as HTMLInputElement)
-		this.$filterEvent.next({ field, value: input.value })
+	filterEvent(column: Column, value: string) {
+		this.$filterEvent.next({ column, value })
 	}
 
-	async sortEvent(column: { field: string, sort: number }) {
+	async sortEvent(column: Column) {
 		this.columns
 			.filter(col => col.field !== column.field)
 			.forEach(col => col.sort = 0)
 
-		if (column.sort === 0) {
+		if (!column.sort) {
 			column.sort = 1
 		} else if (column.sort === 1) {
 			column.sort = -1
@@ -97,7 +96,15 @@ export class AppDemoTable extends LitElement {
 
 		this.requestUpdate()
 
-		console.log({ field: column.field, sort: column.sort })
+		if (column.sort !== 0) {
+			this.filter.sortOrder = column.sort
+			this.filter.sortField = column.field
+		} else {
+			delete this.filter.sortOrder
+			delete this.filter.sortField
+		}
+
+		console.log(this.filter)
 	}
 
 	override render() {
@@ -116,12 +123,44 @@ export class AppDemoTable extends LitElement {
 					<tr>
 						${this.columns.map((column) => html`
 							<th>
-								<sl-input 
-									clearable 
-									@sl-input=${(event: Event) => this.filterEvent(event, column.field)} 
-									placeholder="Filter by ${column.header}"
-								>
-								</sl-input>
+								${when(column.type === 'text', () => html`
+									<sl-input 
+										clearable
+										type="text"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
+										placeholder="Filter by ${column.header}"
+									>
+									</sl-input>
+								`)}
+								${when(column.type === 'number', () => html`
+									<sl-input 
+										clearable
+										type="number"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
+										placeholder="Filter by ${column.header}"
+									>
+									</sl-input>
+								`)}
+								${when(column.type === 'date', () => html`
+									<sl-input 
+										clearable
+										type="date"
+										@sl-input=${(event: Event) => this.filterEvent(column, (event.target as HTMLInputElement).value)} 
+										placeholder="Filter by ${column.header}"
+									>
+									</sl-input>
+								`)}
+								${when(column.type === 'select', () => html`
+									<sl-select 
+										placeholder="Clearable" 
+										clearable 
+										@sl-change=${(event: CustomEvent) => this.filterEvent(column, (event.target as HTMLElementTagNameMap['sl-select']).value as string)}>
+
+										<sl-menu-item value="option-1">Option 1</sl-menu-item>
+										<sl-menu-item value="option-2">Option 2</sl-menu-item>
+										<sl-menu-item value="option-3">Option 3</sl-menu-item>
+									</sl-select>
+								`)}
 							</th>
 						`)}
 					</tr>
