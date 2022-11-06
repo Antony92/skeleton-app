@@ -68,7 +68,7 @@ export class AppDemoTable extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers()
-		this.filterSubscription = this.$searchEvent
+		this.searchSubscription = this.$searchEvent
 			.pipe(
 				filter(() => !this.clearingFilters),
 				debounceTime(300)
@@ -76,8 +76,9 @@ export class AppDemoTable extends LitElement {
 			.subscribe((value) => {
 				this.searchQuery.search = value
 				this.loadUsers()
+				this.paginator.pageIndex = 0
 			})
-		this.searchSubscription = this.$filterEvent
+		this.filterSubscription = this.$filterEvent
 			.asObservable()
 			.pipe(
 				filter(() => !this.clearingFilters),
@@ -91,6 +92,7 @@ export class AppDemoTable extends LitElement {
 					delete this.searchQuery[event.column.field]
 				}
 				this.loadUsers()
+				this.paginator.pageIndex = 0
 			})
 	}
 
@@ -105,22 +107,22 @@ export class AppDemoTable extends LitElement {
 		this.data = await getUsers(this.searchQuery)
 	}
 
-	page(event: CustomEvent) {
+	private page(event: CustomEvent) {
 		const { pageSize, pageIndex } = event.detail
 		this.searchQuery.limit = pageSize
 		this.searchQuery.skip = pageSize * pageIndex
 		this.loadUsers()
 	}
 
-	search(value: string) {
+	private search(value: string) {
 		this.$searchEvent.next(value)
 	}
 
-	filterColumn(event: FilterColumnEvent) {
+	private filterColumn(event: FilterColumnEvent) {
 		this.$filterEvent.next(event)
 	}
 
-	sortColumn(column: Column) {
+	private sortColumn(column: Column) {
 		this.columns.filter((col) => col.field !== column.field).forEach((col) => (col.sort = null))
 
 		if (!column.sort) {
@@ -144,17 +146,18 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 	}
 
-	async clearFilters() {
+	private async clearFilters() {
 		this.clearingFilters = true
 
 		this.searchQuery = { skip: 0, limit: this.searchQuery.limit }
 		this.columns.forEach((col) => (col.sort = null))
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
-
+		
+		await this.loadUsers()
 		this.paginator.pageIndex = 0
 
-		this.clearingFilters = false
+		setTimeout(() => this.clearingFilters = false, 0)
 	}
 
 	override render() {
