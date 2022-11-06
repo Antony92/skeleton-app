@@ -1,7 +1,8 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
+import { customElement, queryAll, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { getUsers } from '../services/api.service'
+import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
@@ -43,7 +44,10 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
-	private query: SearchQuery = { skip: 0, limit: 10 }
+	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
+	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
+
+	private searchQuery: SearchQuery = { skip: 0, limit: 10 }
 
 	private $filterEvent = new Subject<FilterColumnEvent>()
 	private $searchEvent = new Subject<string>()
@@ -63,27 +67,32 @@ export class AppDemoTable extends LitElement {
 			.asObservable()
 			.pipe(debounceTime(300))
 			.subscribe(value => {
-				this.query.search = value
+				this.searchQuery.search = value
 				this.loadUsers()
 			})
 		this.$filterEvent
 			.asObservable()
 			.pipe(debounce(event => ['number', 'text'].includes(event.column.type) ? timer(300) : timer(0)))
 			.subscribe(event => {
-				this.query[event.column.field] = event.value?.toString()
+				const value = event.value?.toString()
+				if (value) {
+					this.searchQuery[event.column.field] = value
+				} else {
+					delete this.searchQuery[event.column.field]
+				}
 				this.loadUsers()
 			})
 	}
 
 	private async loadUsers() {
-		console.log('search query: ', this.query)
-		this.data = await getUsers(this.query)
+		console.log('search query: ', this.searchQuery)
+		this.data = await getUsers(this.searchQuery)
 	}
 
 	page(event: CustomEvent) {
 		const { pageSize, pageIndex } = event.detail
-		this.query.limit = pageSize
-		this.query.skip = pageSize * pageIndex
+		this.searchQuery.limit = pageSize
+		this.searchQuery.skip = pageSize * pageIndex
 		this.loadUsers()
 	}
 
@@ -111,14 +120,30 @@ export class AppDemoTable extends LitElement {
 		this.requestUpdate()
 
 		if (column.sort) {
-			this.query.sortOrder = column.sort
-			this.query.sortField = column.field
+			this.searchQuery.sortOrder = column.sort
+			this.searchQuery.sortField = column.field
 		} else {
-			delete this.query.sortOrder
-			delete this.query.sortField
+			delete this.searchQuery.sortOrder
+			delete this.searchQuery.sortField
 		}
 
 		this.loadUsers()
+	}
+
+	clearFilters() {
+		this.searchQuery = { skip: 0, limit: this.searchQuery.limit }
+		this.columns
+			.forEach(col => col.sort = null)
+		this.inputs
+			.forEach(input => input.value = '')
+		this.selects
+			.forEach(select => select.value = select.multiple ? [] : '')
+
+		this.requestUpdate()	
+		
+		if (this.selects.length === 0) {
+			this.loadUsers()
+		}
 	}
 
 	override render() {
@@ -131,6 +156,11 @@ export class AppDemoTable extends LitElement {
 			>
 				<sl-icon name="search" slot="prefix"></sl-icon>
 			</sl-input>
+			<br/>
+			<sl-button variant="default" @click=${() => this.clearFilters()}>
+				<sl-icon slot="prefix" name="funnel"></sl-icon>
+				Clear filters
+			</sl-button>
 			<table>
 				<thead>
 					<tr>
