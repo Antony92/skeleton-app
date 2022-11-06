@@ -44,7 +44,7 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
-	private clearing = false
+	private clearingFilters = false
 
 	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
 	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
@@ -67,7 +67,7 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 		this.$searchEvent
 			.pipe(
-				filter(() => !this.clearing), 
+				filter(() => !this.clearingFilters), 
 				debounceTime(300)
 			)
 			.subscribe(value => {
@@ -77,11 +77,10 @@ export class AppDemoTable extends LitElement {
 		this.$filterEvent
 			.asObservable()
 			.pipe(
-				filter(() => !this.clearing), 
+				filter(() => !this.clearingFilters), 
 				debounce(event => ['number', 'text'].includes(event.column.type) ? timer(300) : timer(0))
 			)
 			.subscribe(event => {
-				console.log(this.clearing)
 				const value = event.value?.toString()
 				if (value) {
 					this.searchQuery[event.column.field] = value
@@ -139,7 +138,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	async clearFilters() {
-		this.clearing = true
+		this.clearingFilters = true
 
 		this.searchQuery = { skip: 0, limit: this.searchQuery.limit }
 		this.columns
@@ -153,7 +152,7 @@ export class AppDemoTable extends LitElement {
 
 		await this.loadUsers()
 
-		this.clearing = false
+		this.clearingFilters = false
 	}
 
 	override render() {
