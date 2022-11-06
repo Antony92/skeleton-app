@@ -8,7 +8,6 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
 import { debounce, debounceTime, Subject, timer, filter } from 'rxjs'
 
-
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
 	static styles = css`
@@ -266,8 +265,5 @@ export class AppDemoTable extends LitElement {
 			</table>
 		`
 	}
-}
-function iff(): import("rxjs").OperatorFunction<string, unknown> {
-	throw new Error('Function not implemented.')
 }
 
