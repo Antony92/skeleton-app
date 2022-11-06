@@ -39,6 +39,7 @@ export class AppSidebar extends LitElement {
 			text-decoration: none;
 			cursor: pointer;
 			margin-bottom: 20px;
+			-webkit-tap-highlight-color: transparent;
 		}
 
 		ul li a span:first-child {
