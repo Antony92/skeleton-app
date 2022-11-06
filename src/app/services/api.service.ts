@@ -12,9 +12,9 @@ export const getProducts = async (search?: string, limit = 10) => {
 	return []
 }
 
-export const getUsers = async (skip = 0, limit = 10) => {
+export const getUsers = async (query: SearchQuery) => {
 	try {
-		const req = await request(`https://dummyjson.com/users${toQueryParams({ skip, limit })}`)
+		const req = await request(`https://dummyjson.com/users${toQueryParams({ ...query })}`)
 		const res = await req.json()
 		return res
 	} catch (error) {
