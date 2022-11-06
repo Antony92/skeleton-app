@@ -1,11 +1,7 @@
 import { Router } from '@lit-labs/router'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-
-// Preload some elements
 import './elements/app-global-message.element'
-
-// Imports
 import './elements/app-header.element'
 import './elements/app-sidebar.element'
 import { removeGlobalMessage, showGlobalMessage } from './services/global-message.service'
