@@ -160,7 +160,7 @@ export class AppDemoTable extends LitElement {
 
 	override render() {
 		return html`
-			<sl-input clearable type="text" placeholder="Search" @sl-input=${(event: Event) => this.search((event.target as HTMLInputElement).value)}>
+			<sl-input clearable type="search" placeholder="Search" @sl-input=${(event: Event) => this.search((event.target as HTMLInputElement).value)}>
 				<sl-icon name="search" slot="prefix"></sl-icon>
 			</sl-input>
 			<br />
