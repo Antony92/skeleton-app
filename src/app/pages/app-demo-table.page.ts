@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounce, debounceTime, Subject, timer } from 'rxjs'
+import { debounce, debounceTime, Subject, timer, filter } from 'rxjs'
 
 
 @customElement('app-demo-table')
@@ -44,6 +44,8 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
+	private clearing = false
+
 	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
 	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
 
@@ -64,16 +66,22 @@ export class AppDemoTable extends LitElement {
 		super.connectedCallback()
 		this.loadUsers()
 		this.$searchEvent
-			.asObservable()
-			.pipe(debounceTime(300))
+			.pipe(
+				filter(() => !this.clearing), 
+				debounceTime(300)
+			)
 			.subscribe(value => {
 				this.searchQuery.search = value
 				this.loadUsers()
 			})
 		this.$filterEvent
 			.asObservable()
-			.pipe(debounce(event => ['number', 'text'].includes(event.column.type) ? timer(300) : timer(0)))
+			.pipe(
+				filter(() => !this.clearing), 
+				debounce(event => ['number', 'text'].includes(event.column.type) ? timer(300) : timer(0))
+			)
 			.subscribe(event => {
+				console.log(this.clearing)
 				const value = event.value?.toString()
 				if (value) {
 					this.searchQuery[event.column.field] = value
@@ -130,7 +138,9 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 	}
 
-	clearFilters() {
+	async clearFilters() {
+		this.clearing = true
+
 		this.searchQuery = { skip: 0, limit: this.searchQuery.limit }
 		this.columns
 			.forEach(col => col.sort = null)
@@ -140,10 +150,10 @@ export class AppDemoTable extends LitElement {
 			.forEach(select => select.value = select.multiple ? [] : '')
 
 		this.requestUpdate()	
-		
-		if (this.selects.length === 0) {
-			this.loadUsers()
-		}
+
+		await this.loadUsers()
+
+		this.clearing = false
 	}
 
 	override render() {
@@ -258,3 +268,7 @@ export class AppDemoTable extends LitElement {
 		`
 	}
 }
+function iff(): import("rxjs").OperatorFunction<string, unknown> {
+	throw new Error('Function not implemented.')
+}
+
