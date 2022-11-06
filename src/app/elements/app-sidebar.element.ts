@@ -9,7 +9,7 @@ export class AppSidebar extends LitElement {
 			display: flex;
 			width: 90px;
 			height: 100%;
-    		border-right: solid 1px var(--sl-color-neutral-200);
+			background-color: var(--sl-color-neutral-50);
 		}
 
 		ul {
@@ -58,12 +58,12 @@ export class AppSidebar extends LitElement {
 
 		ul li a.active span:first-child {
 			box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(0 0 0 / 40%);
-			background: #0284c7;
+			background: var(--sl-color-sky-600);
 			color: var(--sl-color-neutral-0);
 		}
 
 		ul li a:hover:not(.active) span:first-child {
-			background: rgba(182, 182, 190, 0.3);
+			background: var(--sl-color-neutral-300);
 		}
 
 		ul li a:hover span:first-child sl-icon {
@@ -75,7 +75,7 @@ export class AppSidebar extends LitElement {
 		}
 
 		ul li a.active span:nth-child(2) {
-			color: #0284c7;
+			color: var(--sl-color-sky-600);
 		}
 
 		@media only screen and (max-width: 800px) {
@@ -83,7 +83,6 @@ export class AppSidebar extends LitElement {
 			nav {
 				width: auto;
 				border-right: none;
-				border-top: solid 1px var(--sl-color-neutral-200);
 			}
 
 			ul {
