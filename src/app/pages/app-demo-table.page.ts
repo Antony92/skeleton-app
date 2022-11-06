@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, queryAll, state } from 'lit/decorators.js'
+import { customElement, query, queryAll, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
@@ -43,6 +43,7 @@ export class AppDemoTable extends LitElement {
 	@state()
 	private data: any = null
 
+	@query('app-paginator') paginator!: HTMLElementTagNameMap['app-paginator']
 	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
 	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
 
@@ -151,9 +152,7 @@ export class AppDemoTable extends LitElement {
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
 
-		this.requestUpdate()
-
-		await this.loadUsers()
+		this.paginator.pageIndex = 0
 
 		this.clearingFilters = false
 	}
