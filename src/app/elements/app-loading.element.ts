@@ -1,8 +1,8 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-@customElement('app-loading-status')
-export class AppLoadingStatus extends LitElement {
+@customElement('app-loading')
+export class AppLoading extends LitElement {
 	static styles = css`
 		:host {
             position: fixed;
@@ -60,6 +60,6 @@ export class AppLoadingStatus extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-loading-status': AppLoadingStatus
+		'app-loading': AppLoading
 	}
 }
