@@ -75,8 +75,7 @@ export class AppDemoTable extends LitElement {
 			)
 			.subscribe((value) => {
 				this.searchQuery.search = value
-				this.loadUsers()
-				this.paginator.pageIndex = 0
+				this.resetUsers()
 			})
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
@@ -91,8 +90,7 @@ export class AppDemoTable extends LitElement {
 				} else {
 					delete this.searchQuery[event.column.field]
 				}
-				this.loadUsers()
-				this.paginator.pageIndex = 0
+				this.resetUsers()
 			})
 	}
 
@@ -100,6 +98,12 @@ export class AppDemoTable extends LitElement {
 		super.disconnectedCallback()
 		this.filterSubscription?.unsubscribe()
 		this.searchSubscription?.unsubscribe()
+	}
+
+	private async resetUsers() {
+		this.searchQuery.skip = 0
+		await this.loadUsers()
+		this.paginator.pageIndex = 0
 	}
 
 	private async loadUsers() {
@@ -154,8 +158,7 @@ export class AppDemoTable extends LitElement {
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
 		
-		await this.loadUsers()
-		this.paginator.pageIndex = 0
+		this.resetUsers()
 
 		setTimeout(() => this.clearingFilters = false, 0)
 	}
