@@ -2,13 +2,13 @@ import { loading } from '../services/loading.service'
 import { notify } from '../services/notify.service'
 
 interface RequestOptions extends RequestInit {
-	loadingIndicator?: boolean
+	loading?: boolean
 }
 
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
 	let response = new Response()
 	try {
-		loading(options?.loadingIndicator ?? true)
+		loading(options?.loading ?? true)
 		response = await fetch(url, options)
 		if (!response.ok) {
 			const error = await response.clone().json()
