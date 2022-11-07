@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js'
 import './elements/app-global-message.element'
 import './elements/app-header.element'
 import './elements/app-sidebar.element'
-import { removeGlobalMessage, showGlobalMessage } from './services/global-message.service'
+import { hideGlobalMessage, showGlobalMessage } from './services/global-message.service'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -90,7 +90,7 @@ export class AppRoot extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback()
 		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
-		window.addEventListener('online', () => removeGlobalMessage())
+		window.addEventListener('online', () => hideGlobalMessage())
 	}
 
 	override render() {
