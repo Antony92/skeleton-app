@@ -25,8 +25,8 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div.visible {
-			opacity: 1;
 			visibility: visible;
+			opacity: 1;
 		}
 
 		.close {
@@ -62,8 +62,8 @@ export class AppGlobalMessage extends LitElement {
 	}
 
 	override firstUpdated() {
-		this.container.addEventListener('transitionend', (event) => {
-			if (!this.container.classList.contains('visible')) {
+		this.container.addEventListener('transitionend', (event: TransitionEvent) => {
+			if (!this.container.classList.contains('visible') && event.propertyName === 'visibility') {
 				this.dispatchEvent(new CustomEvent('app-after-hide', { 
 					bubbles: true, 
 					composed: true 
