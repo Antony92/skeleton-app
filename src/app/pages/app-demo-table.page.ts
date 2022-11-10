@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounce, debounceTime, Subject, timer, filter, Subscription } from 'rxjs'
+import { debounce, debounceTime, Subject, timer, Subscription, filter } from 'rxjs'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -49,18 +49,17 @@ export class AppDemoTable extends LitElement {
 
 	private searchQuery: SearchQuery = { skip: 0, limit: 10 }
 
-	private $filterEvent = new Subject<FilterColumnEvent>()
-	private $searchEvent = new Subject<string>()
+	private $filterEvent = new Subject<FilterTableEvent>()
 
 	private filterSubscription: Subscription | null = null
-	private searchSubscription: Subscription | null = null
 
 	private clearingFilters = false
+	private filtersApplied = false
 
-	private columns: Column[] = [
+	private columns: TableColumn[] = [
 		{ header: 'Id', field: 'id', type: 'number' },
-		{ header: 'Email', field: 'email', type: 'text' },
-		{ header: 'Username', field: 'username', type: 'text' },
+		{ header: 'Email', field: 'email', type: 'string' },
+		{ header: 'Username', field: 'username', type: 'string' },
 		{ header: 'User agent', field: 'userAgent', type: 'select' },
 		{ header: 'IP', field: 'ip', type: 'date' },
 	]
@@ -68,47 +67,38 @@ export class AppDemoTable extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers()
-		this.searchSubscription = this.$searchEvent
-			.pipe(
-				filter(() => !this.clearingFilters),
-				debounceTime(300)
-			)
-			.subscribe((value) => {
-				this.searchQuery.search = value
-				this.resetUsers()
-			})
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
 			.pipe(
 				filter(() => !this.clearingFilters),
-				debounce((event) => (['number', 'text'].includes(event.column.type) ? timer(300) : timer(0)))
+				debounce((event) => (['number', 'string'].includes(event.type) ? timer(300) : timer(0)))
 			)
 			.subscribe((event) => {
+				this.filtersApplied = true
 				const value = event.value?.toString()
 				if (value) {
-					this.searchQuery[event.column.field] = value
+					this.searchQuery[event.field] = value
 				} else {
-					delete this.searchQuery[event.column.field]
+					delete this.searchQuery[event.field]
 				}
-				this.resetUsers()
+				this.loadUsers(true)
 			})
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback()
 		this.filterSubscription?.unsubscribe()
-		this.searchSubscription?.unsubscribe()
 	}
 
-	private async resetUsers() {
-		this.searchQuery.skip = 0
-		await this.loadUsers()
-		this.paginator.pageIndex = 0
-	}
-
-	private async loadUsers() {
+	private async loadUsers(reset = false) {
 		console.log('search query: ', this.searchQuery)
-		this.data = await getUsers(this.searchQuery)
+		if (reset) {
+			this.searchQuery.skip = 0
+			this.data = await getUsers(this.searchQuery)
+			this.paginator.pageIndex = 0
+		} else {
+			this.data = await getUsers(this.searchQuery)
+		}	
 	}
 
 	private page(event: CustomEvent) {
@@ -118,15 +108,11 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 	}
 
-	private search(value: string) {
-		this.$searchEvent.next(value)
-	}
-
-	private filterColumn(event: FilterColumnEvent) {
+	private filter(event: FilterTableEvent) {
 		this.$filterEvent.next(event)
 	}
 
-	private sortColumn(column: Column) {
+	private sort(column: TableColumn) {
 		this.columns.filter((col) => col.field !== column.field).forEach((col) => (col.sort = null))
 
 		if (!column.sort) {
@@ -140,9 +126,11 @@ export class AppDemoTable extends LitElement {
 		this.requestUpdate()
 
 		if (column.sort) {
+			this.filtersApplied = true
 			this.searchQuery.sortOrder = column.sort
 			this.searchQuery.sortField = column.field
 		} else {
+			this.filtersApplied = false
 			delete this.searchQuery.sortOrder
 			delete this.searchQuery.sortField
 		}
@@ -157,19 +145,26 @@ export class AppDemoTable extends LitElement {
 		this.columns.forEach((col) => (col.sort = null))
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
-		
-		this.resetUsers()
+
+		this.filtersApplied = false
 
 		setTimeout(() => this.clearingFilters = false, 0)
+		
+		await this.loadUsers(true)
+
 	}
 
 	override render() {
 		return html`
-			<sl-input clearable type="search" placeholder="Search" @sl-input=${(event: Event) => this.search((event.target as HTMLInputElement).value)}>
+			<sl-input 
+				clearable 
+				type="search" 
+				placeholder="Search" 
+				@sl-input=${(event: Event) => this.filter({ type: 'string', field: 'search', value: (event.target as HTMLInputElement).value})}>
 				<sl-icon name="search" slot="prefix"></sl-icon>
 			</sl-input>
 			<br />
-			<sl-button variant="default" @click=${() => this.clearFilters()}>
+			<sl-button variant="default" ?disabled=${!this.filtersApplied} @click=${() => this.clearFilters()}>
 				<sl-icon slot="prefix" name="funnel"></sl-icon>
 				Clear filters
 			</sl-button>
@@ -178,7 +173,7 @@ export class AppDemoTable extends LitElement {
 					<tr>
 						${this.columns.map(
 							(column) => html`
-								<th class="sortable" @click=${() => this.sortColumn(column)}>
+								<th class="sortable" @click=${() => this.sort(column)}>
 									${column.header} 
 									${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
 									${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
@@ -191,14 +186,14 @@ export class AppDemoTable extends LitElement {
 							(column) => html`
 								<th>
 									${when(
-										column.type === 'text',
+										column.type === 'string',
 										() => html`
 											<sl-input
 												clearable
 												type="text"
 												placeholder="Filter by ${column.header}"
 												@sl-input=${(event: Event) =>
-													this.filterColumn({ column, value: (event.target as HTMLInputElement).value })}
+													this.filter({ type: 'string', field: column.field, value: (event.target as HTMLInputElement).value })}
 											>
 											</sl-input>
 										`
@@ -211,7 +206,7 @@ export class AppDemoTable extends LitElement {
 												type="number"
 												placeholder="Filter by ${column.header}"
 												@sl-input=${(event: Event) =>
-													this.filterColumn({ column, value: (event.target as HTMLInputElement).value })}
+													this.filter({ type: 'number', field: column.field, value: (event.target as HTMLInputElement).value })}
 											>
 											</sl-input>
 										`
@@ -224,7 +219,7 @@ export class AppDemoTable extends LitElement {
 												type="date"
 												placeholder="Filter by ${column.header}"
 												@sl-input=${(event: Event) =>
-													this.filterColumn({ column, value: (event.target as HTMLInputElement).value })}
+													this.filter({ type: 'date', field: column.field, value: (event.target as HTMLInputElement).value })}
 											>
 											</sl-input>
 										`
@@ -237,7 +232,7 @@ export class AppDemoTable extends LitElement {
 												multiple
 												placeholder="Filter by ${column.header}"
 												@sl-change=${(event: CustomEvent) =>
-													this.filterColumn({ column, value: (event.target as HTMLElementTagNameMap['sl-select']).value })}
+													this.filter({ type: 'select', field: column.field, value: (event.target as HTMLElementTagNameMap['sl-select']).value })}
 											>
 												<sl-menu-item value="option-1">Option 1</sl-menu-item>
 												<sl-menu-item value="option-2">Option 2</sl-menu-item>
