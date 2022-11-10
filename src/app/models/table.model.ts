@@ -8,5 +8,5 @@ type TableColumn = {
 type FilterTableEvent = {
     field: string,
     value: string | string[] | number | boolean | null | undefined,
-    delay?: boolean
+    delay?: number
 }

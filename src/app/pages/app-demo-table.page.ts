@@ -69,7 +69,7 @@ export class AppDemoTable extends LitElement {
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
 			.pipe(
-				debounce((event) => (event.delay ? timer(300) : timer(0)))
+				debounce((event) => (event.delay ? timer(event.delay) : timer(0))),
 			)
 			.subscribe((event) => {
 				const value = event.value?.toString()
@@ -155,7 +155,7 @@ export class AppDemoTable extends LitElement {
 				clearable 
 				type="search" 
 				placeholder="Search" 
-				@sl-input=${(event: Event) => this.filter({ delay: true, field: 'search', value: (event.target as HTMLInputElement).value})}>
+				@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value})}>
 				<sl-icon name="search" slot="prefix"></sl-icon>
 			</sl-input>
 			<br />
@@ -188,7 +188,7 @@ export class AppDemoTable extends LitElement {
 												type="text"
 												placeholder="Filter by ${column.header}"
 												@sl-input=${(event: Event) =>
-													this.filter({ delay: true, field: column.field, value: (event.target as HTMLInputElement).value })}
+													this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
 											>
 											</sl-input>
 										`
@@ -201,7 +201,7 @@ export class AppDemoTable extends LitElement {
 												type="number"
 												placeholder="Filter by ${column.header}"
 												@sl-input=${(event: Event) =>
-													this.filter({ delay: true, field: column.field, value: (event.target as HTMLInputElement).value })}
+													this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
 											>
 											</sl-input>
 										`
