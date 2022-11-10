@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounce, debounceTime, Subject, timer, Subscription, filter } from 'rxjs'
+import { debounce, Subject, timer, Subscription } from 'rxjs'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -54,7 +54,6 @@ export class AppDemoTable extends LitElement {
 	private filterSubscription: Subscription | null = null
 
 	private clearingFilters = false
-	private filtersApplied = false
 
 	private columns: TableColumn[] = [
 		{ header: 'Id', field: 'id', type: 'number' },
@@ -70,11 +69,9 @@ export class AppDemoTable extends LitElement {
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
 			.pipe(
-				filter(() => !this.clearingFilters),
 				debounce((event) => (['number', 'string'].includes(event.type) ? timer(300) : timer(0)))
 			)
 			.subscribe((event) => {
-				this.filtersApplied = true
 				const value = event.value?.toString()
 				if (value) {
 					this.searchQuery[event.field] = value
@@ -109,7 +106,9 @@ export class AppDemoTable extends LitElement {
 	}
 
 	private filter(event: FilterTableEvent) {
-		this.$filterEvent.next(event)
+		if (!this.clearingFilters) {
+			this.$filterEvent.next(event)
+		}
 	}
 
 	private sort(column: TableColumn) {
@@ -126,11 +125,9 @@ export class AppDemoTable extends LitElement {
 		this.requestUpdate()
 
 		if (column.sort) {
-			this.filtersApplied = true
 			this.searchQuery.sortOrder = column.sort
 			this.searchQuery.sortField = column.field
 		} else {
-			this.filtersApplied = false
 			delete this.searchQuery.sortOrder
 			delete this.searchQuery.sortField
 		}
@@ -145,8 +142,6 @@ export class AppDemoTable extends LitElement {
 		this.columns.forEach((col) => (col.sort = null))
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
-
-		this.filtersApplied = false
 
 		setTimeout(() => this.clearingFilters = false, 0)
 		
@@ -164,7 +159,7 @@ export class AppDemoTable extends LitElement {
 				<sl-icon name="search" slot="prefix"></sl-icon>
 			</sl-input>
 			<br />
-			<sl-button variant="default" ?disabled=${!this.filtersApplied} @click=${() => this.clearFilters()}>
+			<sl-button variant="default" @click=${() => this.clearFilters()}>
 				<sl-icon slot="prefix" name="funnel"></sl-icon>
 				Clear filters
 			</sl-button>
