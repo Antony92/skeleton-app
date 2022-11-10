@@ -7,6 +7,6 @@ type TableColumn = {
 
 type FilterTableEvent = {
     field: string,
-    type: 'number' | 'string' | 'boolean' | 'date' | 'select',
-    value: string | string[] | number | boolean | null | undefined
+    value: string | string[] | number | boolean | null | undefined,
+    delay?: boolean
 }
