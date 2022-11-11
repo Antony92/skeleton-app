@@ -19,14 +19,11 @@ export class AppGlobalMessage extends LitElement {
 			box-shadow: var(--sl-shadow-x-large);
 			padding: 20px;
 			border-radius: 0.25rem;
-			opacity: 0;
-			visibility: hidden;
-			transition: 0.5s;
+			display: none;
 		}
 
 		div.visible {
-			visibility: visible;
-			opacity: 1;
+			display: block;
 		}
 
 		.close {
@@ -52,24 +49,24 @@ export class AppGlobalMessage extends LitElement {
 	@state()
 	message = ''
 
-	async show(message: string, type: 'info' | 'warning' | 'danger' = 'info') {
+	show(message: string, type: 'info' | 'warning' | 'danger' = 'info') {
 		this.message = message
 		this.container.classList.add(type, 'visible')
+		this.container.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, iterations: 1, fill: 'forwards' })
 	}
 
-	async hide() {
-		this.container.classList.remove('visible')
-	}
-
-	override firstUpdated() {
-		this.container.addEventListener('transitionend', (event: TransitionEvent) => {
-			if (!this.container.classList.contains('visible') && event.propertyName === 'visibility') {
-				this.dispatchEvent(new CustomEvent('app-after-hide', { 
-					bubbles: true, 
-					composed: true 
-				}))
-			}
-		})
+	hide() {
+		this.container
+			.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, iterations: 1, fill: 'forwards' })
+			.addEventListener('finish', () => {
+				this.container.classList.remove('visible')
+				this.dispatchEvent(
+					new CustomEvent('app-after-hide', {
+						bubbles: true,
+						composed: true,
+					})
+				)
+			})
 	}
 
 	override render() {
