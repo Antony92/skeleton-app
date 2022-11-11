@@ -13,16 +13,17 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div {
+			display: flex;
 			align-items: center;
 			gap: 10px;
 			box-shadow: var(--sl-shadow-x-large);
 			padding: 20px;
 			border-radius: 0.25rem;
-			display: none;
+			visibility: hidden;
 		}
 
 		div.visible {
-			display: flex;
+			visibility: visible;
 		}
 
 		.close {
