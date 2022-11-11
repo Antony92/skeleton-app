@@ -13,7 +13,6 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div {
-			display: flex;
 			align-items: center;
 			gap: 10px;
 			box-shadow: var(--sl-shadow-x-large);
@@ -23,7 +22,7 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div.visible {
-			display: block;
+			display: flex;
 		}
 
 		.close {
@@ -72,8 +71,8 @@ export class AppGlobalMessage extends LitElement {
 	override render() {
 		return html`
 			<div>
-				${this.message}
-				<span class="close" @click=${() => this.hide()}>✕</span>
+				<span>${this.message}</span>
+				<span class="close" @click=${this.hide}>✕</span>
 			</div>
 		`
 	}
