@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounce, Subject, timer, Subscription } from 'rxjs'
+import { debounce, Subject, timer, Subscription, filter } from 'rxjs'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -69,6 +69,7 @@ export class AppDemoTable extends LitElement {
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
 			.pipe(
+				filter(() => !this.clearingFilters),
 				debounce((event) => (event.delay ? timer(event.delay) : timer(0))),
 			)
 			.subscribe((event) => {
@@ -106,9 +107,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	private filter(event: FilterTableEvent) {
-		if (!this.clearingFilters) {
-			this.$filterEvent.next(event)
-		}
+		this.$filterEvent.next(event)
 	}
 
 	private sort(column: TableColumn) {
