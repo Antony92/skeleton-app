@@ -19,6 +19,7 @@ export class AppGlobalMessage extends LitElement {
 			box-shadow: var(--sl-shadow-x-large);
 			padding: 20px;
 			border-radius: 0.25rem;
+			color: var(--sl-color-neutral-0);
 			visibility: hidden;
 		}
 
@@ -31,15 +32,15 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div.info {
-			background-color: var(--sl-color-primary-200);
+			background-color: var(--sl-color-primary-600);
 		}
 
 		div.warning {
-			background-color: var(--sl-color-warning-200);
+			background-color: var(--sl-color-warning-600);
 		}
 
 		div.danger {
-			background-color: var(--sl-color-danger-200);
+			background-color: var(--sl-color-danger-600);
 		}
 	`
 
