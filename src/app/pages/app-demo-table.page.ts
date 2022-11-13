@@ -38,6 +38,16 @@ export class AppDemoTable extends LitElement {
 			position: relative;
 			top: 3px;
 		}
+
+		.search-box {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 10px;
+		}
+
+		.search-box sl-input {
+			min-width: 500px;
+		}
 	`
 
 	@state()
@@ -57,10 +67,11 @@ export class AppDemoTable extends LitElement {
 
 	private columns: TableColumn[] = [
 		{ header: 'Id', field: 'id', type: 'number' },
-		{ header: 'Email', field: 'email', type: 'string' },
+		{ header: 'Name', field: 'name', type: 'string' },
 		{ header: 'Username', field: 'username', type: 'string' },
-		{ header: 'User agent', field: 'userAgent', type: 'select' },
-		{ header: 'IP', field: 'ip', type: 'date' },
+		{ header: 'Email', field: 'email', type: 'string' },
+		{ header: 'Website', field: 'website', type: 'string' },
+		{ header: 'City', field: 'city', type: 'select' },
 	]
 
 	override connectedCallback() {
@@ -150,18 +161,21 @@ export class AppDemoTable extends LitElement {
 
 	override render() {
 		return html`
-			<sl-input 
-				clearable 
-				type="search" 
-				placeholder="Search" 
-				@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value})}>
-				<sl-icon name="search" slot="prefix"></sl-icon>
-			</sl-input>
-			<br />
-			<sl-button variant="default" @click=${() => this.clearFilters()}>
-				<sl-icon slot="prefix" name="funnel"></sl-icon>
-				Clear filters
-			</sl-button>
+			<div class="search-box">
+				<sl-input 
+					clearable 
+					type="search" 
+					placeholder="Search" 
+					@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value})}>
+					<sl-icon name="search" slot="prefix"></sl-icon>
+				</sl-input>
+
+				<sl-button variant="default" @click=${this.clearFilters}>
+					<sl-icon slot="prefix" name="funnel"></sl-icon>
+					Clear filters
+				</sl-button>
+			</div>
+			
 			<table>
 				<thead>
 					<tr>
@@ -223,14 +237,13 @@ export class AppDemoTable extends LitElement {
 										() => html`
 											<sl-select
 												clearable
-												multiple
 												placeholder="Filter by ${column.header}"
 												@sl-change=${(event: CustomEvent) =>
 													this.filter({ field: column.field, value: (event.target as HTMLElementTagNameMap['sl-select']).value })}
 											>
-												<sl-menu-item value="option-1">Option 1</sl-menu-item>
-												<sl-menu-item value="option-2">Option 2</sl-menu-item>
-												<sl-menu-item value="option-3">Option 3</sl-menu-item>
+												<sl-menu-item value="Aliyaview">Aliyaview</sl-menu-item>
+												<sl-menu-item value="Howemouth">Howemouth</sl-menu-item>
+												<sl-menu-item value="Gwenborough">Gwenborough</sl-menu-item>
 											</sl-select>
 										`
 									)}
@@ -247,10 +260,11 @@ export class AppDemoTable extends LitElement {
 								(user: any) => html`
 									<tr>
 										<td>${user.id}</td>
-										<td>${user.email}</td>
+										<td>${user.name}</td>
 										<td>${user.username}</td>
-										<td>${user.userAgent}</td>
-										<td>${user.ip}</td>
+										<td>${user.email}</td>
+										<td>${user.website}</td>
+										<td>${user.address.city}</td>
 									</tr>
 								`
 							)}
@@ -266,7 +280,7 @@ export class AppDemoTable extends LitElement {
 					<tr>
 						<td colspan=${this.columns.length}>
 							<app-paginator
-								@app-paginate=${(event: CustomEvent) => this.page(event)}
+								@app-paginate=${this.page}
 								pageSize="10"
 								.pageSizeOptions=${[5, 10, 15]}
 								length=${this.data?.total}
