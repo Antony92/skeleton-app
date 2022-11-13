@@ -170,7 +170,7 @@ export class AppDemoTable extends LitElement {
 					<sl-icon name="search" slot="prefix"></sl-icon>
 				</sl-input>
 
-				<sl-button variant="default" @click=${this.clearFilters}>
+				<sl-button variant="default" pill @click=${this.clearFilters}>
 					<sl-icon slot="prefix" name="funnel"></sl-icon>
 					Clear filters
 				</sl-button>

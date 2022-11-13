@@ -20,6 +20,8 @@ export class AppGlobalMessage extends LitElement {
 			padding: 20px;
 			border-radius: 0.25rem;
 			color: var(--sl-color-neutral-0);
+			font-size: var(--sl-button-font-size-medium);
+			font-weight: bold;
 			visibility: hidden;
 		}
 
@@ -32,7 +34,7 @@ export class AppGlobalMessage extends LitElement {
 		}
 
 		div.info {
-			background-color: var(--sl-color-primary-600);
+			background-color: var(--sl-color-neutral-600);
 		}
 
 		div.warning {

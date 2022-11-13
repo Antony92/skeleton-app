@@ -42,7 +42,7 @@ export class AppDemoForm extends LitElement {
 	override render() {
 		return html`
 			<form>
-				<sl-input name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
+				<sl-input type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
 				<br />
 				<sl-input type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
 				<br />
@@ -62,8 +62,8 @@ export class AppDemoForm extends LitElement {
 				<br />
 				<sl-checkbox name="check" required>Check me before submitting</sl-checkbox>
 				<br /><br />
-				<sl-button type="submit" variant="primary">Submit</sl-button>
-				<sl-button type="reset" variant="neutral">Clear</sl-button>
+				<sl-button type="submit" variant="primary" pill>Submit</sl-button>
+				<sl-button type="reset" variant="neutral" pill>Clear</sl-button>
 			</form>
 		`
 	}
