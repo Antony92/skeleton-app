@@ -57,12 +57,15 @@ export class AppDemoTable extends LitElement {
 	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
 	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
 
-	private searchQuery: SearchQuery = { skip: 0, limit: 10 }
+	private searchQuery: SearchQuery = {}
+	private skip = 0
+	private limit = 10
 
 	private $filterEvent = new Subject<FilterTableEvent>()
 
 	private filterSubscription: Subscription | null = null
 
+	private filtersApplied = false
 	private clearingFilters = false
 
 	private columns: TableColumn[] = [
@@ -90,6 +93,7 @@ export class AppDemoTable extends LitElement {
 				} else {
 					delete this.searchQuery[event.field]
 				}
+				this.filtersApplied = Object.keys(this.searchQuery).length > 0
 				this.loadUsers(true)
 			})
 	}
@@ -102,18 +106,18 @@ export class AppDemoTable extends LitElement {
 	private async loadUsers(reset = false) {
 		console.log('search query: ', this.searchQuery)
 		if (reset) {
-			this.searchQuery.skip = 0
-			this.data = await getUsers(this.searchQuery)
+			this.skip = 0
+			this.data = await getUsers(this.skip, this.limit, this.searchQuery)
 			this.paginator.pageIndex = 0
 		} else {
-			this.data = await getUsers(this.searchQuery)
+			this.data = await getUsers(this.skip, this.limit, this.searchQuery)
 		}	
 	}
 
 	private page(event: CustomEvent) {
 		const { pageSize, pageIndex } = event.detail
-		this.searchQuery.limit = pageSize
-		this.searchQuery.skip = pageSize * pageIndex
+		this.limit = pageSize
+		this.skip = pageSize * pageIndex
 		this.loadUsers()
 	}
 
@@ -142,13 +146,16 @@ export class AppDemoTable extends LitElement {
 			delete this.searchQuery.sortField
 		}
 
+		this.filtersApplied = Object.keys(this.searchQuery).length > 0
+
 		this.loadUsers()
 	}
 
 	private async clearFilters() {
 		this.clearingFilters = true
+		this.filtersApplied = false
 
-		this.searchQuery = { skip: 0, limit: this.searchQuery.limit }
+		this.searchQuery = {}
 		this.columns.forEach((col) => (col.sort = null))
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
@@ -170,7 +177,7 @@ export class AppDemoTable extends LitElement {
 					<sl-icon name="search" slot="prefix"></sl-icon>
 				</sl-input>
 
-				<sl-button variant="default" pill @click=${this.clearFilters}>
+				<sl-button variant="default" pill @click=${this.clearFilters} ?disabled=${!this.filtersApplied}>
 					<sl-icon slot="prefix" name="funnel"></sl-icon>
 					Clear filters
 				</sl-button>
