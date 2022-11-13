@@ -74,7 +74,7 @@ export class AppDemoTable extends LitElement {
 		{ header: 'Username', field: 'username', type: 'string' },
 		{ header: 'Email', field: 'email', type: 'string' },
 		{ header: 'Website', field: 'website', type: 'string' },
-		{ header: 'City', field: 'city', type: 'select' },
+		{ header: 'City', field: 'address.city', type: 'select' },
 	]
 
 	override connectedCallback() {

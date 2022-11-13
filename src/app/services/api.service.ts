@@ -23,7 +23,7 @@ export const getUsers = async (skip = 0, limit = 10, query?: SearchQuery) => {
 			username_like: query?.username,
 			email_like: query?.email,
 			website_like: query?.website,
-			'address.city': query?.city,
+			'address.city': query?.['address.city'],
 			_sort: query?.sortField,
 			_order: query?.sortOrder ? query.sortOrder === 1 ? 'asc' : 'desc' : null 
 		})
