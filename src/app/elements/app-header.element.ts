@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/avatar/avatar.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
@@ -11,6 +11,7 @@ import '@shoelace-style/shoelace/dist/components/menu-label/menu-label.js'
 import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
+import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
 import './app-theme-switcher.element'
 import { login, logout } from '../services/login.service'
 import { whenUser } from '../directives/when-user.directive'
@@ -24,7 +25,8 @@ export class AppHeader extends LitElement {
             flex-wrap: wrap;
             gap: 10px;
             align-items: center;
-            padding: 8px 16px;
+            height: 60px;
+            padding: 0 5px;
             box-shadow: var(--sl-shadow-x-large);
         }
 
@@ -34,6 +36,14 @@ export class AppHeader extends LitElement {
 
         .title {
             font-size: var(--sl-font-size-large)
+        }
+
+        .menu-button {
+            font-size: 30px;
+        }
+
+        sl-drawer {
+            --size: 320px;
         }
 
         sl-avatar {
@@ -49,6 +59,28 @@ export class AppHeader extends LitElement {
     @state()
     initials: string | undefined  = ''
 
+    @query('sl-drawer') drawer!: HTMLElementTagNameMap['sl-drawer']
+
+    private touchstartX = 0
+    private touchendX = 0
+
+    private handleTouchStart = (event: TouchEvent) => {
+        console.log('tuka')
+        this.touchstartX = event.changedTouches[0].screenX
+    }
+
+    private handleTouchEnd = (event: TouchEvent) => {
+        this.touchendX = event.changedTouches[0].screenX
+
+        if (this.touchendX < this.touchstartX) {
+            this.drawer?.hide()
+        }
+
+        if (this.touchendX > this.touchstartX) {
+            this.drawer?.show()
+        }
+    }
+
     override connectedCallback() {
         super.connectedCallback()
         getUser().subscribe(user => {
@@ -57,12 +89,20 @@ export class AppHeader extends LitElement {
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
+        document.addEventListener('touchstart', this.handleTouchStart)
+        document.addEventListener('touchend', this.handleTouchEnd)
     }
 
+    override disconnectedCallback() {
+        super.disconnectedCallback()
+        document.removeEventListener('touchstart', this.handleTouchStart)
+        document.removeEventListener('touchend', this.handleTouchEnd)
+    }
 
 	override render() {
 		return html`
 			<header>
+                <sl-icon-button class="menu-button" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
                 <h1 class="title">${this.appTitle}</h1>
                 <div class="spacer"></div>
                 <sl-dropdown>
@@ -103,6 +143,35 @@ export class AppHeader extends LitElement {
                 )}
                 
             </header>
+
+            <sl-drawer label="Navigation" placement="start">
+                    <ul>
+                        <li>
+                            <a>
+                                <sl-icon name="browser-chrome"></sl-icon>
+                                Link
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <sl-icon name="browser-chrome"></sl-icon>
+                                Link
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <sl-icon name="browser-chrome"></sl-icon>
+                                Link
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <sl-icon name="browser-chrome"></sl-icon>
+                                Link
+                            </a>
+                        </li>
+                    </ul>
+            </sl-drawer>
 		`
 	}
 }
