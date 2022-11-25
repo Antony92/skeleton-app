@@ -7,6 +7,8 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
 import { debounce, Subject, timer, Subscription, filter } from 'rxjs'
+import { SearchQuery } from '../types/search.type'
+import { FilterTableEvent, TableColumn } from '../types/table.type'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
