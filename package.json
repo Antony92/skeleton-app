@@ -16,15 +16,16 @@
   "license": "ISC",
   "dependencies": {
     "@lit-labs/router": "~0.1.1",
-    "urlpattern-polyfill": "~6.0.2",
     "@shoelace-style/shoelace": "~2.0.0-beta.85",
     "lit": "~2.4.1",
-    "rxjs": "~7.5.7"
+    "rxjs": "~7.5.7",
+    "urlpattern-polyfill": "~6.0.2",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
-    "typescript": "~4.9.3",
     "@vitest/ui": "0.25.3",
-    "vitest": "0.25.3",
-    "vite": "~3.2.4"
+    "typescript": "~4.9.3",
+    "vite": "~3.2.4",
+    "vitest": "0.25.3"
   }
 }
