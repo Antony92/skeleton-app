@@ -68,7 +68,6 @@ export class AppDemoTable extends LitElement {
 	private filterSubscription: Subscription | null = null
 
 	private filtersApplied = false
-	private clearingFilters = false
 
 	private columns: TableColumn[] = [
 		{ header: 'Id', field: 'id', type: 'number' },
@@ -84,10 +83,7 @@ export class AppDemoTable extends LitElement {
 		this.loadUsers()
 		this.filterSubscription = this.$filterEvent
 			.asObservable()
-			.pipe(
-				filter(() => !this.clearingFilters),
-				debounce((event) => (event.delay ? timer(event.delay) : timer(0))),
-			)
+			.pipe(debounce((event) => (event.delay ? timer(event.delay) : timer(0))))
 			.subscribe((event) => {
 				const value = event.value?.toString()
 				if (value) {
@@ -113,7 +109,7 @@ export class AppDemoTable extends LitElement {
 			this.paginator.pageIndex = 0
 		} else {
 			this.data = await getUsers(this.skip, this.limit, this.searchQuery)
-		}	
+		}
 	}
 
 	private page(event: CustomEvent) {
@@ -154,28 +150,25 @@ export class AppDemoTable extends LitElement {
 	}
 
 	private async clearFilters() {
-		this.clearingFilters = true
 		this.filtersApplied = false
-
 		this.searchQuery = {}
+
 		this.columns.forEach((col) => (col.sort = null))
 		this.inputs.forEach((input) => (input.value = ''))
 		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
 
-		setTimeout(() => this.clearingFilters = false, 0)
-		
 		await this.loadUsers(true)
-
 	}
 
 	override render() {
 		return html`
 			<div class="search-box">
-				<sl-input 
-					clearable 
-					type="search" 
-					placeholder="Search" 
-					@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value})}>
+				<sl-input
+					clearable
+					type="search"
+					placeholder="Search"
+					@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value })}
+				>
 					<sl-icon name="search" slot="prefix"></sl-icon>
 				</sl-input>
 
@@ -184,15 +177,14 @@ export class AppDemoTable extends LitElement {
 					Clear filters
 				</sl-button>
 			</div>
-			
+
 			<table>
 				<thead>
 					<tr>
 						${this.columns.map(
 							(column) => html`
 								<th class="sortable" @click=${() => this.sort(column)}>
-									${column.header} 
-									${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+									${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
 									${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
 								</th>
 							`
@@ -248,7 +240,10 @@ export class AppDemoTable extends LitElement {
 												clearable
 												placeholder="Filter by ${column.header}"
 												@sl-change=${(event: CustomEvent) =>
-													this.filter({ field: column.field, value: (event.target as HTMLElementTagNameMap['sl-select']).value })}
+													this.filter({
+														field: column.field,
+														value: (event.target as HTMLElementTagNameMap['sl-select']).value,
+													})}
 											>
 												<sl-menu-item value="Aliyaview">Aliyaview</sl-menu-item>
 												<sl-menu-item value="Howemouth">Howemouth</sl-menu-item>
@@ -288,12 +283,7 @@ export class AppDemoTable extends LitElement {
 				<tfoot>
 					<tr>
 						<td colspan=${this.columns.length}>
-							<app-paginator
-								@app-paginate=${this.page}
-								pageSize="10"
-								.pageSizeOptions=${[5, 10, 15]}
-								length=${this.data?.total}
-							>
+							<app-paginator @app-paginate=${this.page} pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.data?.total}>
 							</app-paginator>
 						</td>
 					</tr>
