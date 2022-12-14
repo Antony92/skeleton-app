@@ -170,7 +170,8 @@ export class AppDemoTable extends LitElement {
 							${this.columns.map(
 								(column) => html`
 									<th class="sortable" @click=${() => this.sort(column)}>
-										${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+										${column.header} 
+										${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
 										${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
 									</th>
 								`
