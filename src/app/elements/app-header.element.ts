@@ -61,26 +61,6 @@ export class AppHeader extends LitElement {
 
     @query('sl-drawer') drawer!: HTMLElementTagNameMap['sl-drawer']
 
-    private touchstartX = 0
-    private touchendX = 0
-
-    private handleTouchStart = (event: TouchEvent) => {
-        console.log('tuka')
-        this.touchstartX = event.changedTouches[0].screenX
-    }
-
-    private handleTouchEnd = (event: TouchEvent) => {
-        this.touchendX = event.changedTouches[0].screenX
-
-        if (this.touchendX < this.touchstartX) {
-            this.drawer?.hide()
-        }
-
-        if (this.touchendX > this.touchstartX) {
-            this.drawer?.show()
-        }
-    }
-
     override connectedCallback() {
         super.connectedCallback()
         getUser().subscribe(user => {
@@ -89,14 +69,10 @@ export class AppHeader extends LitElement {
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
-        document.addEventListener('touchstart', this.handleTouchStart)
-        document.addEventListener('touchend', this.handleTouchEnd)
     }
 
     override disconnectedCallback() {
         super.disconnectedCallback()
-        document.removeEventListener('touchstart', this.handleTouchStart)
-        document.removeEventListener('touchend', this.handleTouchEnd)
     }
 
 	override render() {

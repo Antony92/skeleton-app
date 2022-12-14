@@ -21,11 +21,8 @@ export class AppRoot extends LitElement {
 
 		.main {
 			grid-area: main;
+			padding: 30px;
 			overflow: auto;
-			display: grid;
-			justify-content: center;
-			justify-items: center;
-			padding: 50px 30px;
 		}
 
 		.sidebar {
@@ -51,7 +48,7 @@ export class AppRoot extends LitElement {
 	`
 
 	private router = new Router(this, [
-		{ path: '/', render: () => html`<img height="100%" width="100%" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
+		{ path: '/', render: () => html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
 		{
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,

@@ -6,15 +6,18 @@ import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
+import '@shoelace-style/shoelace/dist/components/card/card.js'
 import { getProducts } from '../services/api.service'
 
 @customElement('app-demo-form')
 export class AppDemoForm extends LitElement {
-	static styles = css`
-		sl-input, sl-select, sl-textarea {
-			width: 300px;
-		}
-	`
+	static styles = [
+		css`
+			sl-input, sl-select, sl-textarea {
+				width: 300px;
+			}
+		`
+	]
 
 	@state()
 	private products: any[] = []

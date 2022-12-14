@@ -6,51 +6,37 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '../elements/app-paginator.element'
-import { debounce, Subject, timer, Subscription, filter } from 'rxjs'
+import { debounce, Subject, timer, Subscription } from 'rxjs'
 import { SearchQuery } from '../types/search.type'
 import { FilterTableEvent, TableColumn } from '../types/table.type'
+import { tableStyles } from '../styles/table.style'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
-	static styles = css`
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			table-layout: fixed;
-		}
+	static styles = [
+		tableStyles,
+		css`
+			.table-wrapper {
+				overflow-x: auto;
+			}
 
-		table thead th,
-		table tbody td {
-			text-align: left;
-			border-bottom: 1px solid grey;
-			padding: 10px;
-		}
+			.search-box {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 15px;
+				justify-content: space-between;
+				margin-bottom: 10px;
+			}
 
-		table tbody td {
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-
-		table thead th.sortable {
-			cursor: pointer;
-		}
-
-		table thead th.sortable sl-icon {
-			position: relative;
-			top: 3px;
-		}
-
-		.search-box {
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 10px;
-		}
-
-		.search-box sl-input {
-			min-width: 500px;
-		}
-	`
+			.search-box sl-input {
+				width: 350px;
+			}
+			
+			app-paginator {
+				margin-top: 5px;
+			}
+		`
+	]
 
 	@state()
 	private data: any = null
@@ -70,7 +56,6 @@ export class AppDemoTable extends LitElement {
 	private filtersApplied = false
 
 	private columns: TableColumn[] = [
-		{ header: 'Id', field: 'id', type: 'number' },
 		{ header: 'Name', field: 'name', type: 'string' },
 		{ header: 'Username', field: 'username', type: 'string' },
 		{ header: 'Email', field: 'email', type: 'string' },
@@ -178,117 +163,118 @@ export class AppDemoTable extends LitElement {
 				</sl-button>
 			</div>
 
-			<table>
-				<thead>
-					<tr>
-						${this.columns.map(
-							(column) => html`
-								<th class="sortable" @click=${() => this.sort(column)}>
-									${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
-									${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
-								</th>
-							`
-						)}
-					</tr>
-					<tr>
-						${this.columns.map(
-							(column) => html`
-								<th>
-									${when(
-										column.type === 'string',
-										() => html`
-											<sl-input
-												clearable
-												type="text"
-												placeholder="Filter by ${column.header}"
-												@sl-input=${(event: Event) =>
-													this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
-											>
-											</sl-input>
-										`
-									)}
-									${when(
-										column.type === 'number',
-										() => html`
-											<sl-input
-												clearable
-												type="number"
-												placeholder="Filter by ${column.header}"
-												@sl-input=${(event: Event) =>
-													this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
-											>
-											</sl-input>
-										`
-									)}
-									${when(
-										column.type === 'date',
-										() => html`
-											<sl-input
-												clearable
-												type="date"
-												placeholder="Filter by ${column.header}"
-												@sl-input=${(event: Event) =>
-													this.filter({ field: column.field, value: (event.target as HTMLInputElement).value })}
-											>
-											</sl-input>
-										`
-									)}
-									${when(
-										column.type === 'select',
-										() => html`
-											<sl-select
-												clearable
-												placeholder="Filter by ${column.header}"
-												@sl-change=${(event: CustomEvent) =>
-													this.filter({
-														field: column.field,
-														value: (event.target as HTMLElementTagNameMap['sl-select']).value,
-													})}
-											>
-												<sl-menu-item value="Aliyaview">Aliyaview</sl-menu-item>
-												<sl-menu-item value="Howemouth">Howemouth</sl-menu-item>
-												<sl-menu-item value="Gwenborough">Gwenborough</sl-menu-item>
-											</sl-select>
-										`
-									)}
-								</th>
-							`
-						)}
-					</tr>
-				</thead>
-				<tbody>
-					${when(
-						this.data?.users?.length > 0,
-						() => html`
-							${this.data?.users?.map(
-								(user: any) => html`
-									<tr>
-										<td>${user.id}</td>
-										<td>${user.name}</td>
-										<td>${user.username}</td>
-										<td>${user.email}</td>
-										<td>${user.website}</td>
-										<td>${user.address.city}</td>
-									</tr>
+			<div class="table-wrapper">
+				<table>
+					<thead>
+						<tr>
+							${this.columns.map(
+								(column) => html`
+									<th class="sortable" @click=${() => this.sort(column)}>
+										${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+										${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
+									</th>
 								`
 							)}
-						`,
-						() => html`
-							<tr>
-								<td colspan=${this.columns.length}>${!this.data ? 'Loading...' : 'No results found'}</td>
-							</tr>
-						`
-					)}
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan=${this.columns.length}>
-							<app-paginator @app-paginate=${this.page} pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.data?.total}>
-							</app-paginator>
-						</td>
-					</tr>
-				</tfoot>
-			</table>
+						</tr>
+						<tr>
+							${this.columns.map(
+								(column) => html`
+									<th>
+										${when(
+											column.type === 'string',
+											() => html`
+												<sl-input
+													clearable
+													type="text"
+													placeholder="Filter by ${column.header}"
+													@sl-input=${(event: Event) =>
+														this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
+												>
+												</sl-input>
+											`
+										)}
+										${when(
+											column.type === 'number',
+											() => html`
+												<sl-input
+													clearable
+													type="number"
+													placeholder="Filter by ${column.header}"
+													@sl-input=${(event: Event) =>
+														this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
+												>
+												</sl-input>
+											`
+										)}
+										${when(
+											column.type === 'date',
+											() => html`
+												<sl-input
+													clearable
+													type="date"
+													placeholder="Filter by ${column.header}"
+													@sl-input=${(event: Event) =>
+														this.filter({ field: column.field, value: (event.target as HTMLInputElement).value })}
+												>
+												</sl-input>
+											`
+										)}
+										${when(
+											column.type === 'select',
+											() => html`
+												<sl-select
+													clearable
+													placeholder="Filter by ${column.header}"
+													@sl-change=${(event: CustomEvent) =>
+														this.filter({
+															field: column.field,
+															value: (event.target as HTMLElementTagNameMap['sl-select']).value,
+														})}
+												>
+													<sl-menu-item value="Aliyaview">Aliyaview</sl-menu-item>
+													<sl-menu-item value="Howemouth">Howemouth</sl-menu-item>
+													<sl-menu-item value="Gwenborough">Gwenborough</sl-menu-item>
+												</sl-select>
+											`
+										)}
+									</th>
+								`
+							)}
+						</tr>
+					</thead>
+					<tbody>
+						${when(
+							this.data?.users?.length > 0,
+							() => html`
+								${this.data?.users?.map(
+									(user: any) => html`
+										<tr>
+											<td>${user.name}</td>
+											<td>${user.username}</td>
+											<td>${user.email}</td>
+											<td>${user.website}</td>
+											<td>${user.address.city}</td>
+										</tr>
+									`
+								)}
+							`,
+							() => html`
+								<tr>
+									<td colspan=${this.columns.length}>${!this.data ? 'Loading...' : 'No results found'}</td>
+								</tr>
+							`
+						)}
+					</tbody>
+				</table>
+			</div>
+
+			<app-paginator 
+				@app-paginate=${this.page} 
+				pageSize="10" 
+				.pageSizeOptions=${[5, 10, 15]} 
+				length=${this.data?.total}
+			>
+			</app-paginator>
 		`
 	}
 }
