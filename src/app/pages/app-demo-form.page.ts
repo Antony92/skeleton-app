@@ -8,10 +8,12 @@ import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import { getProducts } from '../services/api.service'
+import { formValidation } from '../styles/main.style'
 
 @customElement('app-demo-form')
 export class AppDemoForm extends LitElement {
 	static styles = [
+		formValidation,
 		css`
 			sl-input, sl-select, sl-textarea {
 				width: 300px;
@@ -44,7 +46,7 @@ export class AppDemoForm extends LitElement {
 
 	override render() {
 		return html`
-			<form>
+			<form class="form-validation">
 				<sl-input type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
 				<br />
 				<sl-input type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
