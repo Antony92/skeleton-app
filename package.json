@@ -19,8 +19,7 @@
     "@shoelace-style/shoelace": "~2.0.0-beta.87",
     "lit": "~2.5.0",
     "rxjs": "~7.6.0",
-    "urlpattern-polyfill": "~6.0.2",
-    "zod": "^3.20.2"
+    "urlpattern-polyfill": "~6.0.2"
   },
   "devDependencies": {
     "@vitest/ui": "0.25.8",
