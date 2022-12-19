@@ -9,12 +9,12 @@ import '../elements/app-paginator.element'
 import { debounce, Subject, timer, Subscription } from 'rxjs'
 import { SearchQuery } from '../types/search.type'
 import { FilterTableEvent, TableColumn } from '../types/table.type'
-import { tableStyles } from '../styles/table.style'
+import { tableStyle } from '../styles/table.style'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
 	static styles = [
-		tableStyles,
+		tableStyle,
 		css`
 			.table-wrapper {
 				overflow-x: auto;

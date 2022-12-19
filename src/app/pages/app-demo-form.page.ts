@@ -8,12 +8,12 @@ import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import { getProducts } from '../services/api.service'
-import { formValidation } from '../styles/main.style'
+import { formValidationStyle } from '../styles/form.style'
 
 @customElement('app-demo-form')
 export class AppDemoForm extends LitElement {
 	static styles = [
-		formValidation,
+		formValidationStyle,
 		css`
 			sl-input, sl-select, sl-textarea {
 				width: 300px;

@@ -1,6 +1,6 @@
 import { css } from 'lit'
 
-export const tableStyles = css`
+export const tableStyle = css`
     table {
         width: 100%;
         border-collapse: collapse;
