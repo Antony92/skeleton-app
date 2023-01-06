@@ -37,5 +37,8 @@ export const getUsers = async (skip = 0, limit = 10, query?: SearchQuery) => {
 	} catch (error) {
 		console.error(error)
 	}
-	return null	
+	return {
+		total: 0,
+		users: []
+	}	
 }

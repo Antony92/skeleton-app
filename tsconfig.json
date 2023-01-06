@@ -12,7 +12,10 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "types": [
+      "vite/client"
+    ]
   },
   "include": [
     "src/**/*.ts"
