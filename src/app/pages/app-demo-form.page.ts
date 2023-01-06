@@ -5,6 +5,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
+import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import { getProducts } from '../services/api.service'
@@ -56,11 +57,11 @@ export class AppDemoForm extends LitElement {
 				<sl-input type="number" name="number" label="Number" placeholder="Enter number" required clearable></sl-input>
 				<br />
 				<sl-select name="product" label="Favorite product" placeholder="Select one product" clearable required>
-					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
+					${this.products.map((product: any) => html`<sl-option value=${product.title}>${product.title}</sl-option>`)}
 				</sl-select>
 				<br />
-				<sl-select name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple>
-					${this.products.map((product: any) => html`<sl-menu-item value=${product.title}>${product.title}</sl-menu-item>`)}
+				<sl-select name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple max-options-visible="1">
+					${this.products.map((product: any) => html`<sl-option value=${product.title}>${product.title}</sl-option>`)}
 				</sl-select>
 				<br />
 				<sl-textarea name="comment" label="Comment" placeholder="Add comment" required></sl-textarea>
