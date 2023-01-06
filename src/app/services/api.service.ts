@@ -1,5 +1,6 @@
 import { request } from '../http/request'
 import { toQueryParams } from '../utils/http'
+import { SearchQuery } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {

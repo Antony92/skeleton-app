@@ -1,9 +1,7 @@
 import { loading } from '../services/loading.service'
 import { notify } from '../services/notify.service'
 
-interface RequestOptions extends RequestInit {
-	loading?: boolean
-}
+type RequestOptions = RequestInit & { loading?: boolean }
 
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
 	let response = new Response()
