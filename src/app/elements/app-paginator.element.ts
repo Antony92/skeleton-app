@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
-import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
+import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 
 @customElement('app-paginator')
@@ -116,7 +116,7 @@ export class AppPaginator extends LitElement {
 		return html`
 			Items per page:
 			<sl-select value=${this.pageSize} size="small" @sl-change=${(event: CustomEvent) => this.pageSizeChange(event)}>
-				${this.pageSizeOptions.map((value) => html`<sl-menu-item value=${value}>${value}</sl-menu-item>`)}
+				${this.pageSizeOptions.map((value) => html`<sl-option value=${value}>${value}</sl-option>`)}
 			</sl-select>
 			${this.getRangeLabel()}
 			<sl-icon-button
