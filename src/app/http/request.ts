@@ -8,7 +8,7 @@ interface RequestOptions extends RequestInit {
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
 	let response = new Response()
 	try {
-		loading(options?.loading ?? true)
+		loading(options?.loading || true)
 		response = await fetch(url, options)
 		if (!response.ok) {
 			const error = await response.clone().json()
