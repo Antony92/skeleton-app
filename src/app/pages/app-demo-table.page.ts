@@ -5,6 +5,8 @@ import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
+import '@shoelace-style/shoelace/dist/components/select/select.js'
+import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '../elements/app-paginator.element'
 import { debounce, Subject, timer, Subscription } from 'rxjs'
 import { SearchQuery } from '../types/search.type'
@@ -224,6 +226,7 @@ export class AppDemoTable extends LitElement {
 											column.type === 'select',
 											() => html`
 												<sl-select
+													hoist
 													clearable
 													placeholder="Filter by ${column.header}"
 													@sl-change=${(event: CustomEvent) =>
@@ -232,9 +235,9 @@ export class AppDemoTable extends LitElement {
 															value: (event.target as HTMLElementTagNameMap['sl-select']).value,
 														})}
 												>
-													<sl-menu-item value="Aliyaview">Aliyaview</sl-menu-item>
-													<sl-menu-item value="Howemouth">Howemouth</sl-menu-item>
-													<sl-menu-item value="Gwenborough">Gwenborough</sl-menu-item>
+													<sl-option value="Aliyaview">Aliyaview</sl-option>
+													<sl-option value="Howemouth">Howemouth</sl-option>
+													<sl-option value="Gwenborough">Gwenborough</sl-option>
 												</sl-select>
 											`
 										)}
