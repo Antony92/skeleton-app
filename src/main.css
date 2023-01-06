@@ -1,5 +1,5 @@
 :root {
-	--theme-background: #ffffff;
+	--theme-background: white;
 	--theme-color: black;
 }
 
@@ -20,7 +20,7 @@ body {
 }
 
 .theme-light {
-	--theme-background: #ffffff;
+	--theme-background: white;
 	--theme-color: black;
 }
 
@@ -33,7 +33,7 @@ body {
 
 @media (prefers-color-scheme: light) {
 	:root {
-		--theme-background: #ffffff;
+		--theme-background: white;
 		--theme-color: black;
 	}
 }
