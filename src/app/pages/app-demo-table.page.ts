@@ -33,11 +33,11 @@ export class AppDemoTable extends LitElement {
 			.search-box sl-input {
 				width: 350px;
 			}
-			
+
 			app-paginator {
 				margin-top: 5px;
 			}
-		`
+		`,
 	]
 
 	@state()
@@ -141,8 +141,13 @@ export class AppDemoTable extends LitElement {
 		this.searchQuery = {}
 
 		this.columns.forEach((col) => (col.sort = null))
-		this.inputs.forEach((input) => (input.value = ''))
-		this.selects.forEach((select) => (select.value = select.multiple ? [] : ''))
+
+		this.shadowRoot
+			?.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input')
+			.forEach((input) => (input.value = ''))
+		this.shadowRoot
+			?.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
+			.forEach((select) => (select.value = select.multiple ? [] : ''))
 
 		await this.loadUsers(true)
 	}
@@ -172,8 +177,7 @@ export class AppDemoTable extends LitElement {
 							${this.columns.map(
 								(column) => html`
 									<th class="sortable" @click=${() => this.sort(column)}>
-										${column.header} 
-										${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+										${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
 										${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
 									</th>
 								`
@@ -191,7 +195,11 @@ export class AppDemoTable extends LitElement {
 													type="text"
 													placeholder="Filter by ${column.header}"
 													@sl-input=${(event: Event) =>
-														this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
+														this.filter({
+															delay: 300,
+															field: column.field,
+															value: (event.target as HTMLInputElement).value,
+														})}
 												>
 												</sl-input>
 											`
@@ -204,7 +212,11 @@ export class AppDemoTable extends LitElement {
 													type="number"
 													placeholder="Filter by ${column.header}"
 													@sl-input=${(event: Event) =>
-														this.filter({ delay: 300, field: column.field, value: (event.target as HTMLInputElement).value })}
+														this.filter({
+															delay: 300,
+															field: column.field,
+															value: (event.target as HTMLInputElement).value,
+														})}
 												>
 												</sl-input>
 											`
@@ -272,13 +284,7 @@ export class AppDemoTable extends LitElement {
 				</table>
 			</div>
 
-			<app-paginator 
-				@app-paginate=${this.page} 
-				pageSize="10" 
-				.pageSizeOptions=${[5, 10, 15]} 
-				length=${this.data?.total}
-			>
-			</app-paginator>
+			<app-paginator @app-paginate=${this.page} pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.data?.total}> </app-paginator>
 		`
 	}
 }
