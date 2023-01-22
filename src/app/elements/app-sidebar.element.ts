@@ -1,5 +1,5 @@
-import { html, LitElement, css, PropertyValueMap } from 'lit'
-import { customElement, query, queryAll } from 'lit/decorators.js'
+import { html, LitElement, css } from 'lit'
+import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { whenUser } from '../directives/when-user.directive'
 
