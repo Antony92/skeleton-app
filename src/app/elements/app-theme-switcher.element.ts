@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
 import '@shoelace-style/shoelace/dist/components/menu/menu.js'
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
