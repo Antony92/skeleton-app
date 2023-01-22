@@ -1,6 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query, queryAll, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
+import { classMap } from 'lit/directives/class-map.js'
 import { getUsers } from '../services/api.service'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
@@ -60,11 +61,11 @@ export class AppDemoTable extends LitElement {
 	private filtersApplied = false
 
 	private columns: TableColumn[] = [
-		{ header: 'Name', field: 'name', type: 'string' },
-		{ header: 'Username', field: 'username', type: 'string' },
-		{ header: 'Email', field: 'email', type: 'string' },
-		{ header: 'Website', field: 'website', type: 'string' },
-		{ header: 'City', field: 'address.city', type: 'select' },
+		{ header: 'Name', field: 'name', type: 'string', sortable: true },
+		{ header: 'Username', field: 'username', type: 'string', sortable: true },
+		{ header: 'Email', field: 'email', type: 'string', sortable: true },
+		{ header: 'Website', field: 'website', type: 'string', sortable: true },
+		{ header: 'City', field: 'address.city', type: 'select', sortable: true },
 	]
 
 	override connectedCallback() {
@@ -144,7 +145,9 @@ export class AppDemoTable extends LitElement {
 
 		this.columns.forEach((col) => (col.sort = null))
 
-		this.renderRoot.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
+		this.renderRoot
+			.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input')
+			.forEach((input) => (input.value = ''))
 		this.renderRoot
 			.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
@@ -182,9 +185,10 @@ export class AppDemoTable extends LitElement {
 						<tr>
 							${this.columns.map(
 								(column) => html`
-									<th class="sortable" @click=${() => this.sort(column)}>
-										${column.header} ${when(column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
-										${when(column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
+									<th class=${classMap({ sortable: !!column.sortable })} @click=${() => (column.sortable ? this.sort(column) : '')}>
+										${column.header} 
+										${when(column.sortable && column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+										${when(column.sortable && column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
 									</th>
 								`
 							)}

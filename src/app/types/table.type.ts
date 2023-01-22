@@ -1,7 +1,8 @@
 export type TableColumn = {
     header: string
     field: string, 
-    type: string, 
+    type?: string,
+    sortable?: boolean,
     sort?: number | null | undefined,
 }
 
