@@ -146,9 +146,9 @@ export class AppDemoTable extends LitElement {
 
 		this.columns.forEach((col) => (col.sort = null))
 
-		this.shadowRoot?.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
-		this.shadowRoot
-			?.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
+		this.renderRoot.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
+		this.renderRoot
+			.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
 
 		await this.loadUsers(true)
