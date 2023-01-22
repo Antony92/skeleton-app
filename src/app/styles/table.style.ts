@@ -9,8 +9,12 @@ export const tableStyle = css`
     table thead th,
     table tbody td {
         text-align: left;
-        border-bottom: 1px solid grey;
         padding: 10px;
+    }
+
+    table thead tr th,
+    table tbody tr:not(:last-child) td {
+        border-bottom: 1px solid grey;
     }
 
     table tbody td.limit-text {

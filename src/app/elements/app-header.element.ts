@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/avatar/avatar.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
@@ -11,11 +11,11 @@ import '@shoelace-style/shoelace/dist/components/menu-label/menu-label.js'
 import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
+import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import './app-theme-switcher.element'
 import { login, logout } from '../services/login.service'
 import { whenUser } from '../directives/when-user.directive'
-import { getUser } from '../services/user.service';
+import { getUser } from '../services/user.service'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -59,6 +59,9 @@ export class AppHeader extends LitElement {
     @state()
     initials: string | undefined  = ''
 
+    @state()
+    loginLoading = false
+
     @query('sl-drawer') drawer!: HTMLElementTagNameMap['sl-drawer']
 
     override connectedCallback() {
@@ -69,6 +72,12 @@ export class AppHeader extends LitElement {
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
+    }
+
+    async signIn() {
+        this.loginLoading = true
+        await login()
+        this.loginLoading = false
     }
 
     override disconnectedCallback() {
@@ -115,7 +124,7 @@ export class AppHeader extends LitElement {
                             </sl-menu>
                         </sl-dropdown>
                     `, 
-                    () => html`<sl-button variant="primary" pill @click=${() => login()}>Sign in</sl-button>`
+                    () => html`<sl-button variant="primary" pill @click=${() => this.signIn()} ?loading=${this.loginLoading}>Sign in</sl-button>`
                 )}
                 
             </header>
