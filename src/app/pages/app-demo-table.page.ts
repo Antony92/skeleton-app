@@ -34,6 +34,10 @@ export class AppDemoTable extends LitElement {
 				width: 350px;
 			}
 
+			table thead :is(sl-input, sl-select) {
+				min-width: 200px;
+			}
+
 			app-paginator {
 				margin-top: 5px;
 			}
@@ -142,9 +146,7 @@ export class AppDemoTable extends LitElement {
 
 		this.columns.forEach((col) => (col.sort = null))
 
-		this.shadowRoot
-			?.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input')
-			.forEach((input) => (input.value = ''))
+		this.shadowRoot?.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
 		this.shadowRoot
 			?.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
@@ -159,7 +161,8 @@ export class AppDemoTable extends LitElement {
 					clearable
 					type="search"
 					placeholder="Search"
-					@sl-input=${(event: Event) => this.filter({ delay: 300, field: 'search', value: (event.target as HTMLInputElement).value })}
+					@sl-input=${(event: Event) =>
+						this.filter({ delay: 300, field: 'search', value: (event.target as HTMLElementTagNameMap['sl-input']).value })}
 				>
 					<sl-icon name="search" slot="prefix"></sl-icon>
 				</sl-input>
@@ -194,11 +197,11 @@ export class AppDemoTable extends LitElement {
 													clearable
 													type="text"
 													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: Event) =>
+													@sl-input=${(event: CustomEvent) =>
 														this.filter({
 															delay: 300,
 															field: column.field,
-															value: (event.target as HTMLInputElement).value,
+															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
 														})}
 												>
 												</sl-input>
@@ -211,11 +214,11 @@ export class AppDemoTable extends LitElement {
 													clearable
 													type="number"
 													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: Event) =>
+													@sl-input=${(event: CustomEvent) =>
 														this.filter({
 															delay: 300,
 															field: column.field,
-															value: (event.target as HTMLInputElement).value,
+															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
 														})}
 												>
 												</sl-input>
@@ -228,8 +231,11 @@ export class AppDemoTable extends LitElement {
 													clearable
 													type="date"
 													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: Event) =>
-														this.filter({ field: column.field, value: (event.target as HTMLInputElement).value })}
+													@sl-input=${(event: CustomEvent) =>
+														this.filter({
+															field: column.field,
+															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
+														})}
 												>
 												</sl-input>
 											`
