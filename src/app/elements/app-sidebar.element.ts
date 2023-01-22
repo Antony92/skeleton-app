@@ -1,6 +1,7 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, queryAll } from 'lit/decorators.js'
+import { html, LitElement, css, PropertyValueMap } from 'lit'
+import { customElement, query, queryAll } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
+import { whenUser } from '../directives/when-user.directive'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -79,6 +80,10 @@ export class AppSidebar extends LitElement {
 			color: var(--sl-color-sky-600);
 		}
 
+		ul li.bottom {
+			margin-top: auto;
+		}
+
 		@media only screen and (max-width: 800px) {
 			
 			nav {
@@ -100,26 +105,37 @@ export class AppSidebar extends LitElement {
 
 	`
 
-	@queryAll('a')
-  	links!: NodeListOf<HTMLLinkElement>;
+	@query('ul.navigation-menu')
+	navigationMenu!: HTMLUListElement
 
 	override firstUpdated() {
 		const path = location.pathname.split('/')[1]
 		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
-		this.links.forEach(link => {
-			link.addEventListener('click', () => {
-				const activeLink = this.renderRoot.querySelector('a.active')
-				activeLink?.classList.remove('active')
-				link.classList.add('active')
+		this.renderRoot.querySelectorAll('a').forEach(link => {
+			link.addEventListener('click', this.handleActiveLink)
+		})
+		const mutationObserver = new MutationObserver((entries) => {
+			const addedNodes = entries.filter(e => e.addedNodes.length > 0).map(e => Array.from(e.addedNodes)).flat()
+			addedNodes.forEach(node => {
+				if (node instanceof HTMLLIElement) {
+					node.querySelector('a')?.addEventListener('click', this.handleActiveLink)
+				}
 			})
 		})
-		// navigation.addEventListener('navigate', (navigateEvent) => console.log(navigateEvent))
+		mutationObserver.observe(this.navigationMenu, { childList: true })
+	}
+
+	private handleActiveLink = (event: Event) => {
+		const activeLink = this.renderRoot.querySelector('a.active')
+		activeLink?.classList.remove('active')
+		const clickedLink = <HTMLAnchorElement>event.currentTarget
+		clickedLink?.classList.add('active')
 	}
 
 	override render() {
 		return html`
 			<nav>
-				<ul>
+				<ul class="navigation-menu">
 					<li>
 						<a href="/">
 							<span>
@@ -152,6 +168,16 @@ export class AppSidebar extends LitElement {
 							<span>Table</span>
 						</a>
 					</li>
+					${whenUser(() => html`
+						<li class="bottom">
+							<a href="/settings">
+								<span>
+									<sl-icon name="gear"></sl-icon>
+								</span>
+								<span>Settings</span>
+							</a>
+						</li>
+					`)}
 				</ul>
 			</nav>
 		`

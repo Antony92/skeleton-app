@@ -48,7 +48,7 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ path: '/*', render: () => html`<img height="100%" width="100%" alt="404 Not found" src="assets/images/page-not-found.svg"/>` },
+		{ path: '/*', render: () => html`<h1>Page not found</h1>` },
 	])
 
 	override connectedCallback() {

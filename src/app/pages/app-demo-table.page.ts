@@ -165,7 +165,7 @@ export class AppDemoTable extends LitElement {
 					type="search"
 					placeholder="Search"
 					@sl-input=${(event: Event) =>
-						this.filter({ delay: 300, field: 'search', value: (event.target as HTMLElementTagNameMap['sl-input']).value })}
+						this.filter({ delay: 300, field: 'search', value: (<HTMLElementTagNameMap['sl-input']>event.target).value })}
 				>
 					<sl-icon name="search" slot="prefix"></sl-icon>
 				</sl-input>
@@ -210,7 +210,7 @@ export class AppDemoTable extends LitElement {
 														this.filter({
 															delay: 300,
 															field: column.field,
-															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
+															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
 														})}
 												>
 												</sl-input>
@@ -227,7 +227,7 @@ export class AppDemoTable extends LitElement {
 														this.filter({
 															delay: 300,
 															field: column.field,
-															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
+															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
 														})}
 												>
 												</sl-input>
@@ -243,7 +243,7 @@ export class AppDemoTable extends LitElement {
 													@sl-input=${(event: CustomEvent) =>
 														this.filter({
 															field: column.field,
-															value: (event.target as HTMLElementTagNameMap['sl-input']).value,
+															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
 														})}
 												>
 												</sl-input>
@@ -260,7 +260,7 @@ export class AppDemoTable extends LitElement {
 													@sl-change=${(event: CustomEvent) =>
 														this.filter({
 															field: column.field,
-															value: (event.target as HTMLElementTagNameMap['sl-select']).value,
+															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
 														})}
 												>
 													<sl-option value="true">Yes</sl-option>
@@ -279,7 +279,7 @@ export class AppDemoTable extends LitElement {
 													@sl-change=${(event: CustomEvent) =>
 														this.filter({
 															field: column.field,
-															value: (event.target as HTMLElementTagNameMap['sl-select']).value,
+															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
 														})}
 												>
 													<sl-option value="Aliyaview">Aliyaview</sl-option>

@@ -40,7 +40,7 @@ export class AppPaginator extends LitElement {
 	private previousPageIndex = 0
 
 	pageSizeChange(event: CustomEvent) {
-		const value = (event.target as HTMLElementTagNameMap['sl-select']).value
+		const value = (<HTMLElementTagNameMap['sl-select']>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
 		this.previousPageIndex = this.pageIndex

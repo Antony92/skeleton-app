@@ -21,7 +21,7 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 
 		// Prevent the dialog from closing when the user clicks on the overlay
 		dialog.addEventListener('sl-request-close', (event) => {
-			const source = (event as CustomEvent).detail.source
+			const source = (<CustomEvent>event).detail.source
 			if (source === 'overlay') event.preventDefault()
 			if (source === 'close-button' || source === 'keyboard') resolve(false)
 		})

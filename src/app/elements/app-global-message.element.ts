@@ -15,6 +15,7 @@ export class AppGlobalMessage extends LitElement {
 		div {
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			gap: 10px;
 			min-width: 200px;
 			box-shadow: var(--sl-shadow-x-large);
