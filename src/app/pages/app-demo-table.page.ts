@@ -7,21 +7,20 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
+import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import '../elements/app-paginator.element'
 import { debounce, Subject, timer, Subscription } from 'rxjs'
 import { SearchQuery } from '../types/search.type'
 import { FilterTableEvent, TableColumn } from '../types/table.type'
-import { tableStyle } from '../styles/table.style'
+import { tableLoaderStyle, tableStyle, tableWrapperStyle } from '../styles/table.style'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
 	static styles = [
+		tableWrapperStyle,
+		tableLoaderStyle,
 		tableStyle,
 		css`
-			.table-wrapper {
-				overflow-x: auto;
-			}
-
 			.search-box {
 				display: flex;
 				flex-wrap: wrap;
@@ -34,10 +33,6 @@ export class AppDemoTable extends LitElement {
 				width: 350px;
 			}
 
-			table thead :is(sl-input, sl-select) {
-				min-width: 200px;
-			}
-
 			app-paginator {
 				margin-top: 5px;
 			}
@@ -46,6 +41,9 @@ export class AppDemoTable extends LitElement {
 
 	@state()
 	private data: any = null
+
+	@state()
+	private loadingData = false
 
 	@query('app-paginator') paginator!: HTMLElementTagNameMap['app-paginator']
 	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
@@ -94,13 +92,13 @@ export class AppDemoTable extends LitElement {
 
 	private async loadUsers(reset = false) {
 		console.log('search query: ', this.searchQuery)
+		this.loadingData = true
 		if (reset) {
 			this.skip = 0
-			this.data = await getUsers(this.skip, this.limit, this.searchQuery)
 			this.paginator.pageIndex = 0
-		} else {
-			this.data = await getUsers(this.skip, this.limit, this.searchQuery)
 		}
+		this.data = await getUsers(this.skip, this.limit, this.searchQuery)
+		this.loadingData = false
 	}
 
 	private page(event: CustomEvent) {
@@ -158,6 +156,8 @@ export class AppDemoTable extends LitElement {
 		return html`
 			<div class="search-box">
 				<sl-input
+					autocomplete="off"
+					filled
 					clearable
 					type="search"
 					placeholder="Search"
@@ -174,6 +174,9 @@ export class AppDemoTable extends LitElement {
 			</div>
 
 			<div class="table-wrapper">
+				<div class="table-loader" ?hidden=${!this.loadingData}>
+					<sl-spinner></sl-spinner>
+				</div>
 				<table>
 					<thead>
 						<tr>
@@ -194,6 +197,8 @@ export class AppDemoTable extends LitElement {
 											column.type === 'string',
 											() => html`
 												<sl-input
+													filled
+													autocomplete="off"
 													clearable
 													type="text"
 													placeholder="Filter by ${column.header}"
@@ -241,9 +246,29 @@ export class AppDemoTable extends LitElement {
 											`
 										)}
 										${when(
+											column.type === 'boolean',
+											() => html`
+												<sl-select
+													filled
+													hoist
+													clearable
+													placeholder="Filter by ${column.header}"
+													@sl-change=${(event: CustomEvent) =>
+														this.filter({
+															field: column.field,
+															value: (event.target as HTMLElementTagNameMap['sl-select']).value,
+														})}
+												>
+													<sl-option value="true">Yes</sl-option>
+													<sl-option value="false">No</sl-option>
+												</sl-select>
+											`
+										)}
+										${when(
 											column.type === 'select',
 											() => html`
 												<sl-select
+													filled
 													hoist
 													clearable
 													placeholder="Filter by ${column.header}"

@@ -48,23 +48,23 @@ export class AppDemoForm extends LitElement {
 	override render() {
 		return html`
 			<form class="form-validation">
-				<sl-input type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
+				<sl-input filled type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
 				<br />
-				<sl-input type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
+				<sl-input filled type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
 				<br />
-				<sl-input type="date" name="date" label="Date" placeholder="Enter date" required clearable></sl-input>
+				<sl-input filled type="date" name="date" label="Date" placeholder="Enter date" required clearable></sl-input>
 				<br />
-				<sl-input type="number" name="number" label="Number" placeholder="Enter number" required clearable></sl-input>
+				<sl-input filled type="number" name="number" label="Number" placeholder="Enter number" required clearable></sl-input>
 				<br />
-				<sl-select name="product" label="Favorite product" placeholder="Select one product" clearable required>
+				<sl-select filled name="product" label="Favorite product" placeholder="Select one product" clearable required>
 					${this.products.map((product: any) => html`<sl-option value=${product.title.replaceAll(' ', '')}>${product.title}</sl-option>`)}
 				</sl-select>
 				<br />
-				<sl-select name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple max-options-visible="1">
+				<sl-select filled name="products" label="Favorite products" placeholder="Select multiple products" clearable required multiple max-options-visible="1">
 					${this.products.map((product: any) => html`<sl-option value=${product.title.replaceAll(' ', '')}>${product.title}</sl-option>`)}
 				</sl-select>
 				<br />
-				<sl-textarea name="comment" label="Comment" placeholder="Add comment" required></sl-textarea>
+				<sl-textarea filled name="comment" label="Comment" placeholder="Add comment" required></sl-textarea>
 				<br />
 				<sl-checkbox name="check" required>Check me before submitting</sl-checkbox>
 				<br /><br />
