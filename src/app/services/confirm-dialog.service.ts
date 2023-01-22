@@ -14,8 +14,8 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 			label: title,
 			innerHTML: `
                 ${escapeHtml(message)}
-                <sl-button slot="footer" id="cancel" variant="text">Cancel</sl-button>
-                <sl-button slot="footer" id="confirm" variant="primary">Confirm</sl-button>
+                <sl-button slot="footer" class="cancel" variant="text">Cancel</sl-button>
+                <sl-button pill slot="footer" class="confirm" variant="primary">Confirm</sl-button>
             `,
 		})
 
@@ -28,10 +28,10 @@ export const confirmDialog = (title: string, message: string): Promise<boolean> 
 
 		dialog.addEventListener('sl-after-hide', () => dialog.remove())
 
-		dialog.querySelector('#cancel')?.addEventListener('click', (event) => {
+		dialog.querySelector('.cancel')?.addEventListener('click', (event) => {
 			dialog.hide().then(() => resolve(false))
 		})
-		dialog.querySelector('#confirm')?.addEventListener('click', (event) => {
+		dialog.querySelector('.confirm')?.addEventListener('click', (event) => {
 			dialog.hide().then(() => resolve(true))
 		})
 
