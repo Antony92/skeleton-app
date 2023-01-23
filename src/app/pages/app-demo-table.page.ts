@@ -40,6 +40,9 @@ export class AppDemoTable extends LitElement {
 		`,
 	]
 
+	@query('app-paginator')
+	paginator!: HTMLElementTagNameMap['app-paginator']
+
 	@state()
 	private data: any = null
 
@@ -104,7 +107,7 @@ export class AppDemoTable extends LitElement {
 		this.loadingData = true
 		if (reset) {
 			this.skip = 0
-			this.renderRoot.querySelector('app-paginator')?.setAttribute('pageIndex', '0')
+			this.paginator.pageIndex = 0
 		}
 		this.data = await getUsers({ skip: this.skip, limit: this.limit, ...this.searchQuery })
 		this.loadingData = false
@@ -141,8 +144,6 @@ export class AppDemoTable extends LitElement {
 			delete this.searchQuery.order
 			delete this.searchQuery.sort
 		}
-
-		console.log(this.searchQuery)
 
 		this.filtersApplied = Object.keys(this.searchQuery).length > 0
 
