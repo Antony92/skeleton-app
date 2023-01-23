@@ -115,7 +115,7 @@ export class AppPaginator extends LitElement {
 	override render() {
 		return html`
 			Items per page:
-			<sl-select filled value=${this.pageSize} size="small" @sl-change=${(event: CustomEvent) => this.pageSizeChange(event)}>
+			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${(event: CustomEvent) => this.pageSizeChange(event)}>
 				${this.pageSizeOptions.map((value) => html`<sl-option value=${value}>${value}</sl-option>`)}
 			</sl-select>
 			${this.getRangeLabel()}

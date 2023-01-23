@@ -65,7 +65,18 @@ export class AppDemoTable extends LitElement {
 		{ header: 'Username', field: 'username', type: 'string', sortable: true },
 		{ header: 'Email', field: 'email', type: 'string', sortable: true },
 		{ header: 'Website', field: 'website', type: 'string', sortable: true },
-		{ header: 'City', field: 'address.city', type: 'select', sortable: true },
+		{
+			header: 'City',
+			field: 'address.city',
+			type: 'select',
+			sortable: true,
+			multiple: true,
+			values: [
+				{ label: 'Gwenborough', value: 'Gwenborough' },
+				{ label: 'Wisokyburgh', value: 'Wisokyburgh' },
+				{ label: 'McKenziehaven', value: 'McKenziehaven' },
+			],
+		},
 	]
 
 	override connectedCallback() {
@@ -145,9 +156,7 @@ export class AppDemoTable extends LitElement {
 
 		this.columns.forEach((col) => (col.sort = null))
 
-		this.renderRoot
-			.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input')
-			.forEach((input) => (input.value = ''))
+		this.renderRoot.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
 		this.renderRoot
 			.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
@@ -161,6 +170,7 @@ export class AppDemoTable extends LitElement {
 				<sl-input
 					autocomplete="off"
 					filled
+					pill
 					clearable
 					type="search"
 					placeholder="Search"
@@ -186,8 +196,7 @@ export class AppDemoTable extends LitElement {
 							${this.columns.map(
 								(column) => html`
 									<th class=${classMap({ sortable: !!column.sortable })} @click=${() => (column.sortable ? this.sort(column) : '')}>
-										${column.header} 
-										${when(column.sortable && column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
+										${column.header} ${when(column.sortable && column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
 										${when(column.sortable && column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
 									</th>
 								`
@@ -202,6 +211,7 @@ export class AppDemoTable extends LitElement {
 											() => html`
 												<sl-input
 													filled
+													pill
 													autocomplete="off"
 													clearable
 													type="text"
@@ -220,6 +230,7 @@ export class AppDemoTable extends LitElement {
 											column.type === 'number',
 											() => html`
 												<sl-input
+													pill
 													clearable
 													type="number"
 													placeholder="Filter by ${column.header}"
@@ -237,6 +248,7 @@ export class AppDemoTable extends LitElement {
 											column.type === 'date',
 											() => html`
 												<sl-input
+													pill
 													clearable
 													type="date"
 													placeholder="Filter by ${column.header}"
@@ -253,6 +265,7 @@ export class AppDemoTable extends LitElement {
 											column.type === 'boolean',
 											() => html`
 												<sl-select
+													pill
 													filled
 													hoist
 													clearable
@@ -263,8 +276,7 @@ export class AppDemoTable extends LitElement {
 															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
 														})}
 												>
-													<sl-option value="true">Yes</sl-option>
-													<sl-option value="false">No</sl-option>
+													${column.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
 												</sl-select>
 											`
 										)}
@@ -272,19 +284,20 @@ export class AppDemoTable extends LitElement {
 											column.type === 'select',
 											() => html`
 												<sl-select
+													pill
 													filled
 													hoist
 													clearable
-													placeholder="Filter by ${column.header}"
+													?multiple=${column.multiple}
+													placeholder="Filter aby ${column.header}"
+													max-options-visible="2"
 													@sl-change=${(event: CustomEvent) =>
 														this.filter({
 															field: column.field,
 															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
 														})}
 												>
-													<sl-option value="Aliyaview">Aliyaview</sl-option>
-													<sl-option value="Howemouth">Howemouth</sl-option>
-													<sl-option value="Gwenborough">Gwenborough</sl-option>
+													${column.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
 												</sl-select>
 											`
 										)}
