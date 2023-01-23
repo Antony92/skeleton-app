@@ -13,12 +13,12 @@ export const getProducts = async (search?: string, limit = 10) => {
 	return []
 }
 
-export const getUsers = async (skip = 0, limit = 10, query?: SearchQuery) => {
+export const getUsers = async (query?: SearchQuery) => {
 	try {
 		const params = toQueryParams({
 			q: query?.search, 
-			_start: skip, 
-			_limit: limit,
+			_start: query?.skip || 0, 
+			_limit: query?.limit || 10,
 			id: query?.id,
 			name_like: query?.name,
 			username_like: query?.username,
@@ -30,15 +30,16 @@ export const getUsers = async (skip = 0, limit = 10, query?: SearchQuery) => {
 		})
 		const req = await request(`https://jsonplaceholder.typicode.com/users${params}`, { showLoader: false })
 		const res = await req.json()
+		const total = req.headers.get('x-total-count')
 		return {
-			total: req.headers.get('x-total-count'),
-			users: res
+			total: total ? parseInt(total): 0,
+			data: res as any[]
 		}
 	} catch (error) {
 		console.error(error)
 	}
 	return {
 		total: 0,
-		users: []
+		data: [] as any[]
 	}	
 }

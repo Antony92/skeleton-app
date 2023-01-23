@@ -1,76 +1,36 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, query, queryAll, state } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
-import { classMap } from 'lit/directives/class-map.js'
-import { getUsers } from '../services/api.service'
-import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/input/input.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import '@shoelace-style/shoelace/dist/components/select/select.js'
-import '@shoelace-style/shoelace/dist/components/option/option.js'
-import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
+import { customElement, state } from 'lit/decorators.js'
+import '../elements/table/app-table.element'
+import '../elements/table/app-table-head.element'
+import '../elements/table/app-table-heading.element'
+import '../elements/table/app-table-body.element'
+import '../elements/table/app-table-row.element'
+import '../elements/table/app-table-cell.element'
+import '../elements/table/app-table-old.element'
 import '../elements/app-paginator.element'
-import { debounce, Subject, timer, Subscription } from 'rxjs'
+import { TableColumn } from '../types/table.type'
 import { SearchQuery } from '../types/search.type'
-import { FilterTableEvent, TableColumn } from '../types/table.type'
-import { tableLoaderStyle, tableStyle, tableWrapperStyle } from '../styles/table.style'
+import { getUsers } from '../services/api.service'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
-	static styles = [
-		tableWrapperStyle,
-		tableLoaderStyle,
-		tableStyle,
-		css`
-			.search-box {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 15px;
-				justify-content: space-between;
-				margin-bottom: 10px;
-			}
-
-			.search-box sl-input {
-				width: 350px;
-			}
-
-			app-paginator {
-				margin-top: 5px;
-			}
-		`,
-	]
+	static styles = css``
 
 	@state()
-	private data: any = null
+	users = {
+		data: [] as any[],
+		total: 0
+	}
 
-	@state()
-	private loadingData = false
-
-	@query('app-paginator') paginator!: HTMLElementTagNameMap['app-paginator']
-	@queryAll('sl-input') inputs!: NodeListOf<HTMLElementTagNameMap['sl-input']>
-	@queryAll('sl-select') selects!: NodeListOf<HTMLElementTagNameMap['sl-select']>
-
-	private searchQuery: SearchQuery = {}
-	private skip = 0
-	private limit = 10
-
-	private $filterEvent = new Subject<FilterTableEvent>()
-
-	private filterSubscription: Subscription | null = null
-
-	private filtersApplied = false
-
-	private columns: TableColumn[] = [
-		{ header: 'Name', field: 'name', type: 'string', sortable: true },
-		{ header: 'Username', field: 'username', type: 'string', sortable: true },
-		{ header: 'Email', field: 'email', type: 'string', sortable: true },
-		{ header: 'Website', field: 'website', type: 'string', sortable: true },
+	columns: TableColumn[] = [
+		{ header: 'Name', field: 'name', type: 'text' },
+		{ header: 'Username', field: 'username', type: 'text'},
+		{ header: 'Email', field: 'email', type: 'text' },
+		{ header: 'Website', field: 'website', type: 'text' },
 		{
 			header: 'City',
 			field: 'address.city',
 			type: 'select',
-			sortable: true,
-			multiple: true,
 			values: [
 				{ label: 'Gwenborough', value: 'Gwenborough' },
 				{ label: 'Wisokyburgh', value: 'Wisokyburgh' },
@@ -81,258 +41,50 @@ export class AppDemoTable extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.loadUsers()
-		this.filterSubscription = this.$filterEvent
-			.asObservable()
-			.pipe(debounce((event) => (event.delay ? timer(event.delay) : timer(0))))
-			.subscribe((event) => {
-				const value = event.value?.toString()
-				if (value) {
-					this.searchQuery[event.field] = value
-				} else {
-					delete this.searchQuery[event.field]
-				}
-				this.filtersApplied = Object.keys(this.searchQuery).length > 0
-				this.loadUsers(true)
-			})
+		this.loadUsers({ skip: 0, limit: 10 })
 	}
 
-	override disconnectedCallback() {
-		super.disconnectedCallback()
-		this.filterSubscription?.unsubscribe()
+	override firstUpdated() {
+		this.renderRoot.querySelector('app-table')?.addEventListener('app-table-load', (event) => console.log(event))
 	}
 
-	private async loadUsers(reset = false) {
-		console.log('search query: ', this.searchQuery)
-		this.loadingData = true
-		if (reset) {
-			this.skip = 0
-			this.paginator.pageIndex = 0
-		}
-		this.data = await getUsers(this.skip, this.limit, this.searchQuery)
-		this.loadingData = false
-	}
-
-	private page(event: CustomEvent) {
-		const { pageSize, pageIndex } = event.detail
-		this.limit = pageSize
-		this.skip = pageSize * pageIndex
-		this.loadUsers()
-	}
-
-	private filter(event: FilterTableEvent) {
-		this.$filterEvent.next(event)
-	}
-
-	private sort(column: TableColumn) {
-		this.columns.filter((col) => col.field !== column.field).forEach((col) => (col.sort = null))
-
-		if (!column.sort) {
-			column.sort = 1
-		} else if (column.sort === 1) {
-			column.sort = -1
-		} else if (column.sort === -1) {
-			column.sort = null
-		}
-
-		this.requestUpdate()
-
-		if (column.sort) {
-			this.searchQuery.sortOrder = column.sort
-			this.searchQuery.sortField = column.field
-		} else {
-			delete this.searchQuery.sortOrder
-			delete this.searchQuery.sortField
-		}
-
-		this.filtersApplied = Object.keys(this.searchQuery).length > 0
-
-		this.loadUsers()
-	}
-
-	private async clearFilters() {
-		this.filtersApplied = false
-		this.searchQuery = {}
-
-		this.columns.forEach((col) => (col.sort = null))
-
-		this.renderRoot.querySelectorAll<HTMLElementTagNameMap['sl-input']>('table thead sl-input').forEach((input) => (input.value = ''))
-		this.renderRoot
-			.querySelectorAll<HTMLElementTagNameMap['sl-select']>('table thead sl-select')
-			.forEach((select) => (select.value = select.multiple ? [] : ''))
-
-		await this.loadUsers(true)
+	private async loadUsers(query: SearchQuery) {
+		this.users = await getUsers(query)
 	}
 
 	override render() {
 		return html`
-			<div class="search-box">
-				<sl-input
-					autocomplete="off"
-					filled
-					pill
-					clearable
-					type="search"
-					placeholder="Search"
-					@sl-input=${(event: Event) =>
-						this.filter({ delay: 300, field: 'search', value: (<HTMLElementTagNameMap['sl-input']>event.target).value })}
-				>
-					<sl-icon name="search" slot="prefix"></sl-icon>
-				</sl-input>
+			<app-table searchable clearable .data=${this.users.data}>
+				<app-table-head slot="head">
+					${this.columns.map((column) => html`
+						<app-table-heading 
+							sortable
+							filterable
+							.label=${column.header}
+							.field=${column.field}
+							.type=${column.type}
+						>
+							${column.header}
+						</app-table-heading>
+					`)}
+				</app-table-head>
 
-				<sl-button variant="default" pill @click=${this.clearFilters} ?disabled=${!this.filtersApplied}>
-					<sl-icon slot="prefix" name="funnel"></sl-icon>
-					Clear filters
-				</sl-button>
-			</div>
+				<app-table-body slot="body">
+					${this.users.data.map(user => html`
+						<app-table-row>
+							<app-table-cell>${user.name}</app-table-cell>
+							<app-table-cell>${user.username}</app-table-cell>
+							<app-table-cell>${user.email}</app-table-cell>
+							<app-table-cell>${user.website}</app-table-cell>
+							<app-table-cell>${user.address.city}</app-table-cell>
+						</app-table-row>
+					`)}
+				</app-table-body>
+				
+				<app-paginator slot="paginator" pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}></app-paginator>
+			</app-table>
 
-			<div class="table-wrapper">
-				<div class="table-loader" ?hidden=${!this.loadingData}>
-					<sl-spinner></sl-spinner>
-				</div>
-				<table>
-					<thead>
-						<tr>
-							${this.columns.map(
-								(column) => html`
-									<th class=${classMap({ sortable: !!column.sortable })} @click=${() => (column.sortable ? this.sort(column) : '')}>
-										${column.header} ${when(column.sortable && column.sort === 1, () => html`<sl-icon name="sort-up"></sl-icon>`)}
-										${when(column.sortable && column.sort === -1, () => html`<sl-icon name="sort-down"></sl-icon>`)}
-									</th>
-								`
-							)}
-						</tr>
-						<tr>
-							${this.columns.map(
-								(column) => html`
-									<th>
-										${when(
-											column.type === 'string',
-											() => html`
-												<sl-input
-													filled
-													pill
-													autocomplete="off"
-													clearable
-													type="text"
-													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: CustomEvent) =>
-														this.filter({
-															delay: 300,
-															field: column.field,
-															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
-														})}
-												>
-												</sl-input>
-											`
-										)}
-										${when(
-											column.type === 'number',
-											() => html`
-												<sl-input
-													pill
-													clearable
-													type="number"
-													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: CustomEvent) =>
-														this.filter({
-															delay: 300,
-															field: column.field,
-															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
-														})}
-												>
-												</sl-input>
-											`
-										)}
-										${when(
-											column.type === 'date',
-											() => html`
-												<sl-input
-													pill
-													clearable
-													type="date"
-													placeholder="Filter by ${column.header}"
-													@sl-input=${(event: CustomEvent) =>
-														this.filter({
-															field: column.field,
-															value: (<HTMLElementTagNameMap['sl-input']>event.target).value,
-														})}
-												>
-												</sl-input>
-											`
-										)}
-										${when(
-											column.type === 'boolean',
-											() => html`
-												<sl-select
-													pill
-													filled
-													hoist
-													clearable
-													placeholder="Filter by ${column.header}"
-													@sl-change=${(event: CustomEvent) =>
-														this.filter({
-															field: column.field,
-															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
-														})}
-												>
-													${column.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
-												</sl-select>
-											`
-										)}
-										${when(
-											column.type === 'select',
-											() => html`
-												<sl-select
-													pill
-													filled
-													hoist
-													clearable
-													?multiple=${column.multiple}
-													placeholder="Filter by ${column.header}"
-													max-options-visible="2"
-													@sl-change=${(event: CustomEvent) =>
-														this.filter({
-															field: column.field,
-															value: (<HTMLElementTagNameMap['sl-select']>event.target).value,
-														})}
-												>
-													${column.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
-												</sl-select>
-											`
-										)}
-									</th>
-								`
-							)}
-						</tr>
-					</thead>
-					<tbody>
-						${when(
-							this.data?.users?.length > 0,
-							() => html`
-								${this.data?.users?.map(
-									(user: any) => html`
-										<tr>
-											<td>${user.name}</td>
-											<td>${user.username}</td>
-											<td>${user.email}</td>
-											<td>${user.website}</td>
-											<td>${user.address.city}</td>
-										</tr>
-									`
-								)}
-							`,
-							() => html`
-								<tr>
-									<td colspan=${this.columns.length}>${!this.data ? 'Loading...' : 'No results found'}</td>
-								</tr>
-							`
-						)}
-					</tbody>
-				</table>
-			</div>
-
-			<app-paginator @app-paginate=${this.page} pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.data?.total}> </app-paginator>
-		`
+			<!-- <app-table-old></app-table-old> -->
+		`	
 	}
 }

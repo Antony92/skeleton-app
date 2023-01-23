@@ -39,7 +39,7 @@ export class AppPaginator extends LitElement {
 
 	private previousPageIndex = 0
 
-	pageSizeChange(event: CustomEvent) {
+	private pageSizeChange(event: CustomEvent) {
 		const value = (<HTMLElementTagNameMap['sl-select']>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
@@ -62,42 +62,42 @@ export class AppPaginator extends LitElement {
 		return Math.ceil(this.length / this.pageSize)
 	}
 
-	firstPage() {
+	private firstPage() {
 		if (!this.hasPreviousPage()) return
 		this.previousPageIndex = this.pageIndex
 		this.pageIndex = 0
 		this.emitPageEvent()
 	}
 
-	lastPage() {
+	private lastPage() {
 		if (!this.hasNextPage()) return
 		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.getNumberOfPages() - 1
 		this.emitPageEvent()
 	}
 
-	nextPage() {
+	private nextPage() {
 		if (!this.hasNextPage()) return
 		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex + 1
 		this.emitPageEvent()
 	}
 
-	previousPage() {
+	private previousPage() {
 		if (!this.hasPreviousPage()) return
 		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex - 1
 		this.emitPageEvent()
 	}
 
-	getRangeLabel() {
+	private getRangeLabel() {
 		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
 		const startIndex = this.pageIndex * this.pageSize
 		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
 		return `${startIndex + 1} - ${endIndex} of ${this.length}`
 	}
 
-	emitPageEvent() {
+	private emitPageEvent() {
 		this.dispatchEvent(
 			new CustomEvent('app-paginate', {
 				bubbles: true,
