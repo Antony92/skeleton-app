@@ -289,7 +289,7 @@ export class AppDemoTable extends LitElement {
 													hoist
 													clearable
 													?multiple=${column.multiple}
-													placeholder="Filter aby ${column.header}"
+													placeholder="Filter by ${column.header}"
 													max-options-visible="2"
 													@sl-change=${(event: CustomEvent) =>
 														this.filter({
