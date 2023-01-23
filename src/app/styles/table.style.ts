@@ -37,13 +37,16 @@ export const tableStyle = css`
         border-collapse: collapse;
     }
 
-    table thead th,
+    table thead th {
+        text-align: left;
+        padding: 5px 10px;
+    }
+
     table tbody td {
         text-align: left;
         padding: 10px;
     }
 
-    table thead tr th,
     table tbody tr:not(:last-child) td {
         border-bottom: 1px solid grey;
     }
@@ -55,7 +58,7 @@ export const tableStyle = css`
         text-overflow: ellipsis;
     }
 
-    table thead th.sortable {
+    table thead th.sortable .heading {
         cursor: pointer;
     }
 
