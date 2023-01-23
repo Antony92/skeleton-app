@@ -58,7 +58,7 @@ export const tableStyle = css`
         text-overflow: ellipsis;
     }
 
-    table thead th.sortable .heading {
+    table thead th.sortable {
         cursor: pointer;
     }
 
