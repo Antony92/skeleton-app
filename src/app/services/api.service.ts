@@ -26,20 +26,20 @@ export const getUsers = async (query?: SearchQuery) => {
 			website_like: query?.website,
 			'address.city': query?.['address.city'],
 			_sort: query?.sortField,
-			_order: query?.sortOrder ? query.sortOrder === 1 ? 'asc' : 'desc' : null 
+			_order: query?.sort ? query.sort : null 
 		})
 		const req = await request(`https://jsonplaceholder.typicode.com/users${params}`, { showLoader: false })
 		const res = await req.json()
 		const total = req.headers.get('x-total-count')
 		return {
 			total: total ? parseInt(total): 0,
-			data: res as any[]
+			users: res as any[]
 		}
 	} catch (error) {
 		console.error(error)
 	}
 	return {
 		total: 0,
-		data: [] as any[]
+		users: [] as any[]
 	}	
 }
