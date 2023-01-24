@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
+import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
@@ -40,7 +41,7 @@ export class AppPaginator extends LitElement {
 	#previousPageIndex = 0
 
 	#pageSizeChange(event: CustomEvent) {
-		const value = (<HTMLElementTagNameMap['sl-select']>event.target).value
+		const value = (<SlSelect>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
 		this.#previousPageIndex = this.pageIndex

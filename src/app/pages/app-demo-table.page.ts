@@ -10,13 +10,14 @@ import '../elements/table/app-table-cell.element'
 import { TableColumn } from '../types/table.type'
 import { getUsers } from '../services/api.service'
 import { SearchQuery } from '../types/search.type'
+import { AppPaginator } from '../elements/paginator/app-paginator.element'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
 	static styles = css``
 
 	@query('app-paginator')
-	paginator!: HTMLElementTagNameMap['app-paginator']
+	paginator!: AppPaginator
 
 	#skip = 0
 

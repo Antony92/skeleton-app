@@ -1,5 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
+import { AppTableHeading } from './app-table-heading.element'
 
 @customElement('app-table-head')
 export class AppTableHead extends LitElement {
@@ -24,7 +25,7 @@ export class AppTableHead extends LitElement {
 	get headings() {
 		const slot = this.renderRoot.querySelector('slot')
 		const headings = (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-table-heading'))
-		return Array.from(headings) as HTMLElementTagNameMap['app-table-heading'][]
+		return Array.from(headings) as AppTableHeading[]
 	}
 
 	override render() {

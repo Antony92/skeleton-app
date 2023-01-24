@@ -10,6 +10,7 @@ import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import { Subject, Subscription, debounceTime } from 'rxjs'
 import { SearchQuery } from '../../types/search.type'
 import { appTableFilterBoxStyle, appTableLoaderStyle, appTableStyle, appTableWrapperStyle } from '../../styles/app-table.style'
+import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -130,7 +131,7 @@ export class AppTable extends LitElement {
 						class="global-search"
                         type="search"
                         placeholder="Search"
-                        @sl-input=${(event: CustomEvent) => this.search((<HTMLElementTagNameMap['sl-input']>event.target).value)}
+                        @sl-input=${(event: CustomEvent) => this.search((<SlInput>event.target).value)}
                     >
                         <sl-icon name="search" slot="prefix"></sl-icon>
                     </sl-input>

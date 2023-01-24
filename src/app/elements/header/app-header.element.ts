@@ -16,6 +16,7 @@ import '../theme-switcher/app-theme-switcher.element'
 import { login, logout } from '../../services/login.service'
 import { whenUser } from '../../directives/when-user.directive'
 import { getUser } from '../../services/user.service'
+import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -62,7 +63,7 @@ export class AppHeader extends LitElement {
     @state()
     loginLoading = false
 
-    @query('sl-drawer') drawer!: HTMLElementTagNameMap['sl-drawer']
+    @query('sl-drawer') drawer!: SlDrawer
 
     override connectedCallback() {
         super.connectedCallback()

@@ -7,6 +7,8 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import { debounceTime, Subject, Subscription } from 'rxjs'
+import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
+import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 
 @customElement('app-table-heading')
 export class AppTableHeading extends LitElement {
@@ -90,7 +92,7 @@ export class AppTableHeading extends LitElement {
     }
 
     filterColumnValue(event: CustomEvent) {
-        const input = event.target as HTMLElementTagNameMap['sl-input'] | HTMLElementTagNameMap['sl-select']
+        const input = event.target as SlInput | SlSelect
         this.value = input.value?.toString()
 		this.#filterEvent.next(this.value)
 	}
