@@ -77,10 +77,6 @@ export class AppTableHeading extends LitElement {
 		this.filterSubscription.unsubscribe()
 	}
 
-    override firstUpdated() {
-        this.addEventListener('app-table-clear', (event) => console.log(event))
-    }
-
     dispatchFilterEvent() {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
