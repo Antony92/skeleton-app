@@ -18,6 +18,12 @@ export class AppDemoTable extends LitElement {
 	@state()
 	loading = false
 
+	skip = 0
+
+	limit = 10
+
+	query = {}
+
 	@state()
 	users = {
 		data: [] as any[],
@@ -47,8 +53,20 @@ export class AppDemoTable extends LitElement {
 		super.connectedCallback()
 		this.loadUsers({ skip: 0, limit: 10 })
 		this.addEventListener('app-table-filter', (event) => {
-			const query = (<CustomEvent>event).detail
-			this.loadUsers(query)
+			this.query = (<CustomEvent>event).detail
+			this.paginator?.reset()
+			this.loadUsers({ skip: this.skip, limit: this.limit, ...this.query })
+		})
+		this.addEventListener('app-paginate', (event) => {
+			const { pageSize, pageIndex } = (<CustomEvent>event).detail
+            this.limit = pageSize
+            this.skip = pageSize * pageIndex
+			this.loadUsers({ skip: this.skip, limit: this.limit, ...this.query })
+		})
+		this.addEventListener('app-table-clear', (event) => {
+			this.query = {}
+			this.paginator?.reset()
+			this.loadUsers({ skip: this.skip, limit: this.limit })
 		})
 	}
 
@@ -56,6 +74,10 @@ export class AppDemoTable extends LitElement {
 		this.loading = true
 		this.users = await getUsers(query)
 		this.loading = false
+	}
+
+	get paginator() {
+		return this.renderRoot.querySelector('app-paginator')
 	}
 
 	override render() {

@@ -49,6 +49,10 @@ export class AppPaginator extends LitElement {
 		this.emitPageEvent()
 	}
 
+	reset() {
+		this.pageIndex = 0
+	}
+
 	hasPreviousPage() {
 		return this.pageIndex >= 1 && this.pageSize != 0
 	}

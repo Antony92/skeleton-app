@@ -58,7 +58,7 @@ export class AppTable extends LitElement {
 					delete this.searchQuery.search
 				}
 				this.filtersApplied = this.hasFiltersApplied()
-				this.updateTable(true)
+				this.dispatchFilterEvent()
 			})
 	}
 
@@ -68,12 +68,6 @@ export class AppTable extends LitElement {
 	}
 
     override firstUpdated() {
-        this.paginator?.addEventListener('app-paginate', (event) => {
-            const { pageSize, pageIndex } = (<CustomEvent>event).detail
-            this.limit = pageSize
-            this.skip = pageSize * pageIndex
-            this.updateTable()
-        })
         this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
             if (value) {
@@ -89,23 +83,15 @@ export class AppTable extends LitElement {
                 delete this.searchQuery['order']
             }
             this.filtersApplied = this.hasFiltersApplied()
-            this.updateTable(true)
+            this.dispatchFilterEvent()
         })
     }
 
-	private updateTable(reset = false) {
-		if (reset) {
-			this.skip = 0
-			this.paginator?.setAttribute('pageIndex', '0')
-		}
+	private dispatchFilterEvent() {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
-            detail: {
-                limit: this.limit,
-                skip: this.skip,
-                ...this.searchQuery
-            }
+            detail: this.searchQuery
         }))
 	}
 
@@ -124,15 +110,12 @@ export class AppTable extends LitElement {
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
-		this.headings?.forEach(heading => heading.clearAllFilters())	
-		this.updateTable(true)
+		this.headings?.forEach(heading => heading.clearAllFilters())
+		this.dispatchEvent(new CustomEvent('app-table-clear', {
+            bubbles: true,
+            composed: true,
+        }))
 	}
-
-
-    get paginator() {
-        const slot = this.renderRoot.querySelector('slot[name=paginator]')
-        return (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-paginator'))[0]
-    }
 
 	get headings() {
 		const slot = this.renderRoot.querySelector('slot[name=head]')
