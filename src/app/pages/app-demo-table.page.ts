@@ -51,7 +51,7 @@ export class AppDemoTable extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.loadUsers({ skip: 0, limit: 10 })
+		this.loadUsers({ skip: this.skip, limit: this.limit })
 		this.addEventListener('app-table-filter', (event) => {
 			this.query = (<CustomEvent>event).detail
 			this.paginator?.reset()
