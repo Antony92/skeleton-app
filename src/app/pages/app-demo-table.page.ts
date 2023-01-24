@@ -55,6 +55,7 @@ export class AppDemoTable extends LitElement {
 		this.addEventListener('app-table-filter', (event) => {
 			this.query = (<CustomEvent>event).detail
 			this.paginator?.reset()
+			this.skip = 0
 			this.loadUsers({ skip: this.skip, limit: this.limit, ...this.query })
 		})
 		this.addEventListener('app-paginate', (event) => {
@@ -66,6 +67,7 @@ export class AppDemoTable extends LitElement {
 		this.addEventListener('app-table-clear', (event) => {
 			this.query = {}
 			this.paginator?.reset()
+			this.skip = 0
 			this.loadUsers({ skip: this.skip, limit: this.limit })
 		})
 	}
