@@ -42,7 +42,7 @@ export class AppTable extends LitElement {
 
 	private $searchEvent = new Subject<string>()
 
-	private searchSubscription: Subscription | null = null
+	private searchSubscription: Subscription = new Subscription()
 
 	private filtersApplied = false
 
@@ -64,7 +64,7 @@ export class AppTable extends LitElement {
 
 	override disconnectedCallback() {
 		super.disconnectedCallback()
-		this.searchSubscription?.unsubscribe()
+		this.searchSubscription.unsubscribe()
 	}
 
     override firstUpdated() {
