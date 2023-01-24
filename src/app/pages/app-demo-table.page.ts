@@ -30,6 +30,7 @@ export class AppDemoTable extends LitElement {
 		total: 0
 	}
 
+	@state()
 	columns: TableColumn[] = [
 		{ header: 'Name', field: 'name', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Username', field: 'username', type: 'text', sortable: true, filtarable: true, delay: 300 },
