@@ -32,7 +32,7 @@ export const appTableLoaderStyle = css`
         z-index: 1;
         visibility: visible;
         opacity: 1;
-        transition: all 0.3s;
+        transition: opacity 0.3s;
     }
 
     .table-loader sl-spinner {
