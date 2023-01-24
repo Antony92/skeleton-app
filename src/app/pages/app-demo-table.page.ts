@@ -11,6 +11,7 @@ import { TableColumn } from '../types/table.type'
 import { getUsers } from '../services/api.service'
 import { SearchQuery } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
+import { when } from 'lit/directives/when.js'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -109,6 +110,11 @@ export class AppDemoTable extends LitElement {
 							<app-table-cell>${user.email}</app-table-cell>
 							<app-table-cell>${user.website}</app-table-cell>
 							<app-table-cell>${user.address.city}</app-table-cell>
+						</app-table-row>
+					`)}
+					${when(this.users.data.length === 0 && !this.loading, () => html`
+						<app-table-row>
+							<app-table-cell>No results found</app-table-cell>
 						</app-table-row>
 					`)}
 				</app-table-body>
