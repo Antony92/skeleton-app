@@ -10,10 +10,7 @@ export class AppPaginator extends LitElement {
 	static styles = css`
 		:host {
 			display: flex;
-			flex-direction: row;
 			align-items: center;
-			justify-content: flex-end;
-			align-content: center;
 		}
 
 		sl-icon-button {
