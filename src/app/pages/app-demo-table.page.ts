@@ -12,6 +12,7 @@ import { getUsers } from '../services/api.service'
 import { SearchQuery } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
 import { when } from 'lit/directives/when.js'
+import { confirmDialog } from '../services/confirm-dialog.service'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -53,8 +54,6 @@ export class AppDemoTable extends LitElement {
 				{ label: 'McKenziehaven', value: 'McKenziehaven' },
 			],
 		},
-		{ header: '', field: 'edit' },
-		{ header: '', field: 'delete' }
 	]
 
 	override connectedCallback() {
@@ -112,12 +111,6 @@ export class AppDemoTable extends LitElement {
 							<app-table-cell>${user.email}</app-table-cell>
 							<app-table-cell>${user.website}</app-table-cell>
 							<app-table-cell>${user.address.city}</app-table-cell>
-							<app-table-cell>
-								<sl-icon-button title="Edit" name="pencil" label="Edit"></sl-icon-button>
-							</app-table-cell>
-							<app-table-cell>
-								<sl-icon-button title="Delete" name="trash" label="Delete"></sl-icon-button>
-							</app-table-cell>
 						</app-table-row>
 					`)}
 					${when(this.users.data.length === 0 && !this.loading, () => html`
