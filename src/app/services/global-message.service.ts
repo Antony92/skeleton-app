@@ -1,5 +1,5 @@
 export const showGlobalMessage = async (message: string, type: 'info' | 'warning' | 'danger' = 'info') => {
-    await import('../elements/app-global-message.element')
+    await import('../elements/global-message/app-global-message.element')
 
     let element = document.body.querySelector('app-global-message')
 

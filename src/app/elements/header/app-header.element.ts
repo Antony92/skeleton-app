@@ -12,10 +12,10 @@ import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
-import './app-theme-switcher.element'
-import { login, logout } from '../services/login.service'
-import { whenUser } from '../directives/when-user.directive'
-import { getUser } from '../services/user.service'
+import '../theme-switcher/app-theme-switcher.element'
+import { login, logout } from '../../services/login.service'
+import { whenUser } from '../../directives/when-user.directive'
+import { getUser } from '../../services/user.service'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {

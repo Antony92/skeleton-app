@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
-import '../elements/app-paginator.element'
+import { customElement, query, state } from 'lit/decorators.js'
+import '../elements/paginator/app-paginator.element'
 import '../elements/table/app-table.element'
 import '../elements/table/app-table-head.element'
 import '../elements/table/app-table-heading.element'
@@ -15,14 +15,17 @@ import { SearchQuery } from '../types/search.type'
 export class AppDemoTable extends LitElement {
 	static styles = css``
 
-	@state()
-	loading = false
+	@query('app-paginator')
+	paginator!: HTMLElementTagNameMap['app-paginator']
 
 	#skip = 0
 
 	#limit = 10
 
 	#query = {}
+
+	@state()
+	loading = false
 
 	@state()
 	users = {
@@ -53,11 +56,11 @@ export class AppDemoTable extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers({ skip: this.#skip, limit: this.#limit })
-		this.addEventListener('app-table-filter', (event) => {
+		this.addEventListener('app-table-filter', async (event) => {
 			this.#query = (<CustomEvent>event).detail
-			this.paginator?.reset()
 			this.#skip = 0
-			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
+			await this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
+			this.paginator.reset()
 		})
 		this.addEventListener('app-paginate', (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
@@ -65,11 +68,11 @@ export class AppDemoTable extends LitElement {
             this.#skip = pageSize * pageIndex
 			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
 		})
-		this.addEventListener('app-table-clear', (event) => {
+		this.addEventListener('app-table-clear', async (event) => {
 			this.#query = {}
-			this.paginator?.reset()
 			this.#skip = 0
-			this.loadUsers({ skip: this.#skip, limit: this.#limit })
+			await this.loadUsers({ skip: this.#skip, limit: this.#limit })
+			this.paginator.reset()
 		})
 	}
 
@@ -77,10 +80,6 @@ export class AppDemoTable extends LitElement {
 		this.loading = true
 		this.users = await getUsers(query)
 		this.loading = false
-	}
-
-	get paginator() {
-		return this.renderRoot.querySelector('app-paginator')
 	}
 
 	override render() {

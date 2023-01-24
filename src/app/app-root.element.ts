@@ -1,9 +1,9 @@
 import { Router } from '@lit-labs/router'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import './elements/app-global-message.element'
-import './elements/app-header.element'
-import './elements/app-sidebar.element'
+import './elements/global-message/app-global-message.element'
+import './elements/header/app-header.element'
+import './elements/sidebar/app-sidebar.element'
 import { hideGlobalMessage, showGlobalMessage } from './services/global-message.service'
 import { mainStyle } from './styles/main.style'
 
