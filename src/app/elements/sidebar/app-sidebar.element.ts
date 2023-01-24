@@ -68,7 +68,8 @@ export class AppSidebar extends LitElement {
 			background: var(--sl-color-neutral-300);
 		}
 
-		ul li a:hover span:first-child sl-icon {
+		ul li a:hover span:first-child sl-icon,
+		ul li a.active span sl-icon {
 			scale: 1.1;
 		}
 

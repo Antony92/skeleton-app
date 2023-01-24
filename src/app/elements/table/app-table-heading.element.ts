@@ -134,7 +134,6 @@ export class AppTableHeading extends LitElement {
 			${when(this.filterable && this.type === 'text', () => html`
                 <sl-input
                     filled
-                    pill
                     autocomplete="off"
                     clearable
                     type="text"
@@ -146,7 +145,6 @@ export class AppTableHeading extends LitElement {
             ${when(this.filterable && this.type === 'number', () => html`
                 <sl-input
                     filled
-                    pill
                     autocomplete="off"
                     clearable
                     type="number"
@@ -158,7 +156,6 @@ export class AppTableHeading extends LitElement {
             ${when(this.filterable && this.type === 'date', () => html`
                 <sl-input
                     filled
-                    pill
                     autocomplete="off"
                     clearable
                     type="date"
@@ -169,7 +166,6 @@ export class AppTableHeading extends LitElement {
             `)}
             ${when(this.filterable && this.type === 'boolean', () => html`
                 <sl-select
-                    pill
                     filled
                     hoist
                     clearable
@@ -181,7 +177,6 @@ export class AppTableHeading extends LitElement {
             `)}
             ${when(this.filterable && this.type === 'select', () => html`
                 <sl-select
-                    pill
                     filled
                     hoist
                     clearable
@@ -193,7 +188,6 @@ export class AppTableHeading extends LitElement {
             `)}
             ${when(this.filterable && this.type === 'select-multiple', () => html`
                 <sl-select
-                    pill
                     filled
                     hoist
                     clearable

@@ -22,7 +22,7 @@ export class AppDemoTable extends LitElement {
 
 	#limit = 10
 
-	#query = {}
+	#searchQuery = {}
 
 	@state()
 	loading = false
@@ -57,19 +57,19 @@ export class AppDemoTable extends LitElement {
 		super.connectedCallback()
 		this.loadUsers({ skip: this.#skip, limit: this.#limit })
 		this.addEventListener('app-table-filter', async (event) => {
-			this.#query = (<CustomEvent>event).detail
+			this.#searchQuery = (<CustomEvent>event).detail
 			this.#skip = 0
-			await this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
+			await this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchQuery })
 			this.paginator.reset()
 		})
 		this.addEventListener('app-paginate', (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
             this.#limit = pageSize
             this.#skip = pageSize * pageIndex
-			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
+			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchQuery })
 		})
 		this.addEventListener('app-table-clear', async (event) => {
-			this.#query = {}
+			this.#searchQuery = {}
 			this.#skip = 0
 			await this.loadUsers({ skip: this.#skip, limit: this.#limit })
 			this.paginator.reset()
