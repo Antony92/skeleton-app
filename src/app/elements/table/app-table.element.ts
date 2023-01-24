@@ -76,13 +76,11 @@ export class AppTable extends LitElement {
         })
         this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
-
             if (value) {
                 this.searchQuery[field] = value
             } else {
                 delete this.searchQuery[field]
             }
-
             if (order) {
                 this.searchQuery['sort'] = field
                 this.searchQuery['order'] = order
@@ -90,7 +88,6 @@ export class AppTable extends LitElement {
                 delete this.searchQuery['sort']
                 delete this.searchQuery['order']
             }
-            
             this.filtersApplied = this.hasFiltersApplied()
             this.updateTable(true)
         })
@@ -124,18 +121,10 @@ export class AppTable extends LitElement {
 	private async clearAllFilters() {
 		this.filtersApplied = false
 		this.searchQuery = {}
-
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
-
-		this.headings?.forEach(heading => heading.clearFilters())	
-
-        this.dispatchEvent(new CustomEvent('app-table-clear', {
-            bubbles: true,
-            composed: true,
-        }))
-
+		this.headings?.forEach(heading => heading.clearAllFilters())	
 		this.updateTable(true)
 	}
 

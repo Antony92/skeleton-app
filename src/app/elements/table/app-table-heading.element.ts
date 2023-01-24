@@ -105,8 +105,16 @@ export class AppTableHeading extends LitElement {
         this.dispatchFilterEvent()
 	}
 
-    clearFilters() {
+    clearAllFilters() {
+        this.clearOrderFilter()
+        this.clearValueFilter()
+    }
+
+    clearOrderFilter() {
         this.order = null
+    }
+
+    clearValueFilter() {
         this.renderRoot
 			.querySelectorAll<HTMLElementTagNameMap['sl-input']>('sl-input')
 			.forEach((input) => (input.value = ''))
