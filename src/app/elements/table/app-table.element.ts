@@ -34,9 +34,6 @@ export class AppTable extends LitElement {
 	@property({ type: Boolean })
 	loading = false
 
-    @property({ type: Array })
-	data: unknown[] = []
-
     private skip = 0
 
     private limit = 10
@@ -61,7 +58,7 @@ export class AppTable extends LitElement {
 					delete this.searchQuery.search
 				}
 				this.filtersApplied = this.hasFiltersApplied()
-				this.loadData(true)
+				this.updateTable(true)
 			})
 	}
 
@@ -75,9 +72,9 @@ export class AppTable extends LitElement {
             const { pageSize, pageIndex } = (<CustomEvent>event).detail
             this.limit = pageSize
             this.skip = pageSize * pageIndex
-            this.loadData()
+            this.updateTable()
         })
-        this.addEventListener('app-table-filter', (event) => {
+        this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
 
             if (value) {
@@ -95,16 +92,16 @@ export class AppTable extends LitElement {
             }
             
             this.filtersApplied = this.hasFiltersApplied()
-            this.loadData(true)
+            this.updateTable(true)
         })
     }
 
-	private loadData(reset = false) {
+	private updateTable(reset = false) {
 		if (reset) {
 			this.skip = 0
 			this.paginator?.setAttribute('pageIndex', '0')
 		}
-        this.dispatchEvent(new CustomEvent('app-table-load', {
+        this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
             detail: {
@@ -139,7 +136,7 @@ export class AppTable extends LitElement {
             composed: true,
         }))
 
-		this.loadData(true)
+		this.updateTable(true)
 	}
 
 

@@ -46,7 +46,7 @@ export class AppDemoTable extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers({ skip: 0, limit: 10 })
-		this.addEventListener('app-table-load', (event) => {
+		this.addEventListener('app-table-filter', (event) => {
 			const query = (<CustomEvent>event).detail
 			this.loadUsers(query)
 		})
@@ -60,7 +60,7 @@ export class AppDemoTable extends LitElement {
 
 	override render() {
 		return html`
-			<app-table searchable clearable ?loading=${this.loading} .data=${this.users.data}>
+			<app-table searchable clearable ?loading=${this.loading}>
 				<app-table-head slot="head">
 					${this.columns.map((column) => html`
 						<app-table-heading 

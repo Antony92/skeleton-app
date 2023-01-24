@@ -78,7 +78,7 @@ export class AppTableHeading extends LitElement {
 	}
 
     dispatchFilterEvent() {
-        this.dispatchEvent(new CustomEvent('app-table-filter', {
+        this.dispatchEvent(new CustomEvent('app-table-column-filter', {
             bubbles: true,
             composed: true,
             detail: {
