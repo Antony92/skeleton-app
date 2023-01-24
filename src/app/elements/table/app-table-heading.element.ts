@@ -52,7 +52,7 @@ export class AppTableHeading extends LitElement {
 	value: string | undefined | null
 
 	@property({ type: String, reflect: true })
-	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' | undefined | null
+	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' | undefined | null = 'text'
 
     @property({ type: Array })
     values: { label: string, value: string | boolean | number }[] | undefined | null
@@ -131,13 +131,13 @@ export class AppTableHeading extends LitElement {
                 ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
 			</div>
-			${when(this.filterable && ['text', 'number', 'date'].includes(this.type!), () => html`
+			${when(this.filterable && this.type === 'text', () => html`
                 <sl-input
                     filled
                     pill
                     autocomplete="off"
                     clearable
-                    type=${this.type as 'text' | 'number' | 'date'}
+                    type="text"
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >
