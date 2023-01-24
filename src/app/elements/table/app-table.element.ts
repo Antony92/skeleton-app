@@ -34,10 +34,6 @@ export class AppTable extends LitElement {
 	@property({ type: Boolean })
 	loading = false
 
-    private skip = 0
-
-    private limit = 10
-
 	private searchQuery: SearchQuery = { }
 
 	private $searchEvent = new Subject<string>()
