@@ -1,4 +1,4 @@
-import { html, LitElement, css, PropertyValueMap } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
@@ -31,7 +31,7 @@ export class AppTableHeading extends LitElement {
             margin-top: 3px;
         }
         sl-input, sl-select {
-            min-width: 261px;
+            min-width: 200px;
         }
 	`
 

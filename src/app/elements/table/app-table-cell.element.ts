@@ -7,6 +7,10 @@ export class AppTableCell extends LitElement {
 		:host {
             display: table-cell;
 			padding: 10px 20px;
+			max-width: 300px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
         }
 	`
 
