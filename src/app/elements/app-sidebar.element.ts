@@ -110,7 +110,7 @@ export class AppSidebar extends LitElement {
 		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
 	}
 
-	private handleLinkClick(event: Event) {
+	#handleLinkClick(event: Event) {
 		const activeLink = this.renderRoot.querySelector('a.active')
 		activeLink?.classList.remove('active')
 		const clickedLink = <HTMLAnchorElement>event.currentTarget
@@ -122,7 +122,7 @@ export class AppSidebar extends LitElement {
 			<nav>
 				<ul class="navigation-menu">
 					<li>
-						<a href="/" @click=${this.handleLinkClick}>
+						<a href="/" @click=${this.#handleLinkClick}>
 							<span>
 								<sl-icon name="house-door-fill"></sl-icon>
 							</span>
@@ -130,7 +130,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/form" @click=${this.handleLinkClick}>
+						<a href="/form" @click=${this.#handleLinkClick}>
 							<span>
 								<sl-icon name="postcard-fill"></sl-icon>
 							</span>
@@ -138,7 +138,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/alerts" @click=${this.handleLinkClick}>
+						<a href="/alerts" @click=${this.#handleLinkClick}>
 							<span>
 								<sl-icon name="exclamation-square-fill"></sl-icon>
 							</span>
@@ -146,7 +146,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/table" @click=${this.handleLinkClick}>
+						<a href="/table" @click=${this.#handleLinkClick}>
 							<span>
 								<sl-icon name="table"></sl-icon>
 							</span>
@@ -155,7 +155,7 @@ export class AppSidebar extends LitElement {
 					</li>
 					${whenUser(() => html`
 						<li class="bottom">
-							<a href="/settings" @click=${this.handleLinkClick}>
+							<a href="/settings" @click=${this.#handleLinkClick}>
 								<span>
 									<sl-icon name="gear"></sl-icon>
 								</span>

@@ -6,11 +6,11 @@ import { noChange, nothing, TemplateResult } from 'lit'
 
 class WhenUser extends AsyncDirective {
 
-	private subscription: Subscription | null = null
+	#subscription: Subscription = new Subscription()
 
 	override render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
-			this.subscription = getUser().subscribe((user) => {
+			this.#subscription = getUser().subscribe((user) => {
                 if (user) {
 					this.setValue(trueCase())
 				} else if (falseCase) {
@@ -24,7 +24,7 @@ class WhenUser extends AsyncDirective {
 	}
 
 	override disconnected() {
-		this.subscription?.unsubscribe()
+		this.#subscription.unsubscribe()
 	}
 }
 

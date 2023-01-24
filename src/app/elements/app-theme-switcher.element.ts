@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
 import '@shoelace-style/shoelace/dist/components/menu/menu.js'
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
@@ -10,14 +10,14 @@ import '@shoelace-style/shoelace/dist/components/button/button.js'
 export class AppThemeSwitcher extends LitElement {
 	static styles = css``
 
-	@state()
-	private theme: 'auto' | 'light' | 'dark' | string = 'auto'
+	@property({ type: String, reflect: true })
+	theme: 'auto' | 'light' | 'dark' | string
 	
 	@state()
-	private icon = 'moon-stars-fill'
+	icon = 'moon-stars-fill'
 
-	private preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-	private preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+	preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+	preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
 
 	constructor() {
 		super()

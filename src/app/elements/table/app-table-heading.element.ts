@@ -60,13 +60,13 @@ export class AppTableHeading extends LitElement {
 	@property({ type: Number, reflect: true })
 	delay: number | undefined | null
 
-	private $filterEvent = new Subject()
+	#filterEvent = new Subject()
 
-	private filterSubscription: Subscription = new Subscription()
+	#filterSubscription: Subscription = new Subscription()
 
     override connectedCallback() {
 		super.connectedCallback()
-		this.filterSubscription = this.$filterEvent
+		this.#filterSubscription = this.#filterEvent
 			.asObservable()
 			.pipe(debounceTime(this.delay || 0))
 			.subscribe(() => this.dispatchFilterEvent())
@@ -74,7 +74,7 @@ export class AppTableHeading extends LitElement {
 
     override disconnectedCallback() {
 		super.disconnectedCallback()
-		this.filterSubscription.unsubscribe()
+		this.#filterSubscription.unsubscribe()
 	}
 
     dispatchFilterEvent() {
@@ -89,13 +89,13 @@ export class AppTableHeading extends LitElement {
         }))
     }
 
-    private filterColumnValue(event: CustomEvent) {
+    filterColumnValue(event: CustomEvent) {
         const input = event.target as HTMLElementTagNameMap['sl-input'] | HTMLElementTagNameMap['sl-select']
         this.value = input.value?.toString()
-		this.$filterEvent.next(this.value)
+		this.#filterEvent.next(this.value)
 	}
 
-    private filterColumnOrder() {
+    filterColumnOrder() {
         if (!this.order) {
 			this.order = 'asc'
 		} else if (this.order === 'asc') {

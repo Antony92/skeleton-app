@@ -37,13 +37,13 @@ export class AppPaginator extends LitElement {
 	@property({ type: Array })
 	pageSizeOptions = [5, 10, 20]
 
-	private previousPageIndex = 0
+	#previousPageIndex = 0
 
-	private pageSizeChange(event: CustomEvent) {
+	#pageSizeChange(event: CustomEvent) {
 		const value = (<HTMLElementTagNameMap['sl-select']>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
-		this.previousPageIndex = this.pageIndex
+		this.#previousPageIndex = this.pageIndex
 		this.pageIndex = Math.floor(startIndex / pageSize) || 0
 		this.pageSize = pageSize
 		this.emitPageEvent()
@@ -66,42 +66,42 @@ export class AppPaginator extends LitElement {
 		return Math.ceil(this.length / this.pageSize)
 	}
 
-	private firstPage() {
+	#firstPage() {
 		if (!this.hasPreviousPage()) return
-		this.previousPageIndex = this.pageIndex
+		this.#previousPageIndex = this.pageIndex
 		this.pageIndex = 0
 		this.emitPageEvent()
 	}
 
-	private lastPage() {
+	#lastPage() {
 		if (!this.hasNextPage()) return
-		this.previousPageIndex = this.pageIndex
+		this.#previousPageIndex = this.pageIndex
 		this.pageIndex = this.getNumberOfPages() - 1
 		this.emitPageEvent()
 	}
 
-	private nextPage() {
+	#nextPage() {
 		if (!this.hasNextPage()) return
-		this.previousPageIndex = this.pageIndex
+		this.#previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex + 1
 		this.emitPageEvent()
 	}
 
-	private previousPage() {
+	#previousPage() {
 		if (!this.hasPreviousPage()) return
-		this.previousPageIndex = this.pageIndex
+		this.#previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex - 1
 		this.emitPageEvent()
 	}
 
-	private getRangeLabel() {
+	#getRangeLabel() {
 		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
 		const startIndex = this.pageIndex * this.pageSize
 		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
 		return `${startIndex + 1} - ${endIndex} of ${this.length}`
 	}
 
-	private emitPageEvent() {
+	emitPageEvent() {
 		this.dispatchEvent(
 			new CustomEvent('app-paginate', {
 				bubbles: true,
@@ -109,7 +109,7 @@ export class AppPaginator extends LitElement {
 				detail: {
 					pageSize: this.pageSize,
 					pageIndex: this.pageIndex,
-					previousPageIndex: this.previousPageIndex,
+					previousPageIndex: this.#previousPageIndex,
 					length: this.length,
 				},
 			})
@@ -119,15 +119,15 @@ export class AppPaginator extends LitElement {
 	override render() {
 		return html`
 			Items per page:
-			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${(event: CustomEvent) => this.pageSizeChange(event)}>
+			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.#pageSizeChange}>
 				${this.pageSizeOptions.map((value) => html`<sl-option value=${value}>${value}</sl-option>`)}
 			</sl-select>
-			${this.getRangeLabel()}
+			${this.#getRangeLabel()}
 			<sl-icon-button
 				name="chevron-bar-left"
 				label="First"
 				title="First"
-				@click=${this.firstPage}
+				@click=${this.#firstPage}
 				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
@@ -135,7 +135,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-left"
 				label="Previous"
 				title="Previous"
-				@click=${this.previousPage}
+				@click=${this.#previousPage}
 				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
@@ -143,7 +143,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-right"
 				label="Next"
 				title="Next"
-				@click=${this.nextPage}
+				@click=${this.#nextPage}
 				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>
@@ -151,7 +151,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-bar-right" 
 				label="Last" 
 				title="Last" 
-				@click=${this.lastPage}
+				@click=${this.#lastPage}
 				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>

@@ -34,17 +34,17 @@ export class AppTable extends LitElement {
 	@property({ type: Boolean })
 	loading = false
 
-	private searchQuery: SearchQuery = { }
+	searchQuery: SearchQuery = { }
 
-	private $searchEvent = new Subject<string>()
+	#searchEvent = new Subject<string>()
 
-	private searchSubscription: Subscription = new Subscription()
+	#searchSubscription: Subscription = new Subscription()
 
-	private filtersApplied = false
+	#filtersApplied = false
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.searchSubscription = this.$searchEvent
+		this.#searchSubscription = this.#searchEvent
 			.asObservable()
 			.pipe(debounceTime(300))
 			.subscribe((value) => {
@@ -53,14 +53,14 @@ export class AppTable extends LitElement {
 				} else {
 					delete this.searchQuery.search
 				}
-				this.filtersApplied = this.hasFiltersApplied()
-				this.dispatchFilterEvent()
+				this.#filtersApplied = this.hasFiltersApplied()
+				this.#dispatchFilterEvent()
 			})
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback()
-		this.searchSubscription.unsubscribe()
+		this.#searchSubscription.unsubscribe()
 	}
 
     override firstUpdated() {
@@ -78,12 +78,12 @@ export class AppTable extends LitElement {
                 delete this.searchQuery['sort']
                 delete this.searchQuery['order']
             }
-            this.filtersApplied = this.hasFiltersApplied()
-            this.dispatchFilterEvent()
+            this.#filtersApplied = this.hasFiltersApplied()
+            this.#dispatchFilterEvent()
         })
     }
 
-	private dispatchFilterEvent() {
+	#dispatchFilterEvent() {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
@@ -91,17 +91,16 @@ export class AppTable extends LitElement {
         }))
 	}
 
-	private search(value: string) {
-		this.$searchEvent.next(value)
+	search(value: string) {
+		this.#searchEvent.next(value)
 	}
 
-    private hasFiltersApplied() {
+    hasFiltersApplied() {
         return Object.keys(this.searchQuery).length > 0
     }
 
-	
-	private async clearAllFilters() {
-		this.filtersApplied = false
+	clearAllFilters() {
+		this.#filtersApplied = false
 		this.searchQuery = {}
 		this.renderRoot
 			.querySelectorAll('sl-input')
@@ -137,7 +136,7 @@ export class AppTable extends LitElement {
                     </sl-input>
                 `)}
                 ${when(this.clearable, () => html`
-                    <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
+                    <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.#filtersApplied}>
                         <sl-icon slot="prefix" name="funnel"></sl-icon>
                         Clear filters
                     </sl-button>

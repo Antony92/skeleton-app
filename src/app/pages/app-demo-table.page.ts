@@ -1,4 +1,4 @@
-import { html, LitElement, css, PropertyValueMap } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import '../elements/app-paginator.element'
 import '../elements/table/app-table.element'
@@ -18,11 +18,11 @@ export class AppDemoTable extends LitElement {
 	@state()
 	loading = false
 
-	skip = 0
+	#skip = 0
 
-	limit = 10
+	#limit = 10
 
-	query = {}
+	#query = {}
 
 	@state()
 	users = {
@@ -51,28 +51,28 @@ export class AppDemoTable extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback()
-		this.loadUsers({ skip: this.skip, limit: this.limit })
+		this.loadUsers({ skip: this.#skip, limit: this.#limit })
 		this.addEventListener('app-table-filter', (event) => {
-			this.query = (<CustomEvent>event).detail
+			this.#query = (<CustomEvent>event).detail
 			this.paginator?.reset()
-			this.skip = 0
-			this.loadUsers({ skip: this.skip, limit: this.limit, ...this.query })
+			this.#skip = 0
+			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
 		})
 		this.addEventListener('app-paginate', (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
-            this.limit = pageSize
-            this.skip = pageSize * pageIndex
-			this.loadUsers({ skip: this.skip, limit: this.limit, ...this.query })
+            this.#limit = pageSize
+            this.#skip = pageSize * pageIndex
+			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#query })
 		})
 		this.addEventListener('app-table-clear', (event) => {
-			this.query = {}
+			this.#query = {}
 			this.paginator?.reset()
-			this.skip = 0
-			this.loadUsers({ skip: this.skip, limit: this.limit })
+			this.#skip = 0
+			this.loadUsers({ skip: this.#skip, limit: this.#limit })
 		})
 	}
 
-	private async loadUsers(query: SearchQuery) {
+	async loadUsers(query: SearchQuery) {
 		this.loading = true
 		this.users = await getUsers(query)
 		this.loading = false

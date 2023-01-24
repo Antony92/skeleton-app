@@ -14,7 +14,7 @@ export class AppRoot extends LitElement {
 		css``
 	]
 
-	private router = new Router(this, [
+	router = new Router(this, [
 		{ path: '/', render: () => html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
 		{
 			path: '/form',

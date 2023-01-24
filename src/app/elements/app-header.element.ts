@@ -60,7 +60,7 @@ export class AppHeader extends LitElement {
     initials: string | undefined  = ''
 
     @state()
-    private loginLoading = false
+    loginLoading = false
 
     @query('sl-drawer') drawer!: HTMLElementTagNameMap['sl-drawer']
 
@@ -78,10 +78,6 @@ export class AppHeader extends LitElement {
         this.loginLoading = true
         await login()
         this.loginLoading = false
-    }
-
-    override disconnectedCallback() {
-        super.disconnectedCallback()
     }
 
 	override render() {

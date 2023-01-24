@@ -23,7 +23,7 @@ export class AppDemoForm extends LitElement {
 	]
 
 	@state()
-	private products: any[] = []
+	products: any[] = []
 
 	@query('form') 
 	form!: HTMLFormElement
