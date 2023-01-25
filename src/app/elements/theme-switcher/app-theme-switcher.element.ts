@@ -22,8 +22,12 @@ export class AppThemeSwitcher extends LitElement {
 	constructor() {
 		super()
 		this.theme = localStorage.getItem('theme') ?? 'auto'
-		if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) this.icon = 'sun-fill'
-		if (this.theme === 'dark'|| (this.theme === 'auto' && this.preferedDark)) this.icon = 'moon-stars-fill'
+		if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) {
+			this.icon = 'sun-fill'
+		}
+		if (this.theme === 'dark' || (this.theme === 'auto' && this.preferedDark)) {
+			this.icon = 'moon-stars-fill'
+		}
 	}
 
 	changeTheme(event: CustomEvent) {
