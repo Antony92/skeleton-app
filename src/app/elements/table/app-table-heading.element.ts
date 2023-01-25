@@ -57,7 +57,7 @@ export class AppTableHeading extends LitElement {
 	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' | undefined | null = 'text'
 
     @property({ type: Array })
-    values: { label: string, value: string | boolean | number }[] | undefined | null
+    list: { label: string, value: string | boolean | number }[] | undefined | null
 
 	@property({ type: Number, reflect: true })
 	delay: number | undefined | null
@@ -174,7 +174,7 @@ export class AppTableHeading extends LitElement {
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >
-                    ${this.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
+                    ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
                 </sl-select>
             `)}
             ${when(this.filterable && this.type === 'select', () => html`
@@ -185,7 +185,7 @@ export class AppTableHeading extends LitElement {
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >
-                    ${this.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
+                    ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
                 </sl-select>
             `)}
             ${when(this.filterable && this.type === 'select-multiple', () => html`
@@ -198,7 +198,7 @@ export class AppTableHeading extends LitElement {
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >
-                    ${this.values?.map((v) => html`<sl-option value=${v.value}>${v.label}</sl-option>`)}
+                    ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
                 </sl-select>
             `)}
 		`

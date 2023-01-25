@@ -48,7 +48,7 @@ export class AppDemoTable extends LitElement {
 			type: 'select',
 			sortable: true,
 			filtarable: true,
-			values: [
+			list: [
 				{ label: 'Gwenborough', value: 'Gwenborough' },
 				{ label: 'Wisokyburgh', value: 'Wisokyburgh' },
 				{ label: 'McKenziehaven', value: 'McKenziehaven' },
@@ -97,7 +97,7 @@ export class AppDemoTable extends LitElement {
 							.field=${column.field}
 							.type=${column.type}
 							.delay=${column.delay}
-							.values=${column.values}
+							.list=${column.list}
 						>
 							${column.header}
 						</app-table-heading>
@@ -120,7 +120,7 @@ export class AppDemoTable extends LitElement {
 					`)}
 				</app-table-body>
 				
-				<app-paginator slot="paginator" pageSize="10" .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}></app-paginator>
+				<app-paginator slot="paginator" .pageSize=${10} .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}></app-paginator>
 			</app-table>
 		`
 	}
