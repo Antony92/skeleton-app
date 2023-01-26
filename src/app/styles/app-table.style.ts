@@ -32,6 +32,7 @@ export const appTableStyle = css`
 
     .table sl-spinner {
         font-size: 3rem;
+        z-index: 1;
         position: absolute;
         top: 50%;
         left: 50%;

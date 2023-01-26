@@ -114,7 +114,7 @@ export class AppTable extends LitElement {
 	}
 
 	get headings() {
-		const slot = this.renderRoot.querySelector('slot[name=head]')
+		const slot = this.renderRoot.querySelector('slot')
 		const head = (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-table-head'))[0]
 		return head?.querySelectorAll('app-table-heading')
 	}
@@ -146,8 +146,7 @@ export class AppTable extends LitElement {
 			<div class="table-wrapper">
 				<div class=${classMap({ table: true, loading: this.loading })}>
 					<sl-spinner></sl-spinner>
-					<slot name="head"></slot>
-					<slot name="body"></slot>
+					<slot></slot>
 				</div>
 			</div>
             <slot name="paginator"></slot>

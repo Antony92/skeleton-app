@@ -6,7 +6,7 @@ import { AppTableHeading } from './app-table-heading.element'
 export class AppTableHead extends LitElement {
 	static styles = css`
 		:host {
-            display: table-row-group;
+            display: table-header-group;
         }
 	`
 

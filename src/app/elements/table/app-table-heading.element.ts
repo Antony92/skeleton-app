@@ -15,6 +15,7 @@ export class AppTableHeading extends LitElement {
 	static styles = css`
         :host {
             display: table-cell;
+            vertical-align: bottom;
             padding: 10px;
         }
 
