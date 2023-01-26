@@ -9,14 +9,14 @@ import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import { Subject, Subscription, debounceTime } from 'rxjs'
 import { SearchQuery } from '../../types/search.type'
-import { appTableFilterBoxStyle, appTableStyle } from '../../styles/app-table.style'
+import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
 	static styles = [
-		appTableFilterBoxStyle,
+		appTableActionsBoxStyle,
 		appTableStyle,
 		css`
 			::slotted(app-paginator) {
@@ -121,7 +121,7 @@ export class AppTable extends LitElement {
 
 	render() {
 		return html`
-			<div class="filter-box">
+			<div class="actions">
                 ${when(this.searchable, () => html`
                     <sl-input
                         autocomplete="off"
@@ -136,6 +136,7 @@ export class AppTable extends LitElement {
                         <sl-icon name="search" slot="prefix"></sl-icon>
                     </sl-input>
                 `)}
+				<slot name="actions"></slot>
                 ${when(this.clearable, () => html`
                     <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.#filtersApplied}>
                         <sl-icon slot="prefix" name="funnel"></sl-icon>

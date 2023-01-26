@@ -1,16 +1,19 @@
 import { css } from 'lit'
 
-export const appTableFilterBoxStyle = css`
-    .filter-box {
+export const appTableActionsBoxStyle = css`
+    .actions {
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
-        justify-content: space-between;
         margin-bottom: 10px;
     }
 
-    .filter-box sl-input {
+    .actions sl-input {
         width: 350px;
+    }
+
+    .actions sl-button {
+        margin-left: auto;
     }
 `
 
