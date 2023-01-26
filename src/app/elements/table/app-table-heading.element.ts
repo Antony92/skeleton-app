@@ -29,6 +29,16 @@ export class AppTableHeading extends LitElement {
 		}
         .sortable sl-icon {
             margin-top: 3px;
+            pointer-events: none;
+        }
+        .sortable sl-icon.placeholder {
+            opacity: 0;
+            transition: all 300ms;
+            translate: 0 25%;
+        }
+        .sortable sl-icon.placeholder.active {
+            opacity: .5;
+            translate: 0 0;
         }
         sl-input, sl-select {
             min-width: 200px;
@@ -98,6 +108,8 @@ export class AppTableHeading extends LitElement {
 	}
 
     filterColumnOrder() {
+        if (!this.sortable) return
+
         if (!this.order) {
 			this.order = 'desc'
 		} else if (this.order === 'desc') {
@@ -126,10 +138,24 @@ export class AppTableHeading extends LitElement {
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
     }
 
+    #showSortPlaceholder() {
+        this.renderRoot.querySelector('sl-icon.placeholder')?.classList.add('active')
+    }
+
+    #hideSortPlaceholder() {
+        this.renderRoot.querySelector('sl-icon.placeholder')?.classList.remove('active')
+    }
+
 	override render() {
 		return html`
-			<div class=${classMap({ heading: true, sortable: this.sortable })}  @click=${() => (this.sortable ? this.filterColumnOrder() : '')}>
+			<div 
+                class=${classMap({ heading: true, sortable: this.sortable })}  
+                @click=${this.filterColumnOrder}
+                @mouseenter=${this.#showSortPlaceholder}
+                @mouseleave=${this.#hideSortPlaceholder}
+            >
 				<slot></slot>
+                ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
 			</div>

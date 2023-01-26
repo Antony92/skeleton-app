@@ -32,6 +32,7 @@ export const appTableLoaderStyle = css`
         z-index: 1;
         visibility: visible;
         opacity: 1;
+        pointer-events: none;
         transition: opacity 0.3s;
     }
 
