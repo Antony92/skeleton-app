@@ -107,7 +107,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	isChecked() {
-		return this.users.data.filter(user => user).every(user => user.checked)
+		return this.users.data.length > 0 && this.users.data.every(user => user.checked)
 	}
 
 	render() {
@@ -144,16 +144,16 @@ export class AppDemoTable extends LitElement {
 								@sl-change=${(event: CustomEvent) => this.toggleSingleSelection(event, user)}>
 							</sl-checkbox>
 							</app-table-cell>
-							<app-table-cell>${user.name}</app-table-cell>
-							<app-table-cell>${user.username}</app-table-cell>
-							<app-table-cell>${user.email}</app-table-cell>
-							<app-table-cell>${user.website}</app-table-cell>
-							<app-table-cell>${user.address.city}</app-table-cell>
+							<app-table-cell textlimit>${user.name}</app-table-cell>
+							<app-table-cell textlimit>${user.username}</app-table-cell>
+							<app-table-cell textlimit>${user.email}</app-table-cell>
+							<app-table-cell textlimit>${user.website}</app-table-cell>
+							<app-table-cell textlimit>${user.address.city}</app-table-cell>
 						</app-table-row>
 					`)}
 					${when(this.users.data.length === 0 && !this.loading, () => html`
 						<app-table-row>
-							<app-table-cell>No results found</app-table-cell>
+							<app-table-cell noresult>No results found</app-table-cell>
 						</app-table-row>
 					`)}
 				</app-table-body>
