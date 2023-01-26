@@ -106,7 +106,7 @@ export class AppSidebar extends LitElement {
 
 	`
 
-	override firstUpdated() {
+	firstUpdated() {
 		const path = location.pathname.split('/')[1]
 		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
 	}
@@ -118,7 +118,7 @@ export class AppSidebar extends LitElement {
 		clickedLink?.classList.add('active')
 	}
 
-	override render() {
+	render() {
 		return html`
 			<nav>
 				<ul class="navigation-menu">

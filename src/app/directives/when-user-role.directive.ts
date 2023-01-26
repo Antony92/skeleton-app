@@ -8,7 +8,7 @@ class WhenUserRole extends AsyncDirective {
 
 	#subscription: Subscription = new Subscription()
 
-	override render(roles: string[], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	render(roles: string[], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
 			this.#subscription = getUser().subscribe((user) => {
                 if (user?.roles?.some((role: string) => roles.includes(role))) {
@@ -23,7 +23,7 @@ class WhenUserRole extends AsyncDirective {
 		return noChange
 	}
 
-	override disconnected() {
+	disconnected() {
 		this.#subscription.unsubscribe()
 	}
 }

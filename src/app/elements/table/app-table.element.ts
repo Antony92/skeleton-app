@@ -9,15 +9,14 @@ import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import { Subject, Subscription, debounceTime } from 'rxjs'
 import { SearchQuery } from '../../types/search.type'
-import { appTableFilterBoxStyle, appTableLoaderStyle, appTableStyle, appTableWrapperStyle } from '../../styles/app-table.style'
+import { appTableFilterBoxStyle, appTableStyle } from '../../styles/app-table.style'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
 	static styles = [
 		appTableFilterBoxStyle,
-		appTableLoaderStyle,
-        appTableWrapperStyle,
 		appTableStyle,
 		css`
 			::slotted(app-paginator) {
@@ -44,7 +43,7 @@ export class AppTable extends LitElement {
 
 	#filtersApplied = false
 
-	override connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		this.#searchSubscription = this.#searchEvent
 			.asObservable()
@@ -60,12 +59,12 @@ export class AppTable extends LitElement {
 			})
 	}
 
-	override disconnectedCallback() {
+	disconnectedCallback() {
 		super.disconnectedCallback()
 		this.#searchSubscription.unsubscribe()
 	}
 
-    override firstUpdated() {
+    firstUpdated() {
         this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
             if (value) {
@@ -120,7 +119,7 @@ export class AppTable extends LitElement {
 		return head?.querySelectorAll('app-table-heading')
 	}
 
-	override render() {
+	render() {
 		return html`
 			<div class="filter-box">
                 ${when(this.searchable, () => html`
@@ -145,10 +144,8 @@ export class AppTable extends LitElement {
                 `)}
 			</div>
 			<div class="table-wrapper">
-				<div class="table-loader" ?hidden=${!this.loading}>
+				<div class=${classMap({ table: true, loading: this.loading })}>
 					<sl-spinner></sl-spinner>
-				</div>
-				<div class="table">
 					<slot name="head"></slot>
 					<slot name="body"></slot>
 				</div>

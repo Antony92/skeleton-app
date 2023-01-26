@@ -8,7 +8,7 @@ class WhenUser extends AsyncDirective {
 
 	#subscription: Subscription = new Subscription()
 
-	override render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	render(trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
 		if (this.isConnected) {
 			this.#subscription = getUser().subscribe((user) => {
                 if (user) {
@@ -23,7 +23,7 @@ class WhenUser extends AsyncDirective {
 		return noChange
 	}
 
-	override disconnected() {
+	disconnected() {
 		this.#subscription.unsubscribe()
 	}
 }

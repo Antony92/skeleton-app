@@ -9,7 +9,7 @@ export class AppTableRow extends LitElement {
         }
 	`
 
-	override render() {
+	render() {
 		return html`<slot></slot>`
 	}
 }

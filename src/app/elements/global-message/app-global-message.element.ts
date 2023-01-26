@@ -74,7 +74,7 @@ export class AppGlobalMessage extends LitElement {
 			})
 	}
 
-	override render() {
+	render() {
 		return html`
 			<div>
 				<span>${this.message}</span>

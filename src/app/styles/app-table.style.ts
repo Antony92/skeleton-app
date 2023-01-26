@@ -14,42 +14,33 @@ export const appTableFilterBoxStyle = css`
     }
 `
 
-export const appTableWrapperStyle = css`
-    .table-wrapper {
-        overflow-x: auto;
-        position: relative;
-    }
-`
-
-export const appTableLoaderStyle = css`
-    .table-loader {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1;
-        visibility: visible;
-        opacity: 1;
-        pointer-events: none;
-        transition: opacity 0.3s;
-    }
-
-    .table-loader sl-spinner {
-        font-size: 3rem;
-    }
-
-    .table-loader[hidden] {
-        opacity: 0;
-        visibility: hidden;
-    }
-`
-
 export const appTableStyle = css`
     .table {
         display: table;
         width: 100%;
         border-collapse: collapse;
+    }
+
+    .table.loading {
+       pointer-events: none;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        position: relative;
+    }
+
+    .table sl-spinner {
+        font-size: 3rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        transition: opacity 0.3s;
+        opacity: 0;
+    }
+
+    .table.loading sl-spinner {
+        opacity: 1;
     }
 `

@@ -28,12 +28,12 @@ export class AppDemoForm extends LitElement {
 	@query('form') 
 	form!: HTMLFormElement
 
-	override connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		this.loadProducts()
 	}
 
-	override firstUpdated() {
+	firstUpdated() {
 		this.form.addEventListener('submit', (event) => {
 			event.preventDefault()
 			const json = serialize(this.form)
@@ -45,7 +45,7 @@ export class AppDemoForm extends LitElement {
 		this.products = await getProducts()
 	}
 
-	override render() {
+	render() {
 		return html`
 			<form class="form-validation">
 				<sl-input filled type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>

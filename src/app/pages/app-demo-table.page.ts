@@ -12,7 +12,6 @@ import { getUsers } from '../services/api.service'
 import { SearchQuery } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
 import { when } from 'lit/directives/when.js'
-import { confirmDialog } from '../services/confirm-dialog.service'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -56,7 +55,7 @@ export class AppDemoTable extends LitElement {
 		},
 	]
 
-	override connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		this.loadUsers({ skip: this.#skip, limit: this.#limit })
 		this.addEventListener('app-table-filter', async (event) => {
@@ -85,7 +84,7 @@ export class AppDemoTable extends LitElement {
 		this.loading = false
 	}
 
-	override render() {
+	render() {
 		return html`
 			<app-table searchable clearable ?loading=${this.loading}>
 				<app-table-head slot="head">

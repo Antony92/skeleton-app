@@ -14,7 +14,7 @@ export class AppTableCell extends LitElement {
         }
 	`
 
-	override render() {
+	render() {
 		return html`<slot></slot>`
 	}
 }

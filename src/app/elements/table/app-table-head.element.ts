@@ -10,7 +10,7 @@ export class AppTableHead extends LitElement {
         }
 	`
 
-	override connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		this.addEventListener('app-table-column-filter', (event) => {
 			const { target, detail: { order }} = (<CustomEvent>event)
@@ -28,7 +28,7 @@ export class AppTableHead extends LitElement {
 		return Array.from(headings) as AppTableHeading[]
 	}
 
-	override render() {
+	render() {
 		return html`<slot></slot>`
 	}
 }

@@ -11,7 +11,7 @@ export class AppDemoAlerts extends LitElement {
 		css``
 	]
 
-	override render() {
+	render() {
 		return html`
 			<div>
 				Global message

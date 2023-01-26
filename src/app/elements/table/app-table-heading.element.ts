@@ -17,6 +17,7 @@ export class AppTableHeading extends LitElement {
             display: table-cell;
             padding: 10px;
         }
+
 		.heading {
             display: flex;
             align-items: center;
@@ -24,22 +25,26 @@ export class AppTableHeading extends LitElement {
             gap: 5px;
             font-weight: bold;
         }
+
 		.sortable {
 			cursor: pointer;
 		}
+
         .sortable sl-icon {
             margin-top: 3px;
-            pointer-events: none;
         }
+
         .sortable sl-icon.placeholder {
             opacity: 0;
             transition: all 300ms;
             translate: 0 25%;
         }
-        .sortable sl-icon.placeholder.active {
+
+        .sortable:not(:focus):hover sl-icon.placeholder {
             opacity: .5;
             translate: 0 0;
         }
+
         sl-input, sl-select {
             min-width: 200px;
         }
@@ -76,7 +81,7 @@ export class AppTableHeading extends LitElement {
 
 	#filterSubscription: Subscription = new Subscription()
 
-    override connectedCallback() {
+    connectedCallback() {
 		super.connectedCallback()
 		this.#filterSubscription = this.#filterEvent
 			.asObservable()
@@ -84,7 +89,7 @@ export class AppTableHeading extends LitElement {
 			.subscribe(() => this.dispatchFilterEvent())
 	}
 
-    override disconnectedCallback() {
+    disconnectedCallback() {
 		super.disconnectedCallback()
 		this.#filterSubscription.unsubscribe()
 	}
@@ -108,8 +113,7 @@ export class AppTableHeading extends LitElement {
 	}
 
     filterColumnOrder() {
-        if (!this.sortable) return
-
+        this.renderRoot.querySelector<HTMLElement>('.heading')?.focus()
         if (!this.order) {
 			this.order = 'desc'
 		} else if (this.order === 'desc') {
@@ -138,27 +142,17 @@ export class AppTableHeading extends LitElement {
 			.forEach((select) => (select.value = select.multiple ? [] : ''))
     }
 
-    #showSortPlaceholder() {
-        this.renderRoot.querySelector('sl-icon.placeholder')?.classList.add('active')
-    }
-
-    #hideSortPlaceholder() {
-        this.renderRoot.querySelector('sl-icon.placeholder')?.classList.remove('active')
-    }
-
-	override render() {
+	render() {
 		return html`
-			<div 
+			<div tabindex="-1"
                 class=${classMap({ heading: true, sortable: this.sortable })}  
-                @click=${this.filterColumnOrder}
-                @mouseenter=${this.#showSortPlaceholder}
-                @mouseleave=${this.#hideSortPlaceholder}
+                @click=${this.sortable ? this.filterColumnOrder : null}
             >
 				<slot></slot>
                 ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
-			</div>
+            </div>
 			${when(this.filterable && this.type === 'text', () => html`
                 <sl-input
                     filled

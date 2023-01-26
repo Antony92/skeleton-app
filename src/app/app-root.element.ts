@@ -51,13 +51,13 @@ export class AppRoot extends LitElement {
 		{ path: '/*', render: () => html`<h1>Page not found</h1>` },
 	])
 
-	override connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
 		window.addEventListener('online', () => hideGlobalMessage())
 	}
 
-	override render() {
+	render() {
 		return html`
 			<div class="container">
 				<app-header appTitle="Application" class="header"></app-header>

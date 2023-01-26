@@ -114,7 +114,7 @@ export class AppPaginator extends LitElement {
 		)
 	}
 
-	override render() {
+	render() {
 		return html`
 			Items per page:
 			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.#pageSizeChange}>

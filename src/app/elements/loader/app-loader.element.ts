@@ -53,7 +53,7 @@ export class AppLoader extends LitElement {
         }
 	`
 
-	override render() {
+	render() {
 		return html`<div class="loader-line"></div>`
 	}
 }

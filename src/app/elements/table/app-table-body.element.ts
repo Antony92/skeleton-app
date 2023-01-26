@@ -7,15 +7,17 @@ export class AppTableBody extends LitElement {
 		:host {
             display: table-row-group;
         }
+
 		::slotted(app-table-row:not(:last-child)) {
 			border-bottom: 1px solid grey;
 		}
+		
 		::slotted(app-table-row:first-child) {
 			border-top: 1px solid grey;
 		}
 	`
 
-	override render() {
+	render() {
 		return html`<slot></slot>`
 	}
 }

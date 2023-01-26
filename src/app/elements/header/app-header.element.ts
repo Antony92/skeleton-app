@@ -65,7 +65,7 @@ export class AppHeader extends LitElement {
 
     @query('sl-drawer') drawer!: SlDrawer
 
-    override connectedCallback() {
+    connectedCallback() {
         super.connectedCallback()
         getUser().subscribe(user => {
             if (user) {
@@ -81,7 +81,7 @@ export class AppHeader extends LitElement {
         this.loginLoading = false
     }
 
-	override render() {
+	render() {
 		return html`
 			<header>
                 <sl-icon-button class="menu-button" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
