@@ -103,9 +103,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	isIndeterminate() {
-		const allChecked = this.users.data.filter(user => user).every(user => user.checked)
-		const someChecked = this.users.data.some(user => user.checked)
-		return !allChecked && someChecked
+		return this.users.data.some(user => user.checked)
 	}
 
 	isChecked() {
