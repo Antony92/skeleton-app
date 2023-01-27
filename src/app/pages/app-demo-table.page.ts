@@ -35,7 +35,7 @@ export class AppDemoTable extends LitElement {
 	@state()
 	users = {
 		data: [] as any[],
-		total: 0
+		total: 0,
 	}
 
 	@state()
@@ -69,15 +69,15 @@ export class AppDemoTable extends LitElement {
 		})
 		this.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
-            this.#limit = pageSize
+			this.#limit = pageSize
 			localStorage.setItem('limit', this.#limit.toString())
-            this.#skip = pageSize * pageIndex
+			this.#skip = pageSize * pageIndex
 			await this.loadUsers()
 		})
 		this.addEventListener('app-table-clear', async () => {
 			this.#searchParams = {}
 			this.#skip = 0
-			this.columns.forEach(column => {
+			this.columns.forEach((column) => {
 				column.selected = ''
 				column.order = null
 			})
@@ -89,13 +89,13 @@ export class AppDemoTable extends LitElement {
 	async init() {
 		this.#searchParams = Object.fromEntries(new URLSearchParams(window.location.search))
 		this.#limit = Number(localStorage.getItem('limit')) || this.#limit
-		Object.keys(this.#searchParams).forEach(key => {
-			const column = this.columns.find(column => column.field === key)
+		Object.keys(this.#searchParams).forEach((key) => {
+			const column = this.columns.find((column) => column.field === key)
 			if (column) {
 				column.selected = this.#searchParams[key]
 			}
 		})
-		const sorted = this.columns.find(column => column.field === this.#searchParams['sort'])
+		const sorted = this.columns.find((column) => column.field === this.#searchParams['sort'])
 		if (sorted) {
 			sorted.order = this.#searchParams['order'] as never
 		}
@@ -106,7 +106,7 @@ export class AppDemoTable extends LitElement {
 		this.loading = true
 		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 		this.loading = false
-		this.users.data.forEach(user => {
+		this.users.data.forEach((user) => {
 			user.checked = false
 		})
 		addSearchParamsToURL({ ...this.#searchParams })
@@ -114,7 +114,7 @@ export class AppDemoTable extends LitElement {
 
 	toggleAllSelection(event: CustomEvent) {
 		const checkbox = <SlCheckbox>event.target
-		this.users.data.forEach(user => {
+		this.users.data.forEach((user) => {
 			user.checked = checkbox.checked
 		})
 		this.requestUpdate()
@@ -126,11 +126,11 @@ export class AppDemoTable extends LitElement {
 	}
 
 	isIndeterminate() {
-		return this.users.data.some(user => user.checked)
+		return this.users.data.some((user) => user.checked)
 	}
 
 	isChecked() {
-		return this.users.data.length > 0 && this.users.data.every(user => user.checked)
+		return this.users.data.length > 0 && this.users.data.every((user) => user.checked)
 	}
 
 	hasFiltersApplied() {
@@ -139,67 +139,66 @@ export class AppDemoTable extends LitElement {
 
 	render() {
 		return html`
-			<app-table 
-				searchable 
-				clearable 
-				?loading=${this.loading} 
+			<app-table
+				searchable
+				clearable
+				?loading=${this.loading}
 				.filtersApplied=${this.hasFiltersApplied()}
 				.searchValue=${this.#searchParams.search}
 			>
 				<app-table-head>
 					<app-table-heading>
-						<sl-checkbox 
-							?indeterminate=${this.isIndeterminate()}
-							?checked=${this.isChecked()}
-							@sl-change=${this.toggleAllSelection}>
+						<sl-checkbox ?indeterminate=${this.isIndeterminate()} ?checked=${this.isChecked()} @sl-change=${this.toggleAllSelection}>
 						</sl-checkbox>
 					</app-table-heading>
-					${this.columns.map((column) => html`
-						<app-table-heading 
-							?sortable=${column.sortable}
-							?filterable=${column.filtarable}
-							.label=${column.header}
-							.field=${column.field}
-							.type=${column.type || 'text'}
-							.delay=${column.delay || 0}
-							.list=${column.list || []}
-							.selected=${column.selected || ''}
-							.order=${column.order || null}
-						>
-							${column.header}
-						</app-table-heading>
-					`)}
+					${this.columns.map(
+						(column) => html`
+							<app-table-heading
+								?sortable=${column.sortable}
+								?filterable=${column.filtarable}
+								.label=${column.header}
+								.field=${column.field}
+								.type=${column.type || 'text'}
+								.delay=${column.delay || 0}
+								.list=${column.list || []}
+								.selected=${column.selected || ''}
+								.order=${column.order || null}
+							>
+								${column.header}
+							</app-table-heading>
+						`
+					)}
 				</app-table-head>
 				<app-table-body>
-					${this.users.data.map(user => html`
-						<app-table-row>
-							<app-table-cell>
-								<sl-checkbox 
-								?checked=${user.checked} 
-								@sl-change=${(event: CustomEvent) => this.toggleSingleSelection(event, user)}>
-							</sl-checkbox>
-							</app-table-cell>
-							<app-table-cell textlimit>${user.name}</app-table-cell>
-							<app-table-cell textlimit>${user.username}</app-table-cell>
-							<app-table-cell textlimit>${user.email}</app-table-cell>
-							<app-table-cell textlimit>${user.website}</app-table-cell>
-							<app-table-cell textlimit>${user.address.city}</app-table-cell>
-						</app-table-row>
-					`)}
-					${when(this.users.data.length === 0 && !this.loading, () => html`
-						<app-table-row>
-							<app-table-cell noresult>No results found</app-table-cell>
-						</app-table-row>
-					`)}
+					${this.users.data.map(
+						(user) => html`
+							<app-table-row>
+								<app-table-cell>
+									<sl-checkbox
+										?checked=${user.checked}
+										@sl-change=${(event: CustomEvent) => this.toggleSingleSelection(event, user)}
+									>
+									</sl-checkbox>
+								</app-table-cell>
+								<app-table-cell textlimit>${user.name}</app-table-cell>
+								<app-table-cell textlimit>${user.username}</app-table-cell>
+								<app-table-cell textlimit>${user.email}</app-table-cell>
+								<app-table-cell textlimit>${user.website}</app-table-cell>
+								<app-table-cell textlimit>${user.address.city}</app-table-cell>
+							</app-table-row>
+						`
+					)}
+					${when(
+						this.users.data.length === 0 && !this.loading,
+						() => html`
+							<app-table-row>
+								<app-table-cell noresult>No results found</app-table-cell>
+							</app-table-row>
+						`
+					)}
 				</app-table-body>
-				
-				<app-paginator 
-					slot="paginator"
-					.pageSize=${this.#limit} 
-					.pageSizeOptions=${[5, 10, 15]} 
-					length=${this.users.total}
-				>
-				</app-paginator>
+
+				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}> </app-paginator>
 			</app-table>
 		`
 	}
