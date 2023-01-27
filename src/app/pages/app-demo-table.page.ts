@@ -61,7 +61,6 @@ export class AppDemoTable extends LitElement {
 	connectedCallback() {
 		super.connectedCallback()
 		this.init()
-		this.loadUsers()
 		this.addEventListener('app-table-filter', async (event) => {
 			this.#searchParams = (<CustomEvent>event).detail
 			this.#skip = 0
@@ -91,7 +90,7 @@ export class AppDemoTable extends LitElement {
 		this.paginator.pageIndex = this.#skip / this.#limit
 	}
 
-	init() {
+	async init() {
 		const search = Object.fromEntries(new URLSearchParams(window.location.search))
 		this.#skip = parseInt(search.skip) || this.#skip
 		this.#limit = parseInt(localStorage.getItem('limit')?.toString() || '') || parseInt(search.limit) || this.#limit
@@ -108,6 +107,7 @@ export class AppDemoTable extends LitElement {
 		if (sorted) {
 			sorted.order = this.#searchParams['order'] as never
 		}
+		await this.loadUsers()
 	}
 
 	async loadUsers() {
