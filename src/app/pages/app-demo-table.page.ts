@@ -86,8 +86,14 @@ export class AppDemoTable extends LitElement {
 		})
 	}
 
-	firstUpdated() {
-		this.paginator.pageIndex = this.#skip / this.#limit
+	updated(changedProperties: Map<string, any>) {
+		if (changedProperties.get('users')) {
+			if (this.#skip > (this.users.total - this.#limit) || this.#limit % this.#skip !== 0) {
+				this.#skip = 0
+				addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+			}
+			this.paginator.pageIndex = this.#skip / this.#limit
+		}	
 	}
 
 	async init() {
@@ -113,10 +119,10 @@ export class AppDemoTable extends LitElement {
 	async loadUsers() {
 		this.loading = true
 		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+		this.loading = false
 		this.users.data.forEach(user => {
 			user.checked = false
 		})
-		this.loading = false
 		addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 	}
 
