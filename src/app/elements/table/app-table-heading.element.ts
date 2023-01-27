@@ -69,9 +69,6 @@ export class AppTableHeading extends LitElement {
     @property({ type: String, reflect: true })
 	value: string  = ''
 
-    @property({ type: String || Array, reflect: true })
-	selected: string = ''
-
 	@property({ type: String, reflect: true })
 	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' = 'text'
 
@@ -164,7 +161,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="text"
                     placeholder="Filter by ${this.label}"
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -176,7 +173,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="number"
                     placeholder="Filter by ${this.label}"
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -188,7 +185,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="date"
                     placeholder="Filter by ${this.label}"
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -199,7 +196,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label}"
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
@@ -211,7 +208,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label}"
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
@@ -224,7 +221,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     multiple
                     .maxOptionsVisible=${2}
-                    .value=${this.selected || ''}
+                    .value=${this.value}
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >

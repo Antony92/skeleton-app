@@ -1,19 +1,24 @@
 import { css } from 'lit'
 
 export const appTableActionsBoxStyle = css`
-    .actions {
+    .actions-box {
         display: flex;
         flex-wrap: wrap;
-        gap: 15px;
+        gap: 10px;
         margin-bottom: 10px;
     }
 
-    .actions sl-input {
+    .actions-box sl-input {
         width: 350px;
     }
 
-    .actions sl-button {
+    .actions-box .clear-filters-button {
         margin-left: auto;
+    }
+
+    .actions-box .action-buttons {
+        display: flex;
+        gap: 10px;
     }
 `
 

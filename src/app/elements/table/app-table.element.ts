@@ -121,7 +121,7 @@ export class AppTable extends LitElement {
 
 	render() {
 		return html`
-			<div class="actions">
+			<div class="actions-box">
                 ${when(this.searchable, () => html`
                     <sl-input
                         autocomplete="off"
@@ -137,13 +137,15 @@ export class AppTable extends LitElement {
                         <sl-icon name="search" slot="prefix"></sl-icon>
                     </sl-input>
                 `)}
-				<slot name="actions"></slot>
-                ${when(this.clearable, () => html`
-                    <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
-                        <sl-icon slot="prefix" name="funnel"></sl-icon>
-                        Clear filters
-                    </sl-button>
-                `)}
+				<div class="action-buttons">
+					<slot name="actions"></slot>
+				</div>
+				${when(this.clearable, () => html`
+					<sl-button class="clear-filters-button" variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
+						<sl-icon slot="prefix" name="funnel"></sl-icon>
+						Clear filters
+					</sl-button>
+				`)}
 			</div>
 			<div class="table-wrapper">
 				<div class="table">

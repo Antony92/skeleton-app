@@ -1,6 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
+import '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import '../elements/paginator/app-paginator.element'
 import '../elements/table/app-table.element'
 import '../elements/table/app-table-head.element'
@@ -37,6 +38,8 @@ export class AppDemoTable extends LitElement {
 		data: [] as any[],
 		total: 0,
 	}
+
+	selection: any[] = []
 
 	@state()
 	columns: TableColumn[] = [
@@ -80,7 +83,7 @@ export class AppDemoTable extends LitElement {
 			addSearchParamsToURL({ ...this.#searchParams })
 			this.#skip = 0
 			this.columns.forEach((column) => {
-				column.selected = ''
+				column.value = ''
 				column.order = null
 			})
 			await this.loadUsers()
@@ -94,7 +97,7 @@ export class AppDemoTable extends LitElement {
 		Object.keys(this.#searchParams).forEach((key) => {
 			const column = this.columns.find((column) => column.field === key)
 			if (column) {
-				column.selected = this.#searchParams[key]
+				column.value = this.#searchParams[key]
 			}
 		})
 		const sorted = this.columns.find((column) => column.field === this.#searchParams['sort'])
@@ -109,33 +112,49 @@ export class AppDemoTable extends LitElement {
 		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 		this.loading = false
 		this.users.data.forEach((user) => {
-			user.checked = false
+			user.selected = this.selection.find((selected) => selected.id === user.id) ? true : false
 		})
 	}
 
 	toggleAllSelection(event: CustomEvent) {
 		const checkbox = <SlCheckbox>event.target
 		this.users.data.forEach((user) => {
-			user.checked = checkbox.checked
+			user.selected = checkbox.checked
+			if (user.selected) {
+				this.selection.push(user)
+			} else {
+				this.selection = this.selection.filter((selected) => selected.id !== user.id)
+			}
 		})
 		this.requestUpdate()
 	}
 
 	toggleSingleSelection(event: CustomEvent, user: any) {
-		user.checked = (<SlCheckbox>event.target).checked
+		user.selected = (<SlCheckbox>event.target).checked
+		if (user.selected) {
+			this.selection.push(user)
+		} else {
+			this.selection = this.selection.filter((selected) => selected.id !== user.id)
+		}
 		this.requestUpdate()
 	}
 
 	isIndeterminate() {
-		return this.users.data.some((user) => user.checked)
+		return this.users.data.some((user) => user.selected)
 	}
 
 	isChecked() {
-		return this.users.data.length > 0 && this.users.data.every((user) => user.checked)
+		return this.users.data.length > 0 && this.users.data.every((user) => user.selected)
 	}
 
 	hasFiltersApplied() {
 		return Object.keys(this.#searchParams).length > 0
+	}
+
+	deselectAll() {
+		this.selection = []
+		this.users.data.forEach((user) => (user.selected = false))
+		this.requestUpdate()
 	}
 
 	render() {
@@ -147,6 +166,20 @@ export class AppDemoTable extends LitElement {
 				.filtersApplied=${this.hasFiltersApplied()}
 				.searchValue=${this.#searchParams.search}
 			>
+				<sl-button
+					slot="actions"
+					variant="primary"
+					pill
+					?disabled=${this.selection.length === 0}
+					@click=${() => this.renderRoot.querySelector('sl-dialog')?.show()}
+				>
+					<sl-icon slot="prefix" name="check2-square"></sl-icon>
+					Selected
+				</sl-button>
+				<sl-button slot="actions" variant="danger" pill ?disabled=${this.selection.length === 0} @click=${this.deselectAll}>
+					<sl-icon slot="prefix" name="x-square"></sl-icon>
+					Deselect all
+				</sl-button>
 				<app-table-head>
 					<app-table-heading>
 						<sl-checkbox ?indeterminate=${this.isIndeterminate()} ?checked=${this.isChecked()} @sl-change=${this.toggleAllSelection}>
@@ -162,7 +195,7 @@ export class AppDemoTable extends LitElement {
 								.type=${column.type || 'text'}
 								.delay=${column.delay || 0}
 								.list=${column.list || []}
-								.selected=${column.selected || ''}
+								.value=${column.value || ''}
 								.order=${column.order || null}
 							>
 								${column.header}
@@ -176,7 +209,7 @@ export class AppDemoTable extends LitElement {
 							<app-table-row>
 								<app-table-cell>
 									<sl-checkbox
-										?checked=${user.checked}
+										?checked=${user.selected}
 										@sl-change=${(event: CustomEvent) => this.toggleSingleSelection(event, user)}
 									>
 									</sl-checkbox>
@@ -201,6 +234,12 @@ export class AppDemoTable extends LitElement {
 
 				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}> </app-paginator>
 			</app-table>
+			<sl-dialog label="Selection">
+				<ul>
+					${this.selection.map(user => html`<li>${user.username}</li>`)}
+				</ul>
+				<sl-button slot="footer" variant="primary" @click=${() => this.renderRoot.querySelector('sl-dialog')?.hide()}>Close</sl-button>
+			</sl-dialog>
 		`
 	}
 }
