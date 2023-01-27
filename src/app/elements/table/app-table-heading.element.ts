@@ -51,22 +51,22 @@ export class AppTableHeading extends LitElement {
         }
 	`
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
     label: string = ''
 
 	@property({ type: Boolean })
 	sortable = false
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
 	order: 'asc' | 'desc' | null = null
 
 	@property({ type: Boolean })
 	filterable = false
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
 	field: string = ''
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
 	value: string  = ''
 
 	@property({ type: String, reflect: true })
@@ -75,7 +75,7 @@ export class AppTableHeading extends LitElement {
     @property({ type: Array })
     list: { label: string, value: string | boolean | number }[] = []
 
-	@property({ type: Number, reflect: true })
+	@property({ type: Number })
 	delay = 0
 
 	#filterEvent = new Subject()

@@ -34,7 +34,7 @@ export class AppTable extends LitElement {
 	@property({ type: String, attribute: 'search-value' })
 	searchValue = ''
 
-	@property({ type: Boolean, reflect: true, attribute: 'filters-applied' })
+	@property({ type: Boolean, attribute: 'filters-applied' })
 	filtersApplied = false
 
 	#searchParams: SearchParams = { }
