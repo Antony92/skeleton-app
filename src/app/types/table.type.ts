@@ -5,7 +5,7 @@ export type TableColumn = {
     field: string
     type?: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple'
     delay?: number
-    selected?: string | string[]
+    selected?: string
     list?: { label: string, value: string | boolean | number }[]
     order?: 'desc' | 'asc' | null
 }

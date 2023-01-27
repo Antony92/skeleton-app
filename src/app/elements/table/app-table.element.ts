@@ -130,7 +130,7 @@ export class AppTable extends LitElement {
                         clearable
 						class="global-search"
                         type="search"
-						.value=${this.searchValue}
+						.value=${this.searchValue || ''}
                         placeholder="Search"
                         @sl-input=${(event: CustomEvent) => this.search((<SlInput>event.target).value)}
                     >
