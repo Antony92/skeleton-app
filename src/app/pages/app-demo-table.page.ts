@@ -86,23 +86,9 @@ export class AppDemoTable extends LitElement {
 		})
 	}
 
-	updated(changedProperties: Map<string, any>) {
-		if (changedProperties.get('users')) {
-			if (this.#skip > (this.users.total - this.#limit) || this.#limit % this.#skip !== 0) {
-				this.#skip = 0
-				addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
-			}
-			this.paginator.pageIndex = this.#skip / this.#limit
-		}	
-	}
-
 	async init() {
-		const search = Object.fromEntries(new URLSearchParams(window.location.search))
-		this.#skip = parseInt(search.skip) || this.#skip
-		this.#limit = parseInt(localStorage.getItem('limit')?.toString() || '') || parseInt(search.limit) || this.#limit
-		delete search['skip']
-		delete search['limit']
-		this.#searchParams = search
+		this.#searchParams = Object.fromEntries(new URLSearchParams(window.location.search))
+		this.#limit = Number(localStorage.getItem('limit')) || this.#limit
 		Object.keys(this.#searchParams).forEach(key => {
 			const column = this.columns.find(column => column.field === key)
 			if (column) {
@@ -123,7 +109,7 @@ export class AppDemoTable extends LitElement {
 		this.users.data.forEach(user => {
 			user.checked = false
 		})
-		addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+		addSearchParamsToURL({ ...this.#searchParams })
 	}
 
 	toggleAllSelection(event: CustomEvent) {
