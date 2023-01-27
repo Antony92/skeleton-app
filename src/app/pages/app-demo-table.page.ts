@@ -2,6 +2,11 @@ import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
+import '@shoelace-style/shoelace/dist/components/divider/divider.js'
+import '@shoelace-style/shoelace/dist/components/menu/menu.js'
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
+import '@shoelace-style/shoelace/dist/components/menu-label/menu-label.js'
 import '../elements/paginator/app-paginator.element'
 import '../elements/table/app-table.element'
 import '../elements/table/app-table-head.element'
@@ -166,20 +171,23 @@ export class AppDemoTable extends LitElement {
 				.filtersApplied=${this.hasFiltersApplied()}
 				.searchValue=${this.#searchParams.search}
 			>
-				<sl-button
-					slot="actions"
-					variant="primary"
-					pill
-					?disabled=${this.selection.length === 0}
-					@click=${() => this.renderRoot.querySelector('sl-dialog')?.show()}
-				>
-					<sl-icon slot="prefix" name="check2-square"></sl-icon>
-					Selected
-				</sl-button>
-				<sl-button slot="actions" variant="danger" pill ?disabled=${this.selection.length === 0} @click=${this.deselectAll}>
-					<sl-icon slot="prefix" name="x-square"></sl-icon>
-					Deselect all
-				</sl-button>
+
+				<sl-dropdown slot="actions">
+					<sl-button slot="trigger" variant="primary" pill caret ?disabled=${this.selection.length === 0}>
+						Selection
+					</sl-button>
+					<sl-menu>
+						<sl-menu-item @click=${() => this.renderRoot.querySelector('sl-dialog')?.show()}>
+							View selected
+						</sl-menu-item>
+						<sl-divider></sl-divider>
+						<sl-menu-item @click=${this.deselectAll}>
+							Deselect all
+							<sl-icon slot="prefix" name="x-square-fill"></sl-icon>
+						</sl-menu-item>
+					</sl-menu>
+				</sl-dropdown>
+
 				<app-table-head>
 					<app-table-heading>
 						<sl-checkbox ?indeterminate=${this.isIndeterminate()} ?checked=${this.isChecked()} @sl-change=${this.toggleAllSelection}>
