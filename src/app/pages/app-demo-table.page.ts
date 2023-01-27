@@ -60,7 +60,7 @@ export class AppDemoTable extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.setSearchParamsFromURL()
+		this.init()
 		this.loadUsers()
 		this.addEventListener('app-table-filter', async (event) => {
 			this.#searchParams = (<CustomEvent>event).detail
@@ -71,6 +71,7 @@ export class AppDemoTable extends LitElement {
 		this.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
             this.#limit = pageSize
+			localStorage.setItem('limit', this.#limit.toString())
             this.#skip = pageSize * pageIndex
 			await this.loadUsers()
 		})
@@ -90,20 +91,10 @@ export class AppDemoTable extends LitElement {
 		this.paginator.pageIndex = this.#skip || 1 / this.#limit || 1
 	}
 
-	async loadUsers() {
-		this.loading = true
-		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
-		this.users.data.forEach(user => {
-			user.checked = false
-		})
-		this.loading = false
-		addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
-	}
-
-	setSearchParamsFromURL() {
+	init() {
 		const search = Object.fromEntries(new URLSearchParams(window.location.search))
 		this.#skip = parseInt(search.skip) || this.#skip
-		this.#limit = parseInt(search.limit) || this.#limit
+		this.#limit = parseInt(localStorage.getItem('limit')?.toString() || '') || parseInt(search.limit) || this.#limit
 		delete search['skip']
 		delete search['limit']
 		this.#searchParams = search
@@ -117,6 +108,16 @@ export class AppDemoTable extends LitElement {
 		if (sorted) {
 			sorted.order = this.#searchParams['order'] as never
 		}
+	}
+
+	async loadUsers() {
+		this.loading = true
+		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+		this.users.data.forEach(user => {
+			user.checked = false
+		})
+		this.loading = false
+		addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 	}
 
 	toggleAllSelection(event: CustomEvent) {
