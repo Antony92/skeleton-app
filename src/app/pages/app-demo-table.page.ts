@@ -107,6 +107,10 @@ export class AppDemoTable extends LitElement {
 				column.selected = this.#searchParams[key]
 			}
 		})
+		const sorted = this.columns.find(column => column.field === this.#searchParams['sort'])
+		if (sorted) {
+			sorted.order = this.#searchParams['order'] as never
+		}
 	}
 
 	toggleAllSelection(event: CustomEvent) {
@@ -136,7 +140,13 @@ export class AppDemoTable extends LitElement {
 
 	render() {
 		return html`
-			<app-table searchable clearable ?loading=${this.loading} .filtersApplied=${this.hasFiltersApplied()}>
+			<app-table 
+				searchable 
+				clearable 
+				?loading=${this.loading} 
+				.filtersApplied=${this.hasFiltersApplied()}
+				.searchValue=${this.#searchParams.search}
+			>
 				<app-table-head>
 					<app-table-heading>
 						<sl-checkbox 
@@ -155,6 +165,7 @@ export class AppDemoTable extends LitElement {
 							.delay=${column.delay || 0}
 							.list=${column.list || []}
 							.selected=${column.selected || ''}
+							.order=${column.order || null}
 						>
 							${column.header}
 						</app-table-heading>
