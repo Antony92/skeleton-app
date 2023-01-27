@@ -87,7 +87,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	firstUpdated() {
-		this.paginator.pageIndex = this.#skip / this.#limit
+		this.paginator.pageIndex = this.#skip || 1 / this.#limit || 1
 	}
 
 	async loadUsers() {
@@ -102,8 +102,8 @@ export class AppDemoTable extends LitElement {
 
 	setSearchParamsFromURL() {
 		const search = Object.fromEntries(new URLSearchParams(window.location.search))
-		this.#skip = parseInt(search.skip) ?? 0
-		this.#limit = parseInt(search.limit) ?? this.#limit
+		this.#skip = parseInt(search.skip) || this.#skip
+		this.#limit = parseInt(search.limit) || this.#limit
 		delete search['skip']
 		delete search['limit']
 		this.#searchParams = search
