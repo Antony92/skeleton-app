@@ -77,7 +77,10 @@ export class AppDemoTable extends LitElement {
 		this.addEventListener('app-table-clear', async () => {
 			this.#searchParams = {}
 			this.#skip = 0
-			this.columns.forEach(column => column.selected === '')
+			this.columns.forEach(column => {
+				column.selected = ''
+				column.order = null
+			})
 			await this.loadUsers()
 			this.paginator.reset()
 		})
