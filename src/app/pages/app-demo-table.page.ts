@@ -86,6 +86,9 @@ export class AppDemoTable extends LitElement {
 		})
 	}
 
+	firstUpdated() {
+		this.paginator.pageIndex = this.#skip / this.#limit
+	}
 
 	async loadUsers() {
 		this.loading = true
