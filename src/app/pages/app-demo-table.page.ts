@@ -88,7 +88,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	firstUpdated() {
-		this.paginator.pageIndex = this.#skip || 1 / this.#limit || 1
+		this.paginator.pageIndex = this.#skip / this.#limit
 	}
 
 	init() {
