@@ -52,31 +52,34 @@ export class AppTableHeading extends LitElement {
 	`
 
     @property({ type: String, reflect: true })
-    label: string | undefined | null
+    label: string = ''
 
 	@property({ type: Boolean })
 	sortable = false
 
     @property({ type: String, reflect: true })
-	order: 'asc' | 'desc' | undefined | null
+	order: 'asc' | 'desc' | null = null
 
 	@property({ type: Boolean })
 	filterable = false
 
     @property({ type: String, reflect: true })
-	field: string | undefined | null
+	field: string = ''
 
     @property({ type: String, reflect: true })
-	value: string | undefined | null
+	value: string  = ''
+
+    @property({ type: String || Array, reflect: true })
+	selected: string | string[] = ''
 
 	@property({ type: String, reflect: true })
-	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' | undefined | null = 'text'
+	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' = 'text'
 
     @property({ type: Array })
-    list: { label: string, value: string | boolean | number }[] | undefined | null
+    list: { label: string, value: string | boolean | number }[] = []
 
 	@property({ type: Number, reflect: true })
-	delay: number | undefined | null
+	delay = 0
 
 	#filterEvent = new Subject()
 
@@ -86,7 +89,7 @@ export class AppTableHeading extends LitElement {
 		super.connectedCallback()
 		this.#filterSubscription = this.#filterEvent
 			.asObservable()
-			.pipe(debounceTime(this.delay || 0))
+			.pipe(debounceTime(this.delay))
 			.subscribe(() => this.dispatchFilterEvent())
 	}
 
@@ -161,6 +164,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="text"
                     placeholder="Filter by ${this.label}"
+                    .value=${this.selected ? this.selected.toString() : ''}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -172,6 +176,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="number"
                     placeholder="Filter by ${this.label}"
+                    .value=${this.selected ? this.selected.toString() : ''}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -183,6 +188,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="date"
                     placeholder="Filter by ${this.label}"
+                    .value=${this.selected ? this.selected.toString() : ''}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -193,6 +199,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label}"
+                    .value=${this.selected ? this.selected : ''}
                     @sl-input=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
@@ -204,6 +211,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label}"
+                    .value=${this.selected ? this.selected : ''}
                     @sl-input=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value}>${item.label}</sl-option>`)}
@@ -216,6 +224,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     multiple
                     .maxOptionsVisible=${2}
+                    .value=${this.selected ? this.selected : []}
                     placeholder="Filter by ${this.label}"
                     @sl-input=${this.filterColumnValue}
                 >

@@ -1,10 +1,10 @@
 import { request } from '../http/request'
-import { toQueryParams } from '../utils/http'
+import { searchParams } from '../utils/general'
 import { SearchQuery } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
-		const req = await request(`https://dummyjson.com/products${toQueryParams({ q: search, limit })}`)
+		const req = await request(`https://dummyjson.com/products${searchParams({ q: search, limit })}`)
 		const res = await req.json()
 		return res?.products ?? []
 	} catch (error) {
@@ -15,7 +15,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 
 export const getUsers = async (query?: SearchQuery) => {
 	try {
-		const params = toQueryParams({
+		const params = searchParams({
 			q: query?.search, 
 			_start: query?.skip || 0, 
 			_limit: query?.limit || 10,

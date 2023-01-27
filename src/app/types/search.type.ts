@@ -1,3 +1,3 @@
-export type SearchQuery = { 
-    [key: string]: string | number | boolean | null | undefined 
+export type SearchParams = { 
+    [key: string]: string
 }

@@ -1,17 +1,13 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import '@shoelace-style/shoelace/dist/components/select/select.js'
-import '@shoelace-style/shoelace/dist/components/option/option.js'
-import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import { Subject, Subscription, debounceTime } from 'rxjs'
-import { SearchQuery } from '../../types/search.type'
+import { SearchParams } from '../../types/search.type'
 import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
-import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -32,16 +28,17 @@ export class AppTable extends LitElement {
     @property({ type: Boolean })
 	clearable = false
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	loading = false
 
-	searchQuery: SearchQuery = { }
+	@property({ type: Boolean, reflect: true, attribute: 'filters-applied' })
+	filtersApplied = false
+
+	searchParams: SearchParams = { }
 
 	#searchEvent = new Subject<string>()
 
 	#searchSubscription: Subscription = new Subscription()
-
-	#filtersApplied = false
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -50,11 +47,11 @@ export class AppTable extends LitElement {
 			.pipe(debounceTime(300))
 			.subscribe((value) => {
 				if (value) {
-					this.searchQuery.search = value
+					this.searchParams.search = value
 				} else {
-					delete this.searchQuery.search
+					delete this.searchParams.search
 				}
-				this.#filtersApplied = this.hasFiltersApplied()
+				this.filtersApplied = this.hasFiltersApplied()
 				this.#dispatchFilterEvent()
 			})
 	}
@@ -68,18 +65,18 @@ export class AppTable extends LitElement {
         this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
             if (value) {
-                this.searchQuery[field] = value
+                this.searchParams[field] = value
             } else {
-                delete this.searchQuery[field]
+                delete this.searchParams[field]
             }
             if (order) {
-                this.searchQuery['sort'] = field
-                this.searchQuery['order'] = order
+                this.searchParams['sort'] = field
+                this.searchParams['order'] = order
             } else {
-                delete this.searchQuery['sort']
-                delete this.searchQuery['order']
+                delete this.searchParams['sort']
+                delete this.searchParams['order']
             }
-            this.#filtersApplied = this.hasFiltersApplied()
+            this.filtersApplied = this.hasFiltersApplied()
             this.#dispatchFilterEvent()
         })
     }
@@ -88,7 +85,7 @@ export class AppTable extends LitElement {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
-            detail: this.searchQuery
+            detail: this.searchParams
         }))
 	}
 
@@ -97,12 +94,12 @@ export class AppTable extends LitElement {
 	}
 
     hasFiltersApplied() {
-        return Object.keys(this.searchQuery).length > 0
+        return Object.keys(this.searchParams).length > 0
     }
 
 	clearAllFilters() {
-		this.#filtersApplied = false
-		this.searchQuery = {}
+		this.filtersApplied = false
+		this.searchParams = {}
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
@@ -114,7 +111,7 @@ export class AppTable extends LitElement {
 	}
 
 	get headings() {
-		const slot = this.renderRoot.querySelector('slot')
+		const slot = this.renderRoot.querySelector('.table slot')
 		const head = (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-table-head'))[0]
 		return head?.querySelectorAll('app-table-heading')
 	}
@@ -138,15 +135,15 @@ export class AppTable extends LitElement {
                 `)}
 				<slot name="actions"></slot>
                 ${when(this.clearable, () => html`
-                    <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.#filtersApplied}>
+                    <sl-button variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
                         <sl-icon slot="prefix" name="funnel"></sl-icon>
                         Clear filters
                     </sl-button>
                 `)}
 			</div>
 			<div class="table-wrapper">
-				<div class=${classMap({ table: true, loading: this.loading })}>
-					<sl-spinner></sl-spinner>
+				<div class="table">
+					<sl-spinner ?hidden=${!this.loading}></sl-spinner>
 					<slot></slot>
 				</div>
 			</div>

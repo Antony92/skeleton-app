@@ -10,10 +10,11 @@ import '../elements/table/app-table-row.element'
 import '../elements/table/app-table-cell.element'
 import { TableColumn } from '../types/table.type'
 import { getUsers } from '../services/api.service'
-import { SearchQuery } from '../types/search.type'
+import { SearchParams } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
 import { when } from 'lit/directives/when.js'
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
+import { addSearchParamsToURL } from '../utils/general'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -26,7 +27,7 @@ export class AppDemoTable extends LitElement {
 
 	#limit = 10
 
-	#searchQuery = {}
+	#searchParams: SearchParams = {}
 
 	@state()
 	loading = false
@@ -59,34 +60,53 @@ export class AppDemoTable extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.loadUsers({ skip: this.#skip, limit: this.#limit })
+		this.setSearchParamsFromURL()
+		this.loadUsers()
 		this.addEventListener('app-table-filter', async (event) => {
-			this.#searchQuery = (<CustomEvent>event).detail
+			this.#searchParams = (<CustomEvent>event).detail
 			this.#skip = 0
-			await this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchQuery })
+			await this.loadUsers()
 			this.paginator.reset()
 		})
-		this.addEventListener('app-paginate', (event) => {
+		this.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = (<CustomEvent>event).detail
             this.#limit = pageSize
             this.#skip = pageSize * pageIndex
-			this.loadUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchQuery })
+			await this.loadUsers()
 		})
-		this.addEventListener('app-table-clear', async (event) => {
-			this.#searchQuery = {}
+		this.addEventListener('app-table-clear', async () => {
+			this.#searchParams = {}
 			this.#skip = 0
-			await this.loadUsers({ skip: this.#skip, limit: this.#limit })
+			this.columns.forEach(column => column.selected === '')
+			await this.loadUsers()
 			this.paginator.reset()
 		})
 	}
 
-	async loadUsers(query: SearchQuery) {
+
+	async loadUsers() {
 		this.loading = true
-		this.users = await getUsers(query)
+		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 		this.users.data.forEach(user => {
 			user.checked = false
 		})
 		this.loading = false
+		addSearchParamsToURL({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+	}
+
+	setSearchParamsFromURL() {
+		const search = Object.fromEntries(new URLSearchParams(window.location.search))
+		this.#skip = parseInt(search.skip) ?? 0
+		this.#limit = parseInt(search.limit) ?? this.#limit
+		delete search['skip']
+		delete search['limit']
+		this.#searchParams = search
+		Object.keys(this.#searchParams).forEach(key => {
+			const column = this.columns.find(column => column.field === key)
+			if (column) {
+				column.selected = this.#searchParams[key]
+			}
+		})
 	}
 
 	toggleAllSelection(event: CustomEvent) {
@@ -110,9 +130,13 @@ export class AppDemoTable extends LitElement {
 		return this.users.data.length > 0 && this.users.data.every(user => user.checked)
 	}
 
+	hasFiltersApplied() {
+		return Object.keys(this.#searchParams).length > 0
+	}
+
 	render() {
 		return html`
-			<app-table searchable clearable ?loading=${this.loading}>
+			<app-table searchable clearable ?loading=${this.loading} .filtersApplied=${this.hasFiltersApplied()}>
 				<app-table-head>
 					<app-table-heading>
 						<sl-checkbox 
@@ -127,9 +151,10 @@ export class AppDemoTable extends LitElement {
 							?filterable=${column.filtarable}
 							.label=${column.header}
 							.field=${column.field}
-							.type=${column.type}
-							.delay=${column.delay}
-							.list=${column.list}
+							.type=${column.type || 'text'}
+							.delay=${column.delay || 0}
+							.list=${column.list || []}
+							.selected=${column.selected || ''}
 						>
 							${column.header}
 						</app-table-heading>
@@ -158,7 +183,13 @@ export class AppDemoTable extends LitElement {
 					`)}
 				</app-table-body>
 				
-				<app-paginator slot="paginator" .pageSize=${10} .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}></app-paginator>
+				<app-paginator 
+					slot="paginator"
+					.pageSize=${this.#limit} 
+					.pageSizeOptions=${[5, 10, 15]} 
+					length=${this.users.total}
+				>
+				</app-paginator>
 			</app-table>
 		`
 	}

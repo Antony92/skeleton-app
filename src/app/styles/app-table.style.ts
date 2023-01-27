@@ -41,10 +41,12 @@ export const appTableStyle = css`
         left: 50%;
         translate: -50% -50%;
         transition: opacity 0.3s;
-        opacity: 0;
+        opacity: 1;
+        visibility: visible;
     }
 
-    .table.loading sl-spinner {
-        opacity: 1;
+    .table sl-spinner[hidden] {
+        opacity: 0;
+        visibility: hidden;
     }
 `
