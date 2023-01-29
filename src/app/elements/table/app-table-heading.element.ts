@@ -78,7 +78,7 @@ export class AppTableHeading extends LitElement {
 	@property({ type: Number })
 	delay = 0
 
-	#filterEvent = new Subject()
+	#filterEvent = new Subject<string>()
 
 	#filterSubscription: Subscription = new Subscription()
 
