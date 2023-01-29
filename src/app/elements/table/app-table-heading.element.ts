@@ -197,7 +197,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     placeholder="Filter by ${this.label?.toLowerCase()}"
                     .value=${this.value}
-                    @sl-input=${this.filterColumnValue}
+                    @sl-change=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
                 </sl-select>
@@ -209,7 +209,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     placeholder="Filter by ${this.label?.toLowerCase()}"
                     .value=${this.value}
-                    @sl-input=${this.filterColumnValue}
+                    @sl-change=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
                 </sl-select>
@@ -220,10 +220,10 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     multiple
-                    .maxOptionsVisible=${2}
-                    .value=${this.value}
+                    .maxOptionsVisible=${1}
+                    .value=${this.value.split(',')}
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    @sl-input=${this.filterColumnValue}
+                    @sl-change=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
                 </sl-select>
