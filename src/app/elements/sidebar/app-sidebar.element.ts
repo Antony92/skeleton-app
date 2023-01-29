@@ -50,12 +50,12 @@ export class AppSidebar extends LitElement {
 			width: 56px;
     		height: 32px;
 			border-radius: 16px;
-			transition: all 300ms;
+			transition: all 0.3s;
 		}
 
 		ul li a span:first-child sl-icon {
 			font-size: 20px;
-			transition: scale 300ms;
+			transition: scale 0.3s;
 		}
 
 		ul li a.active span:first-child {

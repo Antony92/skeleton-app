@@ -114,7 +114,7 @@ export class AppDemoTable extends LitElement {
 
 	async loadUsers() {
 		this.loading = true
-		this.users = await getUsers({ skip: this.#skip.toString(), limit: this.#limit.toString(), ...this.#searchParams })
+		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
 		this.loading = false
 		this.users.data.forEach((user) => {
 			user.selected = this.selection.find((selected) => selected.id === user.id) ? true : false

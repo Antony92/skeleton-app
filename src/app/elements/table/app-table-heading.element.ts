@@ -37,7 +37,7 @@ export class AppTableHeading extends LitElement {
 
         .sortable sl-icon.placeholder {
             opacity: 0;
-            transition: all 300ms;
+            transition: all 0.3s;
             translate: 0 25%;
         }
 
