@@ -1,6 +1,6 @@
 import { request } from '../http/request'
 import { searchParams } from '../utils/general'
-import { SearchQuery } from '../types/search.type'
+import { SearchParams } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
@@ -13,7 +13,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 	return []
 }
 
-export const getUsers = async (query?: SearchQuery) => {
+export const getUsers = async (query?: SearchParams) => {
 	try {
 		const params = searchParams({
 			q: query?.search, 
