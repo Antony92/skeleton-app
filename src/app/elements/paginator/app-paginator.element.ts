@@ -118,7 +118,7 @@ export class AppPaginator extends LitElement {
 		return html`
 			Items per page:
 			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.#pageSizeChange}>
-				${this.pageSizeOptions.map((value) => html`<sl-option value=${value}>${value}</sl-option>`)}
+				${this.pageSizeOptions.map((value) => html`<sl-option value=${value?.toString()}>${value}</sl-option>`)}
 			</sl-select>
 			${this.#getRangeLabel()}
 			<sl-icon-button
