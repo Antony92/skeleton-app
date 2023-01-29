@@ -60,7 +60,7 @@ export class AppRoot extends LitElement {
 	render() {
 		return html`
 			<div class="container">
-				<app-header appTitle="Application" class="header"></app-header>
+				<app-header class="header"></app-header>
 				<app-sidebar class="sidebar"></app-sidebar>
 				<main class="main">${this.router.outlet()}</main>
 			</div>

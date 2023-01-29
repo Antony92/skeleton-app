@@ -52,7 +52,7 @@ export class AppHeader extends LitElement {
         }
     `
     @property({ type: String, reflect: true })
-	appTitle = ''
+	appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
 
     @state()
     fullname: string = ''

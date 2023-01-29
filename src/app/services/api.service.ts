@@ -1,12 +1,12 @@
 import { request } from '../http/request'
-import { searchParams } from '../utils/general'
+import { transformToSearchParams } from '../utils/general'
 import { SearchParams } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
-		const req = await request(`https://dummyjson.com/products${searchParams({ q: search, limit })}`)
+		const req = await request(`${import.meta.env.VITE_API}/products${transformToSearchParams({ q: search, limit })}`)
 		const res = await req.json()
-		return res?.products ?? []
+		return res?.products || []
 	} catch (error) {
 		console.error(error)
 	}
@@ -15,7 +15,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 
 export const getUsers = async (query?: SearchParams) => {
 	try {
-		const params = searchParams({
+		const params = transformToSearchParams({
 			q: query?.search, 
 			_start: query?.skip || 0, 
 			_limit: query?.limit || 10,
@@ -32,7 +32,7 @@ export const getUsers = async (query?: SearchParams) => {
 		const res = await req.json()
 		const total = req.headers.get('x-total-count')
 		return {
-			total: total ? parseInt(total): 0,
+			total: total ? parseInt(total) : 0,
 			data: res as any[]
 		}
 	} catch (error) {

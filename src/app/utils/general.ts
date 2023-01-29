@@ -8,7 +8,7 @@ export const addSearchParamsToURL = (params: { [key: string]: any }) => {
     history.replaceState(null, '', url)
 }
 
-export const searchParams = (params: { [key: string]: any }) => {
+export const transformToSearchParams = (params: { [key: string]: any }) => {
 	const searchParams = new URLSearchParams()
 	Object.keys(params)
 		.filter((key) => params[key] != null && params[key] != undefined && params[key] !== '')
