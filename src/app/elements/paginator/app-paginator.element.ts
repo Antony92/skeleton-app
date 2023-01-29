@@ -24,7 +24,7 @@ export class AppPaginator extends LitElement {
 	`
 
 	@property({ type: Number })
-	length = 0
+	total = 0
 
 	@property({ type: Number, reflect: true, attribute: 'page-index' })
 	pageIndex = 0
@@ -61,7 +61,7 @@ export class AppPaginator extends LitElement {
 	}
 
 	getNumberOfPages() {
-		return Math.ceil(this.length / this.pageSize)
+		return Math.ceil(this.total / this.pageSize)
 	}
 
 	#firstPage() {
@@ -93,10 +93,10 @@ export class AppPaginator extends LitElement {
 	}
 
 	#getRangeLabel() {
-		if (this.length == 0 || this.pageSize == 0) return `0 of ${this.length}`
+		if (this.total == 0 || this.pageSize == 0) return `0 of ${this.total}`
 		const startIndex = this.pageIndex * this.pageSize
-		const endIndex = startIndex < this.length ? Math.min(startIndex + this.pageSize, this.length) : startIndex + this.pageSize
-		return `${startIndex + 1} - ${endIndex} of ${this.length}`
+		const endIndex = startIndex < this.total ? Math.min(startIndex + this.pageSize, this.total) : startIndex + this.pageSize
+		return `${startIndex + 1} - ${endIndex} of ${this.total}`
 	}
 
 	emitPageEvent() {
@@ -108,7 +108,7 @@ export class AppPaginator extends LitElement {
 					pageSize: this.pageSize,
 					pageIndex: this.pageIndex,
 					previousPageIndex: this.#previousPageIndex,
-					length: this.length,
+					total: this.total,
 				},
 			})
 		)

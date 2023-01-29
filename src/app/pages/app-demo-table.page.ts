@@ -240,7 +240,7 @@ export class AppDemoTable extends LitElement {
 					)}
 				</app-table-body>
 
-				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} length=${this.users.total}> </app-paginator>
+				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}> </app-paginator>
 			</app-table>
 			<sl-dialog label="Selection">
 				<ul>
