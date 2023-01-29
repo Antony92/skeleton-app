@@ -70,7 +70,7 @@ export class AppTableHeading extends LitElement {
 	value: string  = ''
 
 	@property({ type: String, reflect: true })
-	type: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple' = 'text'
+	type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
 
     @property({ type: Array })
     list: { label: string, value: string | boolean | number }[] = []
@@ -189,18 +189,6 @@ export class AppTableHeading extends LitElement {
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
-            `)}
-            ${when(this.filterable && this.type === 'boolean', () => html`
-                <sl-select
-                    filled
-                    hoist
-                    clearable
-                    placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
-                    @sl-change=${this.filterColumnValue}
-                >
-                    ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
-                </sl-select>
             `)}
             ${when(this.filterable && this.type === 'select', () => html`
                 <sl-select

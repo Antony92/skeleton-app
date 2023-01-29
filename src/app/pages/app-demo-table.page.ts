@@ -55,7 +55,7 @@ export class AppDemoTable extends LitElement {
 		{
 			header: 'City',
 			field: 'address.city',
-			type: 'select-multiple',
+			type: 'select',
 			sortable: true,
 			filtarable: true,
 			list: [

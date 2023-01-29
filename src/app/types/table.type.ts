@@ -3,7 +3,7 @@ export type TableColumn = {
     filtarable?: boolean
     header: string
     field: string
-    type?: 'text' | 'number' | 'boolean' | 'date' | 'select' | 'select-multiple'
+    type?: 'text' | 'number' | 'date' | 'select' | 'select-multiple'
     delay?: number
     value?: string
     list?: { label: string, value: string | boolean | number }[]
