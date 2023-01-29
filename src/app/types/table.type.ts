@@ -1,8 +1,8 @@
 export type TableColumn = {
-    sortable?: boolean
-    filtarable?: boolean
     header: string
     field: string
+    sortable?: boolean
+    filtarable?: boolean
     type?: 'text' | 'number' | 'date' | 'select' | 'select-multiple'
     delay?: number
     value?: string
