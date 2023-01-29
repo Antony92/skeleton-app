@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
-import { debounceTime, Subject, Subscription } from 'rxjs'
+import { debounce, Subject, Subscription, timer } from 'rxjs'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 
@@ -86,7 +86,7 @@ export class AppTableHeading extends LitElement {
 		super.connectedCallback()
 		this.#filterSubscription = this.#filterEvent
 			.asObservable()
-			.pipe(debounceTime(this.delay))
+			.pipe(debounce((value) => value ? timer(this.delay) : timer(0)))
 			.subscribe(() => this.dispatchFilterEvent())
 	}
 

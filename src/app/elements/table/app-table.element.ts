@@ -4,7 +4,7 @@ import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import { Subject, Subscription, debounceTime } from 'rxjs'
+import { Subject, Subscription, timer, debounce } from 'rxjs'
 import { SearchParams } from '../../types/search.type'
 import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
@@ -47,7 +47,7 @@ export class AppTable extends LitElement {
 		super.connectedCallback()
 		this.#searchSubscription = this.#searchEvent
 			.asObservable()
-			.pipe(debounceTime(300))
+			.pipe(debounce((value) => value ? timer(300) : timer(0)))
 			.subscribe((value) => {
 				if (value) {
 					this.#searchParams.search = value
