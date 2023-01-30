@@ -23,7 +23,6 @@ export class AppHeader extends LitElement {
 	static styles = css`
         header {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
             align-items: center;
             height: 60px;

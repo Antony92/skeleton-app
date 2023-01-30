@@ -8,13 +8,14 @@ import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
-	static styles = [
-		mainStyle,
-		css``
-	]
+	static styles = [mainStyle, css``]
 
 	router = new Router(this, [
-		{ path: '/', render: () => html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg"/>` },
+		{
+			path: '/',
+			render: () =>
+				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
+		},
 		{
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,

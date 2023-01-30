@@ -16,6 +16,7 @@ export class AppSidebar extends LitElement {
 		ul {
 			display: flex;
 			flex-direction: column;
+			gap: 20px;
 			list-style: none;
 			padding: 0;
 			margin: 10px 0;
@@ -39,7 +40,6 @@ export class AppSidebar extends LitElement {
 			color: var(--sl-color-neutral-700);
 			text-decoration: none;
 			cursor: pointer;
-			margin-bottom: 20px;
 			-webkit-tap-highlight-color: transparent;
 		}
 
@@ -102,6 +102,10 @@ export class AppSidebar extends LitElement {
 			ul li a {
 				margin: 10px 0px;
 			}
+
+			ul li.hide-on-mobile {
+				display: none;
+			}
 		}
 
 	`
@@ -109,6 +113,7 @@ export class AppSidebar extends LitElement {
 	firstUpdated() {
 		const path = location.pathname.split('/')[1]
 		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+		console.log(this.renderRoot.querySelector('ul li:first-of-type'))
 	}
 
 	#handleLinkClick(event: Event) {
@@ -155,12 +160,12 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					${whenUser(() => html`
-						<li class="bottom">
-							<a href="/settings" @click=${this.#handleLinkClick}>
+						<li class="bottom hide-on-mobile">
+							<a href="/admin" @click=${this.#handleLinkClick}>
 								<span>
-									<sl-icon name="gear"></sl-icon>
+									<sl-icon name="person-fill-gear"></sl-icon>
 								</span>
-								<span>Settings</span>
+								<span>Admin</span>
 							</a>
 						</li>
 					`)}
