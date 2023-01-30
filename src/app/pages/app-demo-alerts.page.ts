@@ -21,11 +21,11 @@ export class AppDemoAlerts extends LitElement {
 				<sl-button variant="primary" pill @click=${() => confirmDialog('Confirm', 'Are you sure?').then((result) => console.log(result))}>Confirm</sl-button>
 				<br /><br />
 				Alerts
-				<sl-button pill @click=${() => notify('Hello', 'primary', 3000, 'info-circle')} variant="primary">Primary</sl-button>
-				<sl-button pill @click=${() => notify('Hello', 'success', 3000, 'check2-circle')} variant="success">Success</sl-button>
-				<sl-button pill @click=${() => notify('Hello', 'neutral', 3000, 'gear')} variant="neutral">Neutral</sl-button>
-				<sl-button pill @click=${() => notify('Hello', 'warning', 3000, 'exclamation-triangle')} variant="warning">Warning</sl-button>
-				<sl-button pill @click=${() => notify('Hello', 'danger', 3000, 'exclamation-octagon')} variant="danger">Danger</sl-button>
+				<sl-button pill @click=${() => notify({ message: 'Primary', variant: 'primary' })} variant="primary">Primary</sl-button>
+				<sl-button pill @click=${() => notify({ message: 'Success', variant: 'success', icon: 'check2-circle' })} variant="success">Success</sl-button>
+				<sl-button pill @click=${() => notify({ message: 'Neutral', variant: 'neutral', icon: 'gear' })} variant="neutral">Neutral</sl-button>
+				<sl-button pill @click=${() => notify({ message: 'Warning', variant: 'warning', icon: 'exclamation-triangle' })} variant="warning">Warning</sl-button>
+				<sl-button pill @click=${() => notify({ message: 'Danger', variant: 'danger', icon: 'exclamation-octagon' })} variant="danger">Danger</sl-button>
 			</div>
 		`
 	}

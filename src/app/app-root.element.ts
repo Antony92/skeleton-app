@@ -5,6 +5,7 @@ import './elements/global-message/app-global-message.element'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
 import { hideGlobalMessage, showGlobalMessage } from './services/global-message.service'
+import { notify } from './services/notify.service'
 import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')
@@ -53,8 +54,8 @@ export class AppRoot extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.addEventListener('offline', () => showGlobalMessage('No internet connection', 'danger'))
-		window.addEventListener('online', () => hideGlobalMessage())
+		window.addEventListener('offline', () => notify({ message: 'You are offline', variant: 'danger', duration: 5000 }))
+		window.addEventListener('online', () => notify({ message: 'You are back online', variant: 'success', duration: 5000 }))
 	}
 
 	render() {

@@ -1,13 +1,16 @@
 import { escapeHtml } from '../utils/html'
 
-export const notify = async (
-	message: string,
-	variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' = 'primary',
-	duration = 3000,
-	icon = 'info-circle',
-) => {
+type Notification = {
+	message: string
+	variant?: 'primary' | 'success' | 'neutral' | 'warning' | 'danger'
+	icon?: string
+	duration?: number
+}
+
+export const notify = async (notification: Notification) => {
 	await import('@shoelace-style/shoelace/dist/components/alert/alert.js')
 
+	const { message, variant = 'primary', icon = 'info-circle', duration = 3000 } = notification
 	const alert = Object.assign(document.createElement('sl-alert'), {
 		variant,
 		closable: true,
