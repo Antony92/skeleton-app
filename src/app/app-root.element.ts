@@ -54,8 +54,8 @@ export class AppRoot extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.addEventListener('offline', () => notify({ message: 'You are offline', variant: 'danger', duration: 5000 }))
-		window.addEventListener('online', () => notify({ message: 'You are back online', variant: 'success', duration: 5000 }))
+		window.addEventListener('offline', () => console.log('offline'))
+		window.addEventListener('online', () => console.log('online'))
 	}
 
 	render() {
