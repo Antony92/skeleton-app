@@ -16,3 +16,7 @@ export const transformToSearchParams = (params: { [key: string]: any }) => {
 	const query = searchParams.toString()
 	return query ? `?${query}` : ``
 }
+
+export const getSearchParamsAsObject = () => {
+	return Object.fromEntries(new URLSearchParams(window.location.search))
+}

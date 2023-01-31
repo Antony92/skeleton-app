@@ -10,14 +10,14 @@ import { mainStyle } from './styles/main.style'
 export class AppRoot extends LitElement {
 	static styles = [mainStyle, css``]
 
-	router = new Router(this, [
+	#router = new Router(this, [
 		{
 			path: '/',
 			render: () =>
 				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
 		},
 		{
-			path: '/form',
+			path: '/form/',
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
 				await import('./pages/app-demo-form.page')
@@ -42,14 +42,23 @@ export class AppRoot extends LitElement {
 		},
 		{
 			path: '/profile',
-			render: () => html`<app-demo-table></app-demo-table>`,
+			render: () => html`<app-profile></app-profile>`,
 			enter: async () => {
-				await import('./pages/app-demo-table.page')
+				await import('./pages/app-profile.page')
 				return true
 			},
 		},
 		{ path: '/*', render: () => html`<h1>Page not found</h1>` },
 	])
+
+	async navigate(path: string) {
+		await this.#router.goto(path)
+		history.pushState(null, '', path)
+	}
+
+	get routeParams() {
+		return this.#router.params
+	}
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -62,8 +71,14 @@ export class AppRoot extends LitElement {
 			<div class="container">
 				<app-header class="header"></app-header>
 				<app-sidebar class="sidebar"></app-sidebar>
-				<main class="main">${this.router.outlet()}</main>
+				<main class="main">${this.#router.outlet()}</main>
 			</div>
 		`
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'app-root': AppRoot
 	}
 }

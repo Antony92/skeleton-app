@@ -1,5 +1,5 @@
 import { request } from '../http/request'
-import { transformToSearchParams } from '../utils/general'
+import { transformToSearchParams } from '../utils/url'
 import { SearchParams } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {

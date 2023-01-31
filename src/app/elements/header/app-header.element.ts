@@ -17,6 +17,7 @@ import { login, logout } from '../../services/login.service'
 import { whenUser } from '../../directives/when-user.directive'
 import { getUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
+import { getApp } from '../../utils/html'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -103,7 +104,7 @@ export class AppHeader extends LitElement {
                             <sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
                             <sl-menu>
                                 <sl-menu-label>${this.fullname}</sl-menu-label>
-                                <sl-menu-item>
+                                <sl-menu-item @click=${() => getApp().navigate('/profile')}>
                                     <sl-icon slot="prefix" name="person-fill"></sl-icon>
                                     Profile
                                 </sl-menu-item>

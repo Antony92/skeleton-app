@@ -20,7 +20,7 @@ import { SearchParams } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
 import { when } from 'lit/directives/when.js'
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
-import { addSearchParamsToURL } from '../utils/general'
+import { addSearchParamsToURL, getSearchParamsAsObject } from '../utils/url'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -97,7 +97,7 @@ export class AppDemoTable extends LitElement {
 	}
 
 	async init() {
-		this.#searchParams = Object.fromEntries(new URLSearchParams(window.location.search))
+		this.#searchParams = getSearchParamsAsObject()
 		this.#limit = Number(localStorage.getItem('limit')) || this.#limit
 		Object.keys(this.#searchParams).forEach((key) => {
 			const column = this.columns.find((column) => column.field === key)
