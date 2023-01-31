@@ -10,11 +10,11 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 		response = await fetch(url, options)
 		if (!response.ok) {
 			const error = await response.clone().json()
-			notify({ message: error?.message, variant: 'danger', duration: 10000, icon: 'exclamation-octagon' })
+			notify({ message: `${error?.message || `${url} failed`}`, variant: 'danger', duration: 10000, icon: 'exclamation-octagon' })
 			return Promise.reject(response)
 		}
 	} catch (error: any) {
-		notify({ message: `${url} ${error?.message}`, variant: 'danger', duration: 10000, icon: 'exclamation-octagon' })
+		notify({ message: `${error?.message || `${url} failed`}`, variant: 'danger', duration: 10000, icon: 'exclamation-octagon' })
 		return Promise.reject(error)
 	} finally {
 		loading(false)

@@ -17,7 +17,7 @@ export class AppRoot extends LitElement {
 				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
 		},
 		{
-			path: '/form/',
+			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
 				await import('./pages/app-demo-form.page')
