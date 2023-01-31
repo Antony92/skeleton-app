@@ -1,7 +1,7 @@
 import { css } from 'lit'
 
 export const mainStyle = css`
-    .container {
+    .layout {
         height: 100vh;
         display: grid;
         grid-template-columns: auto 1fr;
