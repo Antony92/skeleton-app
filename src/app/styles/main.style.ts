@@ -29,7 +29,7 @@ export const mainStyle = css`
 
     @media only screen and (max-width: 800px) {
 
-        .container {
+        .layout {
             grid-template-columns: auto;
             grid-template-areas:
                 "header"

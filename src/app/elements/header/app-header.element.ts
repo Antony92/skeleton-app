@@ -18,39 +18,15 @@ import { whenUser } from '../../directives/when-user.directive'
 import { getUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { getApp } from '../../utils/html'
+import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-	static styles = css`
-        header {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            height: 60px;
-            padding: 0 5px;
-            box-shadow: var(--sl-shadow-x-large);
-        }
-
-        .spacer {
-            flex-grow: 1;
-        }
-
-        .title {
-            font-size: var(--sl-font-size-large)
-        }
-
-        .menu-button {
-            font-size: 30px;
-        }
-
-        sl-drawer {
-            --size: 320px;
-        }
-
-        sl-avatar {
-            cursor: pointer;
-        }
-    `
+	static styles = [
+        appHeaderStyle,
+        appDrawerStyle,
+        css``
+    ]
     @property({ type: String, reflect: true })
 	appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
 
@@ -75,11 +51,24 @@ export class AppHeader extends LitElement {
         })
     }
 
+    firstUpdated() {
+		const path = location.pathname.split('/')[1]
+		this.drawer.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+	}
+
     async signIn() {
         this.loginLoading = true
         await login()
         this.loginLoading = false
     }
+
+    #handleLinkClick(event: Event) {
+		const activeLink = this.drawer.querySelector('a.active')
+		activeLink?.classList.remove('active')
+		const clickedLink = <HTMLAnchorElement>event.currentTarget
+		clickedLink?.classList.add('active')
+        this.drawer.hide()
+	}
 
 	render() {
 		return html`
@@ -129,29 +118,38 @@ export class AppHeader extends LitElement {
             <sl-drawer label="Navigation" placement="start">
                     <ul>
                         <li>
-                            <a>
-                                <sl-icon name="browser-chrome"></sl-icon>
-                                Link
+                            <a href="/" @click=${this.#handleLinkClick}>
+                                <sl-icon name="house-door-fill"></sl-icon>
+                                Home
                             </a>
                         </li>
                         <li>
-                            <a>
-                                <sl-icon name="browser-chrome"></sl-icon>
-                                Link
+                            <a href="/form" @click=${this.#handleLinkClick}>
+                                <sl-icon name="postcard-fill"></sl-icon>
+                                Form
                             </a>
                         </li>
                         <li>
-                            <a>
-                                <sl-icon name="browser-chrome"></sl-icon>
-                                Link
+                            <a href="/alerts" @click=${this.#handleLinkClick}>
+                                <sl-icon name="exclamation-square-fill"></sl-icon>
+                                Alerts
                             </a>
                         </li>
                         <li>
-                            <a>
-                                <sl-icon name="browser-chrome"></sl-icon>
-                                Link
+                            <a href="/table" @click=${this.#handleLinkClick}>
+                                <sl-icon name="table"></sl-icon>
+                                Table
                             </a>
                         </li>
+                        ${whenUser(() => html`
+                            <li>
+                                <a href="/admin" @click=${this.#handleLinkClick}>
+                                    <sl-icon name="person-fill-gear"></sl-icon>
+                                    Admin
+                                </a>
+                            </li>
+                        `)}
+                       
                     </ul>
             </sl-drawer>
 		`
