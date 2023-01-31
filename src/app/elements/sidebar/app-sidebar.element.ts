@@ -113,7 +113,6 @@ export class AppSidebar extends LitElement {
 	firstUpdated() {
 		const path = location.pathname.split('/')[1]
 		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
-		console.log(this.renderRoot.querySelector('ul li:first-of-type'))
 	}
 
 	#handleLinkClick(event: Event) {
