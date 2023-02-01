@@ -11,7 +11,7 @@ export const navigate = async (path: string) => {
 	history.pushState(null, '', path)
 }
 
-export const getParams = () => {
+export const getRouteParams = () => {
     const app = document.querySelector('app-root')!
     return app.router.params
 } 
