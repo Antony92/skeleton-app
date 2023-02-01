@@ -15,7 +15,7 @@ import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import '../theme-switcher/app-theme-switcher.element'
 import { login, logout } from '../../services/login.service'
 import { whenUser } from '../../directives/when-user.directive'
-import { getUser } from '../../services/user.service'
+import { getUser, removeUser, setUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
 import { navigate, navigation } from '../../navigation/navigation'
@@ -71,8 +71,14 @@ export class AppHeader extends LitElement {
 
     async signIn() {
         this.loginLoading = true
-        await login()
+        const user = await login()
+        setUser(user)
         this.loginLoading = false
+    }
+
+    async signOut() {
+        removeUser()
+        await logout()
     }
 
 	render() {
@@ -108,7 +114,7 @@ export class AppHeader extends LitElement {
                                     <sl-badge slot="suffix" variant="primary" pulse pill>4</sl-badge>
                                 </sl-menu-item>
                                 <sl-divider></sl-divider>
-                                <sl-menu-item @click=${() => logout()}>
+                                <sl-menu-item @click=${() => this.signOut()}>
                                     <sl-icon slot="prefix" name="box-arrow-right"></sl-icon>
                                     Logout
                                 </sl-menu-item>
