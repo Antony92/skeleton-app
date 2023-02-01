@@ -19,6 +19,7 @@ import { getUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
 import { navigate, navigation } from '../../navigation/navigation'
+import { Subscription } from 'rxjs'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -27,7 +28,8 @@ export class AppHeader extends LitElement {
         appDrawerStyle,
         css``
     ]
-    @property({ type: String, reflect: true })
+
+    @state()
 	appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
 
     @state()
@@ -41,24 +43,31 @@ export class AppHeader extends LitElement {
 
     @query('sl-drawer') drawer!: SlDrawer
 
+    userSubscription = new Subscription()
+    navigationSubscription = new Subscription()
+
     connectedCallback() {
         super.connectedCallback()
-        getUser().subscribe(user => {
+        this.userSubscription = getUser().subscribe(user => {
             if (user) {
                 this.fullname = `${user.firstName} ${user.lastName}`
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
         })
-        navigation().subscribe(path => {
-            this.drawer?.querySelector('a.active')?.classList.remove('active')
-            this.drawer?.querySelector(`a[href="${path}"]`)?.classList.add('active')
-        })
     }
 
     firstUpdated() {
-		const path = location.pathname.split('/')[1]
-		this.drawer?.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+		this.navigationSubscription = navigation().subscribe(path => {
+            this.drawer?.querySelector('a.active')?.classList.remove('active')
+            this.drawer?.querySelector(`a[href="${path}"]`)?.classList.add('active')
+        })
 	}
+
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        this.userSubscription.unsubscribe()
+        this.navigationSubscription.unsubscribe()
+    }
 
     async signIn() {
         this.loginLoading = true
@@ -66,18 +75,10 @@ export class AppHeader extends LitElement {
         this.loginLoading = false
     }
 
-    #handleLinkClick(event: Event) {
-		const activeLink = this.drawer?.querySelector('a.active')
-		activeLink?.classList.remove('active')
-		const clickedLink = <HTMLAnchorElement>event.currentTarget
-		clickedLink?.classList.add('active')
-        this.drawer.hide()
-	}
-
 	render() {
 		return html`
 			<header>
-                <sl-icon-button class="menu-button" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
+                <sl-icon-button class="hamburger" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
                 <h1 class="title">${this.appTitle}</h1>
                 <div class="spacer"></div>
                 <sl-dropdown>
@@ -122,32 +123,32 @@ export class AppHeader extends LitElement {
             <sl-drawer label="Navigation" placement="start">
                     <ul>
                         <li>
-                            <a href="/" @click=${this.#handleLinkClick}>
+                            <a href="/" @click=${() => this.drawer.hide()}>
                                 <sl-icon name="house-door-fill"></sl-icon>
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="/form" @click=${this.#handleLinkClick}>
+                            <a href="/form" @click=${() => this.drawer.hide()}>
                                 <sl-icon name="postcard-fill"></sl-icon>
                                 Form
                             </a>
                         </li>
                         <li>
-                            <a href="/alerts" @click=${this.#handleLinkClick}>
+                            <a href="/alerts" @click=${() => this.drawer.hide()}>
                                 <sl-icon name="exclamation-square-fill"></sl-icon>
                                 Alerts
                             </a>
                         </li>
                         <li>
-                            <a href="/table" @click=${this.#handleLinkClick}>
+                            <a href="/table" @click=${() => this.drawer.hide()}>
                                 <sl-icon name="table"></sl-icon>
                                 Table
                             </a>
                         </li>
                         ${whenUser(() => html`
                             <li>
-                                <a href="/admin" @click=${this.#handleLinkClick}>
+                                <a href="/admin" @click=${() => this.drawer.hide()}>
                                     <sl-icon name="person-fill-gear"></sl-icon>
                                     Admin
                                 </a>

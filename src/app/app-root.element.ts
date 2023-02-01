@@ -53,6 +53,7 @@ export class AppRoot extends LitElement {
 			render: () => html`<app-profile></app-profile>`,
 			enter: async () => {
 				await import('./pages/app-profile.page')
+				triggerNavigationEvent('/profile')
 				return true
 			},
 		},

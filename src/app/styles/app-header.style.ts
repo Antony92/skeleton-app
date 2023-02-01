@@ -15,15 +15,27 @@ export const appHeaderStyle = css`
     }
 
     .title {
-        font-size: var(--sl-font-size-large)
+        font-size: var(--sl-font-size-large);
+        margin-left: 10px;
     }
 
-    .menu-button {
+    .hamburger {
         font-size: 30px;
+        display: none;
     }
 
     sl-avatar {
         cursor: pointer;
+    }
+
+    @media (max-width: 800px) {
+        .hamburger {
+            display: block;
+        }
+
+        .title {
+            margin-left: 0;
+        }
     }
 `
 

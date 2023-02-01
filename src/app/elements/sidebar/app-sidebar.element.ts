@@ -4,6 +4,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { whenUser } from '../../directives/when-user.directive'
 import { appSidebarStyle } from '../../styles/app-sidebar.style'
 import { navigation } from '../../navigation/navigation'
+import { Subscription } from 'rxjs'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -12,32 +13,26 @@ export class AppSidebar extends LitElement {
 		css``
 	]
 
-	connectedCallback() {
-		super.connectedCallback()
-		navigation().subscribe(path => {
+	navigationSubscription = new Subscription()
+
+	firstUpdated() {
+		this.navigationSubscription = navigation().subscribe(path => {
 			this.renderRoot.querySelector('a.active')?.classList.remove('active')
-            this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+            this.renderRoot.querySelector(`a[href="${path}"]`)?.classList.add('active')
         })
 	}
 
-	firstUpdated() {
-		const path = location.pathname.split('/')[1]
-		this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
-	}
-
-	#handleLinkClick(event: Event) {
-		const activeLink = this.renderRoot.querySelector('a.active')
-		activeLink?.classList.remove('active')
-		const clickedLink = <HTMLAnchorElement>event.currentTarget
-		clickedLink?.classList.add('active')
-	}
+	disconnectedCallback() {
+        super.disconnectedCallback()
+        this.navigationSubscription.unsubscribe()
+    }
 
 	render() {
 		return html`
 			<nav>
 				<ul class="navigation-menu">
 					<li>
-						<a href="/" @click=${this.#handleLinkClick}>
+						<a href="/">
 							<span>
 								<sl-icon name="house-door-fill"></sl-icon>
 							</span>
@@ -45,7 +40,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/form" @click=${this.#handleLinkClick}>
+						<a href="/form">
 							<span>
 								<sl-icon name="postcard-fill"></sl-icon>
 							</span>
@@ -53,7 +48,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/alerts" @click=${this.#handleLinkClick}>
+						<a href="/alerts">
 							<span>
 								<sl-icon name="exclamation-square-fill"></sl-icon>
 							</span>
@@ -61,7 +56,7 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
-						<a href="/table" @click=${this.#handleLinkClick}>
+						<a href="/table">
 							<span>
 								<sl-icon name="table"></sl-icon>
 							</span>
@@ -70,7 +65,7 @@ export class AppSidebar extends LitElement {
 					</li>
 					${whenUser(() => html`
 						<li class="bottom hide-on-mobile">
-							<a href="/admin" @click=${this.#handleLinkClick}>
+							<a href="/admin">
 								<span>
 									<sl-icon name="person-fill-gear"></sl-icon>
 								</span>
