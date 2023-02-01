@@ -1,10 +1,10 @@
 import { request } from '../http/request'
-import { transformToSearchParams } from '../utils/url'
+import { searchParamsToURL } from '../utils/url'
 import { SearchParams } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/products${transformToSearchParams({ q: search, limit })}`)
+		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToURL({ q: search, limit })}`)
 		const res = await req.json()
 		return res?.products || []
 	} catch (error) {
@@ -15,7 +15,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 
 export const getUsers = async (query?: SearchParams) => {
 	try {
-		const params = transformToSearchParams({
+		const params = searchParamsToURL({
 			q: query?.search, 
 			_start: query?.skip || 0, 
 			_limit: query?.limit || 10,
