@@ -19,7 +19,7 @@ export class AppRoot extends LitElement {
 			enter: async () => {
 				navigationEvent('/')
 				return true
-			}
+			},
 		},
 		{
 			path: '/form',
@@ -57,13 +57,13 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ 
-			path: '/*', 
+		{
+			path: '/*',
 			render: () => html`<h1>Page not found</h1>`,
 			enter: async () => {
 				navigationEvent(window.location.pathname)
 				return true
-			}
+			},
 		},
 	])
 
