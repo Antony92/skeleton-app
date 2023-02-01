@@ -1,22 +1,24 @@
-export const addSearchParamsToURL = (params: { [key: string]: any }) => {
-    const searchParams = new URLSearchParams()
-	Object.keys(params)
-		.filter((key) => params[key] != null && params[key] != undefined && params[key] !== '')
-		.map((key) => searchParams.set(key, params[key].toString()))
-    const query = searchParams.toString()
+import { SearchParams } from "../types/search.type"
+
+export const addSearchParamsToURL = (searchParams: SearchParams) => {
+    const params = new URLSearchParams()
+	Object.keys(searchParams)
+		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
+		.map((key) => searchParams.set(key, searchParams[key].toString()))
+    const query = params.toString()
     const url = `${window.location.pathname}` + `${query ? `?${query}` : ''}`  
     history.replaceState(null, '', url)
 }
 
-export const transformToSearchParams = (params: { [key: string]: any }) => {
-	const searchParams = new URLSearchParams()
+export const searchParamsToURL = (searchParams: SearchParams) => {
+	const params = new URLSearchParams()
 	Object.keys(params)
-		.filter((key) => params[key] != null && params[key] != undefined && params[key] !== '')
-		.map((key) => searchParams.append(key, params[key].toString()))
+		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
+		.map((key) => params.append(key, searchParams[key].toString()))
 	const query = searchParams.toString()
 	return query ? `?${query}` : ``
 }
 
-export const getSearchParamsAsObject = () => {
+export const getURLSearchParamsAsObject = () => {
 	return Object.fromEntries(new URLSearchParams(window.location.search))
 }

@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest'
 import { escapeHtml } from '../utils/html'
-import { transformToSearchParams } from '../utils/url'
+import { searchParamsToURL } from '../utils/url'
 
 test('escapeHtml(html: string)', () => {
     const escapedHtml = escapeHtml('<script>alert(1)</script>')
@@ -8,8 +8,8 @@ test('escapeHtml(html: string)', () => {
     expect(escapedHtml).not.include('>')
 })
 
-test('transformToSearchParams(params: { [key: string]: any })', () => {
-    const params = transformToSearchParams({ limit: 10, search: 'user' })
+test('searchParamsToURL(params: SearchParams)', () => {
+    const params = searchParamsToURL({ limit: 10, search: 'user' })
     expect(params).toContain('?')
     expect(params).toContain('limit=10')
     expect(params).toContain('search=user')
