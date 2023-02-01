@@ -17,8 +17,8 @@ import { login, logout } from '../../services/login.service'
 import { whenUser } from '../../directives/when-user.directive'
 import { getUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
-import { getApp } from '../../utils/html'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
+import { navigate, navigation } from '../../navigation/navigation'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -48,6 +48,10 @@ export class AppHeader extends LitElement {
                 this.fullname = `${user.firstName} ${user.lastName}`
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
             }
+        })
+        navigation().subscribe(path => {
+            this.drawer.querySelector('a.active')?.classList.remove('active')
+            this.drawer.querySelector(`a[href="${path}"]`)?.classList.add('active')
         })
     }
 
@@ -93,7 +97,7 @@ export class AppHeader extends LitElement {
                             <sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
                             <sl-menu>
                                 <sl-menu-label>${this.fullname}</sl-menu-label>
-                                <sl-menu-item @click=${() => getApp().navigate('/profile')}>
+                                <sl-menu-item @click=${() => navigate('/profile')}>
                                     <sl-icon slot="prefix" name="person-fill"></sl-icon>
                                     Profile
                                 </sl-menu-item>

@@ -4,22 +4,28 @@ import { customElement } from 'lit/decorators.js'
 import './elements/global-message/app-global-message.element'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
+import { triggerNavigationEvent } from './navigation/navigation'
 import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
 	static styles = [mainStyle, css``]
 
-	#router = new Router(this, [
+	router = new Router(this, [
 		{
 			path: '/',
 			render: () =>
 				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
+			enter: async () => {
+				triggerNavigationEvent('/')
+				return true
+			}
 		},
 		{
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
+				triggerNavigationEvent('/form')
 				await import('./pages/app-demo-form.page')
 				return true
 			},
@@ -28,6 +34,7 @@ export class AppRoot extends LitElement {
 			path: '/alerts',
 			render: () => html`<app-demo-alerts></app-demo-alerts>`,
 			enter: async () => {
+				triggerNavigationEvent('/alerts')
 				await import('./pages/app-demo-alerts.page')
 				return true
 			},
@@ -36,6 +43,7 @@ export class AppRoot extends LitElement {
 			path: '/table',
 			render: () => html`<app-demo-table></app-demo-table>`,
 			enter: async () => {
+				triggerNavigationEvent('/table')
 				await import('./pages/app-demo-table.page')
 				return true
 			},
@@ -44,21 +52,13 @@ export class AppRoot extends LitElement {
 			path: '/profile',
 			render: () => html`<app-profile></app-profile>`,
 			enter: async () => {
+				triggerNavigationEvent('/profile')
 				await import('./pages/app-profile.page')
 				return true
 			},
 		},
 		{ path: '/*', render: () => html`<h1>Page not found</h1>` },
 	])
-
-	async navigate(path: string) {
-		await this.#router.goto(path)
-		history.pushState(null, '', path)
-	}
-
-	get routeParams() {
-		return this.#router.params
-	}
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -71,7 +71,7 @@ export class AppRoot extends LitElement {
 			<div class="layout">
 				<app-header class="header"></app-header>
 				<app-sidebar class="sidebar"></app-sidebar>
-				<main class="main">${this.#router.outlet()}</main>
+				<main class="main">${this.router.outlet()}</main>
 			</div>
 		`
 	}

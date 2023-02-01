@@ -10,8 +10,3 @@ export const escapeHtml = (html: string) => {
 		.replace(/'/g, '&apos;')
 		.replace(/`(.*?)`/g, '<code>$1</code>')
 }
-
-
-export const getApp = () => {
-	return document.querySelector('app-root')!
-}
