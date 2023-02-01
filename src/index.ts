@@ -8,8 +8,4 @@ import { applyTheme } from './app/utils/theme'
 applyTheme()
 
 // when root is loaded add ready to body
-await Promise.allSettled([
-    customElements.whenDefined('app-root'),
-])
-
-document.querySelector('body')?.classList.add('ready')
+Promise.allSettled([customElements.whenDefined('app-root')]).then(() => document.querySelector('body')?.classList.add('ready'))
