@@ -1,13 +1,15 @@
 import { ReplaySubject } from 'rxjs'
 
-const navigationEvent = new ReplaySubject<string>()
+const $navigation = new ReplaySubject<string>()
 
-export const navigation = () => navigationEvent.asObservable()
+const $navigationObservable = $navigation.asObservable()
+
+export const navigation = () => $navigationObservable
 
 export const navigate = async (path: string) => {
     const app = document.querySelector('app-root')!
     await app.router.goto(path)
-    triggerNavigationEvent(path)
+    navigationEvent(path)
 	history.pushState(null, '', path)
 }
 
@@ -16,4 +18,4 @@ export const getRouteParams = () => {
     return app.router.params
 } 
 
-export const triggerNavigationEvent = (path: string) => navigationEvent.next(path)
+export const navigationEvent = (path: string) => $navigation.next(path)

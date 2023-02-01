@@ -1,9 +1,9 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
-import { notify } from '../services/notify.service'
-import { confirmDialog } from '../services/confirm-dialog.service'
-import { showGlobalMessage } from '../services/global-message.service'
+import { notify } from '../shared/notification'
+import { confirmDialog } from '../shared/confirm-dialog'
+import { showGlobalMessage } from '../shared/global-message'
 
 @customElement('app-demo-alerts')
 export class AppDemoAlerts extends LitElement {

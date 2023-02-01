@@ -1,5 +1,5 @@
-import { loading } from '../services/loader.service'
-import { notify } from '../services/notify.service'
+import { loading } from '../shared/loader'
+import { notify } from '../shared/notification'
 
 type RequestOptions = RequestInit & { showLoader?: boolean }
 

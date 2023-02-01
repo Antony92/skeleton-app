@@ -1,5 +1,4 @@
 import { request } from '../http/request'
-import { removeUser, setUser } from './user.service'
 
 export const login = async () => {
 	try {
@@ -10,12 +9,12 @@ export const login = async () => {
 			showLoader: false
 		})
 		const res = await req.json()
-		setUser(res)
+		return res
 	} catch (error) {
 		console.error(error)
 	}
 }
 
 export const logout = async () => {
-	removeUser()
+	// TODO
 }
