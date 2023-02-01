@@ -57,7 +57,14 @@ export class AppRoot extends LitElement {
 				return true
 			},
 		},
-		{ path: '/*', render: () => html`<h1>Page not found</h1>` },
+		{ 
+			path: '/*', 
+			render: () => html`<h1>Page not found</h1>`,
+			enter: async () => {
+				navigationEvent(`/${window.location.pathname.split('/')[1]}`)
+				return true
+			}
+		},
 	])
 
 	connectedCallback() {
