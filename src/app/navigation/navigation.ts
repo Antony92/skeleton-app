@@ -7,7 +7,6 @@ export const navigation = () => navigationEvent.asObservable()
 export const navigate = async (path: string) => {
     const app = document.querySelector('app-root')!
     await app.router.goto(path)
-    triggerNavigationEvent(path)
 	history.pushState(null, '', path)
 }
 

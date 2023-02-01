@@ -3,7 +3,6 @@ import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { whenUser } from '../../directives/when-user.directive'
 import { appSidebarStyle } from '../../styles/app-sidebar.style'
-import { navigation } from '../../navigation/navigation'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -14,10 +13,6 @@ export class AppSidebar extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		navigation().subscribe(path => {
-			this.renderRoot.querySelector('a.active')?.classList.remove('active')
-            this.renderRoot.querySelector(`a[href="/${path}"]`)?.classList.add('active')
-        })
 	}
 
 	firstUpdated() {
