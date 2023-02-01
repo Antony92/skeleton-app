@@ -25,8 +25,8 @@ export class AppRoot extends LitElement {
 			path: '/form',
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
-				await import('./pages/app-demo-form.page')
 				navigationEvent('/form')
+				await import('./pages/app-demo-form.page')
 				return true
 			},
 		},
@@ -34,8 +34,8 @@ export class AppRoot extends LitElement {
 			path: '/alerts',
 			render: () => html`<app-demo-alerts></app-demo-alerts>`,
 			enter: async () => {
-				await import('./pages/app-demo-alerts.page')
 				navigationEvent('/alerts')
+				await import('./pages/app-demo-alerts.page')
 				return true
 			},
 		},
@@ -43,8 +43,8 @@ export class AppRoot extends LitElement {
 			path: '/table',
 			render: () => html`<app-demo-table></app-demo-table>`,
 			enter: async () => {
-				await import('./pages/app-demo-table.page')
 				navigationEvent('/table')
+				await import('./pages/app-demo-table.page')
 				return true
 			},
 		},
@@ -52,8 +52,8 @@ export class AppRoot extends LitElement {
 			path: '/profile',
 			render: () => html`<app-profile></app-profile>`,
 			enter: async () => {
-				await import('./pages/app-profile.page')
 				navigationEvent('/profile')
+				await import('./pages/app-profile.page')
 				return true
 			},
 		},
