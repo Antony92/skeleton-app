@@ -50,14 +50,14 @@ export class AppHeader extends LitElement {
             }
         })
         navigation().subscribe(path => {
-            this.drawer.querySelector('a.active')?.classList.remove('active')
-            this.drawer.querySelector(`a[href="${path}"]`)?.classList.add('active')
+            this.drawer?.querySelector('a.active')?.classList.remove('active')
+            this.drawer?.querySelector(`a[href="${path}"]`)?.classList.add('active')
         })
     }
 
     firstUpdated() {
 		const path = location.pathname.split('/')[1]
-		this.drawer.querySelector(`a[href="/${path}"]`)?.classList.add('active')
+		this.drawer?.querySelector(`a[href="/${path}"]`)?.classList.add('active')
 	}
 
     async signIn() {
@@ -67,7 +67,7 @@ export class AppHeader extends LitElement {
     }
 
     #handleLinkClick(event: Event) {
-		const activeLink = this.drawer.querySelector('a.active')
+		const activeLink = this.drawer?.querySelector('a.active')
 		activeLink?.classList.remove('active')
 		const clickedLink = <HTMLAnchorElement>event.currentTarget
 		clickedLink?.classList.add('active')
