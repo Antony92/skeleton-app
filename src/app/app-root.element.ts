@@ -61,7 +61,7 @@ export class AppRoot extends LitElement {
 			path: '/*', 
 			render: () => html`<h1>Page not found</h1>`,
 			enter: async () => {
-				navigationEvent(`/${window.location.pathname.split('/')[1]}`)
+				navigationEvent(window.location.pathname)
 				return true
 			}
 		},
