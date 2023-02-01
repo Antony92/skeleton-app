@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js'
 import './elements/global-message/app-global-message.element'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
+import { triggerNavigationEvent } from './navigation/navigation'
 import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')
@@ -16,6 +17,7 @@ export class AppRoot extends LitElement {
 			render: () =>
 				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
 			enter: async () => {
+				triggerNavigationEvent('/')
 				return true
 			}
 		},
@@ -24,6 +26,7 @@ export class AppRoot extends LitElement {
 			render: () => html`<app-demo-form></app-demo-form>`,
 			enter: async () => {
 				await import('./pages/app-demo-form.page')
+				triggerNavigationEvent('/form')
 				return true
 			},
 		},
@@ -32,6 +35,7 @@ export class AppRoot extends LitElement {
 			render: () => html`<app-demo-alerts></app-demo-alerts>`,
 			enter: async () => {
 				await import('./pages/app-demo-alerts.page')
+				triggerNavigationEvent('/alerts')
 				return true
 			},
 		},
@@ -40,6 +44,7 @@ export class AppRoot extends LitElement {
 			render: () => html`<app-demo-table></app-demo-table>`,
 			enter: async () => {
 				await import('./pages/app-demo-table.page')
+				triggerNavigationEvent('/table')
 				return true
 			},
 		},
