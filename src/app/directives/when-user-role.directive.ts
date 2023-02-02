@@ -2,13 +2,13 @@ import { directive } from 'lit/directive.js'
 import { AsyncDirective } from 'lit/async-directive.js'
 import { Subscription } from 'rxjs'
 import { getUser } from '../services/user.service'
-import { noChange, nothing, TemplateResult } from 'lit'
+import { noChange, nothing } from 'lit'
 
 class WhenUserRole extends AsyncDirective {
 
 	#subscription: Subscription = new Subscription()
 
-	render(roles: string[], trueCase: () => TemplateResult, falseCase?: () => TemplateResult) {
+	render<T, F>(roles: string[], trueCase: () => T, falseCase?: () => F) {
 		if (this.isConnected) {
 			this.#subscription = getUser().subscribe((user) => {
                 if (user?.roles?.some((role: string) => roles.includes(role))) {

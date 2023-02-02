@@ -1,15 +1,15 @@
 import { directive } from 'lit/directive.js'
 import { AsyncDirective } from 'lit/async-directive.js'
 import { Observable, Subscription } from 'rxjs'
-import { noChange, nothing } from 'lit'
+import { noChange } from 'lit'
 
 class Observe extends AsyncDirective {
 
 	#subscription: Subscription = new Subscription()
 
-	render(observable: Observable<unknown>) {
+	render(observable: Observable<unknown>, result: (value: unknown) => unknown) {
 		if (this.isConnected) {
-			this.#subscription = observable.subscribe((value) => value ? this.setValue(value) : this.setValue(nothing))
+			this.#subscription = observable.subscribe((value) => this.setValue(result(value)))
 		}
 		return noChange
 	}
