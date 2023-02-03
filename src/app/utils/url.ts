@@ -4,7 +4,7 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
     const search = new URLSearchParams()
 	Object.keys(searchParams)
 		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
-		.map((key) => searchParams.set(key, searchParams[key].toString()))
+		.map((key) => search.set(key, searchParams[key].toString()))
     const query = search.toString()
     const url = `${window.location.pathname}` + `${query ? `?${query}` : ''}`  
     history.replaceState(null, '', url)
