@@ -30,7 +30,7 @@ export class AppSidebar extends LitElement {
 	render() {
 		return html`
 			<nav>
-				<ul class="navigation-menu">
+				<ul>
 					<li>
 						<a href="/">
 							<span>
