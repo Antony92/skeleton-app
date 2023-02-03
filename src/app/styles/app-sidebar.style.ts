@@ -23,11 +23,6 @@ export const appSidebarStyle = css`
     }
 
     ul li {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
         width: 100%;
     }
 
