@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js'
 import './elements/global-message/app-global-message.element'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
-import { navigationEvent } from './navigation/navigation'
+import { navigationEvent } from './services/navigation.service'
 import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')

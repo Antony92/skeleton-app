@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { whenUser } from '../../directives/when-user.directive'
 import { appSidebarStyle } from '../../styles/app-sidebar.style'
-import { navigation } from '../../navigation/navigation'
+import { navigation } from '../../services/navigation.service'
 import { Subscription } from 'rxjs'
 
 @customElement('app-sidebar')

@@ -18,7 +18,7 @@ import { whenUser } from '../../directives/when-user.directive'
 import { getUser, removeUser, setUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
-import { navigate, navigation } from '../../navigation/navigation'
+import { navigate, navigation } from '../../services/navigation.service'
 import { Subscription } from 'rxjs'
 
 @customElement('app-header')
