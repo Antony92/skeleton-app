@@ -24,11 +24,7 @@ import { addSearchParamsToURL, getURLSearchParamsAsObject } from '../utils/url'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
-	static styles = css`
-		.action-column {
-			width: 1%;
-		}
-	`
+	static styles = css``
 
 	@query('app-paginator')
 	paginator!: AppPaginator
@@ -193,7 +189,7 @@ export class AppDemoTable extends LitElement {
 				</sl-dropdown>
 
 				<app-table-head>
-					<app-table-heading class="action-column" sticky>
+					<app-table-heading action sticky>
 						<sl-checkbox ?indeterminate=${this.isIndeterminate()} ?checked=${this.isChecked()} @sl-change=${this.toggleAllSelection}>
 						</sl-checkbox>
 					</app-table-heading>

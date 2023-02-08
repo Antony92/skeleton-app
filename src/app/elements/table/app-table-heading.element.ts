@@ -19,6 +19,10 @@ export class AppTableHeading extends LitElement {
             padding: 10px;
         }
 
+        :host([action]) {
+            width: var(--action-width, 1%);
+        }
+
         :host([sticky]) {
 			position: sticky;
 			left: var(--sticky-start, 0);
