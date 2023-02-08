@@ -19,6 +19,20 @@ export class AppTableHeading extends LitElement {
             padding: 10px;
         }
 
+        :host([sticky]) {
+			position: sticky;
+			left: var(--sticky-start, 0);
+			z-index: 1;
+            background-color: var(--theme-background);
+		}
+
+        :host([stickyEnd]) {
+			position: sticky;
+			right: var(--sticky-end, 0);
+			z-index: 1;
+			background-color: var(--theme-background);
+		}
+
 		.heading {
             display: flex;
             align-items: center;

@@ -193,7 +193,7 @@ export class AppDemoTable extends LitElement {
 				</sl-dropdown>
 
 				<app-table-head>
-					<app-table-heading class="action-column">
+					<app-table-heading class="action-column" sticky>
 						<sl-checkbox ?indeterminate=${this.isIndeterminate()} ?checked=${this.isChecked()} @sl-change=${this.toggleAllSelection}>
 						</sl-checkbox>
 					</app-table-heading>
@@ -219,7 +219,7 @@ export class AppDemoTable extends LitElement {
 					${this.users.data.map(
 						(user) => html`
 							<app-table-row>
-								<app-table-cell>
+								<app-table-cell sticky>
 									<sl-checkbox
 										?checked=${user.selected}
 										@sl-change=${(event: CustomEvent) => this.toggleSingleSelection(event, user)}
