@@ -3,7 +3,6 @@ import { css } from 'lit'
 export const tableWrapperStyle = css`
     .table-wrapper {
         overflow-x: auto;
-        position: relative;
     }
 `
 

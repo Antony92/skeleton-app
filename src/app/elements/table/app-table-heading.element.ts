@@ -143,7 +143,7 @@ export class AppTableHeading extends LitElement {
         this.dispatchFilterEvent()
 	}
 
-    clearAllFilters() {
+    clearFilters() {
         this.clearOrderFilter()
         this.clearValueFilter()
     }
@@ -153,6 +153,7 @@ export class AppTableHeading extends LitElement {
     }
 
     clearValueFilter() {
+        this.value = ''
         this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))

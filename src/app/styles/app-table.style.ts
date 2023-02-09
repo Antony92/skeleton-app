@@ -35,6 +35,5 @@ export const appTableStyle = css`
 
     .table-wrapper {
         overflow-x: auto;
-        position: relative;
     }
 `

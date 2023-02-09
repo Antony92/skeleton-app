@@ -104,7 +104,7 @@ export class AppTable extends LitElement {
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
-		this.headings?.forEach(heading => heading.clearAllFilters())
+		this.headings?.forEach(heading => heading.clearFilters())
 		this.dispatchEvent(new CustomEvent('app-table-clear', {
             bubbles: true,
             composed: true,
