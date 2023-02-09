@@ -167,7 +167,6 @@ export class AppDemoTable extends LitElement {
 			<app-table
 				searchable
 				clearable
-				?loading=${this.loading}
 				.filtersApplied=${this.hasFiltersApplied()}
 				.searchValue=${this.#searchParams.search}
 			>

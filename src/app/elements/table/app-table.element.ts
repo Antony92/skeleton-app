@@ -4,10 +4,11 @@ import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
+import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
 import { SearchParams } from '../../types/search.type'
 import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
-import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
+
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -27,9 +28,6 @@ export class AppTable extends LitElement {
 
     @property({ type: Boolean })
 	clearable = false
-
-	@property({ type: Boolean, reflect: true })
-	loading = false
 
 	@property({ type: String, attribute: 'search-value' })
 	searchValue = ''
@@ -149,7 +147,6 @@ export class AppTable extends LitElement {
 			</div>
 			<div class="table-wrapper">
 				<div class="table">
-					<sl-spinner ?hidden=${!this.loading}></sl-spinner>
 					<slot></slot>
 				</div>
 			</div>

@@ -37,21 +37,4 @@ export const appTableStyle = css`
         overflow-x: auto;
         position: relative;
     }
-
-    .table sl-spinner {
-        font-size: 3rem;
-        z-index: 1;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        translate: -50% -50%;
-        transition: opacity 0.3s;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .table sl-spinner[hidden] {
-        opacity: 0;
-        visibility: hidden;
-    }
 `

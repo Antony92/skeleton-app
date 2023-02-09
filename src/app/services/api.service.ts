@@ -28,7 +28,7 @@ export const getUsers = async (query?: SearchParams) => {
 			_sort: query?.sort,
 			_order: query?.order 
 		})
-		const req = await request(`https://jsonplaceholder.typicode.com/users${params}`, { showLoader: false })
+		const req = await request(`https://jsonplaceholder.typicode.com/users${params}`)
 		const res = await req.json()
 		const total = req.headers.get('x-total-count')
 		return {
