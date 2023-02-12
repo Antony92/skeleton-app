@@ -6,7 +6,6 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
-import { SearchParams } from '../../types/search.type'
 import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
 
 
@@ -35,7 +34,7 @@ export class AppTable extends LitElement {
 	@property({ type: Boolean, attribute: 'filters-applied' })
 	filtersApplied = false
 
-	#searchParams: SearchParams = { }
+	#searchParams = new Map()
 
 	#searchEvent = new Subject<string>()
 
@@ -48,9 +47,9 @@ export class AppTable extends LitElement {
 			.pipe(debounce((value) => value ? timer(300) : timer(0)))
 			.subscribe((value) => {
 				if (value) {
-					this.#searchParams.search = value
+					this.#searchParams.set('search', value)
 				} else {
-					delete this.#searchParams.search
+					this.#searchParams.delete('search')
 				}
 				this.filtersApplied = this.hasFiltersApplied()
 				this.#dispatchFilterEvent()
@@ -66,16 +65,16 @@ export class AppTable extends LitElement {
         this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
             if (value) {
-                this.#searchParams[field] = value
+				this.#searchParams.set(field, value)
             } else {
-                delete this.#searchParams[field]
+				this.#searchParams.delete(field)
             }
             if (order) {
-                this.#searchParams['sort'] = field
-                this.#searchParams['order'] = order
+				this.#searchParams.set('sort', field)
+				this.#searchParams.set('order', order)
             } else {
-                delete this.#searchParams['sort']
-                delete this.#searchParams['order']
+				this.#searchParams.delete('sort')
+				this.#searchParams.delete('order')
             }
             this.filtersApplied = this.hasFiltersApplied()
             this.#dispatchFilterEvent()
@@ -86,7 +85,7 @@ export class AppTable extends LitElement {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
-            detail: this.#searchParams
+            detail: Object.fromEntries(this.#searchParams)
         }))
 	}
 
@@ -100,7 +99,7 @@ export class AppTable extends LitElement {
 
 	clearAllFilters() {
 		this.filtersApplied = false
-		this.#searchParams = {}
+		this.#searchParams.clear()
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
