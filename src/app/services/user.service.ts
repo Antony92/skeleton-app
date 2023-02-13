@@ -1,10 +1,10 @@
 import { BehaviorSubject, shareReplay } from 'rxjs'
 
-const $user = new BehaviorSubject<any>(null)
+const $user = new BehaviorSubject<unknown>(null)
 
 const $userObservable = $user.asObservable().pipe(shareReplay(1))
 
-export const setUser = (user: any) => {
+export const setUser = (user: unknown) => {
 	$user.next(user)
 }
 

@@ -48,7 +48,7 @@ export class AppHeader extends LitElement {
 
     connectedCallback() {
         super.connectedCallback()
-        this.userSubscription = getUser().subscribe(user => {
+        this.userSubscription = getUser().subscribe((user: any) => {
             if (user) {
                 this.fullname = `${user.firstName} ${user.lastName}`
                 this.initials = this.fullname.match(/\b(\w)/g)?.join('').toUpperCase()
