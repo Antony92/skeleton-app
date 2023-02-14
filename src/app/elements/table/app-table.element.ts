@@ -103,7 +103,7 @@ export class AppTable extends LitElement {
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
-		this.headings?.forEach(heading => heading.clearFilters())
+		this.headings.forEach(heading => heading.clearFilters())
 		this.dispatchEvent(new CustomEvent('app-table-clear', {
             bubbles: true,
             composed: true,
@@ -112,8 +112,8 @@ export class AppTable extends LitElement {
 
 	get headings() {
 		const slot = this.renderRoot.querySelector('.table slot')
-		const head = (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-table-head'))[0]
-		return head?.querySelectorAll('app-table-heading')
+		const head = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('app-table-head'))[0]
+		return Array.from(head?.querySelectorAll('app-table-heading') || [])
 	}
 
 	render() {
