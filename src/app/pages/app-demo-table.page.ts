@@ -88,7 +88,7 @@ export class AppDemoTable extends LitElement {
 			addSearchParamsToURL({ ...this.#searchParams })
 			this.#skip = 0
 			this.columns.forEach((column) => {
-				column.search = ''
+				column.value = ''
 				column.order = null
 			})
 			await this.loadUsers()
@@ -102,7 +102,7 @@ export class AppDemoTable extends LitElement {
 		Object.keys(this.#searchParams).forEach((key) => {
 			const column = this.columns.find((column) => column.field === key)
 			if (column) {
-				column.search = this.#searchParams[key]
+				column.value = this.#searchParams[key]
 			}
 		})
 		const sorted = this.columns.find((column) => column.field === this.#searchParams['sort'])
@@ -163,7 +163,7 @@ export class AppDemoTable extends LitElement {
 			<app-table
 				searchable
 				clearable
-				.enableClearFilters=${Object.keys(this.#searchParams).length > 0}
+				.filtersApplied=${Object.keys(this.#searchParams).length > 0}
 				.search=${this.#searchParams.search}
 			>
 
@@ -198,7 +198,7 @@ export class AppDemoTable extends LitElement {
 								.type=${column.type || 'text'}
 								.delay=${column.delay || 0}
 								.list=${column.list || []}
-								.search=${column.search || ''}
+								.value=${column.value || ''}
 								.order=${column.order || null}
 							>
 								${column.header}

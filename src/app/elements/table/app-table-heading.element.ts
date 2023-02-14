@@ -85,7 +85,7 @@ export class AppTableHeading extends LitElement {
 	field = ''
 
     @property({ type: String })
-	search = ''
+	value = ''
 
 	@property({ type: String, reflect: true })
 	type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
@@ -95,9 +95,6 @@ export class AppTableHeading extends LitElement {
 
 	@property({ type: Number })
 	delay = 0
-
-    @state()
-    value = ''
 
 	#filterEvent = new Subject<string>()
 
@@ -182,7 +179,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="text"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.search}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -194,7 +191,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="number"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.search}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -206,7 +203,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="date"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.search}
+                    .value=${this.value}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -217,7 +214,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.search}
+                    .value=${this.value}
                     @sl-change=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
@@ -230,7 +227,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     multiple
                     .maxOptionsVisible=${1}
-                    .value=${this.search.split(',')}
+                    .value=${this.value.split(',')}
                     placeholder="Filter by ${this.label?.toLowerCase()}"
                     @sl-change=${this.filterColumnValue}
                 >

@@ -31,10 +31,7 @@ export class AppTable extends LitElement {
 	@property({ type: String })
 	search = ''
 
-	@property({ type: String, attribute: 'enable-clear-filters' })
-	enableClearFilters = false
-
-	@state()
+	@property({ type: Boolean, attribute: 'filters-applied' })
 	filtersApplied = false
 
 	#searchParams = new Map()
@@ -146,7 +143,7 @@ export class AppTable extends LitElement {
 						variant="default" 
 						pill 
 						@click=${this.clearAllFilters} 
-						?disabled=${!this.filtersApplied && !this.enableClearFilters}
+						?disabled=${!this.filtersApplied}
 					>
 						<sl-icon slot="prefix" name="funnel"></sl-icon>
 						Clear filters
