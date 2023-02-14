@@ -3,8 +3,7 @@ import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { whenUser } from '../../directives/when-user.directive'
 import { appSidebarStyle } from '../../styles/app-sidebar.style'
-import { navigation } from '../../services/navigation.service'
-import { Subscription } from 'rxjs'
+import { Router, RouterLocation } from '@vaadin/router'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -13,20 +12,23 @@ export class AppSidebar extends LitElement {
 		css``
 	]
 
-	navigationSubscription = new Subscription()
+	setActiveLink = (event: CustomEvent<{ router: Router, location: RouterLocation }>) => {
+		const { location: { pathname } } = event.detail
+		this.renderRoot.querySelector('a.active')?.classList.remove('active')
+		this.renderRoot.querySelector(`a[href="${pathname}"]`)?.classList.add('active')
+	}
 
-	firstUpdated() {
-		this.navigationSubscription = navigation().subscribe(path => {
-			this.renderRoot.querySelector('a.active')?.classList.remove('active')
-            this.renderRoot.querySelector(`a[href="${path}"]`)?.classList.add('active')
-        })
+	connectedCallback() {
+		super.connectedCallback()
+		window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
 	}
 
 	disconnectedCallback() {
-        super.disconnectedCallback()
-        this.navigationSubscription.unsubscribe()
-    }
+		super.disconnectedCallback()
+		window.removeEventListener('vaadin-router-location-changed', this.setActiveLink)
+	}
 
+	// user router-ignore for ignoring routing
 	render() {
 		return html`
 			<nav>

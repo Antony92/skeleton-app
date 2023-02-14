@@ -1,76 +1,69 @@
-import { Router } from '@lit-labs/router'
+import { Router } from '@vaadin/router'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import './elements/global-message/app-global-message.element'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
-import { navigationEvent } from './services/navigation.service'
 import { mainStyle } from './styles/main.style'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
 	static styles = [mainStyle, css``]
 
-	router = new Router(this, [
-		{
-			path: '/',
-			render: () =>
-				html`<img height="100%" width="100%" style="display: block;" alt="Home image of an astronaut" src="assets/images/astro.svg" />`,
-			enter: async () => {
-				navigationEvent('/')
-				return true
-			},
-		},
-		{
-			path: '/form',
-			render: () => html`<app-demo-form></app-demo-form>`,
-			enter: async () => {
-				navigationEvent('/form')
-				await import('./pages/app-demo-form.page')
-				return true
-			},
-		},
-		{
-			path: '/alerts',
-			render: () => html`<app-demo-alerts></app-demo-alerts>`,
-			enter: async () => {
-				navigationEvent('/alerts')
-				await import('./pages/app-demo-alerts.page')
-				return true
-			},
-		},
-		{
-			path: '/table',
-			render: () => html`<app-demo-table></app-demo-table>`,
-			enter: async () => {
-				navigationEvent('/table')
-				await import('./pages/app-demo-table.page')
-				return true
-			},
-		},
-		{
-			path: '/profile',
-			render: () => html`<app-profile></app-profile>`,
-			enter: async () => {
-				navigationEvent('/profile')
-				await import('./pages/app-profile.page')
-				return true
-			},
-		},
-		{
-			path: '/*',
-			render: () => html`<h1>Page not found</h1>`,
-			enter: async () => {
-				navigationEvent(window.location.pathname)
-				return true
-			},
-		},
-	])
-
+	static router = new Router()
+	
 	connectedCallback() {
 		super.connectedCallback()
 		window.addEventListener('offline', () => console.log('offline'))
 		window.addEventListener('online', () => console.log('online'))
+	}
+
+	firstUpdated() {
+		AppRoot.router.setOutlet(this.renderRoot.querySelector('main'))
+		AppRoot.router.setRoutes([
+			{ 
+				path: '/', 
+				component: 'app-home',
+				action: async (context, command) => {
+					await import('./pages/app-home.page')
+				}
+			},
+			{ 
+				path: '/form', 
+				component: 'app-demo-form',
+				action: async (context, command) => {
+					await import('./pages/app-demo-form.page')
+				}
+			},
+			{ 
+				path: '/alerts', 
+				component: 'app-demo-alerts',
+				action: async (context, command) => {
+					await import('./pages/app-demo-alerts.page')
+				}
+			},
+			{ 
+				path: '/table', 
+				component: 'app-demo-table',
+				action: async (context, command) => {
+					await import('./pages/app-demo-table.page')
+				}
+			},
+			{ 
+				path: '/profile', 
+				component: 'app-profile',
+				action: async (context, command) => {
+					await import('./pages/app-profile.page')
+				}
+			},
+			{	
+				path: '(.*)', 
+				component: 'app-not-found',
+				action: async (context, command) => {
+					await import('./pages/app-not-found.page')
+				}
+			},
+		])
 	}
 
 	render() {
@@ -78,7 +71,7 @@ export class AppRoot extends LitElement {
 			<div class="layout">
 				<app-header class="header"></app-header>
 				<app-sidebar class="sidebar"></app-sidebar>
-				<main class="main">${this.router.outlet()}</main>
+				<main class="main"></main>
 			</div>
 		`
 	}

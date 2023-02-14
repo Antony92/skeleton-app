@@ -18,8 +18,8 @@ import { whenUser } from '../../directives/when-user.directive'
 import { getUser, removeUser, setUser } from '../../services/user.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
-import { navigate, navigation } from '../../services/navigation.service'
 import { Subscription } from 'rxjs'
+import { Router, RouterLocation } from '@vaadin/router'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -44,10 +44,10 @@ export class AppHeader extends LitElement {
     @query('sl-drawer') drawer!: SlDrawer
 
     userSubscription = new Subscription()
-    navigationSubscription = new Subscription()
 
     connectedCallback() {
         super.connectedCallback()
+        window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
         this.userSubscription = getUser().subscribe((user: any) => {
             if (user) {
                 this.fullname = `${user.firstName} ${user.lastName}`
@@ -56,18 +56,17 @@ export class AppHeader extends LitElement {
         })
     }
 
-    firstUpdated() {
-		this.navigationSubscription = navigation().subscribe(path => {
-            this.drawer?.querySelector('a.active')?.classList.remove('active')
-            this.drawer?.querySelector(`a[href="${path}"]`)?.classList.add('active')
-        })
-	}
-
     disconnectedCallback() {
         super.disconnectedCallback()
+        window.removeEventListener('vaadin-router-location-changed', this.setActiveLink)
         this.userSubscription.unsubscribe()
-        this.navigationSubscription.unsubscribe()
     }
+
+    setActiveLink = (event: CustomEvent<{ router: Router, location: RouterLocation }>) => {
+		const { location: { pathname } } = event.detail
+		this.renderRoot.querySelector('a.active')?.classList.remove('active')
+		this.renderRoot.querySelector(`a[href="${pathname}"]`)?.classList.add('active')
+	}
 
     async signIn() {
         this.loginLoading = true
@@ -104,7 +103,7 @@ export class AppHeader extends LitElement {
                             <sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
                             <sl-menu>
                                 <sl-menu-label>${this.fullname}</sl-menu-label>
-                                <sl-menu-item @click=${() => navigate('/profile')}>
+                                <sl-menu-item @click=${() => Router.go('/profile')}>
                                     <sl-icon slot="prefix" name="person-fill"></sl-icon>
                                     Profile
                                 </sl-menu-item>
