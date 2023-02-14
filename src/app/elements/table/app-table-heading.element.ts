@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
@@ -70,7 +70,7 @@ export class AppTableHeading extends LitElement {
 	`
 
     @property({ type: String })
-    label: string = ''
+    label = ''
 
 	@property({ type: Boolean })
 	sortable = false
@@ -82,10 +82,10 @@ export class AppTableHeading extends LitElement {
 	filterable = false
 
     @property({ type: String })
-	field: string = ''
+	field = ''
 
     @property({ type: String })
-	value: string  = ''
+	search = ''
 
 	@property({ type: String, reflect: true })
 	type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
@@ -95,6 +95,9 @@ export class AppTableHeading extends LitElement {
 
 	@property({ type: Number })
 	delay = 0
+
+    @state()
+    value = ''
 
 	#filterEvent = new Subject<string>()
 
@@ -153,7 +156,6 @@ export class AppTableHeading extends LitElement {
     }
 
     clearValueFilter() {
-        this.value = ''
         this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))
@@ -180,7 +182,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="text"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
+                    .value=${this.search}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -192,7 +194,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="number"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
+                    .value=${this.search}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -204,7 +206,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     type="date"
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
+                    .value=${this.search}
                     @sl-input=${this.filterColumnValue}
                 >
                 </sl-input>
@@ -215,7 +217,7 @@ export class AppTableHeading extends LitElement {
                     hoist
                     clearable
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
+                    .value=${this.search}
                     @sl-change=${this.filterColumnValue}
                 >
                     ${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
@@ -228,7 +230,7 @@ export class AppTableHeading extends LitElement {
                     clearable
                     multiple
                     .maxOptionsVisible=${1}
-                    .value=${this.value.split(',')}
+                    .value=${this.search.split(',')}
                     placeholder="Filter by ${this.label?.toLowerCase()}"
                     @sl-change=${this.filterColumnValue}
                 >

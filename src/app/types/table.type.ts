@@ -5,7 +5,7 @@ export type TableColumn = {
     filtarable?: boolean
     type?: 'text' | 'number' | 'date' | 'select' | 'select-multiple'
     delay?: number
-    value?: string
+    search?: string
     list?: { label: string, value: string | boolean | number }[]
     order?: 'desc' | 'asc' | null
 }

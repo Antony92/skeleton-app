@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
@@ -28,10 +28,13 @@ export class AppTable extends LitElement {
     @property({ type: Boolean })
 	clearable = false
 
-	@property({ type: String, attribute: 'search-value' })
-	searchValue = ''
+	@property({ type: String })
+	search = ''
 
-	@property({ type: Boolean, attribute: 'filters-applied' })
+	@property({ type: String, attribute: 'enable-clear-filters' })
+	enableClearFilters = false
+
+	@state()
 	filtersApplied = false
 
 	#searchParams = new Map()
@@ -42,6 +45,26 @@ export class AppTable extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
+		if (this.search) {
+			this.#searchParams.set('search', this.search)
+		}
+		this.addEventListener('app-table-column-filter', (event) => {
+            const { field, value, order } = (<CustomEvent>event).detail
+            if (value) {
+				this.#searchParams.set(field, value)
+            } else {
+				this.#searchParams.delete(field)
+            }
+            if (order) {
+				this.#searchParams.set('sort', field)
+				this.#searchParams.set('order', order)
+            } else {
+				this.#searchParams.delete('sort')
+				this.#searchParams.delete('order')
+            }
+            this.filtersApplied = this.hasFiltersApplied()
+            this.#dispatchFilterEvent()
+        })
 		this.#searchSubscription = this.#searchEvent
 			.asObservable()
 			.pipe(debounce((value) => value ? timer(300) : timer(0)))
@@ -61,26 +84,6 @@ export class AppTable extends LitElement {
 		this.#searchSubscription.unsubscribe()
 	}
 
-    firstUpdated() {
-        this.addEventListener('app-table-column-filter', (event) => {
-            const { field, value, order } = (<CustomEvent>event).detail
-            if (value) {
-				this.#searchParams.set(field, value)
-            } else {
-				this.#searchParams.delete(field)
-            }
-            if (order) {
-				this.#searchParams.set('sort', field)
-				this.#searchParams.set('order', order)
-            } else {
-				this.#searchParams.delete('sort')
-				this.#searchParams.delete('order')
-            }
-            this.filtersApplied = this.hasFiltersApplied()
-            this.#dispatchFilterEvent()
-        })
-    }
-
 	#dispatchFilterEvent() {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
@@ -89,12 +92,12 @@ export class AppTable extends LitElement {
         }))
 	}
 
-	search(value: string) {
+	globalSearch(value: string) {
 		this.#searchEvent.next(value)
 	}
 
     hasFiltersApplied() {
-        return Object.keys(this.#searchParams).length > 0
+        return this.#searchParams.size > 0
     }
 
 	clearAllFilters() {
@@ -127,9 +130,9 @@ export class AppTable extends LitElement {
                         clearable
 						class="global-search"
                         type="search"
-						.value=${this.searchValue || ''}
+						.value=${this.search || ''}
                         placeholder="Search"
-                        @sl-input=${(event: CustomEvent) => this.search((<SlInput>event.target).value)}
+                        @sl-input=${(event: CustomEvent) => this.globalSearch((<SlInput>event.target).value)}
                     >
                         <sl-icon name="search" slot="prefix"></sl-icon>
                     </sl-input>
@@ -138,7 +141,13 @@ export class AppTable extends LitElement {
 					<slot name="actions"></slot>
 				</div>
 				${when(this.clearable, () => html`
-					<sl-button class="clear-filters-button" variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
+					<sl-button 
+						class="clear-filters-button" 
+						variant="default" 
+						pill 
+						@click=${this.clearAllFilters} 
+						?disabled=${!this.filtersApplied && !this.enableClearFilters}
+					>
 						<sl-icon slot="prefix" name="funnel"></sl-icon>
 						Clear filters
 					</sl-button>
