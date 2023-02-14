@@ -71,7 +71,7 @@ export class AppDemoTable extends LitElement {
 		this.init()
 		this.addEventListener('app-table-filter', async (event) => {
 			this.#searchParams = (<CustomEvent>event).detail
-			addSearchParamsToURL({ ...this.#searchParams })
+			addSearchParamsToURL(this.#searchParams)
 			this.#skip = 0
 			await this.loadUsers()
 			this.paginator.reset()
@@ -85,7 +85,7 @@ export class AppDemoTable extends LitElement {
 		})
 		this.addEventListener('app-table-clear', async () => {
 			this.#searchParams = {}
-			addSearchParamsToURL({ ...this.#searchParams })
+			addSearchParamsToURL(this.#searchParams)
 			this.#skip = 0
 			this.columns.forEach((column) => {
 				column.value = ''
