@@ -1,13 +1,13 @@
-import { SearchParams } from "../types/search.type"
+import { SearchParams } from '../types/search.type'
 
 export const addSearchParamsToURL = (searchParams: SearchParams) => {
-    const search = new URLSearchParams()
+	const search = new URLSearchParams()
 	Object.keys(searchParams)
 		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
 		.map((key) => search.set(key, searchParams[key].toString()))
-    const query = search.toString()
-    const url = `${window.location.pathname}` + `${query ? `?${query}` : ''}`  
-    history.replaceState(null, '', url)
+	const query = search.toString()
+	const url = `${window.location.pathname}` + `${query ? `?${query}` : ''}`
+	history.replaceState(null, '', url)
 }
 
 export const searchParamsToURL = (searchParams: SearchParams) => {
