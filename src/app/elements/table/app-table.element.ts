@@ -29,7 +29,7 @@ export class AppTable extends LitElement {
     @property({ type: Boolean })
 	clearable = false
 
-	@property({ type: String, attribute: 'search-value' })
+	@property({ type: String })
 	searchValue = ''
 
 	@property({ type: Object })
