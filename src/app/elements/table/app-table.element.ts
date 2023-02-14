@@ -50,6 +50,7 @@ export class AppTable extends LitElement {
 		if (this.searchValue) {
 			this.#searchParamsMap.set('search', this.searchValue)
 		}
+		this.filtersApplied = this.hasFiltersApplied()
 		this.addEventListener('app-table-column-filter', (event) => {
             const { field, value, order } = (<CustomEvent>event).detail
             if (value) {
