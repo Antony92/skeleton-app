@@ -163,10 +163,9 @@ export class AppDemoTable extends LitElement {
 			<app-table
 				searchable
 				clearable
-				.filtersApplied=${Object.keys(this.#searchParams).length > 0}
-				.search=${this.#searchParams.search}
+				.searchValue=${this.#searchParams.search}
+				.searchParams=${this.#searchParams}
 			>
-
 				<sl-dropdown slot="actions">
 					<sl-button slot="trigger" variant="primary" pill caret ?disabled=${this.selection.length === 0}>
 						Selection
