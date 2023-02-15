@@ -20,7 +20,7 @@ import { SearchParams } from '../types/search.type'
 import { AppPaginator } from '../elements/paginator/app-paginator.element'
 import { when } from 'lit/directives/when.js'
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
-import { addSearchParamsToURL, getURLSearchParamsAsObject } from '../utils/url'
+import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsObject } from '../utils/url'
 
 @customElement('app-demo-table')
 export class AppDemoTable extends LitElement {
@@ -33,7 +33,7 @@ export class AppDemoTable extends LitElement {
 
 	#limit = 10
 
-	#searchParams: SearchParams = {}
+	#searchParamsMap = new Map()
 
 	@state()
 	loading = false
@@ -70,8 +70,8 @@ export class AppDemoTable extends LitElement {
 		super.connectedCallback()
 		this.init()
 		this.addEventListener('app-table-filter', async (event) => {
-			this.#searchParams = (<CustomEvent>event).detail
-			addSearchParamsToURL(this.#searchParams)
+			this.#searchParamsMap = (<CustomEvent>event).detail
+			addSearchParamsToURL(Object.fromEntries(this.#searchParamsMap))
 			this.#skip = 0
 			await this.loadUsers()
 			this.paginator.reset()
@@ -84,8 +84,8 @@ export class AppDemoTable extends LitElement {
 			await this.loadUsers()
 		})
 		this.addEventListener('app-table-clear', async () => {
-			this.#searchParams = {}
-			addSearchParamsToURL(this.#searchParams)
+			this.#searchParamsMap.clear()
+			clearSearchParamsFromURL()
 			this.#skip = 0
 			this.columns.forEach((column) => {
 				column.value = ''
@@ -97,24 +97,24 @@ export class AppDemoTable extends LitElement {
 	}
 
 	async init() {
-		this.#searchParams = getURLSearchParamsAsObject()
+		this.#searchParamsMap = new Map(Object.entries(getURLSearchParamsAsObject()))
 		this.#limit = Number(localStorage.getItem('limit')) || this.#limit
-		Object.keys(this.#searchParams).forEach((key) => {
+		this.#searchParamsMap.forEach((value, key) => {
 			const column = this.columns.find((column) => column.field === key)
 			if (column) {
-				column.value = this.#searchParams[key]
+				column.value = value
 			}
 		})
-		const sorted = this.columns.find((column) => column.field === this.#searchParams['sort'])
+		const sorted = this.columns.find((column) => column.field === this.#searchParamsMap.get('sort'))
 		if (sorted) {
-			sorted.order = this.#searchParams['order'] as never
+			sorted.order = this.#searchParamsMap.get('order')
 		}
 		await this.loadUsers()
 	}
 
 	async loadUsers() {
 		this.loading = true
-		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...this.#searchParams })
+		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...Object.fromEntries(this.#searchParamsMap) })
 		this.loading = false
 		this.users.data.forEach((user) => {
 			user.selected = this.selection.find((selected) => selected.id === user.id) ? true : false
@@ -163,8 +163,8 @@ export class AppDemoTable extends LitElement {
 			<app-table
 				searchable
 				clearable
-				.searchValue=${this.#searchParams.search}
-				.searchParams=${this.#searchParams}
+				.searchValue=${this.#searchParamsMap.get('search')}
+				.searchParamsMap=${this.#searchParamsMap}
 			>
 				<sl-dropdown slot="actions">
 					<sl-button slot="trigger" variant="primary" pill caret ?disabled=${this.selection.length === 0}>

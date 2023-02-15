@@ -32,13 +32,11 @@ export class AppTable extends LitElement {
 	@property({ type: String })
 	searchValue = ''
 
-	@property({ type: Object })
-	searchParams: SearchParams = {}
+	@property({ type: Map })
+	searchParamsMap = new Map()
 
 	@state()
 	filtersApplied = false
-
-	#searchParamsMap = new Map()
 
 	#searchEvent = new Subject<string>()
 
@@ -46,24 +44,28 @@ export class AppTable extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.#searchParamsMap = new Map(Object.entries(this.searchParams))
 		if (this.searchValue) {
-			this.#searchParamsMap.set('search', this.searchValue)
+			this.searchParamsMap.set('search', this.searchValue)
 		}
 		this.filtersApplied = this.hasFiltersApplied()
-		this.addEventListener('app-table-column-filter', (event) => {
-            const { field, value, order } = (<CustomEvent>event).detail
+		this.addEventListener('app-table-column-filter-value', (event) => {
+            const { field, value } = (<CustomEvent>event).detail
             if (value) {
-				this.#searchParamsMap.set(field, value)
+				this.searchParamsMap.set(field, value)
             } else {
-				this.#searchParamsMap.delete(field)
+				this.searchParamsMap.delete(field)
             }
+            this.filtersApplied = this.hasFiltersApplied()
+            this.#dispatchFilterEvent()
+        })
+		this.addEventListener('app-table-column-filter-order', (event) => {
+            const { field, order } = (<CustomEvent>event).detail
             if (order) {
-				this.#searchParamsMap.set('sort', field)
-				this.#searchParamsMap.set('order', order)
+				this.searchParamsMap.set('sort', field)
+				this.searchParamsMap.set('order', order)
             } else {
-				this.#searchParamsMap.delete('sort')
-				this.#searchParamsMap.delete('order')
+				this.searchParamsMap.delete('sort')
+				this.searchParamsMap.delete('order')
             }
             this.filtersApplied = this.hasFiltersApplied()
             this.#dispatchFilterEvent()
@@ -73,9 +75,9 @@ export class AppTable extends LitElement {
 			.pipe(debounce((value) => value ? timer(300) : timer(0)))
 			.subscribe((value) => {
 				if (value) {
-					this.#searchParamsMap.set('search', value)
+					this.searchParamsMap.set('search', value)
 				} else {
-					this.#searchParamsMap.delete('search')
+					this.searchParamsMap.delete('search')
 				}
 				this.filtersApplied = this.hasFiltersApplied()
 				this.#dispatchFilterEvent()
@@ -91,7 +93,7 @@ export class AppTable extends LitElement {
         this.dispatchEvent(new CustomEvent('app-table-filter', {
             bubbles: true,
             composed: true,
-            detail: Object.fromEntries(this.#searchParamsMap)
+            detail: this.searchParamsMap
         }))
 	}
 
@@ -100,12 +102,12 @@ export class AppTable extends LitElement {
 	}
 
     hasFiltersApplied() {
-        return this.#searchParamsMap.size > 0
+        return this.searchParamsMap.size > 0
     }
 
 	clearAllFilters() {
 		this.filtersApplied = false
-		this.#searchParamsMap.clear()
+		this.searchParamsMap.clear()
 		this.renderRoot
 			.querySelectorAll('sl-input')
 			.forEach((input) => (input.value = ''))

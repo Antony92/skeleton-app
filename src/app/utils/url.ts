@@ -10,7 +10,11 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
 	history.replaceState(null, '', url)
 }
 
-export const searchParamsToURL = (searchParams: SearchParams) => {
+export const clearSearchParamsFromURL = () => {
+	history.replaceState(null, '', window.location.pathname)
+}
+
+export const searchParamsToQuery = (searchParams: SearchParams) => {
 	const search = new URLSearchParams()
 	Object.keys(searchParams)
 		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')

@@ -1,10 +1,10 @@
 import { request } from '../http/request'
-import { searchParamsToURL } from '../utils/url'
+import { searchParamsToQuery } from '../utils/url'
 import { SearchParams } from '../types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToURL({ q: search, limit })}`)
+		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToQuery({ q: search, limit })}`)
 		const res = await req.json()
 		return res?.products || []
 	} catch (error) {
@@ -13,22 +13,22 @@ export const getProducts = async (search?: string, limit = 10) => {
 	return []
 }
 
-export const getUsers = async (query?: SearchParams) => {
+export const getUsers = async (params?: SearchParams) => {
 	try {
-		const params = searchParamsToURL({
-			q: query?.search, 
-			_start: query?.skip || 0, 
-			_limit: query?.limit || 10,
-			id: query?.id,
-			name_like: query?.name,
-			username_like: query?.username,
-			email_like: query?.email,
-			website_like: query?.website,
-			'address.city': query?.['address.city'],
-			_sort: query?.sort,
-			_order: query?.order 
+		const query = searchParamsToQuery({
+			q: params?.search, 
+			_start: params?.skip || 0, 
+			_limit: params?.limit || 10,
+			id: params?.id,
+			name_like: params?.name,
+			username_like: params?.username,
+			email_like: params?.email,
+			website_like: params?.website,
+			'address.city': params?.['address.city'],
+			_sort: params?.sort,
+			_order: params?.order 
 		})
-		const req = await request(`https://jsonplaceholder.typicode.com/users${params}`)
+		const req = await request(`https://jsonplaceholder.typicode.com/users${query}`)
 		const res = await req.json()
 		const total = req.headers.get('x-total-count')
 		return {

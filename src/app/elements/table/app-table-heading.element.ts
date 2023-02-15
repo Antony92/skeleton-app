@@ -105,7 +105,7 @@ export class AppTableHeading extends LitElement {
 		this.#filterSubscription = this.#filterEvent
 			.asObservable()
 			.pipe(debounce((value) => value ? timer(this.delay) : timer(0)))
-			.subscribe(() => this.dispatchFilterEvent())
+			.subscribe(() => this.dispatchFilterValueEvent())
 	}
 
     disconnectedCallback() {
@@ -113,13 +113,23 @@ export class AppTableHeading extends LitElement {
 		this.#filterSubscription.unsubscribe()
 	}
 
-    dispatchFilterEvent() {
-        this.dispatchEvent(new CustomEvent('app-table-column-filter', {
+    dispatchFilterValueEvent() {
+        this.dispatchEvent(new CustomEvent('app-table-column-filter-value', {
             bubbles: true,
             composed: true,
             detail: {
                 field: this.field,
-                value: this.value,
+                order: this.order
+            }
+        }))
+    }
+
+    dispatchFilterOrderEvent() {
+        this.dispatchEvent(new CustomEvent('app-table-column-filter-order', {
+            bubbles: true,
+            composed: true,
+            detail: {
+                field: this.field,
                 order: this.order
             }
         }))
@@ -140,7 +150,7 @@ export class AppTableHeading extends LitElement {
 		} else if (this.order === 'asc') {
 			this.order = null
 		}
-        this.dispatchFilterEvent()
+        this.dispatchFilterOrderEvent()
 	}
 
     clearFilters() {
