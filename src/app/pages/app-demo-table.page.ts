@@ -224,6 +224,14 @@ export class AppDemoTable extends LitElement {
 						`
 					)}
 					${when(
+						this.loading,
+						() => html`
+							<app-table-row>
+								<app-table-cell noresult>Loading...</app-table-cell>
+							</app-table-row>
+						`
+					)}
+					${when(
 						this.users.data.length === 0 && !this.loading,
 						() => html`
 							<app-table-row>
