@@ -104,9 +104,9 @@ export class AppDemoTable extends LitElement {
 				column.value = value
 			}
 		})
-		const sorted = this.columns.find((column) => column.field === this.#searchParamsMap.get('sort'))
-		if (sorted) {
-			sorted.order = this.#searchParamsMap.get('order')
+		const sortColumn = this.columns.find((column) => column.field === this.#searchParamsMap.get('sort'))
+		if (sortColumn) {
+			sortColumn.order = this.#searchParamsMap.get('order')
 		}
 		await this.loadUsers()
 	}
