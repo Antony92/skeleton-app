@@ -12,7 +12,7 @@ export class AppTableHead extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.addEventListener('app-table-column-filter', (event) => {
+		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { target, detail: { order }} = (<CustomEvent>event)
 			if (order) {
 				this.headings
@@ -24,8 +24,8 @@ export class AppTableHead extends LitElement {
 
 	get headings() {
 		const slot = this.renderRoot.querySelector('slot')
-		const headings = (<HTMLSlotElement>slot).assignedElements().filter((node) => node.matches('app-table-heading'))
-		return Array.from(headings) as AppTableHeading[]
+		const headings = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('app-table-heading'))
+		return Array.from(headings || []) as AppTableHeading[]
 	}
 
 	render() {

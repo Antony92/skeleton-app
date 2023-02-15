@@ -119,7 +119,7 @@ export class AppTableHeading extends LitElement {
             composed: true,
             detail: {
                 field: this.field,
-                order: this.order
+                value: this.value
             }
         }))
     }
