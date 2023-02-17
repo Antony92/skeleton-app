@@ -5,6 +5,7 @@ export const appSidebarStyle = css`
         width: 90px;
         height: 100%;
         background-color: var(--sidebar);
+        transition: background-color 300ms ease-in-out;
     }
 
     ul {

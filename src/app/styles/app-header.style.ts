@@ -9,6 +9,7 @@ export const appHeaderStyle = css`
         padding: 0 5px;
         box-shadow: var(--sl-shadow-x-large);
         background-color: var(--header);
+        transition: background-color 300ms ease-in-out;
     }
 
     .spacer {
