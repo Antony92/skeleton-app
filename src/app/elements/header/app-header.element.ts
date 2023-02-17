@@ -29,11 +29,11 @@ export class AppHeader extends LitElement {
         css``
     ]
 
-    @state()
-	appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
+	#appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
+    #appVersion = import.meta.env.VITE_APP_VERSION || '-1'
 
     @state()
-    fullname: string = ''
+    fullname = ''
 
     @state()
     initials: string | undefined  = ''
@@ -77,6 +77,7 @@ export class AppHeader extends LitElement {
 
     async signOut() {
         removeUser()
+        Router.go('/')
         await logout()
     }
 
@@ -84,12 +85,12 @@ export class AppHeader extends LitElement {
 		return html`
 			<header>
                 <sl-icon-button class="hamburger" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
-                <h1 class="title">${this.appTitle}</h1>
+                <h1 class="title">${this.#appTitle}</h1>
                 <div class="spacer"></div>
                 <sl-dropdown>
                     <sl-icon-button title="Help" slot="trigger" name="question-circle-fill" label="Help"></sl-icon-button>
                     <sl-menu>
-                        <sl-menu-label>Version 1.10</sl-menu-label>
+                        <sl-menu-label>Version ${this.#appVersion}</sl-menu-label>
                         <sl-menu-item>What's new</sl-menu-item>
                         <sl-menu-item>Help</sl-menu-item>
                         <sl-divider></sl-divider>
