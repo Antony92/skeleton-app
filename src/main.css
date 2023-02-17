@@ -39,7 +39,7 @@ body.loading app-root {
 	--theme-background: white;
 	--theme-color: black;
 	--header: #f9f9f9;
-	--sidebar: #f4f4f5;
+	--sidebar: #f3f6fc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,7 +56,7 @@ body.loading app-root {
 		--theme-background: white;
 		--theme-color: black;
 		--header: #f9f9f9;
-		--sidebar: #f4f4f5;
+		--sidebar: #f3f6fc;
 	}
 }
 
