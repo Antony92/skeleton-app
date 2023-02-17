@@ -31,7 +31,7 @@ export class AppSidebar extends LitElement {
 	// user router-ignore for ignoring routing
 	render() {
 		return html`
-			<nav>
+			<aside>
 				<ul>
 					<li>
 						<a href="/">
@@ -76,7 +76,7 @@ export class AppSidebar extends LitElement {
 						</li>
 					`)}
 				</ul>
-			</nav>
+			</aside>
 		`
 	}
 }

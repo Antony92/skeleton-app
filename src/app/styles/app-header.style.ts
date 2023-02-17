@@ -8,6 +8,7 @@ export const appHeaderStyle = css`
         height: 60px;
         padding: 0 5px;
         box-shadow: var(--sl-shadow-x-large);
+        background-color: var(--header);
     }
 
     .spacer {

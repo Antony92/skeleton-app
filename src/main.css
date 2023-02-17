@@ -28,19 +28,25 @@ body.loading app-root {
 }
 
 .theme-dark {
-	--theme-background: #1a1a1e;
-	--theme-color: whitesmoke;
+	--theme-background: black;
+	--theme-color: white;
+	--header: #161b22;
+	--sidebar: #0d1117;
 }
 
 .theme-light {
 	--theme-background: white;
 	--theme-color: black;
+	--header: #f9f9f9;
+	--sidebar: #f4f4f5;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--theme-background: #1a1a1e;
-		--theme-color: whitesmoke;
+		--theme-background: black;
+		--theme-color: white;
+		--header: #161b22;
+		--sidebar: #0d1117;
 	}
 }
 
@@ -48,6 +54,8 @@ body.loading app-root {
 	:root {
 		--theme-background: white;
 		--theme-color: black;
+		--header: #f9f9f9;
+		--sidebar: #f4f4f5;
 	}
 }
 

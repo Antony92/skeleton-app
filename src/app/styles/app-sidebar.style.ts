@@ -1,10 +1,10 @@
 import { css } from 'lit'
 
 export const appSidebarStyle = css`
-    nav {
+    aside {
         width: 90px;
         height: 100%;
-        background-color: var(--sl-color-neutral-50);
+        background-color: var(--sidebar);
     }
 
     ul {
@@ -81,7 +81,7 @@ export const appSidebarStyle = css`
 
     @media only screen and (max-width: 800px) {
         
-        nav {
+        aside {
             width: 100%;
             border-right: none;
         }
