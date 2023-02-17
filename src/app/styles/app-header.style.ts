@@ -36,7 +36,7 @@ export const appHeaderStyle = css`
         }
 
         .title {
-            margin-left: 0;
+           display: none;
         }
     }
 `
