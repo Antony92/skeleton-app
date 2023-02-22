@@ -67,7 +67,7 @@ body.loading app-root {
 	display: inline-block;
 	position: relative;
 	border: 3px solid;
-	border-color: #fff #fff transparent transparent;
+	border-color: var(--theme-color, #fff) var(--theme-color, #fff) transparent transparent;
 	box-sizing: border-box;
 	animation: loaderRotation 1s linear infinite;
 }

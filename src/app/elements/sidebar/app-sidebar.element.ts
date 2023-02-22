@@ -12,7 +12,7 @@ export class AppSidebar extends LitElement {
 		css``
 	]
 
-	setActiveLink = (event: CustomEvent<{ router: Router, location: RouterLocation }>) => {
+	setActiveLink(event: CustomEvent<{ router: Router, location: RouterLocation }>) {
 		const { location: { pathname } } = event.detail
 		this.renderRoot.querySelector('a.active')?.classList.remove('active')
 		this.renderRoot.querySelector(`a[href="${pathname}"]`)?.classList.add('active')
@@ -20,6 +20,7 @@ export class AppSidebar extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
+		this.setActiveLink = this.setActiveLink.bind(this)
 		window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
 	}
 
