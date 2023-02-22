@@ -29,7 +29,7 @@ export class AppSidebar extends LitElement {
 		window.removeEventListener('vaadin-router-location-changed', this.setActiveLink)
 	}
 
-	// user router-ignore for ignoring routing
+	// use router-ignore attribute for ignoring routing
 	render() {
 		return html`
 			<aside>
