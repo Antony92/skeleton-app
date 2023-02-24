@@ -8,15 +8,17 @@ import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
-import { getProducts } from '../services/api.service'
+import { getProducts, getUsers } from '../services/api.service'
 import { formValidationStyle } from '../styles/form.style'
+import '../elements/autocomplete/autocomplete.element'
+
 
 @customElement('app-demo-form')
 export class AppDemoForm extends LitElement {
 	static styles = [
 		formValidationStyle,
 		css`
-			sl-input, sl-select, sl-textarea {
+			sl-input, sl-select, sl-textarea, app-autocomplete {
 				width: 300px;
 			}
 		`
@@ -25,12 +27,16 @@ export class AppDemoForm extends LitElement {
 	@state()
 	products: any[] = []
 
+	@state()
+	users: any[] = []
+
 	@query('form') 
 	form!: HTMLFormElement
 
 	connectedCallback() {
 		super.connectedCallback()
 		this.loadProducts()
+		this.loadUsers()
 	}
 
 	firstUpdated() {
@@ -45,9 +51,23 @@ export class AppDemoForm extends LitElement {
 		this.products = await getProducts()
 	}
 
+	async loadUsers(search?: string) {
+		const { data } = await getUsers({ search, limit: 5 })
+		this.users = data
+	}
+
 	render() {
 		return html`
 			<form class="form-validation">
+				<app-autocomplete 
+					name="search" 
+					placeholder="Search for user" 
+					required 
+					.list=${this.users.map((user: any) => ({ label: user.name, value: user.email }))} 
+					@app-autocomplete-search=${(event: CustomEvent) => this.loadUsers(event.detail)}
+				>
+				</app-autocomplete>
+				<br />
 				<sl-input filled type="text" name="name" label="Name" placeholder="Enter your name" required clearable></sl-input>
 				<br />
 				<sl-input filled type="email" name="email" label="Email" placeholder="Enter your email" required clearable></sl-input>
