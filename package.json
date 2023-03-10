@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@vaadin/router": "~1.7.4",
-    "@shoelace-style/shoelace": "~2.1.0",
+    "@shoelace-style/shoelace": "~2.3.0",
     "lit": "~2.6.1",
     "rxjs": "~7.8.0"
   },
