@@ -144,10 +144,10 @@ export class AppTableHeading extends LitElement {
     filterColumnOrder() {
         this.renderRoot.querySelector<HTMLElement>('.heading')?.focus()
         if (!this.order) {
-			this.order = 'desc'
-		} else if (this.order === 'desc') {
 			this.order = 'asc'
 		} else if (this.order === 'asc') {
+			this.order = 'desc'
+		} else if (this.order === 'desc') {
 			this.order = null
 		}
         this.dispatchFilterOrderEvent()
@@ -178,9 +178,9 @@ export class AppTableHeading extends LitElement {
                 @click=${this.sortable ? this.filterColumnOrder : null}
             >
 				<slot></slot>
-                ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-up"></sl-icon>`)}
-                ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
-                ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
+                ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-down"></sl-icon>`)}
+                ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
+                ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
             </div>
 			${when(this.filterable && this.type === 'text', () => html`
                 <sl-input
