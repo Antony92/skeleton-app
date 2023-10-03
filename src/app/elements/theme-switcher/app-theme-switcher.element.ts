@@ -11,7 +11,7 @@ export class AppThemeSwitcher extends LitElement {
 	static styles = css``
 
 	@property({ type: String, reflect: true })
-	theme: 'auto' | 'light' | 'dark' | string
+	theme: 'auto' | 'light' | 'dark' | string = 'auto'
 	
 	@state()
 	icon = 'moon-stars-fill'
@@ -19,9 +19,9 @@ export class AppThemeSwitcher extends LitElement {
 	preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 	preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
 
-	constructor() {
-		super()
-		this.theme = localStorage.getItem('theme') ?? 'auto'
+	connectedCallback() {
+		super.connectedCallback()
+		this.theme = localStorage.getItem('theme') || 'auto'
 		if (this.theme === 'light' || (this.theme === 'auto' && this.preferedLight)) {
 			this.icon = 'sun-fill'
 		}

@@ -1,17 +1,30 @@
 import { html, LitElement, css, PropertyValueMap } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { debounceTime, Subject, Subscription } from 'rxjs'
 import { appInput } from '../../styles/input.style'
+import { when } from 'lit/directives/when.js'
+import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js'
 
 @customElement('app-autocomplete')
 export class AppAutocomplete extends LitElement {
 	static styles = [
 		appInput,
 		css`
-			:host { 
+			:host {
 				display: block;
 			}
-		`
+
+			.input {
+				position: relative;
+			}
+
+			sl-progress-bar {
+				width: 100%;
+				--height: 3px;
+				position: absolute;
+				bottom: 0px;
+			}
+		`,
 	]
 
 	static formAssociated = true
@@ -25,20 +38,31 @@ export class AppAutocomplete extends LitElement {
 	name = ''
 
 	@property({ type: String, reflect: true })
+	label = ''
+
+	@property({ type: String, reflect: true })
 	placeholder = ''
-	
+
 	@property({ type: Boolean, reflect: true })
 	required = false
 
-	@property({ type: String })
+	@property({ type: Boolean, reflect: true })
+	disabled = false
+
+	@property()
+	selected = ''
+
+	@state()
 	value = ''
+
+	@state()
+	loading = false
 
 	@property({ type: Number })
 	delay = 300
 
 	@property({ type: Array })
-	list: { label: string, value: string }[] = []
-
+	list: { label: string; value: string; object?: unknown }[] = []
 
 	#searchEvent = new Subject<string>()
 
@@ -49,28 +73,32 @@ export class AppAutocomplete extends LitElement {
 		this.internals = this.attachInternals()
 	}
 
-    connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback()
 		this.#searchSubscription = this.#searchEvent
 			.asObservable()
 			.pipe(debounceTime(this.delay))
 			.subscribe(() => {
-				this.dispatchEvent(new CustomEvent('app-autocomplete-search', {
-					bubbles: true,
-					composed: true,
-					detail: this.input.value
-				}))
+				this.dispatchEvent(
+					new CustomEvent('app-autocomplete-search', {
+						bubbles: true,
+						composed: true,
+						detail: this.input.value,
+					})
+				)
 			})
 	}
 
-    disconnectedCallback() {
+	disconnectedCallback() {
 		super.disconnectedCallback()
 		this.#searchSubscription.unsubscribe()
 	}
 
 	firstUpdated() {
-		this.internals.setFormValue(this.value)
-		if (!this.value && this.required) {
+		if (this.selected) {
+			this.internals.setFormValue(this.selected)
+		}
+		if (!this.selected && !this.value && this.required) {
 			this.setInvalid()
 		} else {
 			this.setValid()
@@ -82,28 +110,42 @@ export class AppAutocomplete extends LitElement {
 		this.setInvalid()
 	}
 
+	updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+		if (_changedProperties.has('selected') && this.selected) {
+			this.internals.setFormValue(this.selected)
+			this.setValid()
+		}
+		if (_changedProperties.has('list')) {
+			this.loading = false
+		}
+	}
+
 	onInput() {
+		this.selected = ''
 		this.value = this.input.value
-		const match = this.list.find(item => item.label === this.value)
+		const match = this.list.find((item) => item.label === this.value)
 		if (match) {
 			this.internals.setFormValue(match.value)
-			this.dispatchEvent(new CustomEvent('app-autocomplete-selected', {
-				bubbles: true,
-				composed: true,
-				detail: match
-			}))
+			this.dispatchEvent(
+				new CustomEvent('app-autocomplete-selected', {
+					bubbles: true,
+					composed: true,
+					detail: match,
+				})
+			)
 		} else {
+			this.loading = true
 			this.#searchEvent.next(this.value)
 		}
 	}
 
 	onBlur() {
+		const match = this.list.find((item) => item.label === this.value)
 		if (!this.value && this.required) {
 			this.setInvalid()
-		} else if (!this.list.find(item => item.label === this.value) && this.required) {
+		} else if (!this.selected && !match && this.required) {
 			this.clear()
 			this.setInvalid()
-			this.#searchEvent.next(this.value)
 		} else {
 			this.setValid()
 		}
@@ -118,28 +160,28 @@ export class AppAutocomplete extends LitElement {
 	}
 
 	clear() {
-		this.input.value = ''
 		this.value = ''
 	}
 
 	render() {
 		return html`
-            <div class="input">
-				<input 
-					autocomplete="off" 
-					list="list" 
+			${when(this.label, () => html`<label>${this.label}</label>`)}
+			<div class="input">
+				<input
+					autocomplete="off"
+					list="list"
 					.name=${this.name}
 					.placeholder=${this.placeholder}
 					.value=${this.value}
 					?required=${this.required}
+					?disabled=${this.disabled}
 					@input=${this.onInput}
 					@blur=${this.onBlur}
 				/>
-				<datalist id="list">
-					${this.list.map(item => html`<option>${item.label}</option>`)}
-				</datalist>
-			</div>	
-        `
+				${when(this.loading, () => html`<sl-progress-bar indeterminate></sl-progress-bar>`)}
+			</div>
+			<datalist id="list">${this.list.map((item) => html`<option>${item.label}</option>`)}</datalist>
+		`
 	}
 }
 

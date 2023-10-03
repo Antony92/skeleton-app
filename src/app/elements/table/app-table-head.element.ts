@@ -24,7 +24,7 @@ export class AppTableHead extends LitElement {
 
 	get headings() {
 		const slot = this.renderRoot.querySelector('slot')
-		const headings = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('app-table-heading'))
+		const headings = slot?.assignedElements().filter((node) => node.matches('app-table-heading'))
 		return Array.from(headings || []) as AppTableHeading[]
 	}
 

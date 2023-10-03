@@ -13,7 +13,7 @@ export const mainStyle = css`
 
     .main {
         grid-area: main;
-        padding: 30px;
+        padding: 20px 20px 80px 20px;
         overflow: auto;
     }
 
@@ -27,7 +27,7 @@ export const mainStyle = css`
         z-index: 5;
     }
 
-    @media only screen and (max-width: 800px) {
+    @media only screen and (max-width: 900px) {
 
         .layout {
             grid-template-columns: auto;
@@ -36,5 +36,12 @@ export const mainStyle = css`
                 "main"
                 "sidebar";
         }
+    }
+`
+
+export const appPageTitleStyle = css`
+    h3.title {
+        margin: 0;
+        padding-bottom: 15px;
     }
 `

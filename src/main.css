@@ -38,7 +38,7 @@ body.loading app-root {
 .theme-light {
 	--theme-background: white;
 	--theme-color: black;
-	--header: #f9f9f9;
+	--header: white;
 	--sidebar: #f3f6fc;
 }
 
@@ -55,7 +55,7 @@ body.loading app-root {
 	:root {
 		--theme-background: white;
 		--theme-color: black;
-		--header: #f9f9f9;
+		--header: white;
 		--sidebar: #f3f6fc;
 	}
 }

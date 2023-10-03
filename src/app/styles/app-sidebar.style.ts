@@ -80,7 +80,7 @@ export const appSidebarStyle = css`
         margin-top: auto;
     }
 
-    @media only screen and (max-width: 800px) {
+    @media only screen and (max-width: 900px) {
         
         aside {
             width: 100%;

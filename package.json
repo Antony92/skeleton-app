@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build-staging": "tsc && vite build --mode staging",
+    "build-production": "tsc && vite build --mode production",
     "preview": "vite preview",
     "test:ui": "vitest --ui",
     "test:run": "vitest run"
@@ -16,15 +18,15 @@
   "license": "ISC",
   "dependencies": {
     "@vaadin/router": "~1.7.5",
-    "@shoelace-style/shoelace": "~2.4.0",
-    "lit": "~2.7.4",
+    "@shoelace-style/shoelace": "~2.9.0",
+    "lit": "~2.8.0",
     "rxjs": "~7.8.1"
   },
   "devDependencies": {
-    "@vitest/ui": "0.31.0",
-    "typescript": "~5.0.4",
-    "vite": "~4.3.6",
-    "vite-plugin-pwa": "^0.14.7",
-    "vitest": "0.31.0"
+    "@vitest/ui": "0.34.5",
+    "typescript": "~5.2.2",
+    "vite": "~4.4.9",
+    "vite-plugin-pwa": "^0.16.5",
+    "vitest": "0.34.5"
   }
 }

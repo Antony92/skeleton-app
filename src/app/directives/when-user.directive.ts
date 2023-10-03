@@ -1,7 +1,7 @@
 import { directive } from 'lit/directive.js'
 import { AsyncDirective } from 'lit/async-directive.js'
 import { Subscription } from 'rxjs'
-import { getUser } from '../services/user.service'
+import { getUserObservable } from '../services/auth.service'
 import { noChange, nothing } from 'lit'
 
 class WhenUser extends AsyncDirective {
@@ -10,7 +10,7 @@ class WhenUser extends AsyncDirective {
 
 	render<T, F>(trueCase: () => T, falseCase?: () => F) {
 		if (this.isConnected) {
-			this.#subscription = getUser().subscribe((user) => {
+			this.#subscription = getUserObservable().subscribe((user) => {
                 if (user) {
 					this.setValue(trueCase())
 				} else if (falseCase) {

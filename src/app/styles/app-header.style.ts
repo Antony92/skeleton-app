@@ -17,8 +17,12 @@ export const appHeaderStyle = css`
     }
 
     .title {
-        font-size: var(--sl-font-size-large);
+        margin-left: 5px;
+    }
+
+    .logo {
         margin-left: 10px;
+        width: 40px;
     }
 
     .hamburger {
@@ -37,6 +41,10 @@ export const appHeaderStyle = css`
 
         .title {
            display: none;
+        }
+
+        .logo {
+            display: none;
         }
     }
 `

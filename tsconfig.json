@@ -1,24 +1,27 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
     "target": "ESNext",
-    "lib": [
-      "ESNext",
-      "dom",
-      "dom.iterable"
-    ],
-    "strict": true,
-    "noEmit": true,
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
+    "module": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
     "types": [
       "vite/client",
       "vite-plugin-pwa/client"
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src"
   ]
 }

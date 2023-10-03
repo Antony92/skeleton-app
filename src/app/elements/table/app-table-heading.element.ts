@@ -15,6 +15,7 @@ export class AppTableHeading extends LitElement {
 	static styles = css`
         :host {
             display: table-cell;
+            white-space: nowrap;
             vertical-align: bottom;
             padding: 10px;
         }
@@ -25,14 +26,14 @@ export class AppTableHeading extends LitElement {
 
         :host([sticky]) {
 			position: sticky;
-			left: var(--sticky-start, 0);
+			left: var(--sticky-start, -1px);
 			z-index: 1;
             background-color: var(--theme-background);
 		}
 
         :host([stickyEnd]) {
 			position: sticky;
-			right: var(--sticky-end, 0);
+			right: var(--sticky-end, -1px);
 			z-index: 1;
 			background-color: var(--theme-background);
 		}
@@ -178,7 +179,7 @@ export class AppTableHeading extends LitElement {
                 @click=${this.sortable ? this.filterColumnOrder : null}
             >
 				<slot></slot>
-                ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-down"></sl-icon>`)}
+                ${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-up"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
                 ${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
             </div>

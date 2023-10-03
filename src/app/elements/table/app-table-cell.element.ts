@@ -6,7 +6,12 @@ export class AppTableCell extends LitElement {
 	static styles = css`
 		:host {
 			display: table-cell;
+			white-space: nowrap;
 			padding: 10px 20px;
+		}
+
+		:host([textWrap]) {
+			white-space: normal;
 		}
 
 		:host([textlimit]) {
@@ -24,14 +29,14 @@ export class AppTableCell extends LitElement {
 
 		:host([sticky]) {
 			position: sticky;
-			left: var(--sticky-start, 0);
+			left: var(--sticky-start, -1px);
 			z-index: 1;
 			background-color: var(--theme-background);
 		}
 
 		:host([stickyEnd]) {
 			position: sticky;
-			right: var(--sticky-end, 0);
+			right: var(--sticky-end, -1px);
 			z-index: 1;
 			background-color: var(--theme-background);
 		}
