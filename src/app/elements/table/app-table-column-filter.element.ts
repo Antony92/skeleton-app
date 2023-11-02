@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
@@ -10,35 +10,10 @@ import { debounce, Subject, Subscription, timer } from 'rxjs'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 
-@customElement('app-table-heading')
-export class AppTableHeading extends LitElement {
+@customElement('app-table-column-filter')
+export class AppTableColumnFilter extends LitElement {
 	static styles = css`
-        :host {
-            display: table-cell;
-            white-space: nowrap;
-            vertical-align: bottom;
-            padding: 10px;
-        }
-
-        :host([action]) {
-            width: var(--action-width, 1%);
-        }
-
-        :host([sticky]) {
-			position: sticky;
-			left: var(--sticky-start, -1px);
-			z-index: 1;
-            background-color: var(--theme-background);
-		}
-
-        :host([stickyEnd]) {
-			position: sticky;
-			right: var(--sticky-end, -1px);
-			z-index: 1;
-			background-color: var(--theme-background);
-		}
-
-		.heading {
+		.filter {
             display: flex;
             align-items: center;
             padding: 10px;
@@ -175,7 +150,7 @@ export class AppTableHeading extends LitElement {
 	render() {
 		return html`
 			<div tabindex="-1"
-                class=${classMap({ heading: true, sortable: this.sortable })}  
+                class=${classMap({ filter: true, sortable: this.sortable })}  
                 @click=${this.sortable ? this.filterColumnOrder : null}
             >
 				<slot></slot>
@@ -251,6 +226,6 @@ export class AppTableHeading extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-table-heading': AppTableHeading
+		'app-table-column-filter': AppTableColumnFilter
 	}
 }

@@ -8,22 +8,20 @@ import { getAuditLogs } from '../../services/audit-logs.service'
 import { when } from 'lit/directives/when.js'
 import '../../elements/paginator/app-paginator.element'
 import '../../elements/table/app-table.element'
-import '../../elements/table/app-table-head.element'
-import '../../elements/table/app-table-heading.element'
-import '../../elements/table/app-table-body.element'
-import '../../elements/table/app-table-row.element'
-import '../../elements/table/app-table-cell.element'
+import '../../elements/table/app-table-column-filter.element'
 import '@shoelace-style/shoelace/dist/components/format-date/format-date.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import { setDocumentTitle } from '../../utils/html'
+import { appTableStyle } from '../../styles/app-table.style'
 
 @customElement('app-ad-audit-logs')
 export class AppADAuditLogs extends LitElement {
 	static styles = [
 		appPageTitleStyle,
+		appTableStyle,
 		css`
 			pre {
 				overflow: auto;
@@ -89,7 +87,7 @@ export class AppADAuditLogs extends LitElement {
 		super.connectedCallback()
 		setDocumentTitle('Admin - Audit Logs')
 		this.init()
-		this.addEventListener('app-table-filter', async (event) => {
+		this.addEventListener('app-table-column-filter', async (event) => {
 			this.#searchParamsMap = (<CustomEvent>event).detail
 			addSearchParamsToURL(Object.fromEntries(this.#searchParamsMap))
 			this.#skip = 0
@@ -147,74 +145,78 @@ export class AppADAuditLogs extends LitElement {
 		return html`
 			<h3 class="title">Audit Logs</h3>
 			<app-table searchable clearable .searchValue=${this.#searchParamsMap.get('search')} .searchParamsMap=${this.#searchParamsMap}>
-				<app-table-head>
-					<app-table-heading action sticky></app-table-heading>
-					${this.columns.map(
-						(column) => html`
-							<app-table-heading
-								?sortable=${column.sortable}
-								?filterable=${column.filtarable}
-								.label=${column.header}
-								.field=${column.field}
-								.type=${column.type || 'text'}
-								.delay=${column.delay || 0}
-								.list=${column.list || []}
-								.value=${column.value || ''}
-								.order=${column.order || null}
-							>
-								${column.header}
-							</app-table-heading>
-						`
-					)}
-				</app-table-head>
-				<app-table-body>
-					${this.auditLogs.data.map(
-						(audit) => html`
-							<app-table-row>
-								<app-table-cell sticky>
-									<sl-icon-button
-										name="braces"
-										label="Data"
-										title="View data"
-										@click=${() => this.openDataDialog(audit.data)}
-									></sl-icon-button>
-								</app-table-cell>
-								<app-table-cell>${audit.name}</app-table-cell>
-								<app-table-cell>${audit.username}</app-table-cell>
-								<app-table-cell>${audit.impersonated}</app-table-cell>
-								<app-table-cell>${audit.action}</app-table-cell>
-								<app-table-cell>${audit.target}</app-table-cell>
-								<app-table-cell textlimit title=${audit.message}>${audit.message}</app-table-cell>
-								<app-table-cell>
-									<sl-format-date
-										month="long"
-										day="numeric"
-										year="numeric"
-										hour="numeric"
-										minute="numeric"
-										.date=${audit.created || ''}
-									></sl-format-date>
-								</app-table-cell>
-							</app-table-row>
-						`
-					)}
-					${when(
-						this.auditLogs.data.length === 0 && this.loading,
-						() => html`
-							<app-table-row>
-								<app-table-cell noresult>Loading...</app-table-cell>
-							</app-table-row>
-						`
-					)}
-					${when(
-						this.auditLogs.data.length === 0 && !this.loading,
-						() => html`
-							<app-table-row>
-								<app-table-cell noresult>No results found</app-table-cell>
-							</app-table-row>
-						`
-					)}
-				</app-table-body>
+				<table slot="table">
+					<thead>
+						<tr>
+							<th action sticky></th>
+							${this.columns.map((column) => html`
+								<th>
+									<app-table-column-filter
+										?sortable=${column.sortable}
+										?filterable=${column.filtarable}
+										.label=${column.header}
+										.field=${column.field}
+										.type=${column.type || 'text'}
+										.delay=${column.delay || 0}
+										.list=${column.list || []}
+										.value=${column.value || ''}
+										.order=${column.order || null}
+									>
+										${column.header}
+									</app-table-column-filter>
+								</th>
+							`)}
+						</tr>
+					</thead>
+					<tbody>
+						${this.auditLogs.data.map(
+							(audit) => html`
+								<tr>
+									<td sticky>
+										<sl-icon-button
+											name="braces"
+											label="Data"
+											title="View data"
+											@click=${() => this.openDataDialog(audit.data)}
+										></sl-icon-button>
+									</td>
+									<td>${audit.name}</td>
+									<td>${audit.username}</td>
+									<td>${audit.impersonated}</td>
+									<td>${audit.action}</td>
+									<td>${audit.target}</td>
+									<td textlimit title=${audit.message}>${audit.message}</td>
+									<td>
+										<sl-format-date
+											month="long"
+											day="numeric"
+											year="numeric"
+											hour="numeric"
+											minute="numeric"
+											.date=${audit.created || ''}
+										></sl-format-date>
+									</td>
+								</tr>
+							`
+						)}
+						${when(
+							this.auditLogs.data.length === 0 && this.loading,
+							() => html`
+								<tr>
+									<td colspan=${this.columns.length}>Loading...</td>
+								</tr>
+							`
+						)}
+						${when(
+							this.auditLogs.data.length === 0 && !this.loading,
+							() => html`
+								<tr>
+									<td colspan=${this.columns.length}>No results found</td>
+								</tr>
+							`
+						)}
+					</tbody>
+				</table>
 				<app-paginator
 					slot="paginator"
 					.pageSize=${this.#limit}
@@ -222,6 +224,7 @@ export class AppADAuditLogs extends LitElement {
 					.total=${this.auditLogs.total}
 				></app-paginator>
 			</app-table>
+			
 			<sl-dialog label="Data" class="data-dialog">
 				<pre><code>${this.data}</code></pre>
 				<sl-button slot="footer" variant="primary" @click=${() => this.dataDialog.hide()}>Close</sl-button>

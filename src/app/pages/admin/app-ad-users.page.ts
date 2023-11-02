@@ -8,11 +8,7 @@ import { when } from 'lit/directives/when.js'
 import { appPageTitleStyle } from '../../styles/main.style'
 import '../../elements/paginator/app-paginator.element'
 import '../../elements/table/app-table.element'
-import '../../elements/table/app-table-head.element'
-import '../../elements/table/app-table-heading.element'
-import '../../elements/table/app-table-body.element'
-import '../../elements/table/app-table-row.element'
-import '../../elements/table/app-table-cell.element'
+import '../../elements/table/app-table-column-filter.element'
 import '@shoelace-style/shoelace/dist/components/format-date/format-date.js'
 import '@shoelace-style/shoelace/dist/components/relative-time/relative-time.js'
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
@@ -33,18 +29,16 @@ import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import { impersonate } from '../../services/auth.service'
 import { Router } from '@vaadin/router'
 import { setDocumentTitle } from '../../utils/html'
+import { appTableStyle } from '../../styles/app-table.style'
 
 @customElement('app-ad-users')
 export class AppADUsers extends LitElement {
 	static styles = [
 		appPageTitleStyle,
+		appTableStyle,
 		formValidationStyle,
 		basicFormStyle,
-		css`
-			app-table-cell[sticky]:has(sl-dropdown[open]) {
-				z-index: 2;
-			}
-		`,
+		css``,
 	]
 
 	@query('app-paginator')
@@ -129,7 +123,7 @@ export class AppADUsers extends LitElement {
 		super.connectedCallback()
 		setDocumentTitle('Admin - Users')
 		this.init()
-		this.addEventListener('app-table-filter', async (event) => {
+		this.addEventListener('app-table-column-filter', async (event) => {
 			this.#searchParamsMap = (<CustomEvent>event).detail
 			addSearchParamsToURL(Object.fromEntries(this.#searchParamsMap))
 			this.#skip = 0
@@ -174,7 +168,7 @@ export class AppADUsers extends LitElement {
 			data.active = data.active === 'on' ? true : false
 			data.blocked = data.blocked === 'on' ? true : false
 			let res = null
-			if (this.selectedUser.id) {
+			if (this.selectedUser?.id) {
 				res = await updateUser({ id: this.selectedUser.id, ...data })
 			} else {
 				res = await createUser(data)
@@ -264,7 +258,6 @@ export class AppADUsers extends LitElement {
 	}
 
 	async openUserDialog(user?: any) {
-		this.roles = await getRoles()
 		this.selectedUser = user ? structuredClone(user) : null
 		this.userDialog.show()
 	}
@@ -284,31 +277,33 @@ export class AppADUsers extends LitElement {
 					<sl-icon slot="prefix" name="plus"></sl-icon>
 					Create user
 				</sl-button>
-				<app-table-head>
-					<app-table-heading action sticky></app-table-heading>
-					${this.columns.map(
-						(column) => html`
-							<app-table-heading
-								?sortable=${column.sortable}
-								?filterable=${column.filtarable}
-								.label=${column.header}
-								.field=${column.field}
-								.type=${column.type || 'text'}
-								.delay=${column.delay || 0}
-								.list=${column.list || []}
-								.value=${column.value || ''}
-								.order=${column.order || null}
-							>
-								${column.header}
-							</app-table-heading>
-						`
-					)}
-				</app-table-head>
-				<app-table-body>
-					${this.users.data.map(
-						(user) => html`
-							<app-table-row>
-								<app-table-cell sticky>
+				<table slot="table">
+					<thead>
+						<tr>
+							<th action sticky></th>
+							${this.columns.map((column) => html`
+								<th>
+									<app-table-column-filter
+										?sortable=${column.sortable}
+										?filterable=${column.filtarable}
+										.label=${column.header}
+										.field=${column.field}
+										.type=${column.type || 'text'}
+										.delay=${column.delay || 0}
+										.list=${column.list || []}
+										.value=${column.value || ''}
+										.order=${column.order || null}
+									>
+										${column.header}
+									</app-table-column-filter>
+								</th>
+							`)}
+						</tr>
+					</thead>
+					<tbody>
+						${this.users.data.map((user) => html`
+							<tr>
+								<td sticky>
 									<sl-dropdown hoist>
 										<sl-icon-button slot="trigger" name="three-dots" label="Actions" title="Actions"></sl-icon-button>
 										<sl-menu>
@@ -340,14 +335,14 @@ export class AppADUsers extends LitElement {
 											<sl-menu-item @click=${() => this.removeUser(user)}>Delete</sl-menu-item>
 										</sl-menu>
 									</sl-dropdown>
-								</app-table-cell>
-								<app-table-cell textlimit>${user.name}</app-table-cell>
-								<app-table-cell textlimit>${user.username}</app-table-cell>
-								<app-table-cell>${user.roles.toString()}</app-table-cell>
-								<app-table-cell>${user.active ? 'Yes' : 'No'}</app-table-cell>
-								<app-table-cell>${user.blocked ? 'Yes' : 'No'}</app-table-cell>
-								<app-table-cell>${user.internal ? 'Yes' : 'No'}</app-table-cell>
-								<app-table-cell>
+								</td>
+								<td textlimit>${user.name}</td>
+								<td textlimit>${user.username}</td>
+								<td>${user.roles.toString()}</td>
+								<td>${user.active ? 'Yes' : 'No'}</td>
+								<td>${user.blocked ? 'Yes' : 'No'}</td>
+								<td>${user.internal ? 'Yes' : 'No'}</td>
+								<td>
 									<sl-format-date
 										month="long"
 										day="numeric"
@@ -356,8 +351,8 @@ export class AppADUsers extends LitElement {
 										minute="numeric"
 										.date=${user.created || ''}
 									></sl-format-date>
-								</app-table-cell>
-								<app-table-cell>
+								</td>
+								<td>
 									<sl-format-date
 										month="long"
 										day="numeric"
@@ -366,30 +361,30 @@ export class AppADUsers extends LitElement {
 										minute="numeric"
 										.date=${user.updated || ''}
 									></sl-format-date>
-								</app-table-cell>
-								<app-table-cell>
+								</td>
+								<td>
 									<sl-relative-time .date=${user.lastLogin || ''}></sl-relative-time>
-								</app-table-cell>
-							</app-table-row>
-						`
-					)}
-					${when(
-						this.users.data.length === 0 && this.loading,
-						() => html`
-							<app-table-row>
-								<app-table-cell noresult>Loading...</app-table-cell>
-							</app-table-row>
-						`
-					)}
-					${when(
-						this.users.data.length === 0 && !this.loading,
-						() => html`
-							<app-table-row>
-								<app-table-cell noresult>No results found</app-table-cell>
-							</app-table-row>
-						`
-					)}
-				</app-table-body>
+								</td>
+							</tr>
+						`)}
+						${when(
+							this.users.data.length === 0 && this.loading,
+							() => html`
+								<tr>
+									<td colspan=${this.columns.length}>Loading...</td>
+								</tr>
+							`
+						)}
+						${when(
+							this.users.data.length === 0 && !this.loading,
+							() => html`
+								<tr>
+									<td colspan=${this.columns.length}>No results found</td>
+								</tr>
+							`
+						)}
+					</tbody>
+				</table>
 				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}></app-paginator>
 			</app-table>
 			

@@ -6,17 +6,40 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
-import { appTableActionsBoxStyle, appTableStyle } from '../../styles/app-table.style'
+import { appTableStyle } from '../../styles/app-table.style'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
 	static styles = [
-		appTableActionsBoxStyle,
 		appTableStyle,
 		css`
 			::slotted(app-paginator) {
 				margin-top: 5px;
 				justify-content: flex-end;
+			}
+
+			.table-wrapper {
+				overflow-x: auto;
+			}
+
+			.actions-box {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px;
+				margin-bottom: 10px;
+			}
+
+			.actions-box sl-input {
+				width: 350px;
+			}
+
+			.actions-box .clear-filters-button {
+				margin-left: auto;
+			}
+
+			.actions-box .action-buttons {
+				display: flex;
+				gap: 10px;
 			}
 		`,
 	]
@@ -30,7 +53,7 @@ export class AppTable extends LitElement {
 	@property({ type: String })
 	searchValue = ''
 
-	@property({ type: Map })
+	@property({ attribute: false })
 	searchParamsMap = new Map()
 
 	@state()
@@ -58,6 +81,9 @@ export class AppTable extends LitElement {
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = (<CustomEvent>event).detail
+			this.columnFilters
+				.filter(filter => filter !== event.target)
+				.forEach(filter => filter.clearOrderFilter())
 			if (order) {
 				this.searchParamsMap.set('sort', field)
 				this.searchParamsMap.set('order', order)
@@ -89,7 +115,7 @@ export class AppTable extends LitElement {
 
 	#dispatchFilterEvent() {
 		this.dispatchEvent(
-			new CustomEvent('app-table-filter', {
+			new CustomEvent('app-table-column-filter', {
 				bubbles: true,
 				composed: true,
 				detail: this.searchParamsMap,
@@ -109,7 +135,7 @@ export class AppTable extends LitElement {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
 		this.renderRoot.querySelectorAll('sl-input').forEach((input) => (input.value = ''))
-		this.headings.forEach((heading) => heading.clearFilters())
+		this.columnFilters.forEach((heading) => heading.clearFilters())
 		this.dispatchEvent(
 			new CustomEvent('app-table-clear', {
 				bubbles: true,
@@ -118,10 +144,10 @@ export class AppTable extends LitElement {
 		)
 	}
 
-	get headings() {
-		const slot = this.renderRoot.querySelector('.table slot')
-		const head = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('app-table-head'))[0]
-		return Array.from(head?.querySelectorAll('app-table-heading') || [])
+	get columnFilters() {
+		const slot = this.renderRoot.querySelector('slot[name="table"]')
+		const table = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('table'))[0]
+		return Array.from(table?.querySelectorAll('app-table-column-filter') || [])
 	}
 
 	render() {
@@ -165,9 +191,7 @@ export class AppTable extends LitElement {
 				)}
 			</div>
 			<div class="table-wrapper">
-				<div class="table">
-					<slot></slot>
-				</div>
+				<slot name="table"></slot>
 			</div>
 			<slot name="paginator"></slot>
 		`
