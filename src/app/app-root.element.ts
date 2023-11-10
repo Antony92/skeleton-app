@@ -31,7 +31,7 @@ export class AppRoot extends LitElement {
 		})
 	}
 
-	async AuthGuard(page: string, roles?: string[]) {
+	async canActivateRoute(page: string, roles?: string[]) {
 		const user = await getUser()
 		if (!user) {
 			localStorage.setItem('requested-page', page || '/')
@@ -63,7 +63,7 @@ export class AppRoot extends LitElement {
 				path: '/feedback',
 				component: 'app-feedback',
 				action: async (context, command) => {
-					if (!(await this.AuthGuard(context.pathname + context.search))) {
+					if (!(await this.canActivateRoute(context.pathname + context.search))) {
 						return
 					}
 					await import('./pages/app-feedback.page')
@@ -76,7 +76,7 @@ export class AppRoot extends LitElement {
 						path: '/',
 						component: 'app-admin',
 						action: async (context, command) => {
-							if (!(await this.AuthGuard(context.pathname + context.search, [Role.ADMIN]))) {
+							if (!(await this.canActivateRoute(context.pathname + context.search, [Role.ADMIN]))) {
 								return
 							}
 							await import('./pages/admin/app-admin.page')
@@ -86,7 +86,7 @@ export class AppRoot extends LitElement {
 						path: '/server-events',
 						component: 'app-ad-server-events',
 						action: async (context, command) => {
-							if (!(await this.AuthGuard(context.pathname + context.search, [Role.ADMIN]))) {
+							if (!(await this.canActivateRoute(context.pathname + context.search, [Role.ADMIN]))) {
 								return
 							}
 							await import('./pages/admin/app-ad-server-events.page')
@@ -96,7 +96,7 @@ export class AppRoot extends LitElement {
 						path: '/users',
 						component: 'app-ad-users',
 						action: async (context, command) => {
-							if (!(await this.AuthGuard(context.pathname + context.search, [Role.ADMIN]))) {
+							if (!(await this.canActivateRoute(context.pathname + context.search, [Role.ADMIN]))) {
 								return
 							}
 							await import('./pages/admin/app-ad-users.page')
@@ -106,7 +106,7 @@ export class AppRoot extends LitElement {
 						path: '/audit-logs',
 						component: 'app-ad-audit-logs',
 						action: async (context, command) => {
-							if (!(await this.AuthGuard(context.pathname + context.search, [Role.ADMIN]))) {
+							if (!(await this.canActivateRoute(context.pathname + context.search, [Role.ADMIN]))) {
 								return
 							}
 							await import('./pages/admin/app-ad-audit-logs.page')
@@ -125,7 +125,7 @@ export class AppRoot extends LitElement {
 				path: '/profile',
 				component: 'app-profile',
 				action: async (context, command) => {
-					if (!(await this.AuthGuard(context.pathname + context.search))) {
+					if (!(await this.canActivateRoute(context.pathname + context.search))) {
 						return
 					}
 					await import('./pages/app-profile.page')
