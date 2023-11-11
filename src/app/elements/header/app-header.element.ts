@@ -15,7 +15,7 @@ import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import '../theme-switcher/app-theme-switcher.element'
 import { login, logout } from '../../services/auth.service'
 import { whenUser } from '../../directives/when-user.directive'
-import { getUserObservable, removeUser } from '../../services/auth.service'
+import { getUserObservable } from '../../services/auth.service'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
 import { Subscription } from 'rxjs'
@@ -80,7 +80,6 @@ export class AppHeader extends LitElement {
 	}
 
 	async signOut() {
-		removeUser()
 		Router.go('/')
 		await logout()
 	}

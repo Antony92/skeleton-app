@@ -8,13 +8,9 @@ const $user = new BehaviorSubject<User>(null)
 
 const $userObservable = $user.asObservable().pipe(shareReplay(1))
 
-export const setUser = (user: User) => {
-	$user.next(user)
-}
+export const setUser = (user: User) => $user.next(user)
 
-export const removeUser = () => {
-	$user.next(null)
-}
+export const removeUser = () => $user.next(null)
 
 export const getUserObservable = () => $userObservable
 
@@ -22,14 +18,13 @@ export const setAccessToken = (token: string) => (accessToken = token)
 
 export const getAccessToken = () => accessToken
 
-export const getUser = async () => await lastValueFrom(getUserObservable().pipe(take(1)))
+export const getUser = () => lastValueFrom(getUserObservable().pipe(take(1)))
 
-export const login = () => {
-	window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
-}
+export const login = () => window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
 
 export const logout = async () => {
 	try {
+		removeUser()
 		const req = await request(`${import.meta.env.VITE_API}/auth/logout`, { method: 'POST', credentials: 'include' })
 		const res = await req.json()
 	} catch (error) {

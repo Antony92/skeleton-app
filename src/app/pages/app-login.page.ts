@@ -44,8 +44,7 @@ export class AppLogin extends LitElement {
             const { user } = JSON.parse(window.atob(token.split('.')[1]))
             setUser(user)
             setAccessToken(token)
-            const requestedPage = localStorage.getItem('requested-page')
-            Router.go(requestedPage || '/')
+            Router.go(localStorage.getItem('requested-page') || '/')
             localStorage.removeItem('requested-page')
         } catch (error) {
             console.error(error)

@@ -1,13 +1,13 @@
-import { Context, Router, Commands } from '@vaadin/router'
+import { Router } from '@vaadin/router'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import './elements/header/app-header.element'
 import './elements/sidebar/app-sidebar.element'
-import { getUser } from './services/auth.service'
 import { mainStyle } from './styles/main.style'
 import { notify } from './shared/notification'
 import { showGlobalMessage } from './shared/global-message'
 import { Role } from './types/user.type'
+import { authGuard } from './shared/auth-guard'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -31,23 +31,6 @@ export class AppRoot extends LitElement {
 		})
 	}
 
-	async authGuard(context: Context, command: Commands, roles?: string[]) {
-		const user = await getUser()
-		if (!user) {
-			localStorage.setItem('requested-page', context.pathname + context.search || '/')
-			return command.redirect('/login')
-		}
-		if (user && roles && !user.roles?.some((role: string) => roles.includes(role))) {
-			return command.redirect('/page-not-found')
-		}
-		return
-	}
-
-	async hasUserRole(roles?: string[]) {
-		const user = await getUser()
-		return user && roles && user.roles?.some((role: string) => roles.includes(role))
-	}
-
 	async firstUpdated() {
 		this.router.setOutlet(this.renderRoot.querySelector('main'))
 		this.router.setRoutes([
@@ -64,7 +47,7 @@ export class AppRoot extends LitElement {
 			},
 			{
 				path: '/feedback',
-				action: async (context, command) => await this.authGuard(context, command),
+				action: authGuard(),
 				children: [
 					{
 						path: '/',
@@ -77,7 +60,7 @@ export class AppRoot extends LitElement {
 			},
 			{
 				path: '/admin',
-				action: async (context, command) => await this.authGuard(context, command, [Role.ADMIN]),
+				action: authGuard([Role.ADMIN]),
 				children: [
 					{
 						path: '/',
@@ -118,7 +101,7 @@ export class AppRoot extends LitElement {
 			},
 			{
 				path: '/profile',
-				action: async (context, command) => await this.authGuard(context, command),
+				action: authGuard(),
 				children: [
 					{
 						path: '/',
