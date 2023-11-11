@@ -1,17 +1,13 @@
-// service worker
 import { registerSW } from 'virtual:pwa-register'
+import { applyTheme } from './app/utils/theme'
+import { refreshTokenSilently } from './app/services/auth.service'
 
 // register service worker
 registerSW({ immediate: true })
 
-// theme
-import { applyTheme } from './app/utils/theme'
-import { refreshTokenSilently } from './app/services/auth.service'
-
 // set up theme
 applyTheme()
 
-// when root is hide loading 
 Promise.allSettled([
     await refreshTokenSilently(),
     import('./app/app-root.element'),
