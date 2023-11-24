@@ -1,4 +1,4 @@
-import { Router } from '@vaadin/router'
+
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import './elements/header/app-header.element'

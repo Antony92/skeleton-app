@@ -4,7 +4,7 @@ import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
 import { getURLSearchParamsAsObject } from '../utils/url'
 import { login, setAccessToken, setUser } from '../services/auth.service'
 import { when } from 'lit/directives/when.js'
-import { Router } from '@vaadin/router'
+
 import { setDocumentTitle } from '../utils/html'
 
 @customElement('app-login')

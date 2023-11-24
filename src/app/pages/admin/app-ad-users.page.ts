@@ -27,7 +27,7 @@ import { confirmCaptchaDialog } from '../../shared/confirm-captcha-dialog'
 import { basicFormStyle, formValidationStyle } from '../../styles/form.style'
 import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import { impersonate } from '../../services/auth.service'
-import { Router } from '@vaadin/router'
+
 import { setDocumentTitle } from '../../utils/html'
 import { appTableStyle } from '../../styles/app-table.style'
 

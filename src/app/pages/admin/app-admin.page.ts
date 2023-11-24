@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import { appCardsStyle } from '../../styles/app-cards.style'
-import { Router } from '@vaadin/router'
+
 import { appPageTitleStyle } from '../../styles/main.style'
 import { setDocumentTitle } from '../../utils/html'
 
