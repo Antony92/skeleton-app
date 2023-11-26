@@ -83,15 +83,15 @@ export class Router extends EventTarget {
 	}
 
 
-	static navigate(path: string, options?: NavigationNavigateOptions) {
+	navigate(path: string, options?: NavigationNavigateOptions) {
 		return window.navigation.navigate(path, options)
 	}
 
-	static back(options?: NavigationNavigateOptions) {
+	back(options?: NavigationNavigateOptions) {
 		return window.navigation.back(options)
 	}
 
-	static reload(options?: NavigationNavigateOptions) {
+	reload(options?: NavigationNavigateOptions) {
 		return window.navigation.reload(options)
 	}
 }
