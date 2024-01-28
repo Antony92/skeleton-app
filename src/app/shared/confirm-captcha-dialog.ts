@@ -1,6 +1,6 @@
 import { escapeHtml } from '../utils/html'
 
-export const confirmCaptchaDialog = (title: string, message: string, typing = 'confirm'): Promise<boolean> => {
+export const confirmCaptchaDialog = (title: string, message: string, confirmWord = 'confirm'): Promise<boolean> => {
 	return new Promise(async (resolve, reject) => {
 		await import('@shoelace-style/shoelace/dist/components/dialog/dialog.js')
 		await import('@shoelace-style/shoelace/dist/components/input/input.js')
@@ -17,7 +17,7 @@ export const confirmCaptchaDialog = (title: string, message: string, typing = 'c
 			innerHTML: `
                 ${escapeHtml(message)}
 				<br /><br />
-				<sl-input autofocus label="Confirmation" placeholder="Type the required word to proceed" help-text="Type '${typing}'"></sl-input>
+				<sl-input autofocus label="Confirmation" placeholder="Type the required word to proceed" help-text="Type '${confirmWord}'"></sl-input>
 				<sl-button slot="footer" class="cancel" variant="text">Cancel</sl-button>
 				<sl-button slot="footer" class="confirm" variant="primary" disabled>Confirm</sl-button>
             `,
@@ -28,8 +28,10 @@ export const confirmCaptchaDialog = (title: string, message: string, typing = 'c
 		const confirmButton = dialog.querySelector('.confirm')!
 
 		input.addEventListener('input', () => {
-			if (input.value === typing) {
+			if (input.value === confirmWord) {
 				confirmButton.removeAttribute('disabled')
+			} else {
+				confirmButton.setAttribute('disabled', '')
 			}
 		})
 
@@ -49,7 +51,7 @@ export const confirmCaptchaDialog = (title: string, message: string, typing = 'c
 			dialog.hide().then(() => resolve(false))
 		})
 		confirmButton.addEventListener('click', (event) => {
-			if (input.value === typing) {
+			if (input.value === confirmWord) {
 				dialog.hide().then(() => resolve(true))
 			}
 		})
