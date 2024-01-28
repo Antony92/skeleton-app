@@ -1,12 +1,12 @@
 import { request } from '../http/request'
-import { BehaviorSubject, lastValueFrom, shareReplay, take } from 'rxjs'
+import { BehaviorSubject, firstValueFrom, lastValueFrom, shareReplay, take } from 'rxjs'
 import { User } from '../types/user.type'
 
 let accessToken = ''
 
 const $user = new BehaviorSubject<User>(null)
 
-const $userObservable = $user.asObservable().pipe(shareReplay(1))
+const $userObservable = $user.asObservable()
 
 export const setUser = (user: User) => $user.next(user)
 
@@ -18,7 +18,7 @@ export const setAccessToken = (token: string) => (accessToken = token)
 
 export const getAccessToken = () => accessToken
 
-export const getUser = () => lastValueFrom(getUserObservable().pipe(take(1)))
+export const getUser = () => firstValueFrom(getUserObservable())
 
 export const login = () => window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
 
