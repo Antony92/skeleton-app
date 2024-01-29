@@ -121,6 +121,7 @@ export class AppAutocomplete extends LitElement {
 	}
 
 	onInput() {
+		this.input.value = this.input.value.trim()
 		this.selected = ''
 		this.value = this.input.value
 		const match = this.list.find((item) => item.label === this.value)
@@ -180,7 +181,7 @@ export class AppAutocomplete extends LitElement {
 				/>
 				${when(this.loading, () => html`<sl-progress-bar indeterminate></sl-progress-bar>`)}
 			</div>
-			<datalist id="list">${this.list.map((item) => html`<option>${item.label}</option>`)}</datalist>
+			<datalist id="list">${this.list.map((item) => html`<option>${item.label}&nbsp;</option>`)}</datalist>
 		`
 	}
 }
