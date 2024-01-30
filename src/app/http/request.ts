@@ -4,13 +4,13 @@ import { notify } from '../shared/notification'
 
 let requestCount = 0
 
-type RequestOptions = RequestInit & { showLoader?: boolean; auth?: boolean; json?: boolean }
+type RequestOptions = RequestInit & { showLoading?: boolean; auth?: boolean; json?: boolean }
 
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
 	let response = new Response()
 	try {
 		requestCount++
-		await loading(options?.showLoader ?? true)
+		await loading(options?.showLoading ?? true)
 		if (options?.auth) {
 			Object.assign(options, { headers: { ...options.headers, Authorization: `Bearer ${getAccessToken()}` } })
 		}
