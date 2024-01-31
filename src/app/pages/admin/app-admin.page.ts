@@ -3,7 +3,6 @@ import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import { appCardsStyle } from '../../styles/app-cards.style'
-import { Router } from '@vaadin/router'
 import { appPageTitleStyle } from '../../styles/main.style'
 import { setDocumentTitle } from '../../utils/html'
 
@@ -33,7 +32,7 @@ export class AppAdmin extends LitElement {
 					<strong>Users</strong><br /><br />
 					View and manage users.
 					<div slot="footer">
-						<sl-button variant="primary" @click=${() => Router.go('/admin/users')}>Users</sl-button>
+						<sl-button variant="primary" href="/admin/users">Users</sl-button>
 					</div>
 				</sl-card>
 				<sl-card>
@@ -45,7 +44,7 @@ export class AppAdmin extends LitElement {
 					<strong>Audit Logs</strong><br /><br />
 					View every action done by users.
 					<div slot="footer">
-						<sl-button variant="primary" @click=${() => Router.go('/admin/audit-logs')}>Audit Logs</sl-button>
+						<sl-button variant="primary" href="/admin/audit-logs">Audit Logs</sl-button>
 					</div>
 				</sl-card>
 				<sl-card>
@@ -57,7 +56,7 @@ export class AppAdmin extends LitElement {
 					<strong>Server Events</strong><br /><br />
 					Manage global system events.
 					<div slot="footer">
-						<sl-button variant="primary" @click=${() => Router.go('/admin/server-events')}>Server Events</sl-button>
+						<sl-button variant="primary" href="/admin/server-events">Server Events</sl-button>
 					</div>
 				</sl-card>
 			</div>
