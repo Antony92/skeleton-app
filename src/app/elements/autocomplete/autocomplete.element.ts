@@ -49,20 +49,20 @@ export class AppAutocomplete extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false
 
-	@property()
-	selected = ''
-
-	@state()
+	@property({ type: String, reflect: true })
 	value = ''
 
-	@state()
-	loading = false
+	@property({ type: String, reflect: true })
+	selected = ''
 
 	@property({ type: Number })
 	delay = 300
 
 	@property({ type: Array })
-	list: { label: string; value: string; object?: unknown }[] = []
+	list: { name: string; value: string; }[] = []
+
+	@state()
+	loading = false
 
 	#searchEvent = new Subject<string>()
 
@@ -83,7 +83,7 @@ export class AppAutocomplete extends LitElement {
 					new CustomEvent('app-autocomplete-search', {
 						bubbles: true,
 						composed: true,
-						detail: this.input.value,
+						detail: this.value,
 					})
 				)
 			})
@@ -95,10 +95,7 @@ export class AppAutocomplete extends LitElement {
 	}
 
 	firstUpdated() {
-		if (this.selected) {
-			this.internals.setFormValue(this.selected)
-		}
-		if (!this.selected && !this.value && this.required) {
+		if (!this.value && !this.selected && this.required) {
 			this.setInvalid()
 		} else {
 			this.setValid()
@@ -106,26 +103,27 @@ export class AppAutocomplete extends LitElement {
 	}
 
 	formResetCallback() {
-		this.clear()
+		this.value = ''
 		this.setInvalid()
 	}
 
 	updated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-		if (_changedProperties.has('selected') && this.selected) {
-			this.internals.setFormValue(this.selected)
-			this.setValid()
-		}
 		if (_changedProperties.has('list')) {
 			this.loading = false
+		}
+		if (_changedProperties.has('selected') && this.selected && this.value) {
+			this.internals.setFormValue(this.selected)
+			this.setValid()
 		}
 	}
 
 	onInput() {
-		this.input.value = this.input.value.trim()
 		this.selected = ''
-		this.value = this.input.value
-		const match = this.list.find((item) => item.label === this.value)
+		this.value = this.input.value.trim()
+		const match = this.list.find((item) => item.name === this.value)
 		if (match) {
+			this.input.value = this.input.value.trim()
+			this.selected = match.value
 			this.internals.setFormValue(match.value)
 			this.dispatchEvent(
 				new CustomEvent('app-autocomplete-selected', {
@@ -141,11 +139,8 @@ export class AppAutocomplete extends LitElement {
 	}
 
 	onBlur() {
-		const match = this.list.find((item) => item.label === this.value)
-		if (!this.value && this.required) {
-			this.setInvalid()
-		} else if (!this.selected && !match && this.required) {
-			this.clear()
+		if (!this.selected && this.required) {
+			this.value = ''
 			this.setInvalid()
 		} else {
 			this.setValid()
@@ -158,10 +153,6 @@ export class AppAutocomplete extends LitElement {
 
 	setValid() {
 		this.internals.setValidity({})
-	}
-
-	clear() {
-		this.value = ''
 	}
 
 	render() {
@@ -181,7 +172,7 @@ export class AppAutocomplete extends LitElement {
 				/>
 				${when(this.loading, () => html`<sl-progress-bar indeterminate></sl-progress-bar>`)}
 			</div>
-			<datalist id="list">${this.list.map((item) => html`<option>${item.label}&nbsp;</option>`)}</datalist>
+			<datalist id="list">${this.list.map((item) => html`<option>${item.name}&nbsp;</option>`)}</datalist>
 		`
 	}
 }
