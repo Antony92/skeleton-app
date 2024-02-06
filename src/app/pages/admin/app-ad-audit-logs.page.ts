@@ -3,7 +3,7 @@ import { customElement, query, state } from 'lit/decorators.js'
 import { appPageTitleStyle } from '../../styles/main.style'
 import { AppPaginator } from '../../elements/paginator/app-paginator.element'
 import { TableColumn } from '../../types/table.type'
-import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsObject } from '../../utils/url'
+import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap } from '../../utils/url'
 import { getAuditLogs } from '../../services/audit-logs.service'
 import { when } from 'lit/directives/when.js'
 import '../../elements/paginator/app-paginator.element'
@@ -115,7 +115,7 @@ export class AppADAuditLogs extends LitElement {
 	}
 
 	async init() {
-		this.#searchParamsMap = new Map(Object.entries(getURLSearchParamsAsObject()))
+		this.#searchParamsMap = getURLSearchParamsAsMap()
 		this.#limit = Number(localStorage.getItem('audit-logs-table-limit')) || this.#limit
 		this.#searchParamsMap.forEach((value, key) => {
 			const column = this.columns.find((column) => column.field === key)

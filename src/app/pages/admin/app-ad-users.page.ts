@@ -2,7 +2,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import { AppPaginator } from '../../elements/paginator/app-paginator.element'
 import { TableColumn } from '../../types/table.type'
-import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsObject } from '../../utils/url'
+import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap } from '../../utils/url'
 import { deleteUser, getRoles, getUsers, updateUser, createUserApiKey, deleteUserApiKey, createUser } from '../../services/user.service'
 import { when } from 'lit/directives/when.js'
 import { appPageTitleStyle } from '../../styles/main.style'
@@ -182,7 +182,7 @@ export class AppADUsers extends LitElement {
 	}
 
 	async init() {
-		this.#searchParamsMap = new Map(Object.entries(getURLSearchParamsAsObject()))
+		this.#searchParamsMap = getURLSearchParamsAsMap()
 		this.#limit = Number(localStorage.getItem('user-table-limit')) || this.#limit
 		this.#searchParamsMap.forEach((value, key) => {
 			const column = this.columns.find((column) => column.field === key)

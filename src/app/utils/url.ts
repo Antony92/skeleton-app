@@ -26,3 +26,8 @@ export const searchParamsToQuery = (searchParams: SearchParams) => {
 export const getURLSearchParamsAsObject = () => {
 	return Object.fromEntries(new URLSearchParams(window.location.search))
 }
+
+export const getURLSearchParamsAsMap = () => {
+	const object = Object.fromEntries(new URLSearchParams(window.location.search))
+	return new Map(Object.entries(object)) 
+}
