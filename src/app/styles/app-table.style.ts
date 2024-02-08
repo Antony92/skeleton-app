@@ -17,6 +17,7 @@ export const appTableStyle = css`
 	app-table table th {
 		white-space: nowrap;
 		vertical-align: bottom;
+		text-align: justify;
 		padding: 10px;
 	}
 
@@ -40,7 +41,7 @@ export const appTableStyle = css`
 
 	app-table table td {
 		white-space: nowrap;
-		padding: 10px;
+		padding: 10px 20px;
 	}
 
 	app-table table td[textlimit] {
