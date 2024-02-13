@@ -59,8 +59,8 @@ export const refreshTokenSilently = async () => {
 		const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' })
 		if (req.ok) {
 			const res = await req.json()
-			accessToken = res.accessToken
 			const { user } = JSON.parse(window.atob(res.accessToken.split('.')[1]))
+			setAccessToken(res.accessToken)
 			setUser(user)
 		}
 		return req.ok
