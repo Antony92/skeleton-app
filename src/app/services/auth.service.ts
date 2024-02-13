@@ -43,8 +43,8 @@ export const impersonate = async (username: string) => {
 		})
 		if (req.ok) {
 			const res = await req.json()
-			accessToken = res.accessToken
 			const { user } = JSON.parse(window.atob(res.accessToken.split('.')[1]))
+			setAccessToken(res.accessToken)
 			setUser(user)
 		}
 		return true
