@@ -17,16 +17,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vaadin/router": "~1.7.5",
+    "@lit/context": "^1.1.2",
+    "@lit/task": "^1.0.1",
     "@shoelace-style/shoelace": "~2.16.0",
+    "@vaadin/router": "~1.7.5",
     "lit": "~3.2.0",
     "rxjs": "~7.8.1"
   },
   "devDependencies": {
-    "@vitest/ui": "~2.0.5",
-    "typescript": "~5.5.4",
-    "vite": "~5.4.2",
-    "vite-plugin-pwa": "~0.20.1",
-    "vitest": "~2.0.5"
+    "@vitest/ui": "~2.1.1",
+    "typescript": "~5.6.2",
+    "vite": "~5.4.6",
+    "vite-plugin-pwa": "~0.20.5",
+    "vitest": "~2.1.1"
   }
 }
