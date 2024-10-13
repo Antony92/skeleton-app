@@ -1,4 +1,4 @@
-export const applyTheme = () => {
+export const applyDefaultTheme = () => {
 	const theme = localStorage.getItem('theme')
 	const body = document.querySelector('body')
 

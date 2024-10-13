@@ -1,12 +1,12 @@
 import { registerSW } from 'virtual:pwa-register'
-import { applyTheme } from './app/utils/theme'
-import { refreshTokenSilently } from './app/services/auth.service'
+import { applyDefaultTheme } from './app/utils/theme'
+import { refreshTokenSilently } from './app/shared/auth'
 
 // register service worker
 registerSW({ immediate: true })
 
 // set up theme
-applyTheme()
+applyDefaultTheme()
 
 Promise.allSettled([
     await refreshTokenSilently(),

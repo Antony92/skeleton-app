@@ -4,6 +4,7 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
+import { SlChangeEvent } from '@shoelace-style/shoelace'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
@@ -35,13 +36,13 @@ export class AppPaginator extends LitElement {
 	@property({ type: Array })
 	pageSizeOptions = [5, 10, 20]
 
-	#previousPageIndex = 0
+	private previousPageIndex = 0
 
-	#pageSizeChange(event: CustomEvent) {
+	private pageSizeChange(event: SlChangeEvent) {
 		const value = (<SlSelect>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
-		this.#previousPageIndex = this.pageIndex
+		this.previousPageIndex = this.pageIndex
 		this.pageIndex = Math.floor(startIndex / pageSize) || 0
 		this.pageSize = pageSize
 		this.emitPageEvent()
@@ -64,35 +65,35 @@ export class AppPaginator extends LitElement {
 		return Math.ceil(this.total / this.pageSize)
 	}
 
-	#firstPage() {
+	private firstPage() {
 		if (!this.hasPreviousPage()) return
-		this.#previousPageIndex = this.pageIndex
+		this.previousPageIndex = this.pageIndex
 		this.pageIndex = 0
 		this.emitPageEvent()
 	}
 
-	#lastPage() {
+	private lastPage() {
 		if (!this.hasNextPage()) return
-		this.#previousPageIndex = this.pageIndex
+		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.getNumberOfPages() - 1
 		this.emitPageEvent()
 	}
 
-	#nextPage() {
+	private nextPage() {
 		if (!this.hasNextPage()) return
-		this.#previousPageIndex = this.pageIndex
+		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex + 1
 		this.emitPageEvent()
 	}
 
-	#previousPage() {
+	private previousPage() {
 		if (!this.hasPreviousPage()) return
-		this.#previousPageIndex = this.pageIndex
+		this.previousPageIndex = this.pageIndex
 		this.pageIndex = this.pageIndex - 1
 		this.emitPageEvent()
 	}
 
-	#getRangeLabel() {
+	private getRangeLabel() {
 		if (this.total == 0 || this.pageSize == 0) return `0 of ${this.total}`
 		const startIndex = this.pageIndex * this.pageSize
 		const endIndex = startIndex < this.total ? Math.min(startIndex + this.pageSize, this.total) : startIndex + this.pageSize
@@ -107,7 +108,7 @@ export class AppPaginator extends LitElement {
 				detail: {
 					pageSize: this.pageSize,
 					pageIndex: this.pageIndex,
-					previousPageIndex: this.#previousPageIndex,
+					previousPageIndex: this.previousPageIndex,
 					total: this.total,
 				},
 			})
@@ -117,15 +118,15 @@ export class AppPaginator extends LitElement {
 	render() {
 		return html`
 			Items per page:
-			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.#pageSizeChange}>
+			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.pageSizeChange}>
 				${this.pageSizeOptions.map((value) => html`<sl-option value=${value?.toString()}>${value}</sl-option>`)}
 			</sl-select>
-			${this.#getRangeLabel()}
+			${this.getRangeLabel()}
 			<sl-icon-button
 				name="chevron-bar-left"
 				label="First"
 				title="First"
-				@click=${this.#firstPage}
+				@click=${this.firstPage}
 				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
@@ -133,7 +134,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-left"
 				label="Previous"
 				title="Previous"
-				@click=${this.#previousPage}
+				@click=${this.previousPage}
 				?disabled=${!this.hasPreviousPage()}
 			>
 			</sl-icon-button>
@@ -141,7 +142,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-right"
 				label="Next"
 				title="Next"
-				@click=${this.#nextPage}
+				@click=${this.nextPage}
 				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>
@@ -149,7 +150,7 @@ export class AppPaginator extends LitElement {
 				name="chevron-bar-right" 
 				label="Last" 
 				title="Last" 
-				@click=${this.#lastPage}
+				@click=${this.lastPage}
 				?disabled=${!this.hasNextPage()}
 			>
 			</sl-icon-button>

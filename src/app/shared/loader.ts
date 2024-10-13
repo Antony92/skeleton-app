@@ -6,7 +6,9 @@ export const loading = async (show = false) => {
     if (show && !element) {
         element = document.createElement('app-loader')
         document.body.appendChild(element)
-    } else if (!show && element) {
+    } 
+    
+    if (!show && element) {
         element.remove()
     }
 }

@@ -1,16 +1,16 @@
 import { directive } from 'lit/directive.js'
 import { AsyncDirective } from 'lit/async-directive.js'
 import { Subscription } from 'rxjs'
-import { getUserObservable } from '../services/auth.service'
+import { getUserObservable } from '../shared/auth'
 import { noChange, nothing } from 'lit'
 
 class WhenUser extends AsyncDirective {
 
-	#subscription: Subscription = new Subscription()
+	private subscription: Subscription = new Subscription()
 
 	render<T, F>(trueCase: () => T, falseCase?: () => F) {
 		if (this.isConnected) {
-			this.#subscription = getUserObservable().subscribe((user) => {
+			this.subscription = getUserObservable().subscribe((user) => {
                 if (user) {
 					this.setValue(trueCase())
 				} else if (falseCase) {
@@ -24,7 +24,7 @@ class WhenUser extends AsyncDirective {
 	}
 
 	disconnected() {
-		this.#subscription.unsubscribe()
+		this.subscription.unsubscribe()
 	}
 }
 

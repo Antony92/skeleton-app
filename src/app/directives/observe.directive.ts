@@ -5,17 +5,17 @@ import { noChange } from 'lit'
 
 class Observe extends AsyncDirective {
 
-	#subscription: Subscription = new Subscription()
+	private subscription: Subscription = new Subscription()
 
 	render(observable: Observable<unknown>, result: (value: unknown) => unknown) {
 		if (this.isConnected) {
-			this.#subscription = observable.subscribe((value) => this.setValue(result(value)))
+			this.subscription = observable.subscribe((value) => this.setValue(result(value)))
 		}
 		return noChange
 	}
 
 	disconnected() {
-		this.#subscription.unsubscribe()
+		this.subscription.unsubscribe()
 	}
 }
 

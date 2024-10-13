@@ -6,7 +6,7 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
 		.filter((key) => searchParams[key] != null && searchParams[key] != undefined && searchParams[key] !== '')
 		.map((key) => search.set(key, searchParams[key].toString()))
 	const query = search.toString()
-	const url = `${window.location.pathname}` + `${query ? `?${query}` : ''}`
+	const url = `${window.location.pathname}${query ? `?${query}` : ''}`
 	history.replaceState(null, '', url)
 }
 
@@ -29,5 +29,5 @@ export const getURLSearchParamsAsObject = () => {
 
 export const getURLSearchParamsAsMap = () => {
 	const object = Object.fromEntries(new URLSearchParams(window.location.search))
-	return new Map(Object.entries(object)) 
+	return new Map(Object.entries(object))
 }

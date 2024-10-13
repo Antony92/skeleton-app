@@ -20,6 +20,11 @@ export const getAccessToken = () => accessToken
 
 export const getUser = () => firstValueFrom(getUserObservable())
 
+export const hasUserRole = async (roles: string[]) => {
+    const user = await getUser()
+    return user && roles && user.roles.some((role: string) => roles.includes(role))
+}
+
 export const login = () => window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
 
 export const logout = async () => {

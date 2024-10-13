@@ -4,15 +4,12 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { appSidebarStyle } from '../../styles/app-sidebar.style'
 import { Router, RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '../../directives/when-user-role.directive'
-import { Subscription } from 'rxjs'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '../../types/user.type'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
 	static styles = [appSidebarStyle, css``]
-
-	userSubscription = new Subscription()
 
 	connectedCallback() {
 		super.connectedCallback()

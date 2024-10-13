@@ -16,16 +16,16 @@ body {
 	color: var(--theme-color);
 	overflow: hidden;
 	transition: background-color 300ms ease-in-out;
-}
 
-body.loading {
-	display: grid;
-	justify-items: center;
-    align-items: center;
-}
+	&.loading {
+		display: grid;
+		justify-items: center;
+		align-items: center;
 
-body.loading app-root {
-	display: none;
+		app-root {
+			display: none;
+		}
+	}
 }
 
 .theme-dark {
