@@ -5,6 +5,7 @@ import '@shoelace-style/shoelace/dist/components/menu/menu.js'
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
 import '@shoelace-style/shoelace/dist/components/divider/divider.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
+import { SlSelectEvent } from '@shoelace-style/shoelace'
 
 @customElement('app-theme-switcher')
 export class AppThemeSwitcher extends LitElement {
@@ -30,7 +31,7 @@ export class AppThemeSwitcher extends LitElement {
 		}
 	}
 
-	changeTheme(event: CustomEvent) {
+	changeTheme(event: SlSelectEvent) {
 		const selectedItem = event.detail.item
 		this.theme = selectedItem.value
 		localStorage.setItem('theme', this.theme)

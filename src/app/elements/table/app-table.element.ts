@@ -6,40 +6,40 @@ import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
-import { appTableStyle } from '../../styles/app-table.style'
+import { SlInputEvent } from '@shoelace-style/shoelace'
+import { AppTableFilterEvent } from '../../events/table.event'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
 	static styles = [
-		appTableStyle,
 		css`
 			::slotted(app-paginator) {
 				margin-top: 5px;
 				justify-content: flex-end;
 			}
 
-			.table-wrapper {
+			.table-container {
 				overflow-x: auto;
 			}
 
-			.actions-box {
+			.actions-container {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 10px;
 				margin-bottom: 10px;
-			}
 
-			.actions-box sl-input {
-				width: 350px;
-			}
+				sl-input {
+					width: 350px;
+				}
 
-			.actions-box .clear-filters-button {
-				margin-left: auto;
-			}
+				.buttons {
+					display: flex;
+					gap: 10px;
 
-			.actions-box .action-buttons {
-				display: flex;
-				gap: 10px;
+					.clear-filters {
+						margin-left: auto;
+					}
+				}
 			}
 		`,
 	]
@@ -53,15 +53,15 @@ export class AppTable extends LitElement {
 	@property({ type: String })
 	searchValue = ''
 
-	@property({ attribute: false })
+	@state()
 	searchParamsMap = new Map()
 
 	@state()
 	filtersApplied = false
 
-	#searchEvent = new Subject<string>()
+	private searchEvent = new Subject<string>()
 
-	#searchSubscription: Subscription = new Subscription()
+	private searchSubscription: Subscription = new Subscription()
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -70,20 +70,18 @@ export class AppTable extends LitElement {
 		}
 		this.filtersApplied = this.hasFiltersApplied()
 		this.addEventListener('app-table-column-filter-value', (event) => {
-			const { field, value } = (<CustomEvent>event).detail
+			const { field, value } = event.filter
 			if (value) {
 				this.searchParamsMap.set(field, value)
 			} else {
 				this.searchParamsMap.delete(field)
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.#dispatchFilterEvent()
+			this.dispatchFilterEvent()
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
-			const { field, order } = (<CustomEvent>event).detail
-			this.columnFilters
-				.filter(filter => filter !== event.target)
-				.forEach(filter => filter.clearOrderFilter())
+			const { field, order } = event.filter
+			this.columnFilters.filter((filter) => filter !== event.target).forEach((filter) => filter.clearOrderFilter())
 			if (order) {
 				this.searchParamsMap.set('sort', field)
 				this.searchParamsMap.set('order', order)
@@ -92,9 +90,9 @@ export class AppTable extends LitElement {
 				this.searchParamsMap.delete('order')
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.#dispatchFilterEvent()
+			this.dispatchFilterEvent()
 		})
-		this.#searchSubscription = this.#searchEvent
+		this.searchSubscription = this.searchEvent
 			.asObservable()
 			.pipe(debounce((value) => (value ? timer(300) : timer(0))))
 			.subscribe((value) => {
@@ -104,27 +102,21 @@ export class AppTable extends LitElement {
 					this.searchParamsMap.delete('search')
 				}
 				this.filtersApplied = this.hasFiltersApplied()
-				this.#dispatchFilterEvent()
+				this.dispatchFilterEvent()
 			})
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
-		this.#searchSubscription.unsubscribe()
+		this.searchSubscription.unsubscribe()
 	}
 
-	#dispatchFilterEvent() {
-		this.dispatchEvent(
-			new CustomEvent('app-table-column-filter', {
-				bubbles: true,
-				composed: true,
-				detail: this.searchParamsMap,
-			})
-		)
+	private dispatchFilterEvent() {
+		this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
 	}
 
 	globalSearch(value: string) {
-		this.#searchEvent.next(value)
+		this.searchEvent.next(value)
 	}
 
 	hasFiltersApplied() {
@@ -135,13 +127,8 @@ export class AppTable extends LitElement {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
 		this.renderRoot.querySelectorAll('sl-input').forEach((input) => (input.value = ''))
-		this.columnFilters.forEach((heading) => heading.clearFilters())
-		this.dispatchEvent(
-			new CustomEvent('app-table-clear', {
-				bubbles: true,
-				composed: true,
-			})
-		)
+		this.columnFilters.forEach((columFilter) => columFilter.clearFilters())
+		this.dispatchEvent(new Event('app-table-clear'))
 	}
 
 	get columnFilters() {
@@ -152,7 +139,7 @@ export class AppTable extends LitElement {
 
 	render() {
 		return html`
-			<div class="actions-box">
+			<div class="actions-container">
 				${when(
 					this.searchable,
 					() => html`
@@ -165,32 +152,26 @@ export class AppTable extends LitElement {
 							type="search"
 							.value=${this.searchValue || ''}
 							placeholder="Search"
-							@sl-input=${(event: CustomEvent) => this.globalSearch((<SlInput>event.target).value)}
+							@sl-input=${(event: SlInputEvent) => this.globalSearch((<SlInput>event.target).value)}
 						>
 							<sl-icon name="search" slot="prefix"></sl-icon>
 						</sl-input>
 					`
 				)}
-				<div class="action-buttons">
+				<div class="buttons">
 					<slot name="actions"></slot>
+					${when(
+						this.clearable,
+						() => html`
+							<sl-button class="clear-filters" variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
+								<sl-icon slot="prefix" name="funnel"></sl-icon>
+								Clear filters
+							</sl-button>
+						`
+					)}
 				</div>
-				${when(
-					this.clearable,
-					() => html`
-						<sl-button
-							class="clear-filters-button"
-							variant="default"
-							pill
-							@click=${this.clearAllFilters}
-							?disabled=${!this.filtersApplied}
-						>
-							<sl-icon slot="prefix" name="funnel"></sl-icon>
-							Clear filters
-						</sl-button>
-					`
-				)}
 			</div>
-			<div class="table-wrapper">
+			<div class="table-container">
 				<slot name="table"></slot>
 			</div>
 			<slot name="paginator"></slot>

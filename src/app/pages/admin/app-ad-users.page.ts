@@ -23,7 +23,7 @@ import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
 import { notify } from '../../shared/notification'
 import { SlDialog } from '@shoelace-style/shoelace'
 import { confirmDialog } from '../../shared/dialog'
-import { confirmCaptchaDialog } from '../../shared/confirm-captcha-dialog'
+import { captchaDialog } from '../../shared/dialog'
 import { basicFormStyle, formValidationStyle } from '../../styles/form.style'
 import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import { impersonate } from '../../shared/auth'
@@ -230,7 +230,7 @@ export class AppADUsers extends LitElement {
 	}
 
 	async removeUser(user: any) {
-		const confirm = await confirmCaptchaDialog('Confirm', `Are you sure you want to delete user '${user.name}'?`)
+		const confirm = await captchaDialog('Confirm', `Are you sure you want to delete user '${user.name}'?`)
 		if (!confirm) return
 		const res = await deleteUser(user.id)
 		if (res.data) {

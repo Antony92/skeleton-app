@@ -9,3 +9,13 @@ export type TableColumn = {
     list?: { label: string, value: string | boolean | number }[]
     order?: 'desc' | 'asc' | null
 }
+
+export type TableColumnFilterValue = {
+    field: string
+    value: string
+}
+
+export type TableColumnFilterOrder = {
+    field: string
+    order: 'desc' | 'asc' | null
+}

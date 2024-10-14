@@ -71,6 +71,6 @@ export const refreshTokenSilently = async () => {
 		return req.ok
 	} catch (error) {
 		console.error(error)
+		return false
 	}
-	return false
 }
