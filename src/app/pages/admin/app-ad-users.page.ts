@@ -50,12 +50,6 @@ export class AppADUsers extends LitElement {
 	@query('.user-dialog form')
 	userDialogForm!: HTMLFormElement
 
-	#skip = 0
-
-	#limit = 10
-
-	#searchParamsMap = new Map()
-
 	@state()
 	loading = false
 
@@ -119,28 +113,32 @@ export class AppADUsers extends LitElement {
 		{ header: 'Last Login', field: 'lastLogin', type: 'date', sortable: true },
 	]
 
+	private skip = 0
+    private limit = 10
+	private searchParamsMap = new Map()
+
 	connectedCallback() {
 		super.connectedCallback()
 		setDocumentTitle('Admin - Users')
 		this.init()
-		this.addEventListener('app-table-column-filter', async (event) => {
-			this.#searchParamsMap = (<CustomEvent>event).detail
-			addSearchParamsToURL(Object.fromEntries(this.#searchParamsMap))
-			this.#skip = 0
+		this.addEventListener('app-table-filter', async (event) => {
+			this.searchParamsMap = event.filters
+			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
+			this.skip = 0
 			await this.loadUsers()
 			this.paginator.reset()
 		})
 		this.addEventListener('app-paginate', async (event) => {
-			const { pageSize, pageIndex } = (<CustomEvent>event).detail
-			this.#limit = pageSize
-			localStorage.setItem('user-table-limit', this.#limit.toString())
-			this.#skip = pageSize * pageIndex
+			const { pageSize, pageIndex } = event.value
+			this.limit = pageSize
+			this.skip = pageSize * pageIndex
+			localStorage.setItem('user-table-limit', this.limit.toString())
 			await this.loadUsers()
 		})
 		this.addEventListener('app-table-clear', async () => {
-			this.#searchParamsMap.clear()
+			this.searchParamsMap.clear()
 			clearSearchParamsFromURL()
-			this.#skip = 0
+			this.skip = 0
 			this.columns.forEach((column) => {
 				column.value = ''
 				column.order = null
@@ -182,17 +180,17 @@ export class AppADUsers extends LitElement {
 	}
 
 	async init() {
-		this.#searchParamsMap = getURLSearchParamsAsMap()
-		this.#limit = Number(localStorage.getItem('user-table-limit')) || this.#limit
-		this.#searchParamsMap.forEach((value, key) => {
+		this.searchParamsMap = getURLSearchParamsAsMap()
+		this.limit = Number(localStorage.getItem('user-table-limit')) || this.limit
+		this.searchParamsMap.forEach((value, key) => {
 			const column = this.columns.find((column) => column.field === key)
 			if (column) {
 				column.value = value
 			}
 		})
-		const sortColumn = this.columns.find((column) => column.field === this.#searchParamsMap.get('sort'))
+		const sortColumn = this.columns.find((column) => column.field === this.searchParamsMap.get('sort'))
 		if (sortColumn) {
-			sortColumn.order = this.#searchParamsMap.get('order')
+			sortColumn.order = this.searchParamsMap.get('order')
 		}
 		await this.loadUsers()
 		this.roles = await getRoles()
@@ -209,7 +207,7 @@ export class AppADUsers extends LitElement {
 
 	async loadUsers() {
 		this.loading = true
-		this.users = await getUsers({ skip: this.#skip, limit: this.#limit, ...Object.fromEntries(this.#searchParamsMap) })
+		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...Object.fromEntries(this.searchParamsMap) })
 		this.loading = false
 	}
 
@@ -272,7 +270,7 @@ export class AppADUsers extends LitElement {
 	render() {
 		return html`
 			<h3 class="title">Users</h3>
-			<app-table searchable clearable .searchValue=${this.#searchParamsMap.get('search')} .searchParamsMap=${this.#searchParamsMap}>
+			<app-table searchable clearable .searchValue=${this.searchParamsMap.get('search')} .filtersApplied=${this.searchParamsMap.size > 0}>
 				<sl-button slot="actions" pill variant="primary" @click=${() => this.openUserDialog()}>
 					<sl-icon slot="prefix" name="plus"></sl-icon>
 					Create user
@@ -385,7 +383,7 @@ export class AppADUsers extends LitElement {
 						)}
 					</tbody>
 				</table>
-				<app-paginator slot="paginator" .pageSize=${this.#limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}></app-paginator>
+				<app-paginator slot="paginator" .pageSize=${this.limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}></app-paginator>
 			</app-table>
 			
 			<sl-dialog label="${this.selectedUser ? 'Edit' : 'Create'} user ${this.selectedUser?.name}"  class="user-dialog">

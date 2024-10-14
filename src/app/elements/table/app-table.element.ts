@@ -53,11 +53,10 @@ export class AppTable extends LitElement {
 	@property({ type: String })
 	searchValue = ''
 
-	@state()
-	searchParamsMap = new Map()
-
-	@state()
+	@property({ type: Boolean })
 	filtersApplied = false
+
+	private searchParamsMap = new Map()
 
 	private searchEvent = new Subject<string>()
 
@@ -68,7 +67,6 @@ export class AppTable extends LitElement {
 		if (this.searchValue) {
 			this.searchParamsMap.set('search', this.searchValue)
 		}
-		this.filtersApplied = this.hasFiltersApplied()
 		this.addEventListener('app-table-column-filter-value', (event) => {
 			const { field, value } = event.filter
 			if (value) {

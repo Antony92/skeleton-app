@@ -5,6 +5,7 @@ import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 import { SlChangeEvent } from '@shoelace-style/shoelace'
+import { AppPaginateEvent } from '../../events/pagination.event'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
@@ -102,15 +103,11 @@ export class AppPaginator extends LitElement {
 
 	emitPageEvent() {
 		this.dispatchEvent(
-			new CustomEvent('app-paginate', {
-				bubbles: true,
-				composed: true,
-				detail: {
-					pageSize: this.pageSize,
-					pageIndex: this.pageIndex,
-					previousPageIndex: this.previousPageIndex,
-					total: this.total,
-				},
+			new AppPaginateEvent({
+				pageSize: this.pageSize,
+				pageIndex: this.pageIndex,
+				previousPageIndex: this.previousPageIndex,
+				total: this.total,
 			})
 		)
 	}
@@ -122,37 +119,12 @@ export class AppPaginator extends LitElement {
 				${this.pageSizeOptions.map((value) => html`<sl-option value=${value?.toString()}>${value}</sl-option>`)}
 			</sl-select>
 			${this.getRangeLabel()}
-			<sl-icon-button
-				name="chevron-bar-left"
-				label="First"
-				title="First"
-				@click=${this.firstPage}
-				?disabled=${!this.hasPreviousPage()}
-			>
+			<sl-icon-button name="chevron-bar-left" label="First" title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
 			</sl-icon-button>
-			<sl-icon-button
-				name="chevron-left"
-				label="Previous"
-				title="Previous"
-				@click=${this.previousPage}
-				?disabled=${!this.hasPreviousPage()}
-			>
+			<sl-icon-button name="chevron-left" label="Previous" title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
 			</sl-icon-button>
-			<sl-icon-button
-				name="chevron-right"
-				label="Next"
-				title="Next"
-				@click=${this.nextPage}
-				?disabled=${!this.hasNextPage()}
-			>
-			</sl-icon-button>
-			<sl-icon-button 
-				name="chevron-bar-right" 
-				label="Last" 
-				title="Last" 
-				@click=${this.lastPage}
-				?disabled=${!this.hasNextPage()}
-			>
+			<sl-icon-button name="chevron-right" label="Next" title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}> </sl-icon-button>
+			<sl-icon-button name="chevron-bar-right" label="Last" title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
 			</sl-icon-button>
 		`
 	}
