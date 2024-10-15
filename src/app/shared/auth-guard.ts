@@ -1,8 +1,8 @@
-import { Commands, Context } from '@vaadin/router'
+import { Commands, RouteContext } from '@vaadin/router'
 import { getUser } from '../shared/auth'
 
 export const authGuard = (roles?: string[]) => {
-	return async (context: Context, command: Commands) => {
+	return async (context: RouteContext, command: Commands) => {
 		const user = await getUser()
 		if (!user) {
 			localStorage.setItem('requested-page', `${context.pathname}${context.search}` || '/')
