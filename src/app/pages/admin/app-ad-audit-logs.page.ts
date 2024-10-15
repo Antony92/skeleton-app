@@ -99,7 +99,7 @@ export class AppADAuditLogs extends LitElement {
 			await this.loadAuditLogs()
 			this.paginator.reset()
 		})
-		this.table.addEventListener('app-paginate', async (event) => {
+		this.paginator.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = event.value
 			this.limit = pageSize
 			localStorage.setItem('audit-logs-table-limit', this.limit.toString())

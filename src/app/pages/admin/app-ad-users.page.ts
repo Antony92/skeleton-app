@@ -135,7 +135,7 @@ export class AppADUsers extends LitElement {
 			await this.loadUsers()
 			this.paginator.reset()
 		})
-		this.table.addEventListener('app-paginate', async (event) => {
+		this.paginator.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = event.value
 			this.limit = pageSize
 			this.skip = pageSize * pageIndex
