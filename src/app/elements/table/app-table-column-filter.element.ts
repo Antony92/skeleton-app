@@ -112,6 +112,7 @@ export class AppTableColumnFilter extends LitElement {
 	filterColumnOrder() {
 		if (!this.sortable) return
 		this.renderRoot.querySelector<HTMLElement>('.heading')?.focus()
+		
 		if (!this.order) {
 			this.order = 'asc'
 		}

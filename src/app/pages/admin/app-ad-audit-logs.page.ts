@@ -1,4 +1,4 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement, css, PropertyValues } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import { appPageTitleStyle } from '../../styles/main.style'
 import { AppPaginator } from '../../elements/paginator/app-paginator.element'
@@ -16,6 +16,7 @@ import '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import { setDocumentTitle } from '../../utils/html'
 import { appTableStyle } from '../../styles/app-table.style'
+import { AppTable } from '../../elements/table/app-table.element'
 
 @customElement('app-ad-audit-logs')
 export class AppADAuditLogs extends LitElement {
@@ -38,17 +39,18 @@ export class AppADAuditLogs extends LitElement {
 		`,
 	]
 
+	@query('app-table')
+	table!: AppTable
+
 	@query('app-paginator')
 	paginator!: AppPaginator
 
-	@query('.data-dialog')
+	@query('data-dialog')
 	dataDialog!: SlDialog
 
-	#skip = 0
-
-	#limit = 10
-
-	#searchParamsMap = new Map()
+	private searchParamsMap = new Map()
+	private skip = 0
+	private limit = 10
 
 	@state()
 	loading = false
@@ -87,24 +89,27 @@ export class AppADAuditLogs extends LitElement {
 		super.connectedCallback()
 		setDocumentTitle('Admin - Audit Logs')
 		this.init()
-		this.addEventListener('app-table-column-filter', async (event) => {
-			this.#searchParamsMap = (<CustomEvent>event).detail
-			addSearchParamsToURL(Object.fromEntries(this.#searchParamsMap))
-			this.#skip = 0
+	}
+
+	async firstUpdated() {
+		this.table.addEventListener('app-table-filter', async (event) => {
+			this.searchParamsMap = event.filters
+			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
+			this.skip = 0
 			await this.loadAuditLogs()
 			this.paginator.reset()
 		})
-		this.addEventListener('app-paginate', async (event) => {
-			const { pageSize, pageIndex } = (<CustomEvent>event).detail
-			this.#limit = pageSize
-			localStorage.setItem('audit-logs-table-limit', this.#limit.toString())
-			this.#skip = pageSize * pageIndex
+		this.table.addEventListener('app-paginate', async (event) => {
+			const { pageSize, pageIndex } = event.value
+			this.limit = pageSize
+			localStorage.setItem('audit-logs-table-limit', this.limit.toString())
+			this.skip = pageSize * pageIndex
 			await this.loadAuditLogs()
 		})
-		this.addEventListener('app-table-clear', async () => {
-			this.#searchParamsMap.clear()
+		this.table.addEventListener('app-table-clear', async () => {
+			this.searchParamsMap.clear()
 			clearSearchParamsFromURL()
-			this.#skip = 0
+			this.skip = 0
 			this.columns.forEach((column) => {
 				column.value = ''
 				column.order = null
@@ -115,24 +120,20 @@ export class AppADAuditLogs extends LitElement {
 	}
 
 	async init() {
-		this.#searchParamsMap = getURLSearchParamsAsMap()
-		this.#limit = Number(localStorage.getItem('audit-logs-table-limit')) || this.#limit
-		this.#searchParamsMap.forEach((value, key) => {
-			const column = this.columns.find((column) => column.field === key)
-			if (column) {
-				column.value = value
+		this.searchParamsMap = getURLSearchParamsAsMap()
+		this.limit = Number(localStorage.getItem('audit-logs-table-limit')) || this.limit
+		this.columns.forEach(column => {
+			column.value = this.searchParamsMap.get(column.field) || column.value
+			if (column.field === this.searchParamsMap.get('sort')) {
+				column.order = this.searchParamsMap.get('order')
 			}
 		})
-		const sortColumn = this.columns.find((column) => column.field === this.#searchParamsMap.get('sort'))
-		if (sortColumn) {
-			sortColumn.order = this.#searchParamsMap.get('order')
-		}
 		await this.loadAuditLogs()
 	}
 
 	async loadAuditLogs() {
 		this.loading = true
-		this.auditLogs = await getAuditLogs({ skip: this.#skip, limit: this.#limit, ...Object.fromEntries(this.#searchParamsMap) })
+		this.auditLogs = await getAuditLogs({ skip: this.skip, limit: this.limit, ...Object.fromEntries(this.searchParamsMap) })
 		this.loading = false
 	}
 
@@ -144,7 +145,7 @@ export class AppADAuditLogs extends LitElement {
 	render() {
 		return html`
 			<h3 class="title">Audit Logs</h3>
-			<app-table searchable clearable .searchValue=${this.#searchParamsMap.get('search')} .searchParamsMap=${this.#searchParamsMap}>
+			<app-table searchable clearable .searchValue=${this.searchParamsMap.get('search')} .filtersApplied=${this.searchParamsMap.size > 0}>
 				<table slot="table">
 					<thead>
 						<tr>
@@ -219,13 +220,13 @@ export class AppADAuditLogs extends LitElement {
 				</table>
 				<app-paginator
 					slot="paginator"
-					.pageSize=${this.#limit}
+					.pageSize=${this.limit}
 					.pageSizeOptions=${[5, 10, 15]}
 					.total=${this.auditLogs.total}
 				></app-paginator>
 			</app-table>
 			
-			<sl-dialog label="Data" class="data-dialog">
+			<sl-dialog label="Data" id="data-dialog">
 				<pre><code>${this.data}</code></pre>
 				<sl-button slot="footer" variant="primary" @click=${() => this.dataDialog.hide()}>Close</sl-button>
 			</sl-dialog>

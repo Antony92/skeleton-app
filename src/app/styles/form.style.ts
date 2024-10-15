@@ -38,8 +38,8 @@ export const formValidationStyle = css`
     .form-validation sl-select:focus-within[data-user-valid]::part(combobox) {
         border-color: var(--sl-color-success-600);
         box-shadow: 0 0 0 var(--sl-focus-ring-width) var(--sl-color-success-300);
-        outline-color: var(--sl-color-success-600); */
-    }
+        outline-color: var(--sl-color-success-600); 
+    }*/
 `
 
 export const basicFormStyle = css`

@@ -30,6 +30,7 @@ import { impersonate } from '../../shared/auth'
 import { Router } from '@vaadin/router'
 import { setDocumentTitle } from '../../utils/html'
 import { appTableStyle } from '../../styles/app-table.style'
+import { AppTable } from '../../elements/table/app-table.element'
 
 @customElement('app-ad-users')
 export class AppADUsers extends LitElement {
@@ -41,13 +42,16 @@ export class AppADUsers extends LitElement {
 		css``,
 	]
 
+	@query('app-table')
+	table!: AppTable
+
 	@query('app-paginator')
 	paginator!: AppPaginator
 
-	@query('.user-dialog')
+	@query('#user-dialog')
 	userDialog!: SlDialog
 
-	@query('.user-dialog form')
+	@query('#user-dialog form')
 	userDialogForm!: HTMLFormElement
 
 	@state()
@@ -121,21 +125,24 @@ export class AppADUsers extends LitElement {
 		super.connectedCallback()
 		setDocumentTitle('Admin - Users')
 		this.init()
-		this.addEventListener('app-table-filter', async (event) => {
+	}
+
+	firstUpdated() {
+		this.table.addEventListener('app-table-filter', async (event) => {
 			this.searchParamsMap = event.filters
 			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
 			this.skip = 0
 			await this.loadUsers()
 			this.paginator.reset()
 		})
-		this.addEventListener('app-paginate', async (event) => {
+		this.table.addEventListener('app-paginate', async (event) => {
 			const { pageSize, pageIndex } = event.value
 			this.limit = pageSize
 			this.skip = pageSize * pageIndex
 			localStorage.setItem('user-table-limit', this.limit.toString())
 			await this.loadUsers()
 		})
-		this.addEventListener('app-table-clear', async () => {
+		this.table.addEventListener('app-table-clear', async () => {
 			this.searchParamsMap.clear()
 			clearSearchParamsFromURL()
 			this.skip = 0
@@ -146,9 +153,6 @@ export class AppADUsers extends LitElement {
 			await this.loadUsers()
 			this.paginator.reset()
 		})
-	}
-
-	firstUpdated() {
 		this.userDialog.addEventListener('sl-request-close', (event) => {
 			if (event.detail.source === 'overlay') {
 				event.preventDefault()
@@ -180,29 +184,24 @@ export class AppADUsers extends LitElement {
 	}
 
 	async init() {
+		this.roles = await getRoles()
 		this.searchParamsMap = getURLSearchParamsAsMap()
 		this.limit = Number(localStorage.getItem('user-table-limit')) || this.limit
-		this.searchParamsMap.forEach((value, key) => {
-			const column = this.columns.find((column) => column.field === key)
-			if (column) {
-				column.value = value
+		this.columns.forEach(column => {
+			column.value = this.searchParamsMap.get(column.field) || column.value
+			if (column.field === this.searchParamsMap.get('sort')) {
+				column.order = this.searchParamsMap.get('order')
+			}
+			if (column.field === 'roles') {
+				column.list = this.roles.map((role: string) => {
+					return {
+						label: role,
+						value: role,
+					}
+				})
 			}
 		})
-		const sortColumn = this.columns.find((column) => column.field === this.searchParamsMap.get('sort'))
-		if (sortColumn) {
-			sortColumn.order = this.searchParamsMap.get('order')
-		}
 		await this.loadUsers()
-		this.roles = await getRoles()
-		const rolesColumn = this.columns.find((column) => column.field === 'roles')
-		if (rolesColumn) {
-			rolesColumn.list = this.roles.map((role: string) => {
-				return {
-					label: role,
-					value: role,
-				}
-			})
-		}
 	}
 
 	async loadUsers() {
@@ -386,7 +385,7 @@ export class AppADUsers extends LitElement {
 				<app-paginator slot="paginator" .pageSize=${this.limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}></app-paginator>
 			</app-table>
 			
-			<sl-dialog label="${this.selectedUser ? 'Edit' : 'Create'} user ${this.selectedUser?.name}"  class="user-dialog">
+			<sl-dialog label="${this.selectedUser ? 'Edit' : 'Create'} user ${this.selectedUser?.name}" id="user-dialog">
 				<form class="basic-form form-validation">
 					<sl-input
 						.value=${this.selectedUser?.name || ''}
