@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
-import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
+import type SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 import { SlChangeEvent } from '@shoelace-style/shoelace'
 import { AppPaginateEvent } from '@app/events/pagination.event'
 
