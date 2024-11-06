@@ -19,7 +19,10 @@
     "types": [
       "vite/client",
       "vite-plugin-pwa/client"
-    ]
+    ],
+    "paths": {
+     "@app/*": ["./src/app/*"]
+    }
   },
   "include": [
     "src"

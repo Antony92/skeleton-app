@@ -1,5 +1,5 @@
 import { Commands, RouteContext } from '@vaadin/router'
-import { getUser } from '../shared/auth'
+import { getUser } from '@app/shared/auth'
 
 export const authGuard = (roles?: string[]) => {
 	return async (context: RouteContext, command: Commands) => {

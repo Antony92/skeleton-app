@@ -1,14 +1,14 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
-import { appPageTitleStyle } from '../styles/main.style'
+import { appPageTitleStyle } from '@app/styles/main.style'
 import '@shoelace-style/shoelace/dist/components/textarea/textarea.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/rating/rating.js'
-import { notify } from '../shared/notification'
-import { formValidationStyle, basicFormStyle } from '../styles/form.style'
+import { notify } from '@app/shared/notification'
+import { formValidationStyle, basicFormStyle } from '@app/styles/form.style'
 import { SlRating, serialize } from '@shoelace-style/shoelace'
-import { submitFeedback } from '../services/feedback.service'
-import { setDocumentTitle } from '../utils/html'
+import { submitFeedback } from '@app/services/feedback.service'
+import { setDocumentTitle } from '@app/utils/html'
 
 @customElement('app-feedback')
 export class AppFeedback extends LitElement {

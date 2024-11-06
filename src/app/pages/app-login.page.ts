@@ -1,11 +1,11 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js'
-import { getURLSearchParamsAsObject } from '../utils/url'
-import { login, setAccessToken, setUser } from '../shared/auth'
+import { getURLSearchParamsAsObject } from '@app/utils/url'
+import { login, setAccessToken, setUser } from '@app/shared/auth'
 import { when } from 'lit/directives/when.js'
 import { Router } from '@vaadin/router'
-import { setDocumentTitle } from '../utils/html'
+import { setDocumentTitle } from '@app/utils/html'
 
 @customElement('app-login')
 export class AppLogin extends LitElement {

@@ -1,7 +1,7 @@
 import { registerSW } from 'virtual:pwa-register'
-import { applyDefaultTheme } from './app/utils/theme'
-import { refreshTokenSilently } from './app/shared/auth'
+import { refreshTokenSilently } from '@app/shared/auth'
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
+import { applyDefaultTheme } from '@app/utils/theme'
 
 // Set up shoelace icons
 setBasePath('node_modules/@shoelace-style/shoelace/dist')

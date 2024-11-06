@@ -1,4 +1,4 @@
-import { escapeHtml } from '../utils/html'
+import { escapeHtml } from '@app/utils/html'
 
 /**
  * Show generic dialog

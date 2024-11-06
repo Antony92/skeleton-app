@@ -1,7 +1,7 @@
 import { directive } from 'lit/directive.js'
 import { AsyncDirective } from 'lit/async-directive.js'
 import { Subscription } from 'rxjs'
-import { getUserObservable } from '../shared/auth'
+import { getUserObservable } from '@app/shared/auth'
 import { noChange, nothing } from 'lit'
 
 class WhenUser extends AsyncDirective {

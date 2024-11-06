@@ -1,6 +1,6 @@
-import { request } from '../http/request'
+import { request } from '@app/http/request'
 import { BehaviorSubject, firstValueFrom, lastValueFrom, shareReplay, take } from 'rxjs'
-import { User } from '../types/user.type'
+import { User } from '@app/types/user.type'
 
 let accessToken = ''
 

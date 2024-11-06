@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest'
-import { escapeHtml } from '../utils/html'
-import { searchParamsToQuery} from '../utils/url'
+import { escapeHtml } from '@app/utils/html'
+import { searchParamsToQuery} from '@app/utils/url'
 
 test('escapeHtml(html: string)', () => {
     const escapedHtml = escapeHtml('<script>alert(1)</script>')

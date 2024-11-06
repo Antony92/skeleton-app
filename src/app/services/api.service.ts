@@ -1,6 +1,6 @@
-import { request } from '../http/request'
-import { searchParamsToQuery } from '../utils/url'
-import { SearchParams } from '../types/search.type'
+import { request } from '@app/http/request'
+import { searchParamsToQuery } from '@app/utils/url'
+import { SearchParams } from '@app/types/search.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {

@@ -12,25 +12,25 @@ import '@shoelace-style/shoelace/dist/components/badge/badge.js'
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
-import '../theme-switcher/app-theme-switcher.element'
-import { login, logout } from '../../shared/auth'
-import { whenUser } from '../../directives/when-user.directive'
-import { getUserObservable } from '../../shared/auth'
+import '@app/elements/theme-switcher/app-theme-switcher.element'
+import { login, logout } from '@app/shared/auth'
+import { whenUser } from '@app/directives/when-user.directive'
+import { getUserObservable } from '@app/shared/auth'
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
-import { appDrawerStyle, appHeaderStyle } from '../../styles/app-header.style'
+import { appDrawerStyle, appHeaderStyle } from '@app/styles/app-header.style'
 import { Subscription } from 'rxjs'
 import { Router, RouterLocation } from '@vaadin/router'
-import { whenUserRole } from '../../directives/when-user-role.directive'
+import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
-import { Role } from '../../types/user.type'
+import { Role } from '@app/types/user.type'
 import { when } from 'lit/directives/when.js'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
 	static styles = [appHeaderStyle, appDrawerStyle, css``]
 
-	#appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
-	#appVersion = import.meta.env.VITE_APP_VERSION || '-1'
+	private appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
+	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'
 
 	@state()
 	fullname = ''
@@ -89,13 +89,13 @@ export class AppHeader extends LitElement {
 			<header>
 				<sl-icon-button class="hamburger" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
 				<img class="logo" src="assets/logo.png"/>
-				<h2 class="title">${this.#appTitle}</h2>
+				<h2 class="title">${this.appTitle}</h2>
 				${when(this.impersonating, () => html`<sl-badge pulse variant="warning">Impersonate mode</sl-badge>`)}
 				<div class="spacer"></div>
 				<sl-dropdown>
 					<sl-icon-button title="Help" slot="trigger" name="question-circle-fill" label="Help"></sl-icon-button>
 					<sl-menu>
-						<sl-menu-label>Version ${this.#appVersion}</sl-menu-label>
+						<sl-menu-label>Version ${this.appVersion}</sl-menu-label>
 						<sl-menu-item @click=${() => window.open(`${import.meta.env.VITE_APP_WHATS_NEW_LINK}`, '_blank')}>What's new</sl-menu-item>
 						<sl-menu-item @click=${() => window.open(`${import.meta.env.VITE_APP_HELP_LINK}`, '_blank')}>Help</sl-menu-item>
 						<sl-menu-item @click=${() => window.open(`/documentation`, '_blank')}>API Docs</sl-menu-item>

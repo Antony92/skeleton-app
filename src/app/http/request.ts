@@ -1,6 +1,6 @@
-import { getAccessToken, login, refreshTokenSilently } from '../shared/auth'
-import { loading } from '../shared/loader'
-import { notify } from '../shared/notification'
+import { getAccessToken, login, refreshTokenSilently } from '@app/shared/auth'
+import { loading } from '@app/shared/loader'
+import { notify } from '@app/shared/notification'
 
 // Create new fetch request options
 type RequestOptions = RequestInit & { hideLoading?: boolean; auth?: boolean; json?: boolean }

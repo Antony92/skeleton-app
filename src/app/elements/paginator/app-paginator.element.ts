@@ -5,7 +5,7 @@ import '@shoelace-style/shoelace/dist/components/option/option.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 import { SlChangeEvent } from '@shoelace-style/shoelace'
-import { AppPaginateEvent } from '../../events/pagination.event'
+import { AppPaginateEvent } from '@app/events/pagination.event'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {

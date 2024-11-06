@@ -2,9 +2,9 @@ import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/card/card.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
-import { appCardsStyle } from '../../styles/app-cards.style'
-import { appPageTitleStyle } from '../../styles/main.style'
-import { setDocumentTitle } from '../../utils/html'
+import { appCardsStyle } from '@app/styles/app-cards.style'
+import { appPageTitleStyle } from '@app/styles/main.style'
+import { setDocumentTitle } from '@app/utils/html'
 
 @customElement('app-admin')
 export class AppAdmin extends LitElement {

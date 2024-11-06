@@ -1,4 +1,4 @@
-import { escapeHtml } from '../utils/html'
+import { escapeHtml } from '@app/utils/html'
 
 type Notification = {
 	message: string

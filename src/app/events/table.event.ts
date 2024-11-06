@@ -1,4 +1,4 @@
-import { TableColumnFilterOrder, TableColumnFilterValue } from '../types/table.type'
+import { TableColumnFilterOrder, TableColumnFilterValue } from '@app/types/table.type'
 
 export class AppTableColumnFilterValueEvent extends Event {
 	readonly filter: TableColumnFilterValue

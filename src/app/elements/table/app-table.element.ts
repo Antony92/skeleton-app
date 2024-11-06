@@ -7,7 +7,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
 import { SlInputEvent } from '@shoelace-style/shoelace'
-import { AppTableFilterEvent } from '../../events/table.event'
+import { AppTableFilterEvent } from '@app/events/table.event'
 
 @customElement('app-table')
 export class AppTable extends LitElement {

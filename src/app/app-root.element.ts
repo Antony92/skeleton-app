@@ -1,11 +1,11 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import './elements/header/app-header.element'
-import './elements/sidebar/app-sidebar.element'
-import { mainStyle } from './styles/main.style'
-import { notify } from './shared/notification'
-import { showGlobalMessage } from './shared/global-message'
-import { initializeRouter } from './shared/router'
+import '@app/elements/header/app-header.element'
+import '@app/elements/sidebar/app-sidebar.element'
+import { mainStyle } from '@app/styles/main.style'
+import { notify } from '@app/shared/notification'
+import { showGlobalMessage } from '@app/shared/global-message'
+import { initializeRouter } from '@app/shared/router'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {

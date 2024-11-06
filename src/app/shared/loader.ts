@@ -1,5 +1,5 @@
 export const loading = async (show = false) => {
-    await import('../elements/loader/app-loader.element')
+    await import('@app/elements/loader/app-loader.element')
 
     let element = document.body.querySelector('app-loader')
 

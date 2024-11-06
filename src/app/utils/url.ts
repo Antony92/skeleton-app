@@ -1,4 +1,4 @@
-import { SearchParams } from '../types/search.type'
+import { SearchParams } from '@app/types/search.type'
 
 export const addSearchParamsToURL = (searchParams: SearchParams) => {
 	const search = new URLSearchParams()

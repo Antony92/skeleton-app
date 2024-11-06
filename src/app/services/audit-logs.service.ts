@@ -1,6 +1,6 @@
-import { request } from '../http/request'
-import { SearchParams } from '../types/search.type'
-import { searchParamsToQuery } from '../utils/url'
+import { request } from '@app/http/request'
+import { SearchParams } from '@app/types/search.type'
+import { searchParamsToQuery } from '@app/utils/url'
 
 export const getAuditLogs = async (params?: SearchParams) => {
 	try {

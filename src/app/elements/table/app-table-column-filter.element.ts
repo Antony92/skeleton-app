@@ -10,7 +10,7 @@ import { debounce, Subject, Subscription, timer } from 'rxjs'
 import SlInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 import { SlChangeEvent, SlInputEvent } from '@shoelace-style/shoelace'
-import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '../../events/table.event'
+import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
 
 @customElement('app-table-column-filter')
 export class AppTableColumnFilter extends LitElement {

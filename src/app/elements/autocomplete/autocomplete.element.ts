@@ -1,7 +1,7 @@
 import { html, LitElement, css, PropertyValueMap } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { debounceTime, Subject, Subscription } from 'rxjs'
-import { appInput } from '../../styles/input.style'
+import { appInput } from '@app/styles/input.style'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js'
 

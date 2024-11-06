@@ -1,4 +1,4 @@
-import { request } from '../http/request'
+import { request } from '@app/http/request'
 
 export const getServerEvents = async () => {
 	try {
