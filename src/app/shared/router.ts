@@ -90,7 +90,7 @@ const routes: Route[] = [
 	},
 ]
 
-export const initializeRouter = (outlet: HTMLElement) => {
+export const initializeRouter = async (outlet: HTMLElement) => {
 	const router = new Router(outlet)
-	router.setRoutes(routes)
+	await router.setRoutes(routes)
 }

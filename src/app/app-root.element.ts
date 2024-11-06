@@ -28,7 +28,7 @@ export class AppRoot extends LitElement {
 	}
 
 	async firstUpdated() {
-		initializeRouter(this.renderRoot.querySelector('main')!)
+		await initializeRouter(this.renderRoot.querySelector('main')!)
 	}
 
 	render() {
