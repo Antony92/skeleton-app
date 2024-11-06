@@ -1,5 +1,5 @@
 import { request } from '@app/http/request'
-import { BehaviorSubject, firstValueFrom, lastValueFrom, shareReplay, take } from 'rxjs'
+import { BehaviorSubject, firstValueFrom } from 'rxjs'
 import { User } from '@app/types/user.type'
 
 let accessToken = ''
@@ -32,6 +32,7 @@ export const logout = async () => {
 		removeUser()
 		const req = await request(`${import.meta.env.VITE_API}/auth/logout`, { method: 'POST', credentials: 'include' })
 		const res = await req.json()
+		return res
 	} catch (error) {
 		console.error(error)
 	}
