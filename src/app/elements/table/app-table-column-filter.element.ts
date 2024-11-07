@@ -7,7 +7,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/select/select.js'
 import '@shoelace-style/shoelace/dist/components/option/option.js'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
-import type SLnput from '@shoelace-style/shoelace/dist/components/input/input.js'
+import type SLInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import type SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
 import { SlChangeEvent, SlInputEvent } from '@shoelace-style/shoelace'
 import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
@@ -104,7 +104,7 @@ export class AppTableColumnFilter extends LitElement {
 	}
 
 	filterColumnValue(event: SlInputEvent | SlChangeEvent) {
-		const input = event.target as SlInput | SlSelect
+		const input = event.target as SLInput | SlSelect
 		this.value = input.value?.toString()
 		this.filterEvent.next(this.value)
 	}

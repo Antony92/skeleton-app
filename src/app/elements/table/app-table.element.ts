@@ -1,10 +1,10 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import '@shoelace-style/shoelace/dist/components/button/button.js'
 import '@shoelace-style/shoelace/dist/components/input/input.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import type SLnput from '@shoelace-style/shoelace/dist/components/input/input.js'
+import type SLInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
 import { SlInputEvent } from '@shoelace-style/shoelace'
 import { AppTableFilterEvent } from '@app/events/table.event'
@@ -150,7 +150,7 @@ export class AppTable extends LitElement {
 							type="search"
 							.value=${this.searchValue || ''}
 							placeholder="Search"
-							@sl-input=${(event: SlInputEvent) => this.globalSearch((<SlInput>event.target).value)}
+							@sl-input=${(event: SlInputEvent) => this.globalSearch((<SLInput>event.target).value)}
 						>
 							<sl-icon name="search" slot="prefix"></sl-icon>
 						</sl-input>
