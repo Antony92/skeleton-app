@@ -11,7 +11,7 @@ class WhenUserRole extends AsyncDirective {
 	render<T, F>(roles: string[], trueCase: () => T, falseCase?: () => F) {
 		if (this.isConnected) {
 			this.subscription = getUserObservable().subscribe((user) => {
-                if (user?.roles?.some((role: string) => roles.includes(role))) {
+                if (user?.roles.some((role) => roles.includes(role))) {
 					this.setValue(trueCase())
 				} else if (falseCase) {
 					this.setValue(falseCase())
