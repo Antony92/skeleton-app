@@ -94,7 +94,7 @@ export class AppAutocomplete extends LitElement {
 		this.#searchSubscription.unsubscribe()
 	}
 
-	firstUpdated() {
+	protected firstUpdated() {
 		if (!this.value && !this.selected && this.required) {
 			this.setInvalid()
 		} else {

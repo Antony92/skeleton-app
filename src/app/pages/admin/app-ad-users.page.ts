@@ -127,7 +127,7 @@ export class AppADUsers extends LitElement {
 		this.init()
 	}
 
-	firstUpdated() {
+	protected firstUpdated() {
 		this.table.addEventListener('app-table-filter', async (event) => {
 			this.searchParamsMap = event.filters
 			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))

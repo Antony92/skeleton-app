@@ -69,7 +69,7 @@ export class AppADServerEvents extends LitElement {
 		this.loadServerEvents()
 	}
 
-    firstUpdated() {
+    protected firstUpdated() {
 		this.serverEventDialog.addEventListener('sl-request-close', (event) => {
 			if (event.detail.source === 'overlay') {
 				event.preventDefault()

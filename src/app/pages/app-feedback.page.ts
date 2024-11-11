@@ -25,7 +25,7 @@ export class AppFeedback extends LitElement {
 		setDocumentTitle('Feedback')
 	}
 
-    firstUpdated() {
+    protected firstUpdated() {
         this.form.addEventListener('submit', async (event) => {
             event.preventDefault()
 			const data: any = serialize(this.form)
