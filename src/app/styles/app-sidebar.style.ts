@@ -4,7 +4,7 @@ export const appSidebarStyle = css`
     aside {
         width: 90px;
         height: 100%;
-        background-color: var(--sidebar);
+        background-color: light-dark(var(--light-theme-sidebar), var(--dark-theme-sidebar));
         transition: background-color 300ms ease-in-out;
     }
 

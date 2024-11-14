@@ -2,8 +2,19 @@
 @import '@shoelace-style/shoelace/dist/themes/dark.css';
 
 :root {
-	--theme-background: white;
-	--theme-color: black;
+	color-scheme: light dark;
+
+	/* Light theme variables */
+	--light-theme-background: white;
+	--light-theme-color: black;
+	--light-theme--header: white;
+	--light-theme--sidebar: #f3f6fc;
+
+	/* Dark theme variables */
+	--dark-theme-background: black;
+	--dark-theme-color: white;
+	--dark-theme-header: #161b22;
+	--dark-theme-sidebar: #0d1117;
 }
 
 body {
@@ -12,8 +23,8 @@ body {
 	height: 100vh;
 	font-family: var(--sl-font-sans);
 	box-sizing: border-box;
-	background-color: var(--theme-background);
-	color: var(--theme-color);
+	background-color: light-dark(var(--light-theme-background), var(--dark-theme-background));
+	color: light-dark(var(--light-theme-color), var(--dark-theme-color));
 	overflow: hidden;
 	transition: background-color 300ms ease-in-out;
 
@@ -29,35 +40,11 @@ body {
 }
 
 .theme-dark {
-	--theme-background: black;
-	--theme-color: white;
-	--header: #161b22;
-	--sidebar: #0d1117;
+	color-scheme: dark;
 }
 
 .theme-light {
-	--theme-background: white;
-	--theme-color: black;
-	--header: white;
-	--sidebar: #f3f6fc;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--theme-background: black;
-		--theme-color: white;
-		--header: #161b22;
-		--sidebar: #0d1117;
-	}
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		--theme-background: white;
-		--theme-color: black;
-		--header: white;
-		--sidebar: #f3f6fc;
-	}
+	color-scheme: light;
 }
 
 .loader {
@@ -67,7 +54,8 @@ body {
 	display: inline-block;
 	position: relative;
 	border: 3px solid;
-	border-color: var(--theme-color, #fff) var(--theme-color, #fff) transparent transparent;
+	border-color: light-dark(var(--light-theme-color), var(--dark-theme-color)) light-dark(var(--light-theme-color), var(--dark-theme-color))
+		transparent transparent;
 	box-sizing: border-box;
 	animation: loaderRotation 1s linear infinite;
 }

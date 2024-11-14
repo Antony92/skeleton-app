@@ -8,7 +8,7 @@ export const appHeaderStyle = css`
         height: 60px;
         padding: 0 5px;
         box-shadow: var(--sl-shadow-x-large);
-        background-color: var(--header);
+        background-color: light-dark(var(--light-theme-header), var(--dark-theme-header));
         transition: background-color 300ms ease-in-out;
     }
 
