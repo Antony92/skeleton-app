@@ -61,6 +61,9 @@ export const impersonate = async (username: string) => {
 }
 
 export const refreshTokenSilently = async () => {
+	if (location.pathname === '/login') {
+		return true
+	}
 	try {
 		const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' })
 		if (req.ok) {
