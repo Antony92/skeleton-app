@@ -91,7 +91,7 @@ export class AppADAuditLogs extends LitElement {
 		this.init()
 	}
 
-	async protected firstUpdated() {
+	protected async firstUpdated() {
 		this.table.addEventListener('app-table-filter', async (event) => {
 			this.searchParamsMap = event.filters
 			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))

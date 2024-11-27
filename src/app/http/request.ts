@@ -21,11 +21,11 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 		requestCount++
 		// Show loading if not disabled
 		await loading(!!options?.hideLoading)
-		// If auth options is provided set up access token header
+		// If auth option is provided set up access token header
 		if (options?.auth) {
 			Object.assign(options, { headers: { ...options.headers, Authorization: `Bearer ${getAccessToken()}` } })
 		}
-		// If json options is provided set up content type
+		// If json option is provided set up content type
 		if (options?.json) {
 			Object.assign(options, { headers: { ...options.headers, 'Content-Type': `application/json` } })
 		}

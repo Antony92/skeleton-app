@@ -57,6 +57,10 @@ export class AppDialog extends LitElement {
 
 	private _returnValue = ''
 
+	get returnValue() {
+		return this._returnValue
+	}
+
 	async show() {
 		this.dialog.showModal()
 		this.dispatchEvent(new Event('app-show'))
@@ -89,10 +93,6 @@ export class AppDialog extends LitElement {
 		})
 
 		this.closeElements.forEach((element) => element.addEventListener('click', () => this.hide(element.getAttribute('app-dialog-close'))))
-	}
-
-	get returnValue() {
-		return this._returnValue
 	}
 
 	render() {
