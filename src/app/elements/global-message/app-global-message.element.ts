@@ -1,6 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
-import { unsafeHTML } from 'lit/directives/unsafe-html.js'
+import { customElement, property } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { when } from 'lit/directives/when.js'
 
@@ -13,9 +12,6 @@ export class AppGlobalMessage extends LitElement {
 			left: 50%;
 			translate: -50%;
 			z-index: 6;
-		}
-
-		.message-box {
 			display: flex;
 			align-items: center;
 			gap: 10px;
@@ -26,23 +22,6 @@ export class AppGlobalMessage extends LitElement {
 			color: var(--sl-color-neutral-0);
 			font-size: var(--sl-button-font-size-medium);
 			font-weight: bold;
-			visibility: hidden;
-
-			&.visible {
-				visibility: visible;
-			}
-
-			&.info {
-				background-color: var(--sl-color-neutral-600);
-			}
-
-			&.warning {
-				background-color: var(--sl-color-warning-600);
-			}
-
-			&.error {
-				background-color: var(--sl-color-danger-600);
-			}
 
 			sl-icon {
 				font-size: 20px;
@@ -55,46 +34,49 @@ export class AppGlobalMessage extends LitElement {
 
 			.close {
 				margin-left: auto;
+				background: none;
+				border: none;
+				padding: 0;
 				cursor: pointer;
 			}
 		}
+
+		:host([type='info']) {
+			background-color: var(--sl-color-neutral-600);
+		}
+
+		:host([type='warning']) {
+			background-color: var(--sl-color-warning-600);
+		}
+
+		:host([type='error']) {
+			background-color: var(--sl-color-danger-600);
+		}
 	`
 
-	@query('.message-box')
-	messageBox!: HTMLDivElement
-
-	@state()
+	@property({ type: String, reflect: true })
 	type: 'info' | 'warning' | 'error' = 'info'
 
-	@state()
-	message = ''
-
-	show(message: string, type: 'info' | 'warning' | 'error' = 'info') {
-		this.type = type
-		this.message = message
-		this.messageBox.classList.remove(...['info', 'warning', 'error'])
-		this.messageBox.classList.add(type, 'visible')
-		this.messageBox.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, iterations: 1, fill: 'forwards' })
+	show() {
+		const animation = this.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 5500, iterations: 1, fill: 'forwards' })
+		return animation.finished
 	}
 
 	hide() {
-		this.messageBox
-			.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, iterations: 1, fill: 'forwards' })
-			.addEventListener('finish', () => {
-				this.messageBox.classList.remove('visible')
-				this.dispatchEvent(new Event('app-after-hide'))
-			})
+		const animation = this.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, iterations: 1, fill: 'forwards' })
+		animation.addEventListener('finish', () => {
+			this.dispatchEvent(new Event('app-after-hide'))
+		})
+		return animation.finished
 	}
 
 	render() {
 		return html`
-			<div class="message-box">
-				${when(this.type === 'info', () => html`<sl-icon name="info-circle-fill"></sl-icon>`)}
-				${when(this.type === 'warning', () => html`<sl-icon name="exclamation-triangle-fill"></sl-icon>`)}
-				${when(this.type === 'error', () => html`<sl-icon name="exclamation-circle-fill"></sl-icon>`)}
-				<div>${unsafeHTML(this.message)}</div>
-				<span class="close" @click=${this.hide}>✕</span>
-			</div>
+			${when(this.type === 'info', () => html`<sl-icon name="info-circle-fill"></sl-icon>`)}
+			${when(this.type === 'warning', () => html`<sl-icon name="exclamation-triangle-fill"></sl-icon>`)}
+			${when(this.type === 'error', () => html`<sl-icon name="exclamation-circle-fill"></sl-icon>`)}
+			<slot></slot>
+			<button class="close" @click=${this.hide}>✕</button>
 		`
 	}
 }

@@ -4,7 +4,7 @@ import '@app/elements/header/app-header.element'
 import '@app/elements/sidebar/app-sidebar.element'
 import { mainStyle } from '@app/styles/main.style'
 import { notify } from '@app/shared/notification'
-import { showGlobalMessage } from '@app/shared/global-message'
+import { globalMessage } from '@app/shared/global-message'
 import { initializeRouter } from '@app/shared/router'
 
 @customElement('app-root')
@@ -19,7 +19,7 @@ export class AppRoot extends LitElement {
 		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
 		serverEventSource.addEventListener('globalmessage', (event) => {
 			const data = JSON.parse(event.data)
-			showGlobalMessage(data.message, data.type)
+			globalMessage(data.message, data.type)
 		})
 		serverEventSource.addEventListener('error', (event) => {
 			serverEventSource.close()
