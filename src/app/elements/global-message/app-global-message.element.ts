@@ -58,7 +58,7 @@ export class AppGlobalMessage extends LitElement {
 	type: 'info' | 'warning' | 'error' = 'info'
 
 	show() {
-		const animation = this.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 5500, iterations: 1, fill: 'forwards' })
+		const animation = this.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, iterations: 1, fill: 'forwards' })
 		return animation.finished
 	}
 
@@ -72,11 +72,13 @@ export class AppGlobalMessage extends LitElement {
 
 	render() {
 		return html`
-			${when(this.type === 'info', () => html`<sl-icon name="info-circle-fill"></sl-icon>`)}
-			${when(this.type === 'warning', () => html`<sl-icon name="exclamation-triangle-fill"></sl-icon>`)}
-			${when(this.type === 'error', () => html`<sl-icon name="exclamation-circle-fill"></sl-icon>`)}
-			<slot></slot>
-			<button class="close" @click=${this.hide}>✕</button>
+			<div id="globalmessage" popover="manual">
+				${when(this.type === 'info', () => html`info`)}
+				${when(this.type === 'warning', () => html`warning`)}
+				${when(this.type === 'error', () => html`error`)}
+				<slot></slot>
+				<button class="close" @click=${this.hide}>✕</button>
+			</div>
 		`
 	}
 }

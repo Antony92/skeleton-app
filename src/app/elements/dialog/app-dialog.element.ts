@@ -101,7 +101,7 @@ export class AppDialog extends LitElement {
 				<div>
 					<header>
 						<h3>${this.title}</h3>
-						<button @click=${this.hide}>X</button>
+						<button @click=${this.hide}>✕</button>
 					</header>
 					<article>
 						<slot></slot>

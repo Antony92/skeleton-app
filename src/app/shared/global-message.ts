@@ -9,6 +9,7 @@ export const globalMessage = async (message: string, type: 'info' | 'warning' | 
 	await import('@app/elements/global-message/app-global-message.element')
 
 	let element = document.querySelector('app-global-message')
+
     // If element is present just update it, else create it
 	if (element) {
 		Object.assign(element, { type, innerHTML: `${escapeHtml(message)}` })
@@ -18,6 +19,7 @@ export const globalMessage = async (message: string, type: 'info' | 'warning' | 
 			type,
 			innerHTML: `${escapeHtml(message)}`,
 		})
+		
         // Remove from DOM after hide animation finishes
 		element.addEventListener('app-after-hide', () => element?.remove())
         
