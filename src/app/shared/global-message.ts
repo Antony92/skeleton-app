@@ -5,7 +5,7 @@ import { escapeHtml } from '@app/utils/html'
  * @param message
  * @param type
  */
-export const globalMessage = async (message: string, type: 'info' | 'warning' | 'error' = 'info') => {
+export const globalMessage = async (message: string, level: 'info' | 'warning' | 'error' = 'info') => {
 	await import('@app/elements/global-message/app-global-message.element')
 
 	let element = document.querySelector('app-global-message')
@@ -13,12 +13,12 @@ export const globalMessage = async (message: string, type: 'info' | 'warning' | 
 	// If exist update else create
 	if (element) {
 		Object.assign(element, {
-			type,
+			level,
 			innerHTML: `${escapeHtml(message)}`,
 		})
 	} else {
 		element = Object.assign(document.createElement('app-global-message'), {
-			type,
+			level,
 			innerHTML: `${escapeHtml(message)}`,
 		})
 		document.body.appendChild(element)

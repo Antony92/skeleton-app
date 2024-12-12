@@ -12,56 +12,56 @@ export const buttonStyle = css`
 		padding: 10px;
 		font-weight: var(--font-weight-6);
 		box-shadow: var(--shadow-2);
-		color: var(--gray-1);
+		color: var(--theme-white);
 		white-space: nowrap;
 
 		&:focus-visible {
-			outline: 2px solid light-dark(var(--light-theme-color), var(--dark-theme-color));
+			outline: 2px solid var(--theme-color);
 			border-radius: 2px;
 			outline-offset: 2px;
 		}
 
 		i.icon {
-			color: var(--gray-1);
+			color: var(--theme-white);
 		}
 
 		&.primary {
-			background: var(--blue-8);
+			background-color: var(--theme-primary);
 
 			&:hover:not(:disabled) {
-				background: var(--blue-9);
+				background-color: var(--theme-primary-hover);
 			}
 		}
 
-		&.default {
-			background: var(--stone-8);
+		&.secondary {
+			background-color: var(--theme-secondary);
 
 			&:hover:not(:disabled) {
-				background: var(--stone-9);
+				background-color: var(--theme-secondary-hover);
 			}
 		}
 
 		&.success {
-			background: var(--green-8);
+			background-color: var(--theme-success);
 
 			&:hover:not(:disabled) {
-				background: var(--green-9);
+				background-color: var(--theme-success-hover);
 			}
 		}
 
 		&.error {
-			background: var(--red-8);
+			background-color: var(--theme-error);
 
 			&:hover:not(:disabled) {
-				background: var(--red-9);
+				background-color: var(--theme-error-hover);
 			}
 		}
 
 		&.warning {
-			background: var(--yellow-8);
+			background-color: var(--theme-warning);
 
 			&:hover:not(:disabled) {
-				background: var(--yellow-9);
+				background-color: var(--theme-warning-hover);
 			}
 		}
 
@@ -70,7 +70,7 @@ export const buttonStyle = css`
 			box-shadow: none;
 
 			i.icon {
-				color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+				color: var(--theme-primary);
 			}
 
 			&:hover:not(:disabled) {
@@ -82,7 +82,7 @@ export const buttonStyle = css`
 		&.only-text {
 			background: none;
 			box-shadow: none;
-			color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+			color: var(--theme-primary);
 
 			&:hover:not(:disabled) {
 				background: none;

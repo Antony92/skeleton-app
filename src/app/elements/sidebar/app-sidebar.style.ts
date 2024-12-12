@@ -4,7 +4,7 @@ export const appSidebarStyle = css`
 	aside {
 		width: 90px;
 		height: 100%;
-		background-color: light-dark(var(--light-theme-sidebar), var(--dark-theme-sidebar));
+		background-color: var(--theme-sidebar);
 		transition: background-color 300ms ease-in-out;
 
 		ul {
@@ -35,7 +35,7 @@ export const appSidebarStyle = css`
 					gap: 5px;
 					text-decoration: none;
 					cursor: pointer;
-					color: light-dark(var(--light-theme-color), var(--dark-theme-color));
+					color: var(--theme-color);
 
 					span:first-child {
 						display: flex;
@@ -60,23 +60,23 @@ export const appSidebarStyle = css`
 					&.active {
 						span:first-child {
 							box-shadow: var(--shadow-1);
-							background: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
-							color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+							background-color: var(--theme-primary);
+							color: var(--theme-primary);
 
 							.icon {
-                                color: var(--gray-1);
+                                color: var(--theme-white);
 								scale: 1.1;
 							}
 						}
 
 						span:last-child {
-							color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+							color: var(--theme-primary);
 						}
 					}
 
 					&:hover:not(.active) {
 						span:first-child {
-							background: light-dark(var(--gray-5), var(--gray-7));
+							background-color: light-dark(var(--gray-5), var(--gray-7));
 
 							.icon {
 								scale: 1.1;

@@ -1,48 +1,14 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
+import { appDialogStyle } from './app-dialog.style'
+import { focusStyle } from '@app/styles/focus.style'
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-	static styles = css`
-		html:has(dialog[open]) {
-			overflow: hidden;
-		}
-
-		dialog {
-			padding: 0;
-			max-inline-size: min(90vw, 60ch);
-			max-block-size: min(80vh, 100%);
-			overflow: hidden;
-
-			&::backdrop {
-				backdrop-filter: blur(0.25rem);
-				transition: backdrop-filter 0.5s ease;
-			}
-
-			&:not([open]) {
-				pointer-events: none;
-				opacity: 0;
-			}
-
-			article {
-				overflow-y: auto;
-				overscroll-behavior-y: contain;
-				display: grid;
-				justify-items: flex-start;
-				max-block-size: 100%;
-			}
-
-			div {
-				display: grid;
-				grid-template-rows: auto 1fr auto;
-				align-items: start;
-				max-block-size: 80vh;
-			}
-		}
-	`
+	static styles = [appDialogStyle, focusStyle,  css``]
 
 	@property({ type: String })
-	title = ''
+	header = ''
 
 	@property({ type: Boolean, attribute: 'light-dismiss' })
 	lightDismiss = false
@@ -62,17 +28,18 @@ export class AppDialog extends LitElement {
 	}
 
 	async show() {
+		await this.updateComplete
 		this.dialog.showModal()
-		this.dispatchEvent(new Event('app-show'))
+		this.dialog.animate([{ opacity: 0 }, { opacity: 1 }], { fill: 'both', duration: 100 })
 		await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
-		this.dispatchEvent(new Event('app-after-show'))
 	}
 
 	async hide(returnValue?: string | null) {
-		this.dialog.close(returnValue || AppDialog.DEFAULT_CLOSE)
+		await this.updateComplete
 		this._returnValue = returnValue ? this.dialog.returnValue : ''
-		this.dispatchEvent(new Event('app-hide'))
+		this.dialog.animate([{ opacity: 1 }, { opacity: 0 }], { fill: 'both', duration: 100 })
 		await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
+		this.dialog.close(returnValue || AppDialog.DEFAULT_CLOSE)
 		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
@@ -87,7 +54,6 @@ export class AppDialog extends LitElement {
 			if (this.dialog.returnValue) {
 				return
 			}
-			this.dispatchEvent(new Event('app-hide'))
 			await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
 			this.dispatchEvent(new Event('app-after-hide'))
 		})
@@ -100,8 +66,8 @@ export class AppDialog extends LitElement {
 			<dialog>
 				<div>
 					<header>
-						<h3>${this.title}</h3>
-						<button @click=${this.hide}>✕</button>
+						<h3>${this.header}</h3>
+						<button class="focus-within" @click=${this.hide}>✕</button>
 					</header>
 					<article>
 						<slot></slot>

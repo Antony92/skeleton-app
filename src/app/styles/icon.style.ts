@@ -28,7 +28,7 @@ export const iconStyle = css`
 		display: block;
 		width: 1rem;
 		height: 1rem;
-		color: light-dark(var(--light-theme-color), var(--dark-theme-color));
+		color: var(--theme-color);
 	}
 `
 // Solid icons

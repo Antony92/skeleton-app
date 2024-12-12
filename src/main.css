@@ -1,22 +1,36 @@
 @import 'open-props/style';
-@import "open-props/shadow/animations";
 
 :root {
 	color-scheme: light dark;
 
-	/* Light theme variables */
-	--light-theme-background: var(--gray-1);
-	--light-theme-color: var(--gray-12);
-	--light-theme-primary: var(--blue-5);
-	--light-theme-header: var(--gray-3);
-	--light-theme-sidebar: var(--gray-3);
+	/* Theme */
+	--theme-color: light-dark(var(--gray-12), var(--gray-1));
+	--theme-background: light-dark(var(--gray-1), var(--gray-12));
+	--theme-header: light-dark(var(--gray-4), var(--gray-10));
+	--theme-sidebar: light-dark(var(--gray-3), var(--gray-9));
 
-	/* Dark theme variables */
-	--dark-theme-background: var(--gray-12);
-	--dark-theme-color: var(--gray-1);
-	--dark-theme-primary: var(--blue-5);
-	--dark-theme-header: var(--gray-10);
-	--dark-theme-sidebar: var(--gray-10);
+	/* Colors */
+	--theme-primary: light-dark(var(--blue-8), var(--blue-8));
+	--theme-secondary: light-dark(var(--stone-8), var(--stone-8));
+	--theme-white: light-dark(var(--gray-1), var(--gray-1));
+	--theme-warning: light-dark(var(--yellow-8), var(--yellow-8));
+	--theme-success: light-dark(var(--green-8), var(--green-8));
+	--theme-error: light-dark(var(--red-8), var(--red-8));
+	
+	/* Hovers */
+	--theme-primary-hover: light-dark(var(--blue-9), var(--blue-9));
+	--theme-secondary-hover: light-dark(var(--stone-9), var(--stone-9));
+	--theme-white-hover: light-dark(var(--gray-2), var(--gray-2));
+	--theme-warning-hover: light-dark(var(--yellow-9), var(--yellow-9));
+	--theme-success-hover: light-dark(var(--green-9), var(--green-9));
+	--theme-error-hover: light-dark(var(--red-9), var(--red-9));
+	--theme-default-hover: light-dark(var(--stone-9), var(--stone-9));
+
+	/* Layers */
+	--theme-default-layer: light-dark(var(--gray-2), var(--gray-7));
+	--theme-primary-layer: light-dark(var(--blue-6), var(--blue-8));
+	--theme-error-layer: light-dark(var(--red-6), var(--red-8));
+	--theme-warning-layer: light-dark(var(--yellow-6), var(--yellow-8));
 }
 
 body {
@@ -24,8 +38,8 @@ body {
 	padding: 0;
 	height: 100vh;
 	font-family: var(--font-system-ui);
-	background-color: light-dark(var(--light-theme-background), var(--dark-theme-background));
-	color: light-dark(var(--light-theme-color), var(--dark-theme-color));
+	background-color: var(--theme-background);
+	color: var(--theme-color);
 	overflow: hidden;
 	transition: background-color 300ms ease-in-out;
 
@@ -55,8 +69,7 @@ body {
 	display: inline-block;
 	position: relative;
 	border: 3px solid;
-	border-color: light-dark(var(--light-theme-color), var(--dark-theme-color)) light-dark(var(--light-theme-color), var(--dark-theme-color))
-		transparent transparent;
+	border-color: var(--theme-color) var(--theme-color) transparent transparent;
 	box-sizing: border-box;
 	animation: loaderRotation 1s linear infinite;
 
@@ -71,8 +84,7 @@ body {
 		bottom: 0;
 		margin: auto;
 		border: 3px solid;
-		border-color: transparent transparent light-dark(var(--light-theme-primary), var(--dark-theme-primary))
-			light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+		border-color: transparent transparent var(--theme-primary) var(--theme-primary);
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
@@ -84,8 +96,7 @@ body {
 	&::before {
 		width: 32px;
 		height: 32px;
-		border-color: light-dark(var(--light-theme-color), var(--dark-theme-color)) light-dark(var(--light-theme-color), var(--dark-theme-color))
-			transparent transparent;
+		border-color: var(--theme-color) var(--theme-color) transparent transparent;
 		animation: loaderRotation 1.5s linear infinite;
 	}
 }

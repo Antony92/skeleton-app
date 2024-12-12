@@ -33,7 +33,7 @@ export class AppDemo extends LitElement {
 			<fieldset>
 				<legend>Buttons</legend>
 				<button class="primary">Primary</button>
-				<button class="default">Secondary</button>
+				<button class="secondary">Secondary</button>
 				<button class="success">Success</button>
 				<button class="warning">Warning</button>
 				<button class="error">Error</button>
