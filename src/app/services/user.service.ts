@@ -72,36 +72,6 @@ export const deleteUser = async (id: string) => {
 	}
 }
 
-export const createUserApiKey = async (id: string) => {
-	try {
-		const req = await request(`${import.meta.env.VITE_API}/user/${id}/api-key`, {
-			method: 'POST',
-			auth: true,
-		})
-		const res = await req.json()
-		return res
-	} catch (error) {
-		console.error(error)
-	}
-	return {
-		data: null,
-	}
-}
-
-export const deleteUserApiKey = async (id: string) => {
-	try {
-		const req = await request(`${import.meta.env.VITE_API}/user/${id}/api-key`, {
-			method: 'DELETE',
-			auth: true,
-		})
-		const res = await req.json()
-		return res
-	} catch (error) {
-		console.error(error)
-	}
-	return null
-}
-
 export const getRoles = async () => {
 	try {
 		const req = await request(`${import.meta.env.VITE_API}/roles`, { auth: true })
@@ -116,38 +86,6 @@ export const getRoles = async () => {
 export const getMe = async () => {
 	try {
 		const req = await request(`${import.meta.env.VITE_API}/me`, {
-			auth: true,
-		})
-		const res = await req.json()
-		return res
-	} catch (error) {
-		console.error(error)
-	}
-	return {
-		data: null,
-	}
-}
-
-export const createPersonalApiKey = async () => {
-	try {
-		const req = await request(`${import.meta.env.VITE_API}/me/api-key`, {
-			method: 'POST',
-			auth: true,
-		})
-		const res = await req.json()
-		return res
-	} catch (error) {
-		console.error(error)
-	}
-	return {
-		data: null,
-	}
-}
-
-export const deletePersonalApiKey = async () => {
-	try {
-		const req = await request(`${import.meta.env.VITE_API}/me/api-key`, {
-			method: 'DELETE',
 			auth: true,
 		})
 		const res = await req.json()

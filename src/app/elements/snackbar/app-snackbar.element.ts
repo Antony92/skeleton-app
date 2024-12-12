@@ -44,7 +44,7 @@ export class AppSnackbar extends LitElement {
 
 	render() {
 		return html`
-			<div id="snackbar" popover="manual" >
+			<div id="snackbar" popover="manual">
 				<slot></slot>
 				<slot name="action"></slot>
 			</div>

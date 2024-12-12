@@ -25,7 +25,10 @@ export const hasUserRole = async (roles: string[]) => {
     return user && roles && user.roles.some((role: string) => roles.includes(role))
 }
 
-export const login = () => window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
+export const login = () => {
+	// window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
+	window.location.href = `${location.origin}/login`
+}
 
 export const logout = async () => {
 	try {

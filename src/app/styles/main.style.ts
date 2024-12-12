@@ -19,12 +19,11 @@ export const mainStyle = css`
 
     .sidebar {
         grid-area: sidebar;
-        z-index: 4;
     }
 
     .header {
         grid-area: header;
-        z-index: 5;
+        z-index: var(--layer-1);
     }
 
     @media only screen and (max-width: 900px) {

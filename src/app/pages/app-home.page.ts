@@ -1,10 +1,13 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@app/elements/snackbar/app-snackbar.element'
+import { iconStyle, twitterIcon } from '@app/styles/icon.style'
+import { globalMessage } from '@app/shared/global-message'
 
 @customElement('app-home')
 export class AppHome extends LitElement {
 	static styles = [
+        iconStyle,
 		css`
             img {
                 display: block;
@@ -15,11 +18,11 @@ export class AppHome extends LitElement {
 	]
 
     protected firstUpdated() {
-        this.renderRoot.querySelector('app-snackbar')?.show()
+        
     }
 
 	render() {
-		return html``
+		return html`<i class="icon" @click=${() => globalMessage('hello')}>${twitterIcon}</i>`
             
 	}
 }

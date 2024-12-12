@@ -1,47 +1,27 @@
-import { html, LitElement, css } from 'lit'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { customElement, query, state } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/avatar/avatar.js'
-import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js'
-import '@shoelace-style/shoelace/dist/components/divider/divider.js'
-import '@shoelace-style/shoelace/dist/components/menu/menu.js'
-import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js'
-import '@shoelace-style/shoelace/dist/components/menu-label/menu-label.js'
-import '@shoelace-style/shoelace/dist/components/badge/badge.js'
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
-import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
 import '@app/elements/theme-switcher/app-theme-switcher.element'
+import { html, LitElement, css } from 'lit'
+import { customElement, state } from 'lit/decorators.js'
 import { login, logout } from '@app/shared/auth'
-import { whenUser } from '@app/directives/when-user.directive'
 import { getUserObservable } from '@app/shared/auth'
-import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js'
-import { appDrawerStyle, appHeaderStyle } from '@app/styles/app-header.style'
-import { Subscription } from 'rxjs'
+import { appHeaderStyle } from '@app/elements/header/app-header.style'
+import { filter, Subscription } from 'rxjs'
 import { Router, RouterLocation } from '@vaadin/router'
-import { whenUserRole } from '@app/directives/when-user-role.directive'
-import { classMap } from 'lit/directives/class-map.js'
-import { Role } from '@app/types/user.type'
 import { when } from 'lit/directives/when.js'
+import { User } from '@app/types/user.type'
+import { buttonStyle } from '@app/styles/button.style'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-	static styles = [appHeaderStyle, appDrawerStyle, css``]
+	static styles = [appHeaderStyle, buttonStyle, css``]
 
 	private appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
 	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'
 
 	@state()
-	fullname = ''
+	private user: User = null
 
 	@state()
-	initials: string | undefined = ''
-
-	@state()
-	impersonating = false
-
-	@query('sl-drawer') drawer!: SlDrawer
+	private initials = ''
 
 	userSubscription = new Subscription()
 
@@ -49,14 +29,12 @@ export class AppHeader extends LitElement {
 		super.connectedCallback()
 		window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
 		this.userSubscription = getUserObservable().subscribe((user) => {
-			if (user) {
-				this.fullname = user.name
-				this.impersonating = user.impersonated ? true : false
-				this.initials = this.fullname
+			this.user = user
+			this.initials =
+				this.user?.name
 					.match(/\b(\w)/g)
 					?.join('')
-					.toUpperCase()
-			}
+					.toUpperCase() || ''
 		})
 	}
 
@@ -87,71 +65,17 @@ export class AppHeader extends LitElement {
 	render() {
 		return html`
 			<header>
-				<sl-icon-button class="hamburger" title="Menu" name="list" label="Menu" @click=${() => this.drawer.show()}></sl-icon-button>
-				<img class="logo" src="assets/logo.png"/>
+				<img class="logo" src="assets/logo.png" />
 				<h2 class="title">${this.appTitle}</h2>
-				${when(this.impersonating, () => html`<sl-badge pulse variant="warning">Impersonate mode</sl-badge>`)}
+				${when(this.user?.impersonated, () => html`Impersonate mode`)}
 				<div class="spacer"></div>
-				<sl-dropdown>
-					<sl-icon-button title="Help" slot="trigger" name="question-circle-fill" label="Help"></sl-icon-button>
-					<sl-menu>
-						<sl-menu-label>Version ${this.appVersion}</sl-menu-label>
-						<sl-menu-item @click=${() => window.open(`${import.meta.env.VITE_APP_WHATS_NEW_LINK}`, '_blank')}>What's new</sl-menu-item>
-						<sl-menu-item @click=${() => window.open(`${import.meta.env.VITE_APP_HELP_LINK}`, '_blank')}>Help</sl-menu-item>
-						<sl-menu-item @click=${() => window.open(`/documentation`, '_blank')}>API Docs</sl-menu-item>
-						<sl-divider></sl-divider>
-						<sl-menu-item @click=${() => Router.go('/feedback')}>Feedback</sl-menu-item>
-						<sl-menu-item @click=${() => window.open(`${import.meta.env.VITE_APP_BUG_REPORT_LINK}`, '_blank')}>Report bug</sl-menu-item>
-					</sl-menu>
-				</sl-dropdown>
 				<app-theme-switcher></app-theme-switcher>
-				${whenUser(
-					() => html`
-						<sl-dropdown>
-							<sl-avatar slot="trigger" initials=${ifDefined(this.initials)} label="User avatar"></sl-avatar>
-							<sl-menu>
-								<sl-menu-label>${this.fullname}</sl-menu-label>
-								<sl-menu-item @click=${() => Router.go('/profile')}>
-									<sl-icon slot="prefix" name="person-fill"></sl-icon>
-									Profile
-								</sl-menu-item>
-								<sl-divider></sl-divider>
-								<sl-menu-item @click=${() => this.signOut()}>
-									<sl-icon slot="prefix" name="box-arrow-right"></sl-icon>
-									Logout
-								</sl-menu-item>
-							</sl-menu>
-						</sl-dropdown>
-					`,
-					() => html`<sl-button variant="primary" pill @click=${() => this.signIn()}>Sign in</sl-button>`
+				${when(
+					this.user,
+					() => html`<div class="avatar" @click=${() => this.signOut()}>${this.initials}</div>`,
+					() => html`<button class="primary" @click=${() => this.signIn()}>Sign in</button>`
 				)}
 			</header>
-
-			<sl-drawer label="App" placement="start">
-				<ul>
-					<li>
-						<a href="/home" @click=${() => this.drawer.hide()}>
-							<sl-icon name="house-fill"></sl-icon>
-							Home
-						</a>
-					</li>
-					${whenUserRole(
-						[Role.ADMIN],
-						() => html`
-							<li>
-								<a
-									href="/admin"
-									@click=${() => this.drawer.hide()}
-									class=${classMap({ active: location.pathname.includes('/admin') })}
-								>
-									<sl-icon name="person-fill-lock"></sl-icon>
-									Admin
-								</a>
-							</li>
-						`
-					)}
-				</ul>
-			</sl-drawer>
 		`
 	}
 }

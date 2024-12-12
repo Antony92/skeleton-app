@@ -1,28 +1,29 @@
-@import '@shoelace-style/shoelace/dist/themes/light.css';
-@import '@shoelace-style/shoelace/dist/themes/dark.css';
+@import 'open-props/style';
+@import "open-props/shadow/animations";
 
 :root {
 	color-scheme: light dark;
 
 	/* Light theme variables */
-	--light-theme-background: white;
-	--light-theme-color: black;
-	--light-theme--header: white;
-	--light-theme--sidebar: #f3f6fc;
+	--light-theme-background: var(--gray-1);
+	--light-theme-color: var(--gray-12);
+	--light-theme-primary: var(--blue-8);
+	--light-theme-header: var(--gray-3);
+	--light-theme-sidebar: var(--gray-3);
 
 	/* Dark theme variables */
-	--dark-theme-background: black;
-	--dark-theme-color: white;
-	--dark-theme-header: #161b22;
-	--dark-theme-sidebar: #0d1117;
+	--dark-theme-background: var(--gray-12);
+	--dark-theme-color: var(--gray-1);
+	--dark-theme-primary: var(--blue-5);
+	--dark-theme-header: var(--gray-10);
+	--dark-theme-sidebar: var(--gray-10);
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	height: 100vh;
-	font-family: var(--sl-font-sans);
-	box-sizing: border-box;
+	font-family: var(--font-system-ui);
 	background-color: light-dark(var(--light-theme-background), var(--dark-theme-background));
 	color: light-dark(var(--light-theme-color), var(--dark-theme-color));
 	overflow: hidden;
@@ -58,33 +59,35 @@ body {
 		transparent transparent;
 	box-sizing: border-box;
 	animation: loaderRotation 1s linear infinite;
-}
 
-.loader::after,
-.loader::before {
-	content: '';
-	box-sizing: border-box;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	margin: auto;
-	border: 3px solid;
-	border-color: transparent transparent var(--sl-color-primary-500, #ff3d00) var(--sl-color-primary-500, #ff3d00);
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	box-sizing: border-box;
-	animation: loaderRotationBack 0.5s linear infinite;
-	transform-origin: center center;
-}
+	&::after,
+	&::before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		border: 3px solid;
+		border-color: transparent transparent light-dark(var(--light-theme-primary), var(--dark-theme-primary))
+			light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		box-sizing: border-box;
+		animation: loaderRotationBack 0.5s linear infinite;
+		transform-origin: center center;
+	}
 
-.loader::before {
-	width: 32px;
-	height: 32px;
-	border-color: #fff #fff transparent transparent;
-	animation: loaderRotation 1.5s linear infinite;
+	&::before {
+		width: 32px;
+		height: 32px;
+		border-color: light-dark(var(--light-theme-color), var(--dark-theme-color)) light-dark(var(--light-theme-color), var(--dark-theme-color))
+			transparent transparent;
+		animation: loaderRotation 1.5s linear infinite;
+	}
 }
 
 @keyframes loaderRotation {

@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, query } from 'lit/decorators.js'
 import '@app/elements/header/app-header.element'
 import '@app/elements/sidebar/app-sidebar.element'
 import { mainStyle } from '@app/styles/main.style'
@@ -10,6 +10,9 @@ import { initializeRouter } from '@app/shared/router'
 @customElement('app-root')
 export class AppRoot extends LitElement {
 	static styles = [mainStyle, css``]
+
+	@query('#outlet')
+	outlet!: HTMLElement
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -28,7 +31,7 @@ export class AppRoot extends LitElement {
 	}
 
 	protected async firstUpdated() {
-		await initializeRouter(this.renderRoot.querySelector('main')!)
+		await initializeRouter(this.outlet)
 	}
 
 	render() {
@@ -36,7 +39,7 @@ export class AppRoot extends LitElement {
 			<div class="layout">
 				<app-header class="header"></app-header>
 				<app-sidebar class="sidebar"></app-sidebar>
-				<main class="main"></main>
+				<main id="outlet" class="main"></main>
 			</div>
 		`
 	}

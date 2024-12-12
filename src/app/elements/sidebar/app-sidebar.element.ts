@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import { appSidebarStyle } from '@app/styles/app-sidebar.style'
+import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style'
 import { Router, RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'

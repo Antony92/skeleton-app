@@ -10,21 +10,22 @@ export const globalMessage = async (message: string, type: 'info' | 'warning' | 
 
 	let element = document.querySelector('app-global-message')
 
-    // If element is present just update it, else create it
+	// If exist update else create
 	if (element) {
-		Object.assign(element, { type, innerHTML: `${escapeHtml(message)}` })
-	} else {
-		element = Object.assign(document.createElement('app-global-message'), {
-			id: '#global-message',
+		Object.assign(element, {
 			type,
 			innerHTML: `${escapeHtml(message)}`,
 		})
-		
-        // Remove from DOM after hide animation finishes
-		element.addEventListener('app-after-hide', () => element?.remove())
-        
-        // Append and show
+	} else {
+		element = Object.assign(document.createElement('app-global-message'), {
+			type,
+			innerHTML: `${escapeHtml(message)}`,
+		})
 		document.body.appendChild(element)
-		element?.show()
 	}
+
+	// Remove from DOM after hide animation finishes
+	element.addEventListener('app-after-hide', () => element.remove())
+
+	element.show()
 }

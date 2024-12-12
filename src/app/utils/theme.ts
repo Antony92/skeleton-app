@@ -6,14 +6,12 @@ export const applyDefaultTheme = () => {
 	const preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 
 	if (theme === 'light' || preferedLight) {
-		body?.classList.add('theme-light')
-		body?.classList.remove('theme-dark', 'sl-theme-dark')
+		body?.classList.toggle('theme-light')
 		return
 	}
 
 	if (theme === 'dark' || preferedDark) {
-		body?.classList.add('theme-dark', 'sl-theme-dark')
-		body?.classList.remove('theme-light')
+		body?.classList.toggle('theme-dark')
 		return
 	}
 }

@@ -1,83 +1,112 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import { when } from 'lit/directives/when.js'
+import { customElement, property, query } from 'lit/decorators.js'
+import { choose } from 'lit/directives/choose.js'
+import { faInfoCircleIcon, faTriangleExclamationIcon, faCircleExclamationIcon, iconStyle } from '@app/styles/icon.style'
+import { focusStyle } from '@app/styles/focus.style'
+import { buttonStyle } from '@app/styles/button.style'
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {
-	static styles = css`
-		:host {
-			position: fixed;
-			top: 10px;
-			left: 50%;
-			translate: -50%;
-			z-index: 6;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			min-width: 300px;
-			box-shadow: var(--sl-shadow-x-large);
-			padding: 15px;
-			border-radius: 0.25rem;
-			color: var(--sl-color-neutral-0);
-			font-size: var(--sl-button-font-size-medium);
-			font-weight: bold;
-
-			sl-icon {
-				font-size: 20px;
-				flex-shrink: 0;
-			}
-
-			a {
-				color: white;
-			}
-
-			.close {
-				margin-left: auto;
-				background: none;
+	static styles = [
+		iconStyle,
+		focusStyle,
+		buttonStyle,
+		css`
+			.global-message {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				min-width: 300px;
+				box-shadow: var(--shadow-2);
+				padding: 15px;
 				border: none;
-				padding: 0;
-				cursor: pointer;
+				border-radius: 0.25rem;
+				font-weight: var(--font-weight-5);
+				
+				&:popover-open {
+					inset: unset;
+					right: 0px;
+					left: 0px;
+					top: 15px;
+				}
+
+				&.info {
+					background-color: var(--blue-7);
+				}
+
+				&.error {
+					background-color: var(--red-7);
+				}
+
+				&.warning {
+					background-color: var(--yellow-7);
+				}
+
+				.icon {
+					width: var(--size-4);
+					height: var(--size-4);
+				}
+
+				button {
+					margin-left: auto;
+				}
 			}
-		}
-
-		:host([type='info']) {
-			background-color: var(--sl-color-neutral-600);
-		}
-
-		:host([type='warning']) {
-			background-color: var(--sl-color-warning-600);
-		}
-
-		:host([type='error']) {
-			background-color: var(--sl-color-danger-600);
-		}
-	`
+		`,
+	]
 
 	@property({ type: String, reflect: true })
 	type: 'info' | 'warning' | 'error' = 'info'
 
-	show() {
-		const animation = this.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, iterations: 1, fill: 'forwards' })
-		return animation.finished
+	@query('.global-message')
+	globalMessage!: HTMLDivElement
+
+	async show() {
+		await this.updateComplete
+		this.globalMessage.showPopover()
+		const animation = this.globalMessage.animate(
+			[
+				{ transform: 'translateY(-100px)', opacity: 0 },
+				{ transform: 'translateY(0)', opacity: 1 },
+			],
+			{
+				duration: 300,
+				fill: 'both',
+			}
+		)
+		await animation.finished
 	}
 
-	hide() {
-		const animation = this.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, iterations: 1, fill: 'forwards' })
-		animation.addEventListener('finish', () => {
-			this.dispatchEvent(new Event('app-after-hide'))
-		})
-		return animation.finished
+	async hide() {
+		await this.updateComplete
+		const animation = this.globalMessage.animate(
+			[
+				{ transform: 'translateY(0)', opacity: 1 },
+				{ transform: 'translateY(-100px)', opacity: 0 },
+			],
+			{
+				duration: 300,
+				fill: 'both',
+			}
+		)
+		await animation.finished
+		this.globalMessage.hidePopover()
+		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
 	render() {
 		return html`
-			<div id="globalmessage" popover="manual">
-				${when(this.type === 'info', () => html`info`)}
-				${when(this.type === 'warning', () => html`warning`)}
-				${when(this.type === 'error', () => html`error`)}
+			<div class="global-message ${this.type}" popover="manual">
+				${choose(
+					this.type,
+					[
+						['info', () => html`<i class="icon">${faInfoCircleIcon}</i>`],
+						['warning', () => html`<i class="icon">${faTriangleExclamationIcon}</i>`],
+						['error', () => html`<i class="icon">${faCircleExclamationIcon}</i>`],
+					],
+					() => html``
+				)}
 				<slot></slot>
-				<button class="close" @click=${this.hide}>✕</button>
+				<button class="only-icon" @click=${this.hide}>✕</button>
 			</div>
 		`
 	}
