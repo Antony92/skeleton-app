@@ -6,7 +6,7 @@ export const appHeaderStyle = css`
 		gap: 10px;
 		align-items: center;
 		height: 60px;
-		padding: 0 5px;
+		padding: 0 15px;
 		box-shadow: var(--shadow-1);
 		background-color: light-dark(var(--light-theme-header), var(--dark-theme-header));
 		transition: background-color 300ms ease-in-out;
@@ -21,7 +21,6 @@ export const appHeaderStyle = css`
 	}
 
 	.logo {
-		margin-left: 10px;
 		width: 40px;
 	}
 
@@ -31,8 +30,10 @@ export const appHeaderStyle = css`
 		width: 50px;
 		height: 50px;
 		background: var(--blue-8);
+		color: var(--gray-1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		box-shadow: var(--shadow-1);
 	}
 `

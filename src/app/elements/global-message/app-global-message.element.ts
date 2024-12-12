@@ -49,6 +49,7 @@ export class AppGlobalMessage extends LitElement {
 
 				button {
 					margin-left: auto;
+					padding: 0;
 				}
 			}
 		`,
