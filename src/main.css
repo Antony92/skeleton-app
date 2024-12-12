@@ -29,7 +29,7 @@
 	/* Layers */
 	--theme-default-layer: light-dark(var(--gray-2), var(--gray-7));
 	--theme-reverse-layer: light-dark(var(--gray-10), var(--gray-1));
-	--theme-info-layer: light-dark(var(--blue-8), var(--gray-8));
+	--theme-info-layer: light-dark(var(--blue-7), var(--blue-7));
 	--theme-error-layer: light-dark(var(--red-8), var(--red-8));
 	--theme-warning-layer: light-dark(var(--yellow-8), var(--yellow-8));
 	--theme-success-layer: light-dark(var(--green-8), var(--green-8));
@@ -39,7 +39,9 @@ body {
 	margin: 0;
 	padding: 0;
 	height: 100vh;
+	box-sizing: border-box;
 	font-family: var(--font-system-ui);
+	font-size: var(--font-size-1);
 	background-color: var(--theme-background);
 	color: var(--theme-color);
 	overflow: hidden;

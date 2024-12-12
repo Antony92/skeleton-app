@@ -52,7 +52,7 @@ export class AppDemo extends LitElement {
 					<i class="icon">${faMagnifyingGlassIcon}</i>
 				</button>
 				<button class="primary only-text">Only text</button>
-				<button class="error only-icon">
+				<button class="only-icon">
 					<i class="icon">${faMagnifyingGlassIcon}</i>
 				</button>
 			</fieldset>

@@ -2,6 +2,8 @@ import { css } from 'lit'
 
 export const appDialogStyle = css`
 	dialog {
+		display: block;
+		inset: 0;
 		padding: 0;
 		max-inline-size: min(90vw, 60ch);
 		max-block-size: min(80vh, 100%);
@@ -12,15 +14,24 @@ export const appDialogStyle = css`
 		background-color: var(--theme-default-layer);
 		color: var(--theme-color);
 
-		&::backdrop {
-			background: rgb(0 0 0 / 20%);
+		&[open] {
+			animation: show-dialog 200ms ease;
+
+			&::backdrop {
+				background: rgb(0 0 0 / 20%);
+				animation: show-backdrop 200ms ease;
+			}
 		}
 
 		&:not([open]) {
-			pointer-events: none;
+			animation: hide-dialog 200ms ease;
+
+			&::backdrop {
+				animation: hide-backdrop 200ms ease reverse;
+			}
 		}
 
-		div.container {
+		.container {
 			display: grid;
 			grid-template-rows: auto 1fr auto;
 			row-gap: 10px;
@@ -44,7 +55,6 @@ export const appDialogStyle = css`
 				border: none;
 			}
 		}
-		
 
 		article {
 			overflow-y: auto;
@@ -56,7 +66,47 @@ export const appDialogStyle = css`
 
 		footer {
 			display: flex;
-    		justify-content: flex-end;
+			justify-content: flex-end;
+		}
+	}
+
+	@keyframes show-dialog {
+		from {
+			opacity: 0;
+			scale: 0.8;
+		}
+		to {
+			opacity: 1;
+			scale: 1;
+		}
+	}
+
+	@keyframes hide-dialog {
+		from {
+			opacity: 1;
+			scale: 1;
+		}
+		to {
+			opacity: 0;
+			scale: 0.8;
+		}
+	}
+
+	@keyframes show-backdrop {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes hide-backdrop {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
 		}
 	}
 `
