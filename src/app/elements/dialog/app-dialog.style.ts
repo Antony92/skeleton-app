@@ -14,11 +14,19 @@ export const appDialogStyle = css`
 
 		&::backdrop {
 			background: rgb(0 0 0 / 20%);
-			transition: backdrop-filter 100ms ease;
 		}
 
 		&:not([open]) {
 			pointer-events: none;
+		}
+
+		div.container {
+			display: grid;
+			grid-template-rows: auto 1fr auto;
+			row-gap: 10px;
+			align-items: start;
+			max-block-size: 80vh;
+			padding: 15px;
 		}
 
 		header {
@@ -31,12 +39,12 @@ export const appDialogStyle = css`
 			}
 
 			button {
-				padding: 0;
 				background: none;
 				cursor: pointer;
 				border: none;
 			}
 		}
+		
 
 		article {
 			overflow-y: auto;
@@ -46,13 +54,9 @@ export const appDialogStyle = css`
 			max-block-size: 100%;
 		}
 
-		div {
-			display: grid;
-			grid-template-rows: auto 1fr auto;
-			row-gap: 10px;
-			align-items: start;
-			max-block-size: 80vh;
-			padding: 15px;
+		footer {
+			display: flex;
+    		justify-content: flex-end;
 		}
 	}
 `

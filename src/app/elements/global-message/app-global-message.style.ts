@@ -12,6 +12,7 @@ export const appGlobalMessageStyle = css`
 		border-radius: 0.25rem;
 		font-size: var(--font-size-1);
 		font-weight: var(--font-weight-5);
+		color: var(--theme-white);
 
 		&:popover-open {
 			inset: unset;
@@ -21,7 +22,7 @@ export const appGlobalMessageStyle = css`
 		}
 
 		&.info {
-			background-color: var(--theme-default-layer);
+			background-color: var(--theme-info-layer);
 		}
 
 		&.error {
@@ -35,14 +36,15 @@ export const appGlobalMessageStyle = css`
 		.icon {
 			width: var(--size-4);
 			height: var(--size-4);
+			color: var(--theme-white);
 		}
 
 		button {
 			margin-left: auto;
-			padding: 0;
 			background: none;
 			cursor: pointer;
 			border: none;
+			color: var(--theme-white);
 		}
 	}
 `

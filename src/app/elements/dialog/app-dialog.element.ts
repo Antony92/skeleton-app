@@ -5,7 +5,7 @@ import { focusStyle } from '@app/styles/focus.style'
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-	static styles = [appDialogStyle, focusStyle,  css``]
+	static styles = [appDialogStyle, focusStyle, css``]
 
 	@property({ type: String })
 	header = ''
@@ -29,8 +29,8 @@ export class AppDialog extends LitElement {
 
 	async show() {
 		await this.updateComplete
+		this.dialog.animate([{ opacity: 0 }, { opacity: 1 }], { fill: 'both', duration: 300 })
 		this.dialog.showModal()
-		this.dialog.animate([{ opacity: 0 }, { opacity: 1 }], { fill: 'both', duration: 100 })
 		await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
 	}
 
@@ -54,7 +54,6 @@ export class AppDialog extends LitElement {
 			if (this.dialog.returnValue) {
 				return
 			}
-			await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
 			this.dispatchEvent(new Event('app-after-hide'))
 		})
 
@@ -64,10 +63,10 @@ export class AppDialog extends LitElement {
 	render() {
 		return html`
 			<dialog>
-				<div>
+				<div class="container">
 					<header>
 						<h3>${this.header}</h3>
-						<button class="focus-within" @click=${this.hide}>✕</button>
+						<button class="focus-visible" @click=${this.hide}>✕</button>
 					</header>
 					<article>
 						<slot></slot>

@@ -1,8 +1,10 @@
 import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, query } from 'lit/decorators.js'
 import { faMagnifyingGlassIcon, iconStyle } from '@app/styles/icon.style'
 import { buttonStyle } from '@app/styles/button.style'
 import { globalMessage } from '@app/shared/global-message'
+import '@app/elements/dialog/app-dialog.element'
+import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 
 @customElement('app-demo')
 export class AppDemo extends LitElement {
@@ -24,6 +26,9 @@ export class AppDemo extends LitElement {
 			}
 		`,
 	]
+
+	@query('app-dialog')
+	appDialog!: AppDialog
 
 	protected firstUpdated() {}
 
@@ -47,7 +52,7 @@ export class AppDemo extends LitElement {
 					<i class="icon">${faMagnifyingGlassIcon}</i>
 				</button>
 				<button class="primary only-text">Only text</button>
-				<button class="primary only-icon">
+				<button class="error only-icon">
 					<i class="icon">${faMagnifyingGlassIcon}</i>
 				</button>
 			</fieldset>
@@ -58,6 +63,18 @@ export class AppDemo extends LitElement {
                 <button class="warning" @click=${() => globalMessage('This is warning', 'warning')}>Warning</button>
                 <button class="error" @click=${() => globalMessage('This is error', 'error')}>Error</button>
 			</fieldset>
+
+			<fieldset>
+				<legend>Dialog</legend>
+				<button class="primary" @click=${() => this.appDialog.show()}>Open dialog</button>
+			</fieldset>
+
+
+
+			<app-dialog header="Dialog title" light-dismiss>
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				<button slot="footer" class="primary" autofocus app-dialog-close>Close</button>
+			</app-dialog>
 		`
 	}
 }

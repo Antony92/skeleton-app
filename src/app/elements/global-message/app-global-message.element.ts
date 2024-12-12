@@ -61,7 +61,7 @@ export class AppGlobalMessage extends LitElement {
 					() => html``
 				)}
 				<slot></slot>
-				<button class="focus-within" @click=${this.hide}>✕</button>
+				<button class="focus-visible" @click=${this.hide}>✕</button>
 			</div>
 		`
 	}

@@ -28,7 +28,6 @@ export const iconStyle = css`
 		display: block;
 		width: 1rem;
 		height: 1rem;
-		color: var(--theme-color);
 	}
 `
 // Solid icons
