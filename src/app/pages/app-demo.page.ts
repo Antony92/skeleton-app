@@ -29,6 +29,7 @@ export class AppDemo extends LitElement {
 
 	render() {
 		return html`
+			Demo
 			<fieldset>
 				<legend>Buttons</legend>
 				<button class="primary">Primary</button>
