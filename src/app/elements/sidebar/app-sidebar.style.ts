@@ -1,105 +1,112 @@
 import { css } from 'lit'
 
 export const appSidebarStyle = css`
-    aside {
-        width: 90px;
-        height: 100%;
-        background-color: light-dark(var(--light-theme-sidebar), var(--dark-theme-sidebar));
-        transition: background-color 300ms ease-in-out;
-    }
+	aside {
+		width: 90px;
+		height: 100%;
+		background-color: light-dark(var(--light-theme-sidebar), var(--dark-theme-sidebar));
+		transition: background-color 300ms ease-in-out;
 
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        height: 100%;
-    }
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			height: 100%;
 
-    ul:before,
-    ul:after {
-        content: '';
-    }
+			&:before,
+			&:after {
+				content: '';
+			}
 
-    ul li {
-        width: 100%;
-    }
+			li {
+				width: 100%;
 
-    ul li a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-        color: var(--sl-color-neutral-700);
-        text-decoration: none;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-    }
+				&.bottom {
+					margin-top: auto;
+				}
 
-    ul li a span:first-child {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 56px;
-        height: 32px;
-        border-radius: 16px;
-        transition: all 0.3s;
-    }
+				a {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 5px;
+					text-decoration: none;
+					cursor: pointer;
+					color: light-dark(var(--light-theme-color), var(--dark-theme-color));
 
-    ul li a span:first-child sl-icon {
-        font-size: 20px;
-        transition: scale 0.3s;
-    }
+					span:first-child {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 56px;
+						height: 32px;
+						border-radius: 16px;
+						transition: all 0.3s;
 
-    ul li a.active span:first-child {
-        box-shadow: var(--sl-shadow-x-large);
-        background: var(--sl-color-sky-600);
-        color: var(--sl-color-neutral-0);
-    }
+						.icon {
+							transition: scale 0.3s;
+                            width: 1.2rem;
+                            height: 1.2rem;
+						}
+					}
 
-    ul li a:hover:not(.active) span:first-child {
-        background: var(--sl-color-neutral-300);
-    }
+					span:last-child {
+						font-size: 12px;
+					}
 
-    ul li a:hover span:first-child sl-icon,
-    ul li a.active span sl-icon {
-        scale: 1.1;
-    }
+					&.active {
+						span:first-child {
+							box-shadow: var(--shadow-2);
+							background: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+							color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
 
-    ul li a span:nth-child(2) {
-        font-size: 12px;
-    }
+							.icon {
+								scale: 1.1;
+							}
+						}
 
-    ul li a.active span:nth-child(2) {
-        color: var(--sl-color-sky-600);
-    }
+						span:last-child {
+							color: light-dark(var(--light-theme-primary), var(--dark-theme-primary));
+						}
+					}
 
-    ul li.bottom {
-        margin-top: auto;
-    }
+					&:hover:not(.active) {
+						span:first-child {
+							background: var(--gray-7);
 
-    @media only screen and (max-width: 900px) {
-        
-        aside {
-            width: 100%;
-            border-right: none;
-        }
+							.icon {
+								scale: 1.1;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-        ul {
-            margin: 0;
-            flex-direction: row;
-            overflow: auto;
-            width: 100vw;
-        }
+	@media only screen and (max-width: 900px) {
+		aside {
+			width: 100%;
 
-        ul li a {
-            margin: 10px 0px;
-        }
+			ul {
+				margin: 0;
+				flex-direction: row;
+				overflow: auto;
+				width: 100vw;
 
-        ul li.hide-on-mobile {
-            display: none;
-        }
-    }
+				li {
+					&.hide-on-mobile {
+						display: none;
+					}
+
+					a {
+						margin: 10px 0px;
+					}
+				}
+			}
+		}
+	}
 `

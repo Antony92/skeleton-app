@@ -14,7 +14,7 @@ import { buttonStyle } from '@app/styles/button.style'
 export class AppHeader extends LitElement {
 	static styles = [appHeaderStyle, buttonStyle, css``]
 
-	private appTitle = import.meta.env.VITE_APP_TITLE || 'Application'
+	private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App'
 	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'
 
 	@state()

@@ -12,5 +12,5 @@ export const escapeHtml = (html: string) => {
 }
 
 export const setDocumentTitle = (title: string) => {
-	document.title = `Service Portal - ${title}`
+	document.title = `Skeleton App - ${title}`
 }

@@ -1,15 +1,15 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style'
 import { Router, RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'
+import { faHomeIcon, faSkullIcon, faScrewdriverWrenchIcon, iconStyle } from '@app/styles/icon.style'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
-	static styles = [appSidebarStyle, css``]
+	static styles = [appSidebarStyle, iconStyle, css``]
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -34,12 +34,20 @@ export class AppSidebar extends LitElement {
 		return html`
 			<aside>
 				<ul>
-					<li class="hide-on-mobile">
-						<a href="/home">
+					<li>
+						<a href="/home" class=${classMap({ active: location.pathname.includes('/home') })}>
 							<span>
-								<sl-icon name="house-fill"></sl-icon>
+								<i class="icon">${faHomeIcon}</i>
 							</span>
 							<span>Home</span>
+						</a>
+					</li>
+					<li>
+						<a href="/demo" class=${classMap({ active: location.pathname.includes('/demo') })}>
+							<span>
+								<i class="icon">${faSkullIcon}</i>
+							</span>
+							<span>Demo</span>
 						</a>
 					</li>
 					${whenUserRole(
@@ -48,7 +56,7 @@ export class AppSidebar extends LitElement {
 							<li class="bottom hide-on-mobile">
 								<a href="/admin" class=${classMap({ active: location.pathname.includes('/admin') })}>
 									<span>
-										<sl-icon name="person-fill-lock"></sl-icon>
+										<i class="icon">${faScrewdriverWrenchIcon}</i>
 									</span>
 									<span>Admin</span>
 								</a>
