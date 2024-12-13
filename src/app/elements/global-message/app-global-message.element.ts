@@ -15,37 +15,49 @@ export class AppGlobalMessage extends LitElement {
 	@query('.global-message')
 	globalMessage!: HTMLDivElement
 
+	@property({ type: Boolean, reflect: true })
+	open = false
+
+	protected firstUpdated() {
+		this.globalMessage.addEventListener('toggle', async (event) => {
+			const state = (event as ToggleEvent).newState
+			await Promise.allSettled(this.globalMessage.getAnimations().map(a => a.finished))
+			if (state === 'open') {
+				this.open = true
+				this.dispatchEvent(new Event('app-after-open'))
+			}
+			if (state === 'closed') {
+				this.open = false
+				this.dispatchEvent(new Event('app-after-hide'))
+			}
+		})
+	}
+
 	async show() {
 		await this.updateComplete
 		this.globalMessage.showPopover()
-		const animation = this.globalMessage.animate(
-			[
-				{ transform: 'translateY(-100px)', opacity: 0 },
-				{ transform: 'translateY(0)', opacity: 1 },
-			],
-			{
-				duration: 300,
-				fill: 'both',
-			}
-		)
-		await animation.finished
+		await this.animation()
 	}
 
 	async hide() {
 		await this.updateComplete
+		await this.animation(true)
+		this.globalMessage.hidePopover()
+	}
+
+	async animation(reverse = false) {
 		const animation = this.globalMessage.animate(
 			[
-				{ transform: 'translateY(0)', opacity: 1 },
 				{ transform: 'translateY(-100px)', opacity: 0 },
+				{ transform: 'translateY(0)', opacity: 1 },
 			],
 			{
-				duration: 300,
+				direction: reverse ? 'reverse' : 'normal',
+				duration: 200,
 				fill: 'both',
 			}
 		)
-		await animation.finished
-		this.globalMessage.hidePopover()
-		this.dispatchEvent(new Event('app-after-hide'))
+		return animation.finished
 	}
 
 	render() {

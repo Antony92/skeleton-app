@@ -5,15 +5,7 @@ import { focusStyle } from '@app/styles/focus.style'
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-	static styles = [appDialogStyle, focusStyle, css`
-		:host {
-			display: none;
-		}
-
-		:host([open]) {
-			display: block;
-		}
-	`]
+	static styles = [appDialogStyle, focusStyle, css``]
 
 	@property({ type: String })
 	header = ''
@@ -39,8 +31,22 @@ export class AppDialog extends LitElement {
 			}
 		})
 
+		// add this when toggle is supported for dialogs instead of 'close'
+
+		// this.dialog.addEventListener('toggle', async (event) => {
+		// 	const state = (event as ToggleEvent).newState
+		// 	await Promise.allSettled(this.dialog.getAnimations().map(a => a.finished))
+		// 	if (state === 'open') {
+		//		this.open = true
+		// 		this.dispatchEvent(new Event('app-after-open'))
+		// 	}
+		// 	if (state === 'closed') {
+		//		this.open = false
+		// 		this.dispatchEvent(new Event('app-after-hide'))
+		// 	}
+		// })
+
 		this.dialog.addEventListener('close', async () => {
-			await Promise.allSettled(this.dialog.getAnimations().map((a) => a.finished))
 			this.open = false
 			this.dispatchEvent(new Event('app-after-hide'))
 		})
@@ -49,14 +55,32 @@ export class AppDialog extends LitElement {
 	}
 
 	async show() {
-		await this.updateComplete
 		this.open = true
+		await this.updateComplete
 		this.dialog.showModal()
+		await this.animation()
+		this.dispatchEvent(new Event('app-after-show'))
 	}
 
 	async hide(returnValue?: string | null) {
 		await this.updateComplete
+		await this.animation(true)
 		this.dialog.close(returnValue || AppDialog.DEFAULT_CLOSE)
+	}
+
+	async animation(reverse = false) {
+		const animation = this.dialog.animate(
+			[
+				{ scale: 0, opacity: 0 },
+				{ scale: 1, opacity: 1 },
+			],
+			{
+				direction: reverse ? 'reverse' : 'normal',
+				duration: 200,
+				fill: 'both',
+			}
+		)
+		return animation.finished
 	}
 
 	get returnValue() {

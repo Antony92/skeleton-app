@@ -15,7 +15,7 @@ export const appGlobalMessageStyle = css`
 		color: var(--theme-white);
 
 		&:popover-open {
-			inset: unset;
+			inset: auto;
 			right: 0px;
 			left: 0px;
 			top: 15px;

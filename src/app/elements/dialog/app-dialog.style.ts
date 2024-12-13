@@ -2,7 +2,6 @@ import { css } from 'lit'
 
 export const appDialogStyle = css`
 	dialog {
-		display: block;
 		inset: 0;
 		padding: 0;
 		max-inline-size: min(90vw, 60ch);
@@ -14,21 +13,20 @@ export const appDialogStyle = css`
 		background-color: var(--theme-default-layer);
 		color: var(--theme-color);
 
+		&::backdrop {
+			background: rgb(0 0 0 / 0%);
+			transition: background-color 200ms ease;
+		}
+
 		&[open] {
-			animation: show-dialog 200ms ease;
 
 			&::backdrop {
-				background: rgb(0 0 0 / 20%);
-				animation: show-backdrop 200ms ease;
+				background-color: rgb(0 0 0 / 20%);
 			}
 		}
 
 		&:not([open]) {
-			animation: hide-dialog 200ms ease;
-
-			&::backdrop {
-				animation: hide-backdrop 200ms ease reverse;
-			}
+			pointer-events: none;
 		}
 
 		.container {
@@ -67,46 +65,6 @@ export const appDialogStyle = css`
 		footer {
 			display: flex;
 			justify-content: flex-end;
-		}
-	}
-
-	@keyframes show-dialog {
-		from {
-			opacity: 0;
-			scale: 0.8;
-		}
-		to {
-			opacity: 1;
-			scale: 1;
-		}
-	}
-
-	@keyframes hide-dialog {
-		from {
-			opacity: 1;
-			scale: 1;
-		}
-		to {
-			opacity: 0;
-			scale: 0.8;
-		}
-	}
-
-	@keyframes show-backdrop {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	@keyframes hide-backdrop {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
 		}
 	}
 `
