@@ -34,8 +34,6 @@ export class AppDialog extends LitElement {
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
 	closeElements!: Array<HTMLElement>
 
-	private static DEFAULT_CLOSE = 'default-close'
-
 	protected firstUpdated() {
 		this.dialog.addEventListener('click', ({ target: element }) => {
 			if (element instanceof HTMLDialogElement === false) {
@@ -79,7 +77,7 @@ export class AppDialog extends LitElement {
 		this.open = false
 	}
 
-	async openAnimation(reverse = false) {
+	openAnimation(reverse = false) {
 		const animation = this.dialog.animate(
 			[
 				{ scale: 0, opacity: 0 },
@@ -94,7 +92,7 @@ export class AppDialog extends LitElement {
 		return animation.finished
 	}
 
-	async pulseAnimation() {
+	pulseAnimation() {
 		const animation = this.dialog.animate([{ scale: 1 }, { scale: 1.02 }, { scale: 1 }], {
 			duration: 250,
 			fill: 'both',

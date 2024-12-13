@@ -38,7 +38,7 @@ export class AppDemo extends LitElement {
 		return html`
 			Demo
 			<fieldset>
-				<legend>app-buttons</legend>
+				<legend>Buttons</legend>
 				<app-button variant="primary">Primary</app-button>
 				<app-button variant="secondary">Secondary</app-button>
 				<app-button variant="success">Success</app-button>
