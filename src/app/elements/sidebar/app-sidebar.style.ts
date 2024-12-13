@@ -44,10 +44,10 @@ export const appSidebarStyle = css`
 						width: 56px;
 						height: 32px;
 						border-radius: 16px;
-						transition: all 0.3s;
+						transition: background-color 0.3s;
 
 						.icon {
-							transition: scale 0.3s;
+							transition: scale 0.3s ease-in-out;
                             width: 1.2rem;
                             height: 1.2rem;
 						}
@@ -55,9 +55,12 @@ export const appSidebarStyle = css`
 
 					span:last-child {
 						font-size: 12px;
+						transition: color 0.3s;
+						
 					}
 
 					&.active {
+
 						span:first-child {
 							box-shadow: var(--shadow-1);
 							background-color: var(--theme-primary);
@@ -75,6 +78,7 @@ export const appSidebarStyle = css`
 					}
 
 					&:hover:not(.active) {
+
 						span:first-child {
 							background-color: light-dark(var(--gray-5), var(--gray-7));
 
