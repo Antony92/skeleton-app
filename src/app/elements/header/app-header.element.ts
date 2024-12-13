@@ -8,11 +8,11 @@ import { Subscription } from 'rxjs'
 import { Router, RouterLocation } from '@vaadin/router'
 import { when } from 'lit/directives/when.js'
 import { User } from '@app/types/user.type'
-import { buttonStyle } from '@app/styles/button.style'
+import '@app/elements/button/app-button.element'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-	static styles = [appHeaderStyle, buttonStyle, css``]
+	static styles = [appHeaderStyle, css``]
 
 	private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App'
 	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'
@@ -73,7 +73,7 @@ export class AppHeader extends LitElement {
 				${when(
 					this.user,
 					() => html`<div class="avatar" @click=${() => this.signOut()}>${this.initials}</div>`,
-					() => html`<button class="primary" @click=${() => this.signIn()}>Sign in</button>`
+					() => html`<app-button variant="primary" @click=${() => this.signIn()}>Sign in</app-button>`
 				)}
 			</header>
 		`

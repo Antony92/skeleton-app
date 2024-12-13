@@ -32,7 +32,7 @@ export const appDialogStyle = css`
 		.container {
 			display: grid;
 			grid-template-rows: auto 1fr auto;
-			row-gap: 10px;
+			row-gap: 20px;
 			align-items: start;
 			max-block-size: 80vh;
 			padding: 15px;
@@ -65,6 +65,7 @@ export const appDialogStyle = css`
 		footer {
 			display: flex;
 			justify-content: flex-end;
+			gap: 10px;
 		}
 	}
 `
