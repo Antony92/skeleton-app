@@ -7,7 +7,20 @@ import { appGlobalMessageStyle } from './app-global-message.style'
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {
-	static styles = [appGlobalMessageStyle, iconStyle, focusStyle, css``]
+	static styles = [
+		appGlobalMessageStyle,
+		iconStyle,
+		focusStyle,
+		css`
+			:host {
+				display: none;
+			}
+
+			:host([open]) {
+				display: block;
+			}
+		`,
+	]
 
 	@property({ type: String, reflect: true })
 	level: 'info' | 'warning' | 'error' = 'info'
@@ -18,31 +31,22 @@ export class AppGlobalMessage extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	open = false
 
-	protected firstUpdated() {
-		this.globalMessage.addEventListener('toggle', async (event) => {
-			const state = (event as ToggleEvent).newState
-			await Promise.allSettled(this.globalMessage.getAnimations().map(a => a.finished))
-			if (state === 'open') {
-				this.open = true
-				this.dispatchEvent(new Event('app-after-open'))
-			}
-			if (state === 'closed') {
-				this.open = false
-				this.dispatchEvent(new Event('app-after-hide'))
-			}
-		})
-	}
-
 	async show() {
+		this.open = true
 		await this.updateComplete
 		this.globalMessage.showPopover()
+		this.dispatchEvent(new Event('app-show'))
 		await this.animation()
+		this.dispatchEvent(new Event('app-after-show'))
 	}
 
 	async hide() {
 		await this.updateComplete
+		this.dispatchEvent(new Event('app-hide'))
 		await this.animation(true)
 		this.globalMessage.hidePopover()
+		this.dispatchEvent(new Event('app-after-hide'))
+		this.open = false
 	}
 
 	async animation(reverse = false) {

@@ -2,7 +2,6 @@ import { css } from 'lit'
 
 export const appGlobalMessageStyle = css`
 	.global-message {
-		display: flex;
 		align-items: center;
 		gap: 10px;
 		min-width: 300px;
@@ -15,6 +14,7 @@ export const appGlobalMessageStyle = css`
 		color: var(--theme-white);
 
 		&:popover-open {
+			display: flex;
 			inset: auto;
 			right: 0px;
 			left: 0px;
@@ -44,7 +44,6 @@ export const appGlobalMessageStyle = css`
 			background: none;
 			cursor: pointer;
 			border: none;
-			color: var(--theme-white);
 		}
 	}
 `
