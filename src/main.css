@@ -28,7 +28,7 @@
 
 	/* Layers */
 	--theme-default-layer: light-dark(var(--gray-2), var(--gray-7));
-	--theme-reverse-layer: light-dark(var(--gray-10), var(--gray-1));
+	--theme-inverse-layer: light-dark(var(--gray-10), var(--gray-1));
 	--theme-info-layer: light-dark(var(--blue-7), var(--blue-7));
 	--theme-error-layer: light-dark(var(--red-8), var(--red-8));
 	--theme-warning-layer: light-dark(var(--yellow-8), var(--yellow-8));
