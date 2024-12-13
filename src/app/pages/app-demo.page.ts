@@ -1,16 +1,15 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
-import { faMagnifyingGlassIcon, iconStyle } from '@app/styles/icon.style'
 import { globalMessage } from '@app/shared/global-message'
 import '@app/elements/dialog/app-dialog.element'
 import '@app/elements/button/app-button.element'
+import '@app/elements/icon/app-icon.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
 
 @customElement('app-demo')
 export class AppDemo extends LitElement {
 	static styles = [
-		iconStyle,
 		css`
 			:host {
 				display: flex;
@@ -30,9 +29,7 @@ export class AppDemo extends LitElement {
 	@query('app-dialog')
 	appDialog!: AppDialog
 
-	protected async firstUpdated() {
-
-	}
+	protected async firstUpdated() {}
 
 	render() {
 		return html`
@@ -46,16 +43,16 @@ export class AppDemo extends LitElement {
 				<app-button variant="error">Error</app-button>
 				<app-button variant="primary" disabled>Disabled</app-button>
 				<app-button variant="primary">
-					<i class="icon">${faMagnifyingGlassIcon}</i>
+					<app-icon prefix="fas" name="skull"></app-icon>
 					Right icon
 				</app-button>
 				<app-button variant="primary">
 					Left icon
-					<i class="icon">${faMagnifyingGlassIcon}</i>
+					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
 				<app-button variant="text">Only text</app-button>
 				<app-button variant="icon">
-					<i class="icon">${faMagnifyingGlassIcon}</i>
+					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
 			</fieldset>
 

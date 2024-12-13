@@ -47,9 +47,8 @@ export const appSidebarStyle = css`
 						transition: background-color 0.3s;
 
 						.icon {
+							font-size: 1.2rem;
 							transition: scale 0.3s ease-in-out;
-                            width: 1.2rem;
-                            height: 1.2rem;
 						}
 					}
 

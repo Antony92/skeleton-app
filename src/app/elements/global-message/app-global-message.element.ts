@@ -1,7 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js'
-import { faInfoCircleIcon, faTriangleExclamationIcon, faCircleExclamationIcon, iconStyle } from '@app/styles/icon.style'
 import { focusStyle } from '@app/styles/focus.style'
 import { appGlobalMessageStyle } from './app-global-message.style'
 
@@ -9,7 +8,6 @@ import { appGlobalMessageStyle } from './app-global-message.style'
 export class AppGlobalMessage extends LitElement {
 	static styles = [
 		appGlobalMessageStyle,
-		iconStyle,
 		focusStyle,
 		css`
 			:host {
@@ -18,6 +16,10 @@ export class AppGlobalMessage extends LitElement {
 
 			:host([open]) {
 				display: block;
+			}
+
+			.icon {
+				font-size: 1.2rem;
 			}
 		`,
 	]
@@ -70,9 +72,9 @@ export class AppGlobalMessage extends LitElement {
 				${choose(
 					this.level,
 					[
-						['info', () => html`<i class="icon">${faInfoCircleIcon}</i>`],
-						['warning', () => html`<i class="icon">${faTriangleExclamationIcon}</i>`],
-						['error', () => html`<i class="icon">${faCircleExclamationIcon}</i>`],
+						['info', () => html`<app-icon class="icon" name="info-circle"></app-icon>`],
+						['warning', () => html`<app-icon class="icon" name="triangle-exclamation"></app-icon>`],
+						['error', () => html`<app-icon class="icon" name="circle-exclamation"></app-icon>`],
 					],
 					() => html``
 				)}

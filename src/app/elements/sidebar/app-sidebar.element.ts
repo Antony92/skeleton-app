@@ -5,11 +5,11 @@ import { Router, RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'
-import { faHomeIcon, faSkullIcon, faScrewdriverWrenchIcon, iconStyle } from '@app/styles/icon.style'
+import "@app/elements/icon/app-icon.element"
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
-	static styles = [appSidebarStyle, iconStyle, css``]
+	static styles = [appSidebarStyle, css``]
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -37,7 +37,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/home" class=${classMap({ active: location.pathname.includes('/home') })}>
 							<span>
-								<i class="icon">${faHomeIcon}</i>
+								<app-icon name="home" class="icon"></app-icon>
 							</span>
 							<span>Home</span>
 						</a>
@@ -45,7 +45,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/demo" class=${classMap({ active: location.pathname.includes('/demo') })}>
 							<span>
-								<i class="icon">${faSkullIcon}</i>
+								<app-icon name="skull" class="icon"></app-icon>
 							</span>
 							<span>Demo</span>
 						</a>
@@ -56,7 +56,7 @@ export class AppSidebar extends LitElement {
 							<li class="bottom hide-on-mobile">
 								<a href="/admin" class=${classMap({ active: location.pathname.includes('/admin') })}>
 									<span>
-										<i class="icon">${faScrewdriverWrenchIcon}</i>
+										<app-icon name="screwdriver-wrench" class="icon"></app-icon>
 									</span>
 									<span>Admin</span>
 								</a>

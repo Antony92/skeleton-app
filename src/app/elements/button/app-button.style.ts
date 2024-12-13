@@ -10,6 +10,7 @@ export const appButtonStyle = css`
 		border: none;
 		border-radius: var(--radius-2);
 		padding: 10px;
+		font-size: inherit;
 		font-weight: var(--font-weight-6);
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
