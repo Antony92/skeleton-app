@@ -70,7 +70,7 @@ export const confirmDialog = async (options: { header: string; message: string; 
 		modal: true,
 		innerHTML: `
 			${escapeHtml(message)}
-			<app-button slot="footer" variant="secondary" app-dialog-close="false">Cancel</app-button>
+			<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 			<app-button slot="footer" variant="primary" autofocus app-dialog-close="true">Confirm</app-button>
 		`,
 	})
@@ -116,7 +116,7 @@ export const confirmInputDialog = async (options: { header: string; message: str
 		innerHTML: `
 			${escapeHtml(message)}
 			<input value=${input}/>
-			<app-button slot="footer" variant="secondary" app-dialog-close="false">Cancel</app-button>
+			<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 			<app-button slot="footer" variant="primary">Confirm</app-button>
 		`,
 	})

@@ -36,9 +36,9 @@
 	--theme-error-hover: light-dark(var(--red-7), var(--red-7));
 
 	/* Layers */
-	--theme-default-layer: light-dark(var(--gray-2), var(--gray-7));
-	--theme-inverse-layer: light-dark(var(--gray-10), var(--gray-1));
-	--theme-primary-layer: light-dark(var(--gray-10), var(--gray-1));
+	--theme-default-layer: light-dark(var(--gray-2), var(--gray-9));
+	--theme-inverse-layer: light-dark(var(--gray-9), var(--gray-2));
+	--theme-primary-layer: light-dark(var(--blue-8), var(--blue-8));
 	--theme-error-layer: light-dark(var(--red-8), var(--red-8));
 	--theme-warning-layer: light-dark(var(--yellow-8), var(--yellow-8));
 	--theme-success-layer: light-dark(var(--green-8), var(--green-8));
