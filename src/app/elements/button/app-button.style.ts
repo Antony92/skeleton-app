@@ -13,7 +13,6 @@ export const appButtonStyle = css`
 		font-weight: var(--font-weight-6);
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
-		animation: var(--animation-blink);
 
 		&.icon,
 		&.text {
