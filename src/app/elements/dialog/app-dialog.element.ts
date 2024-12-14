@@ -77,8 +77,8 @@ export class AppDialog extends LitElement {
 		await this.updateComplete
 		await this.openAnimation(true)
 		this.dialog.close(value)
-		this.dispatchEvent(new Event('app-after-hide'))
 		this.open = false
+		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
 	openAnimation(reverse = false) {

@@ -1,0 +1,79 @@
+import { css } from 'lit'
+
+export const appSnackbarStyle = css`
+	.snackbar {
+		align-items: center;
+		gap: 10px;
+		max-width: 85vw;
+		box-shadow: var(--shadow-2);
+		padding: 15px;
+		border: none;
+		border-radius: 0.25rem;
+
+		&:popover-open {
+			display: flex;
+			inset: auto;
+		}
+
+		&.top {
+			right: 0;
+			left: 0;
+			top: 15px;
+		}
+
+		&.top-right {
+			right: 15px;
+			left: 0;
+			top: 15px;
+		}
+
+		&.top-left {
+			right: 0;
+			left: 15px;
+			top: 15px;
+		}
+
+
+		&.bottom {
+			right: 0;
+			left: 0;
+			bottom: 15px;
+		}
+
+		&.bottom-right {
+			right: 15px;
+			left: 0;
+			bottom: 15px;
+		}
+
+		&.bottom-left {
+			right: 0;
+			left: 15px;
+			bottom: 15px;
+		}
+
+		&.default {
+			background-color: var(--theme-inverse-layer);
+			color: var(--theme-dark-color);
+		}
+
+		&.primary {
+			background-color: var(--theme-primary-layer);
+			color: var(--theme-white-color);
+		}
+
+		&.error {
+			background-color: var(--theme-error-layer);
+			color: var(--theme-white-color);
+		}
+
+		&.warning {
+			background-color: var(--theme-warning-layer);
+			color: var(--theme-white-color);
+		}
+
+		slot[name="icon"] {
+			font-size: 1.2rem;
+		}
+	}
+`

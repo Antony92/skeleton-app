@@ -47,8 +47,8 @@ export class AppGlobalMessage extends LitElement {
 		await this.updateComplete
 		await this.animation(true)
 		this.globalMessage.hidePopover()
-		this.dispatchEvent(new Event('app-after-hide'))
 		this.open = false
+		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
 	async animation(reverse = false) {

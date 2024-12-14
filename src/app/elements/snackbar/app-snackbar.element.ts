@@ -1,32 +1,40 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
+import { appSnackbarStyle } from './app-snackbar.style'
+import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-snackbar')
 export class AppSnackbar extends LitElement {
-	static styles = css`
-		:host {
-			display: none;
-		}
+	static styles = [
+		appSnackbarStyle,
+		css`
+			:host {
+				display: none;
+			}
 
-		:host([open]) {
-			display: block;
-		}
-	`
+			:host([open]) {
+				display: block;
+			}
+		`,
+	]
 
 	@query('.snackbar')
 	snackbar!: HTMLDivElement
 
 	@queryAssignedElements({ slot: 'action', selector: '[app-snackbar-close]' })
-	actionElements!: Array<HTMLElement>
+	closeElements!: Array<HTMLElement>
 
 	@property({ type: String, reflect: true })
 	variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
+
+	@property({ type: String, reflect: true })
+	position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom'
 
 	@property({ type: Number })
 	duration = 0
 
 	protected firstUpdated() {
-		this.actionElements.forEach((element) => element.addEventListener('click', () => this.hide()))
+		this.closeElements.forEach((element) => element.addEventListener('click', () => this.hide()))
 	}
 
 	@property({ type: Boolean, reflect: true })
@@ -50,8 +58,8 @@ export class AppSnackbar extends LitElement {
 		await this.updateComplete
 		await this.animation(true)
 		this.snackbar.hidePopover()
-		this.dispatchEvent(new Event('app-after-hide'))
 		this.open = false
+		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
 	async animation(reverse = false) {
@@ -71,7 +79,8 @@ export class AppSnackbar extends LitElement {
 
 	render() {
 		return html`
-			<div class="snackbar" popover="manual">
+			<div class="snackbar" popover="manual" class=${classMap({ [this.variant]: true, 'snackbar': true, [this.position]: true })}>
+				<slot name="icon"></slot>
 				<slot></slot>
 				<slot name="action"></slot>
 			</div>

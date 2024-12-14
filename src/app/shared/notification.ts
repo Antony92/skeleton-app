@@ -29,7 +29,7 @@ export const notify = async (notification: {
 
 	let snackbar = document.querySelector<AppSnackbar>('app-snackbar#snackbar')
 
-	const template = html` ${when(icon, () => html`<app-icon name="${icon}"></app-icon>`)} ${message} `
+	const template = html` ${when(icon, () => html`<app-icon slot="icon" name=${icon}></app-icon>`)} ${message} `
 
 	// If exist update else create
 	if (snackbar) {

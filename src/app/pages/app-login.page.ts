@@ -21,10 +21,6 @@ export class AppLogin extends LitElement {
 				gap: 10px;
 				height: 100%;
 			}
-
-			sl-spinner {
-				font-size: 3rem;
-			}
 		`,
 	]
 

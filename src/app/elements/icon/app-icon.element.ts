@@ -26,14 +26,14 @@ export class AppIcon extends LitElement {
 	prefix: IconPrefix = 'fas'
 
 	@property({ type: String, reflect: true })
-	name: IconName = 'skull'
+	name: string = 'skull'
 
 	@state()
 	private svg = ''
 	
 	protected willUpdate(changedProperties: PropertyValues): void {
 		if (changedProperties.has('name')) {
-			const definition = findIconDefinition({ prefix: this.prefix, iconName: this.name })
+			const definition = findIconDefinition({ prefix: this.prefix, iconName: this.name as IconName })
 			this.svg = icon(definition)?.html[0] || 'not_found'
 		}
 	}

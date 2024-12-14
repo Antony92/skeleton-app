@@ -9,7 +9,6 @@ export const appGlobalMessageStyle = css`
 		padding: 15px;
 		border: none;
 		border-radius: 0.25rem;
-		font-size: var(--font-size-1);
 		font-weight: var(--font-weight-5);
 		color: var(--theme-white-color);
 
@@ -34,8 +33,6 @@ export const appGlobalMessageStyle = css`
 		}
 
 		.icon {
-			width: var(--size-4);
-			height: var(--size-4);
 			color: var(--theme-white-color);
 		}
 
@@ -44,6 +41,7 @@ export const appGlobalMessageStyle = css`
 			background: none;
 			cursor: pointer;
 			border: none;
+			color: var(--theme-white-color);
 		}
 	}
 `
