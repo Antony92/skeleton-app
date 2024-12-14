@@ -1,4 +1,4 @@
-import { escapeHtml } from '@app/utils/html'
+import { html, render } from 'lit'
 
 /**
  * Show generic dialog
@@ -13,22 +13,26 @@ export const dialog = async (options: { header: string; message: string; modal?:
 	const { promise, resolve, reject } = Promise.withResolvers<void>()
 
 	// Don't open dialog if another is already opened
-	if (document.body.querySelector('#dialog')) {
+	if (document.body.querySelector('app-dialog#dialog')) {
 		reject('Dialog already opened')
 		return
 	}
 
 	const { header, message, modal = false } = options
 
+	const template = html`
+		${message}
+		<app-button slot="footer" class="primary" autofocus app-dialog-close>Close</app-button>
+	`
+
 	const dialog = Object.assign(document.createElement('app-dialog'), {
 		id: 'dialog',
 		header,
 		modal,
-		innerHTML: `
-			${escapeHtml(message)}
-			<app-button slot="footer" class="primary" autofocus app-dialog-close>Close</app-button>
-		`,
 	})
+
+	// Render template in dialog
+	render(template, dialog)
 
 	// On hide complete remove dialog from DOM
 	dialog.addEventListener('app-after-hide', () => dialog.remove())
@@ -36,8 +40,8 @@ export const dialog = async (options: { header: string; message: string; modal?:
 	// Resolve when dialog hide
 	dialog.addEventListener('app-hide', async () => resolve())
 
-	// Append dialog to body
-	document.body.appendChild(dialog)
+	// Render dialog in body
+	render(dialog, document.body)
 
 	// Show dialog
 	dialog.show()
@@ -50,30 +54,34 @@ export const dialog = async (options: { header: string; message: string; modal?:
  * @param options
  * @returns Promise
  */
-export const confirmDialog = async (options: { header: string; message: string; }) => {
+export const confirmDialog = async (options: { header: string; message: string }) => {
 	await import('@app/elements/dialog/app-dialog.element')
 	await import('@app/elements/button/app-button.element')
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
 
 	// Don't open dialog if another is already opened
-	if (document.body.querySelector('#dialog')) {
+	if (document.body.querySelector('app-dialog#confirm-dialog')) {
 		reject('Dialog already opened')
 		return
 	}
 
 	const { header, message } = options
 
+	const template = html`
+		${message}
+		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
+		<app-button slot="footer" variant="primary" autofocus app-dialog-close="true">Confirm</app-button>
+	`
+
 	const dialog = Object.assign(document.createElement('app-dialog'), {
-		id: 'dialog',
+		id: 'confirm-dialog',
 		header,
 		modal: true,
-		innerHTML: `
-			${escapeHtml(message)}
-			<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
-			<app-button slot="footer" variant="primary" autofocus app-dialog-close="true">Confirm</app-button>
-		`,
 	})
+
+	// Render template in dialog
+	render(template, dialog)
 
 	// On hide complete remove dialog from DOM
 	dialog.addEventListener('app-after-hide', () => dialog.remove())
@@ -82,7 +90,7 @@ export const confirmDialog = async (options: { header: string; message: string; 
 	dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'))
 
 	// Append dialog to body
-	document.body.appendChild(dialog)
+	render(dialog, document.body)
 
 	// Show dialog
 	dialog.show()
@@ -95,31 +103,35 @@ export const confirmDialog = async (options: { header: string; message: string; 
  * @param options
  * @returns Promise
  */
-export const confirmInputDialog = async (options: { header: string; message: string; input: string; }) => {
+export const confirmInputDialog = async (options: { header: string; message: string; input: string }) => {
 	await import('@app/elements/dialog/app-dialog.element')
 	await import('@app/elements/button/app-button.element')
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
 
 	// Don't open dialog if another is already opened
-	if (document.body.querySelector('#dialog')) {
+	if (document.body.querySelector('app-dialog#confirm-input-dialog')) {
 		reject('Dialog already opened')
 		return
 	}
 
 	const { header, message, input } = options
 
+	const template = html`
+		${message}
+		<input value=${input} />
+		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
+		<app-button slot="footer" variant="primary" autofocus app-dialog-close="true">Confirm</app-button>
+	`
+
 	const dialog = Object.assign(document.createElement('app-dialog'), {
-		id: 'dialog',
+		id: 'confirm-input-dialog',
 		header,
 		modal: true,
-		innerHTML: `
-			${escapeHtml(message)}
-			<input value=${input}/>
-			<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
-			<app-button slot="footer" variant="primary">Confirm</app-button>
-		`,
 	})
+
+	// Render template in dialog
+	render(template, dialog)
 
 	// On hide complete remove dialog from DOM
 	dialog.addEventListener('app-after-hide', () => dialog.remove())
@@ -128,7 +140,7 @@ export const confirmInputDialog = async (options: { header: string; message: str
 	dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'))
 
 	// Append dialog to body
-	document.body.appendChild(dialog)
+	render(dialog, document.body)
 
 	// Show dialog
 	dialog.show()

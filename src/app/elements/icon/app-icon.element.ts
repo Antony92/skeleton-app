@@ -29,9 +29,9 @@ export class AppIcon extends LitElement {
 	name: IconName = 'skull'
 
 	@state()
-	svg = ''
-
-	protected updated(changedProperties: PropertyValues): void {
+	private svg = ''
+	
+	protected willUpdate(changedProperties: PropertyValues): void {
 		if (changedProperties.has('name')) {
 			const definition = findIconDefinition({ prefix: this.prefix, iconName: this.name })
 			this.svg = icon(definition)?.html[0] || 'not_found'

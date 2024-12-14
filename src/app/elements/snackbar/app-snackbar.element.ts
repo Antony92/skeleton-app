@@ -20,7 +20,7 @@ export class AppSnackbar extends LitElement {
 	actionElements!: Array<HTMLElement>
 
 	@property({ type: String, reflect: true })
-	type: 'default' | 'info' | 'success' | 'error' | 'warning' = 'default'
+	variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
 
 	@property({ type: Number })
 	duration = 0
@@ -33,17 +33,21 @@ export class AppSnackbar extends LitElement {
 	open = false
 
 	async show() {
+		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
+			return
+		}
 		this.open = true
 		await this.updateComplete
 		this.snackbar.showPopover()
-		this.dispatchEvent(new Event('app-show'))
 		await this.animation()
 		this.dispatchEvent(new Event('app-after-show'))
 	}
 
 	async hide() {
+		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+			return
+		}
 		await this.updateComplete
-		this.dispatchEvent(new Event('app-hide'))
 		await this.animation(true)
 		this.snackbar.hidePopover()
 		this.dispatchEvent(new Event('app-after-hide'))

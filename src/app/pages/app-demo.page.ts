@@ -6,6 +6,7 @@ import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
+import { notify } from '@app/shared/notification'
 
 @customElement('app-demo')
 export class AppDemo extends LitElement {
@@ -77,6 +78,21 @@ export class AppDemo extends LitElement {
 						})}
 				>
 					Open confirm dialog
+				</app-button>
+			</fieldset>
+
+			<fieldset>
+				<legend>Snackbar</legend>
+				<app-button
+					variant="primary"
+					@click=${() =>
+						notify({
+							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+							variant: 'default',
+							icon: 'home'
+						})}
+				>
+					Open snackbar
 				</app-button>
 			</fieldset>
 

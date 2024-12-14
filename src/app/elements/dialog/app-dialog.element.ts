@@ -60,17 +60,21 @@ export class AppDialog extends LitElement {
 	}
 
 	async show() {
+		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
+			return
+		}
 		this.open = true
 		await this.updateComplete
 		this.dialog.showModal()
-		this.dispatchEvent(new Event('app-show'))
 		await this.openAnimation()
 		this.dispatchEvent(new Event('app-after-show'))
 	}
 
 	async hide(value?: string) {
+		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+			return
+		}
 		await this.updateComplete
-		this.dispatchEvent(new Event('app-hide'))
 		await this.openAnimation(true)
 		this.dialog.close(value)
 		this.dispatchEvent(new Event('app-after-hide'))

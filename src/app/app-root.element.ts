@@ -26,7 +26,7 @@ export class AppRoot extends LitElement {
 		})
 		serverEventSource.addEventListener('error', (event) => {
 			serverEventSource.close()
-			notify({ variant: 'danger', message: 'Could not establish connection to server', duration: 5000 })
+			// notify({ variant: 'danger', message: 'Could not establish connection to server', duration: 5000 })
 		})
 	}
 

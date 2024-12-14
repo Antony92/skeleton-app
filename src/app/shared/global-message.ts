@@ -1,4 +1,5 @@
-import { escapeHtml } from '@app/utils/html'
+import { AppGlobalMessage } from '@app/elements/global-message/app-global-message.element'
+import { html, render } from 'lit'
 
 /**
  * Show global message
@@ -8,24 +9,25 @@ import { escapeHtml } from '@app/utils/html'
 export const globalMessage = async (message: string, level: 'info' | 'warning' | 'error' = 'info') => {
 	await import('@app/elements/global-message/app-global-message.element')
 
-	let element = document.querySelector('app-global-message')
+	let globalMessage = document.querySelector<AppGlobalMessage>('app-global-message#global-message')
+
+	const template = html`${message}`
 
 	// If exist update else create
-	if (element) {
-		Object.assign(element, {
-			level,
-			innerHTML: `${escapeHtml(message)}`,
-		})
+	if (globalMessage) {
+		Object.assign(globalMessage, { level })
+		render(template, globalMessage)
 	} else {
-		element = Object.assign(document.createElement('app-global-message'), {
+		globalMessage = Object.assign(document.createElement('app-global-message'), {
+			id: 'global-message',
 			level,
-			innerHTML: `${escapeHtml(message)}`,
 		})
-		document.body.appendChild(element)
+		render(template, globalMessage)
+		render(globalMessage, document.body)
 	}
 
 	// Remove from DOM after hide animation finishes
-	element.addEventListener('app-after-hide', () => element.remove())
+	globalMessage.addEventListener('app-after-hide', () => globalMessage.remove())
 
-	element.show()
+	return globalMessage.show()
 }
