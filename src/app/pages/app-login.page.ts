@@ -70,7 +70,7 @@ export class AppLogin extends LitElement {
 					this.error,
 					() => html`<p>${this.error}</p>`,
 					() => html`
-						<l-ring-2 color="var(--dark-theme-primary)"></l-ring-2>
+						<l-ring-2 color="var(--theme-primary-color)"></l-ring-2>
 						<p>Authenticating...</p>
 					`
 				)}

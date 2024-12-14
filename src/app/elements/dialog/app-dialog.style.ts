@@ -4,6 +4,7 @@ export const appDialogStyle = css`
 	dialog {
 		inset: 0;
 		padding: 0;
+		outline: 0;
 		max-inline-size: min(90vw, 60ch);
 		max-block-size: min(80vh, 100%);
 		overflow: hidden;
