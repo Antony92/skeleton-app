@@ -89,7 +89,8 @@ export class AppDemo extends LitElement {
 						notify({
 							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
 							variant: 'default',
-							icon: 'home'
+							icon: 'home',
+							action: 'Close'
 						})}
 				>
 					Open snackbar

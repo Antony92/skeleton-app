@@ -75,5 +75,18 @@ export const appSnackbarStyle = css`
 		slot[name="icon"] {
 			font-size: 1.2rem;
 		}
+
+		button {
+			margin-left: auto;
+			background: none;
+			cursor: pointer;
+			border: none;
+			color: var(--theme-primary-color);
+			font-weight: var(--font-weight-6);
+
+			&:hover {
+				color: var(--theme-primary-hover);
+			}
+		}
 	}
 `

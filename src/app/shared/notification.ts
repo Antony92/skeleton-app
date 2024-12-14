@@ -7,13 +7,13 @@ export const notify = async (notification: {
 	variant?: 'default' | 'primary' | 'success' | 'warning' | 'error'
 	icon?: string | boolean
 	duration?: number
+	action?: string
 }) => {
 	await import('@app/elements/snackbar/app-snackbar.element')
 	await import('@app/elements/icon/app-icon.element')
+	await import('@app/elements/button/app-button.element')
 
-	const { message, variant = 'default', duration = 3000 } = notification
-
-	let icon = notification.icon || false
+	const { message, variant = 'default', duration = 3000, icon, action } = notification
 
 	const defaultIconMap = {
 		default: 'circle-info',
@@ -23,23 +23,22 @@ export const notify = async (notification: {
 		error: 'circle-exclamation',
 	}
 
-	if (icon === true && defaultIconMap[variant]) {
-		icon = defaultIconMap[variant]
-	}
-
 	let snackbar = document.querySelector<AppSnackbar>('app-snackbar#snackbar')
 
-	const template = html` ${when(icon, () => html`<app-icon slot="icon" name=${icon}></app-icon>`)} ${message} `
+	const iconName = typeof icon === 'string' ? icon : defaultIconMap[variant]
+
+	const template = html` ${when(icon, () => html`<app-icon slot="icon" name=${iconName}></app-icon>`)} ${message} `
 
 	// If exist update else create
 	if (snackbar) {
-		Object.assign(snackbar, { variant, duration })
+		Object.assign(snackbar, { variant, duration, action })
 		render(template, snackbar)
 	} else {
 		snackbar = Object.assign(document.createElement('app-snackbar'), {
 			id: 'global-message',
 			variant,
 			duration,
+			action,
 		})
 		render(template, snackbar)
 		render(snackbar, document.body)
