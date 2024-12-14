@@ -52,10 +52,10 @@ export class AppDemo extends LitElement {
 					Left icon
 					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
-				<app-button variant="primary" text>Only text</app-button>
 				<app-button variant="primary" icon>
 					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
+				<app-button variant="primary" text>Only text</app-button>
 			</fieldset>
 
 			<fieldset>
