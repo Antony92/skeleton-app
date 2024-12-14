@@ -20,11 +20,11 @@ library.add(fas, far, fab)
 
 // Load app
 Promise.allSettled([
-    await refreshTokenSilently(),
+    // await refreshTokenSilently(),
     import('./app/app-root.element'),
     customElements.whenDefined('app-root')
 ]).then(() => {
-    document.querySelector('body')?.classList.remove('loading')
-    document.querySelector('.loader')?.remove()
+    document.querySelector('body')?.classList.remove('initializing')
+    document.querySelector('.initializing-loader')?.remove()
 })
 

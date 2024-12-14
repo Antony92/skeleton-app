@@ -11,7 +11,7 @@ export const appGlobalMessageStyle = css`
 		border-radius: 0.25rem;
 		font-size: var(--font-size-1);
 		font-weight: var(--font-weight-5);
-		color: var(--theme-white);
+		color: var(--theme-white-color);
 
 		&:popover-open {
 			display: flex;
@@ -36,7 +36,7 @@ export const appGlobalMessageStyle = css`
 		.icon {
 			width: var(--size-4);
 			height: var(--size-4);
-			color: var(--theme-white);
+			color: var(--theme-white-color);
 		}
 
 		button {

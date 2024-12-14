@@ -8,7 +8,7 @@ export const appHeaderStyle = css`
 		height: 60px;
 		padding: 0 10px;
 		box-shadow: var(--shadow-1);
-		background-color: var(--theme-header);
+		background-color: var(--theme-header-background);
 		transition: background-color 300ms ease-in-out;
 	}
 
@@ -29,8 +29,8 @@ export const appHeaderStyle = css`
 		border-radius: 50%;
 		width: 50px;
 		height: 50px;
-		background-color: var(--theme-primary);
-		color: var(--theme-white);
+		background-color: var(--theme-primary-background);
+		color: var(--theme-white-color);
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -19,6 +19,7 @@ export class AppDemo extends LitElement {
 
 			fieldset {
 				display: flex;
+				align-items: center;
 				flex-wrap: wrap;
 				gap: 10px;
 				border-radius: var(--radius-2);

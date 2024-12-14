@@ -4,7 +4,7 @@ export const appSidebarStyle = css`
 	aside {
 		width: 90px;
 		height: 100%;
-		background-color: var(--theme-sidebar);
+		background-color: var(--theme-sidebar-background);
 		transition: background-color 300ms ease-in-out;
 
 		ul {
@@ -35,7 +35,7 @@ export const appSidebarStyle = css`
 					gap: 5px;
 					text-decoration: none;
 					cursor: pointer;
-					color: var(--theme-color);
+					color: var(--theme-default-color);
 
 					span:first-child {
 						display: flex;
@@ -62,17 +62,17 @@ export const appSidebarStyle = css`
 
 						span:first-child {
 							box-shadow: var(--shadow-1);
-							background-color: var(--theme-primary);
-							color: var(--theme-primary);
+							background-color: var(--theme-primary-background);
+							color: var(--theme-primary-color);
 
 							.icon {
-                                color: var(--theme-white);
+                                color: var(--theme-white-color);
 								scale: 1.1;
 							}
 						}
 
 						span:last-child {
-							color: var(--theme-primary);
+							color: var(--theme-primary-color);
 						}
 					}
 

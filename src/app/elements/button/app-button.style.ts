@@ -18,16 +18,16 @@ export const appButtonStyle = css`
 		&.text {
 			background: none;
 			box-shadow: none;
-			color: var(--theme-primary);
+			color: var(--theme-primary-color);
 
 			&:hover:not(:disabled) {
-				opacity: 0.8;
+				color: var(--theme-primary-hover);
 			}
 		}
 
 		&.primary {
-			background-color: var(--theme-primary);
-			color: var(--theme-white);
+			background-color: var(--theme-primary-background);
+			color: var(--theme-white-color);
 
 			&:hover:not(:disabled) {
 				background-color: var(--theme-primary-hover);
@@ -35,8 +35,8 @@ export const appButtonStyle = css`
 		}
 
 		&.secondary {
-			background-color: var(--theme-secondary);
-			color: var(--theme-white);
+			background-color: var(--theme-secondary-background);
+			color: var(--theme-white-color);
 
 			&:hover:not(:disabled) {
 				background-color: var(--theme-secondary-hover);
@@ -44,8 +44,8 @@ export const appButtonStyle = css`
 		}
 
 		&.success {
-			background-color: var(--theme-success);
-			color: var(--theme-white);
+			background-color: var(--theme-success-background);
+			color: var(--theme-white-color);
 
 			&:hover:not(:disabled) {
 				background-color: var(--theme-success-hover);
@@ -53,8 +53,8 @@ export const appButtonStyle = css`
 		}
 
 		&.error {
-			background-color: var(--theme-error);
-			color: var(--theme-white);
+			background-color: var(--theme-error-background);
+			color: var(--theme-white-color);
 
 			&:hover:not(:disabled) {
 				background-color: var(--theme-error-hover);
@@ -62,8 +62,8 @@ export const appButtonStyle = css`
 		}
 
 		&.warning {
-			background-color: var(--theme-warning);
-			color: var(--theme-white);
+			background-color: var(--theme-warning-background);
+			color: var(--theme-white-color);
 
 			&:hover:not(:disabled) {
 				background-color: var(--theme-warning-hover);
@@ -77,7 +77,7 @@ export const appButtonStyle = css`
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--theme-color);
+			outline: 2px solid var(--theme-default-color);
 			border-radius: 2px;
 		}
 	}
