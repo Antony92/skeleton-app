@@ -22,7 +22,7 @@ export const appGlobalMessageStyle = css`
 		}
 
 		&.info {
-			background-color: var(--theme-info-layer);
+			background-color: var(--theme-primary-layer);
 		}
 
 		&.error {

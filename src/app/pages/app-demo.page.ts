@@ -38,6 +38,7 @@ export class AppDemo extends LitElement {
 			<fieldset>
 				<legend>Buttons</legend>
 				<app-button variant="primary">Primary</app-button>
+				<app-button variant="primary" outlined>Outlined</app-button>
 				<app-button variant="secondary">Secondary</app-button>
 				<app-button variant="success">Success</app-button>
 				<app-button variant="warning">Warning</app-button>
@@ -51,8 +52,8 @@ export class AppDemo extends LitElement {
 					Left icon
 					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
-				<app-button variant="text">Only text</app-button>
-				<app-button variant="icon">
+				<app-button variant="primary" text>Only text</app-button>
+				<app-button variant="primary" icon>
 					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
 			</fieldset>
