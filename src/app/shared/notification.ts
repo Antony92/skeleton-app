@@ -34,7 +34,7 @@ export const notify = async (notification: {
 
 	// If exist update else create
 	if (snackbar) {
-		Object.assign(snackbar, { variant, duration, action })
+		Object.assign(snackbar, { variant, duration, action: action?.label })
 		render(template, snackbar)
 	} else {
 		snackbar = Object.assign(document.createElement('app-snackbar'), {
