@@ -7,7 +7,10 @@ export const notify = async (notification: {
 	variant?: 'default' | 'primary' | 'success' | 'warning' | 'error'
 	icon?: string | boolean
 	duration?: number
-	action?: string
+	action?: {
+		label: string,
+		onAction?: (event: Event) => void
+	}
 }) => {
 	await import('@app/elements/snackbar/app-snackbar.element')
 	await import('@app/elements/icon/app-icon.element')
@@ -38,14 +41,18 @@ export const notify = async (notification: {
 			id: 'global-message',
 			variant,
 			duration,
-			action,
+			action: action?.label,
 		})
 		render(template, snackbar)
 		render(snackbar, document.body)
 	}
 
+	snackbar.addEventListener('app-action', (event: Event) => action?.onAction?.(event))
+
 	// Remove from DOM after hide animation finishes
 	snackbar.addEventListener('app-after-hide', () => snackbar.remove())
 
-	return snackbar.show()
+	snackbar.show()
+	
+	return snackbar
 }

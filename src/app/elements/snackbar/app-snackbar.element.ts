@@ -61,7 +61,6 @@ export class AppSnackbar extends LitElement {
 		await this.animation(true)
 		this.snackbar.hidePopover()
 		this.open = false
-		console.log('tuka')
 		this.dispatchEvent(new Event('app-after-hide'))
 	}
 
@@ -81,12 +80,19 @@ export class AppSnackbar extends LitElement {
 		return animation.finished
 	}
 
+	onAction() {
+		if (!this.dispatchEvent(new Event('app-action', { cancelable: true }))) {
+			return
+		}
+		this.hide()
+	}
+
 	render() {
 		return html`
 			<div class="snackbar" popover="manual" class=${classMap({ snackbar: true, [this.variant]: true, [this.position]: true })}>
 				<slot name="icon"></slot>
 				<slot></slot>
-				${when(this.action, () => html`<button class="focus-visible" @click=${this.hide}>${this.action}</button>`)}
+				${when(this.action, () => html`<button class="focus-visible" @click=${this.onAction}>${this.action}</button>`)}
 			</div>
 		`
 	}
