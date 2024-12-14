@@ -35,7 +35,7 @@ export const appSidebarStyle = css`
 					gap: 5px;
 					text-decoration: none;
 					cursor: pointer;
-					color: var(--theme-default-color);
+					color: var(--theme-color);
 
 					span:first-child {
 						display: flex;

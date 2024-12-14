@@ -17,6 +17,32 @@ export const appButtonStyle = css`
 		&.icon {
 			font-size: inherit;
 		}
+
+		&.default {
+			background-color: var(--theme-default-background);
+			color: var(--theme-white-color);
+			
+			&.icon, &.text, &.outlined {
+				background-color: transparent;
+				box-shadow: none;
+				color: var(--theme-default-color);
+			}
+
+			&.outlined {
+				border: 1px solid var(--theme-default-color);
+				padding: calc(var(--size-fluid-1) - 1px);
+			}
+
+			&:hover:not(:disabled) {
+				background-color: var(--theme-default-hover);
+				color: var(--theme-white-color);
+
+				&.icon, &.text {
+					background-color: transparent;
+					color: var(--theme-default-hover);
+				}
+			}
+		}
 		
 		&.primary {
 			background-color: var(--theme-primary-background);
@@ -40,32 +66,6 @@ export const appButtonStyle = css`
 				&.icon, &.text {
 					background-color: transparent;
 					color: var(--theme-primary-hover);
-				}
-			}
-		}
-
-		&.secondary {
-			background-color: var(--theme-secondary-background);
-			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
-				background-color: transparent;
-				box-shadow: none;
-				color: var(--theme-secondary-color);
-			}
-
-			&.outlined {
-				border: 1px solid var(--theme-secondary-color);
-				padding: calc(var(--size-fluid-1) - 1px);
-			}
-
-			&:hover:not(:disabled) {
-				background-color: var(--theme-secondary-hover);
-				color: var(--theme-white-color);
-
-				&.icon, &.text {
-					background-color: transparent;
-					color: var(--theme-secondary-hover);
 				}
 			}
 		}
@@ -152,11 +152,6 @@ export const appButtonStyle = css`
 			opacity: 0.5;
 			box-shadow: none;
 			cursor: not-allowed;
-		}
-
-		&:focus-visible {
-			outline: 2px solid var(--theme-default-color);
-			border-radius: 2px;
 		}
 	}
 `

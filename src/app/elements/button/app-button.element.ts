@@ -2,13 +2,14 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { appButtonStyle } from './app-button.style'
 import { classMap } from 'lit/directives/class-map.js'
+import { focusStyle } from '@app/styles/focus.style'
 
 @customElement('app-button')
 export class AppButton extends LitElement {
-	static styles = [appButtonStyle, css``]
+	static styles = [appButtonStyle, focusStyle, css``]
 
 	@property({ type: String, reflect: true })
-	variant: 'primary' | 'secondary' | 'success' | 'warning' | 'error' = 'primary'
+	variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false
@@ -32,7 +33,8 @@ export class AppButton extends LitElement {
 		return html`
 			<button
 				part="button"
-				class="${classMap({ [this.variant]: true, outlined: this.outlined, text: this.text, icon: this.icon })}"
+				role="button"
+				class="${classMap({ [this.variant]: true, outlined: this.outlined, text: this.text, icon: this.icon, ['focus-visible']: true })}"
 				?disabled=${this.disabled}
 				?autofocus=${this.autofocus}
 				?hidden=${this.hidden}

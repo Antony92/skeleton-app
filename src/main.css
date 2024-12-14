@@ -3,34 +3,38 @@
 :root {
 	color-scheme: light dark;
 
+	/* Theme */
+	--theme-color: light-dark(var(--gray-12), var(--gray-1));
+	--theme-background: light-dark(var(--gray-1), var(--gray-12));
+
 	/* Elements */
+	--theme-background: light-dark(var(--gray-1), var(--gray-12));
 	--theme-header-background: light-dark(var(--gray-4), var(--gray-10));
 	--theme-sidebar-background: light-dark(var(--gray-3), var(--gray-9));
 
 	/* Backgrounds */
-	--theme-default-background: light-dark(var(--gray-1), var(--gray-12));
+	--theme-default-background: light-dark(var(--stone-8), var(--stone-8));
 	--theme-primary-background: light-dark(var(--blue-8), var(--blue-8));
-	--theme-secondary-background: light-dark(var(--stone-8), var(--stone-8));
+	--theme-neutral-background: light-dark(var(--stone-8), var(--stone-8));
 	--theme-warning-background: light-dark(var(--yellow-8), var(--yellow-8));
 	--theme-success-background: light-dark(var(--green-8), var(--green-8));
 	--theme-error-background: light-dark(var(--red-8), var(--red-8));
 
 	/* Colors */
-	--theme-default-color: light-dark(var(--gray-12), var(--gray-1));
-	--theme-primary-color: light-dark(var(--blue-8), var(--blue-8));
-	--theme-secondary-color: light-dark(var(--stone-8), var(--stone-8));
 	--theme-white-color: light-dark(var(--gray-1), var(--gray-1));
 	--theme-dark-color: light-dark(var(--gray-12), var(--gray-12));
+	--theme-default-color: light-dark(var(--stone-8), var(--stone-8));
+	--theme-primary-color: light-dark(var(--blue-8), var(--blue-8));
 	--theme-warning-color: light-dark(var(--yellow-8), var(--yellow-8));
 	--theme-success-color: light-dark(var(--green-8), var(--green-8));
 	--theme-error-color: light-dark(var(--red-8), var(--red-8));
 	
 	/* Hovers */
-	--theme-default-hover: light-dark(var(--stone-7), var(--stone-7));
-	--theme-primary-hover: light-dark(var(--blue-7), var(--blue-7));
-	--theme-secondary-hover: light-dark(var(--stone-7), var(--stone-7));
 	--theme-white-hover: light-dark(var(--gray-2), var(--gray-2));
 	--theme-dark-hover: light-dark(var(--gray-11), var(--gray-11));
+	--theme-default-hover: light-dark(var(--stone-7), var(--stone-7));
+	--theme-primary-hover: light-dark(var(--blue-7), var(--blue-7));
+	--theme-neutral-hover: light-dark(var(--stone-7), var(--stone-7));
 	--theme-warning-hover: light-dark(var(--yellow-7), var(--yellow-7));
 	--theme-success-hover: light-dark(var(--green-7), var(--green-7));
 	--theme-error-hover: light-dark(var(--red-7), var(--red-7));
@@ -51,8 +55,8 @@ body {
 	box-sizing: border-box;
 	font-family: var(--font-system-ui);
 	font-size: var(--font-size-1);
-	background-color: var(--theme-default-background);
-	color: var(--theme-default-color);
+	background-color: var(--theme-background);
+	color: var(--theme-color);
 	overflow: hidden;
 	transition: background-color 300ms ease-in-out;
 
@@ -83,7 +87,7 @@ body {
 	display: inline-block;
 	position: relative;
 	border: 3px solid;
-	border-color: var(--theme-default-color) var(--theme-default-color) transparent transparent;
+	border-color: var(--theme-color) var(--theme-color) transparent transparent;
 	box-sizing: border-box;
 	animation: loaderRotation 1s linear infinite;
 
@@ -98,7 +102,7 @@ body {
 		bottom: 0;
 		margin: auto;
 		border: 3px solid;
-		border-color: transparent transparent var(--theme-primary-color) var(--theme-primary-color);
+		border-color: transparent transparent var(--theme-color) var(--theme-color);
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
@@ -110,7 +114,7 @@ body {
 	&::before {
 		width: 32px;
 		height: 32px;
-		border-color: var(--theme-default-color) var(--theme-default-color) transparent transparent;
+		border-color: var(--theme-color) var(--theme-color) transparent transparent;
 		animation: loaderRotation 1.5s linear infinite;
 	}
 }

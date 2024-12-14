@@ -37,9 +37,9 @@ export class AppDemo extends LitElement {
 			Demo
 			<fieldset>
 				<legend>Buttons</legend>
+				<app-button variant="default">Default</app-button>
 				<app-button variant="primary">Primary</app-button>
 				<app-button variant="primary" outlined>Outlined</app-button>
-				<app-button variant="secondary">Secondary</app-button>
 				<app-button variant="success">Success</app-button>
 				<app-button variant="warning">Warning</app-button>
 				<app-button variant="error">Error</app-button>
