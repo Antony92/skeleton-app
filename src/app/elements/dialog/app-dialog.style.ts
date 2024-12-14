@@ -11,7 +11,6 @@ export const appDialogStyle = css`
 		box-shadow: var(--shadow-2);
 		border-radius: var(--radius-2);
 		background-color: var(--theme-default-layer);
-		color: var(--theme-color);
 
 		&::backdrop {
 			background: rgb(0 0 0 / 0%);
@@ -34,7 +33,7 @@ export const appDialogStyle = css`
 			grid-template-rows: auto 1fr auto;
 			row-gap: 20px;
 			align-items: start;
-			max-block-size: 80vh;
+			max-block-size: 70vh;
 			padding: 15px;
 		}
 
