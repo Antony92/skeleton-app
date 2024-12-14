@@ -88,7 +88,7 @@ export class AppDemo extends LitElement {
 					@click=${() =>
 						notify({
 							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
-							variant: 'default',
+							variant: 'success',
 							icon: 'home',
 							action: 'Close'
 						})}

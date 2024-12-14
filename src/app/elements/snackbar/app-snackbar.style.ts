@@ -52,6 +52,19 @@ export const appSnackbarStyle = css`
 			bottom: 15px;
 		}
 
+		button {
+			margin-left: auto;
+			background: none;
+			cursor: pointer;
+			border: none;
+			color: var(--theme-primary-color);
+			font-weight: var(--font-weight-6);
+
+			&:hover {
+				color: var(--theme-primary-hover);
+			}
+		}
+
 		&.default {
 			background-color: var(--theme-inverse-layer);
 			color: var(--theme-dark-color);
@@ -59,6 +72,11 @@ export const appSnackbarStyle = css`
 
 		&.primary {
 			background-color: var(--theme-primary-layer);
+			color: var(--theme-white-color);
+		}
+
+		&.success {
+			background-color: var(--theme-success-layer);
 			color: var(--theme-white-color);
 		}
 
@@ -74,19 +92,6 @@ export const appSnackbarStyle = css`
 
 		slot[name="icon"] {
 			font-size: 1.2rem;
-		}
-
-		button {
-			margin-left: auto;
-			background: none;
-			cursor: pointer;
-			border: none;
-			color: var(--theme-primary-color);
-			font-weight: var(--font-weight-6);
-
-			&:hover {
-				color: var(--theme-primary-hover);
-			}
 		}
 	}
 `
