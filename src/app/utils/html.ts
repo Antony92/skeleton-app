@@ -14,7 +14,3 @@ export const escapeHtml = (html: string) => {
 export const setDocumentTitle = (title: string) => {
 	document.title = `Skeleton App - ${title}`
 }
-
-export const createElementIfNotExist = (tagName: string, options?: any) => {
-
-}

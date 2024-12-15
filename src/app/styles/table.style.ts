@@ -1,7 +1,7 @@
 import { css } from 'lit'
 
-export const appTableStyle = css`
-	app-table table {
+export const tableStyle = css`
+	table {
 		width: 100%;
 		border-collapse: collapse;
 		position: relative;

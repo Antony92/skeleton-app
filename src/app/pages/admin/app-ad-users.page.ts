@@ -29,7 +29,7 @@ import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js'
 import { impersonate } from '@app/shared/auth'
 import { Router } from '@vaadin/router'
 import { setDocumentTitle } from '@app/utils/html'
-import { appTableStyle } from '@app/elements/table/app-table.style'
+import { appTableStyle } from '@app/styles/table.style'
 import { AppTable } from '@app/elements/table/app-table.element'
 
 @customElement('app-ad-users')

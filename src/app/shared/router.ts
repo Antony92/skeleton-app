@@ -27,6 +27,18 @@ const routes: Route[] = [
 		],
 	},
 	{
+		path: '/table',
+		children: [
+			{
+				path: '/',
+				component: 'app-table',
+				action: async (context, command) => {
+					await import('@app/pages/app-table.page')
+				},
+			},
+		],
+	},
+	{
 		path: '/feedback',
 		action: authGuard(),
 		children: [

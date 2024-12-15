@@ -1,5 +1,3 @@
-import { render } from 'lit'
-
 export const loading = async (show = false) => {
 	await import('@app/elements/loader/app-loader.element')
 
@@ -7,7 +5,7 @@ export const loading = async (show = false) => {
 
 	if (show && !loader) {
 		loader = document.createElement('app-loader')
-		render(loader, document.body)
+		document.body.appendChild(loader)
 	}
 
 	if (!show && loader) {

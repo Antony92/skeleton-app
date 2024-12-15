@@ -50,10 +50,18 @@ export class AppSidebar extends LitElement {
 							<span>Demo</span>
 						</a>
 					</li>
+					<li>
+						<a href="/table" class=${classMap({ active: location.pathname.includes('/table') })}>
+							<span>
+								<app-icon name="table" class="icon"></app-icon>
+							</span>
+							<span>Table</span>
+						</a>
+					</li>
 					${whenUserRole(
 						[Role.ADMIN],
 						() => html`
-							<li class="bottom hide-on-mobile">
+							<li class="bottom" hide-on-mobile>
 								<a href="/admin" class=${classMap({ active: location.pathname.includes('/admin') })}>
 									<span>
 										<app-icon name="screwdriver-wrench" class="icon"></app-icon>

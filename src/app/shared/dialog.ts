@@ -41,7 +41,7 @@ export const dialog = async (options: { header: string; message: string; modal?:
 	dialog.addEventListener('app-hide', async () => resolve())
 
 	// Render dialog in body
-	render(dialog, document.body)
+	document.body.appendChild(dialog)
 
 	// Show dialog
 	dialog.show()
@@ -90,7 +90,7 @@ export const confirmDialog = async (options: { header: string; message: string }
 	dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'))
 
 	// Append dialog to body
-	render(dialog, document.body)
+	document.body.appendChild(dialog)
 
 	// Show dialog
 	dialog.show()
@@ -140,7 +140,7 @@ export const confirmInputDialog = async (options: { header: string; message: str
 	dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'))
 
 	// Append dialog to body
-	render(dialog, document.body)
+	document.body.appendChild(dialog)
 
 	// Show dialog
 	dialog.show()

@@ -38,16 +38,16 @@ export const notify = async (notification: {
 		render(template, snackbar)
 	} else {
 		snackbar = Object.assign(document.createElement('app-snackbar'), {
-			id: 'global-message',
+			id: 'snackbar',
 			variant,
 			duration,
 			action: action?.label,
 		})
 		render(template, snackbar)
-		render(snackbar, document.body)
+		document.body.appendChild(snackbar)
 	}
 
-	snackbar.addEventListener('app-action', (event: Event) => action?.onAction?.(event))
+	snackbar.addEventListener('app-snackbar-action', (event: Event) => action?.onAction?.(event))
 
 	// Remove from DOM after hide animation finishes
 	snackbar.addEventListener('app-after-hide', () => snackbar.remove())

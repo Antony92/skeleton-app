@@ -23,7 +23,7 @@ export const globalMessage = async (message: string, level: 'info' | 'warning' |
 			level,
 		})
 		render(template, globalMessage)
-		render(globalMessage, document.body)
+		document.body.appendChild(globalMessage)
 	}
 
 	// Remove from DOM after hide animation finishes

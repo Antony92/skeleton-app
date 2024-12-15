@@ -15,7 +15,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.js'
 import { setDocumentTitle } from '@app/utils/html'
-import { appTableStyle } from '@app/elements/table/app-table.style'
+import { appTableStyle } from '@app/styles/table.style'
 import { AppTable } from '@app/elements/table/app-table.element'
 
 @customElement('app-ad-audit-logs')

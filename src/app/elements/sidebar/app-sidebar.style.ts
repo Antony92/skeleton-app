@@ -102,7 +102,7 @@ export const appSidebarStyle = css`
 				width: 100vw;
 
 				li {
-					&.hide-on-mobile {
+					&[hide-on-mobile] {
 						display: none;
 					}
 
