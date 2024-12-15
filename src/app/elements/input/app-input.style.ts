@@ -19,7 +19,7 @@ export const appInputStyle = css`
 			border: none;
 			outline: none;
 			background: none;
-			padding: 0 5px;
+			padding: 0 10px;
 
 			&::placeholder {
 				color: var(--theme-default-color);
@@ -29,15 +29,14 @@ export const appInputStyle = css`
 		.prefix, .suffix {
 			display: flex;
 			align-items: center;
-			color: var(--theme-default-color);
 		}
 
-		.prefix {
-			padding-left: 5px;
+		.prefix ::slotted(*) {
+			padding-left: 10px;
 		}
 
-		.suffix {
-			padding-right: 5px;
+		.suffix ::slotted(*) {
+			padding-right: 10px;
 		}
 
 		&:has(input:disabled) {
@@ -48,6 +47,10 @@ export const appInputStyle = css`
 		&:has(input:focus-visible) {
 			outline: 2px solid var(--theme-color);
         	border-radius: 2px;
+		}
+
+		&:hover:not(:has(input:disabled)):not(:has(input:focus-within)) {
+			border-color: var(--theme-primary-color);
 		}
 	}
 `

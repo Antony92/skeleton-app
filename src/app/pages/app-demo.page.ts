@@ -64,7 +64,8 @@ export class AppDemo extends LitElement {
 
 			<fieldset>
 				<legend>Input</legend>
-				<app-input label="Input label" placeholder="Type something">
+				<app-input label="Input label" placeholder="Type something"></app-input>
+				<app-input label="With prefix and suffix" placeholder="Type something">
 					<app-icon slot="prefix" prefix="fas" name="skull"></app-icon>
 					<app-icon slot="suffix" prefix="fas" name="skull"></app-icon>
 				</app-input>
