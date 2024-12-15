@@ -5,10 +5,11 @@
 
 	/* Theme */
 	--theme-color: light-dark(var(--gray-12), var(--gray-1));
+	--theme-color-inverse: light-dark(var(--gray-1), var(--gray-12));
 	--theme-background: light-dark(var(--gray-1), var(--gray-12));
+	--theme-background-inverse: light-dark(var(--gray-12), var(--gray-1));
 
 	/* Elements */
-	--theme-background: light-dark(var(--gray-1), var(--gray-12));
 	--theme-header-background: light-dark(var(--gray-4), var(--gray-10));
 	--theme-sidebar-background: light-dark(var(--gray-3), var(--gray-9));
 

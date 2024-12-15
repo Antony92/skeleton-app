@@ -67,7 +67,7 @@ export const appSnackbarStyle = css`
 
 		&.default {
 			background-color: var(--theme-inverse-layer);
-			color: var(--theme-dark-color);
+			color: var(--theme-color-inverse);
 		}
 
 		&.primary {
