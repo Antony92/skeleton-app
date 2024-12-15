@@ -17,10 +17,6 @@ export class AppGlobalMessage extends LitElement {
 			:host([open]) {
 				display: block;
 			}
-
-			.icon {
-				font-size: 1.2rem;
-			}
 		`,
 	]
 

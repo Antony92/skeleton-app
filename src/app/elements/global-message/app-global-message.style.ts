@@ -34,6 +34,7 @@ export const appGlobalMessageStyle = css`
 
 		.icon {
 			color: var(--theme-white-color);
+			font-size: 1.2rem;
 		}
 
 		button {
