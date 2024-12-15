@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
@@ -9,19 +9,8 @@ export class AppInput extends LitElement {
 		appInputStyle,
 		css`
 			:host {
-				display: flex;
-				flex-direction: column;
-				width: 100%;
+				display: block;
 				max-width: 300px;
-				gap: 5px;
-			}
-
-			:host:has(input[required]) {
-				
-				label::after {
-					content: ' *';
-					color: var(--theme-error-color);
-				}
 			}
 		`,
 	]
@@ -66,45 +55,77 @@ export class AppInput extends LitElement {
 	min: string | number = ''
 
 	@property({ type: Number })
-	step = 0
+	step: number | undefined
 
 	@property({ type: Number })
-	maxlength = -1
+	maxlength: number | undefined
 
 	@property({ type: Number })
-	minlength = -1
+	minlength: number | undefined
+
+	static formAssociated = true
+
+	private internals!: ElementInternals
+
+	@query('input')
+	input!: HTMLInputElement
+
+	constructor() {
+		super()
+		this.internals = this.attachInternals()
+	}
+
+	protected firstUpdated() {
+		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+	}
+
+	formResetCallback() {
+		this.value = ''
+		this.input.value = this.value
+		this.internals.setValidity({})
+		this.internals.setFormValue(this.value)
+	}
+
+	onInput() {
+		this.value = this.input.value;
+		this.internals.setFormValue(this.value)
+		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+	}
 
 	render() {
 		return html`
-			<label for="input" part="label">${this.label}</label>
-			<div class="input" part="input-wrapper">
-				<span class="prefix" part="prefix">
-					<slot name="prefix"></slot>
-				</span>
-				<input
-					id="input"
-					part="input"
-					?disabled=${this.disabled}
-					?autofocus=${this.autofocus}
-					?hidden=${this.hidden}
-					?readonly=${this.readonly}
-					?required=${this.required}
-					autocomplete=${ifDefined(this.autocomplete)}
-					placeholder=${ifDefined(this.placeholder)}
-					minlength=${ifDefined(this.minlength)}
-					maxlength=${ifDefined(this.maxlength)}
-					min=${ifDefined(this.min)}
-					max=${ifDefined(this.max)}
-					step=${ifDefined(this.step)}
-					type=${ifDefined(this.type)}
-					name=${ifDefined(this.name)}
-					.value=${this.value}
-				/>
-				<span class="suffix" part="suffix">
-					<slot name="suffix"></slot>
-				</span>
+			<div class="form-control" part="form-control">
+				<label for="input" part="label">${this.label}</label>
+				<div class="input-wrapper" part="input-wrapper">
+					<span class="prefix" part="prefix">
+						<slot name="prefix"></slot>
+					</span>
+					<input
+						id="input"
+						part="input"
+						?disabled=${this.disabled}
+						?autofocus=${this.autofocus}
+						?hidden=${this.hidden}
+						?readonly=${this.readonly}
+						?required=${this.required}
+						autocomplete=${ifDefined(this.autocomplete)}
+						placeholder=${ifDefined(this.placeholder)}
+						minlength=${ifDefined(this.minlength)}
+						maxlength=${ifDefined(this.maxlength)}
+						min=${ifDefined(this.min)}
+						max=${ifDefined(this.max)}
+						step=${ifDefined(this.step)}
+						type=${ifDefined(this.type)}
+						name=${ifDefined(this.name)}
+						@input=${this.onInput}
+						.value=${this.value}
+					/>
+					<span class="suffix" part="suffix">
+						<slot name="suffix"></slot>
+					</span>
+				</div>
+				<div class="inavlid" part="invalid"></div>
 			</div>
-			<div class="help-text"></div>
 		`
 	}
 }

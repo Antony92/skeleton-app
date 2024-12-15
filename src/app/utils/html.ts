@@ -14,3 +14,7 @@ export const escapeHtml = (html: string) => {
 export const setDocumentTitle = (title: string) => {
 	document.title = `Skeleton App - ${title}`
 }
+
+export const serializeForm = (form: HTMLFormElement) => {
+	return Object.fromEntries(new FormData(form).entries())
+}

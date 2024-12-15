@@ -51,6 +51,14 @@ export class AppSidebar extends LitElement {
 						</a>
 					</li>
 					<li>
+						<a href="/form" class=${classMap({ active: location.pathname.includes('/form') })}>
+							<span>
+								<app-icon name="table-list" class="icon"></app-icon>
+							</span>
+							<span>Form</span>
+						</a>
+					</li>
+					<li>
 						<a href="/table" class=${classMap({ active: location.pathname.includes('/table') })}>
 							<span>
 								<app-icon name="table" class="icon"></app-icon>

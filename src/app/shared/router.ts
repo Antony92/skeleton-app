@@ -39,6 +39,18 @@ const routes: Route[] = [
 		],
 	},
 	{
+		path: '/form',
+		children: [
+			{
+				path: '/',
+				component: 'app-form',
+				action: async (context, command) => {
+					await import('@app/pages/app-form.page')
+				},
+			},
+		],
+	},
+	{
 		path: '/feedback',
 		action: authGuard(),
 		children: [

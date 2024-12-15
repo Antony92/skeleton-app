@@ -24,6 +24,7 @@
 	/* Colors */
 	--theme-white-color: light-dark(var(--gray-1), var(--gray-1));
 	--theme-dark-color: light-dark(var(--gray-12), var(--gray-12));
+	--theme-invalid-color: light-dark(var(--red-7), var(--red-7));
 	--theme-default-color: light-dark(var(--stone-8), var(--stone-8));
 	--theme-primary-color: light-dark(var(--blue-8), var(--blue-8));
 	--theme-warning-color: light-dark(var(--yellow-8), var(--yellow-8));
