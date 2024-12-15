@@ -1,11 +1,8 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js'
-import '@shoelace-style/shoelace/dist/components/option/option.js'
-import '@shoelace-style/shoelace/dist/components/select/select.js'
-import type SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
-import { SlChangeEvent } from '@shoelace-style/shoelace'
 import { AppPaginateEvent } from '@app/events/pagination.event'
+import '@app/elements/button/app-button.element'
+import '@app/elements/icon/app-icon.element'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
@@ -13,25 +10,17 @@ export class AppPaginator extends LitElement {
 		:host {
 			display: flex;
 			align-items: center;
-		}
-
-		sl-icon-button {
-			font-size: 1.5rem;
-		}
-
-		sl-select {
-			margin: 0 10px;
-			width: 75px;
+			gap: 10px;
 		}
 	`
 
 	@property({ type: Number })
 	total = 0
 
-	@property({ type: Number, reflect: true })
+	@property({ type: Number, attribute: 'page-index' })
 	pageIndex = 0
 
-	@property({ type: Number, reflect: true })
+	@property({ type: Number, attribute: 'page-size' })
 	pageSize = 5
 
 	@property({ type: Array })
@@ -39,8 +28,8 @@ export class AppPaginator extends LitElement {
 
 	private previousPageIndex = 0
 
-	private pageSizeChange(event: SlChangeEvent) {
-		const value = (<SlSelect>event.target).value
+	private pageSizeChange(event: Event) {
+		const value = (<HTMLSelectElement>event.target).value
 		const pageSize = parseInt(value.toString())
 		const startIndex = this.pageIndex * this.pageSize
 		this.previousPageIndex = this.pageIndex
@@ -114,18 +103,25 @@ export class AppPaginator extends LitElement {
 
 	render() {
 		return html`
-			Items per page:
-			<sl-select pill filled value=${this.pageSize} size="small" @sl-change=${this.pageSizeChange}>
-				${this.pageSizeOptions.map((value) => html`<sl-option value=${value?.toString()}>${value}</sl-option>`)}
-			</sl-select>
+			<label for="page-size">
+				Items per page:
+				<select id="page-size" .value=${this.pageSize.toString()} @change=${this.pageSizeChange}>
+					${this.pageSizeOptions.map((value) => html`<option .value=${value?.toString()}>${value}</option>`)}
+				</select>
+			</label>
 			${this.getRangeLabel()}
-			<sl-icon-button name="chevron-bar-left" label="First" title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
-			</sl-icon-button>
-			<sl-icon-button name="chevron-left" label="Previous" title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
-			</sl-icon-button>
-			<sl-icon-button name="chevron-right" label="Next" title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}> </sl-icon-button>
-			<sl-icon-button name="chevron-bar-right" label="Last" title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
-			</sl-icon-button>
+			<app-button variant="primary" icon title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
+				<app-icon name="angles-left"></app-icon>
+			</app-button>
+			<app-button variant="primary" icon title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
+				<app-icon name="angle-left"></app-icon>
+			</app-button>
+			<app-button variant="primary" icon title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
+				<app-icon name="angle-right"></app-icon>
+			</app-button>
+			<app-button variant="primary" icon title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
+				<app-icon name="angles-right"></app-icon>
+			</app-button>
 		`
 	}
 }

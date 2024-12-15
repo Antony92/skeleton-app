@@ -4,6 +4,7 @@ import { globalMessage } from '@app/shared/global-message'
 import '@app/elements/dialog/app-dialog.element'
 import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
+import '@app/elements/paginator/app-paginator.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -93,6 +94,11 @@ export class AppDemo extends LitElement {
 				>
 					Open snackbar
 				</app-button>
+			</fieldset>
+
+			<fieldset>
+				<legend>Paginator</legend>
+				<app-paginator total="100"></app-paginator>
 			</fieldset>
 
 			<app-dialog header="Template dialog">
