@@ -1,12 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
-import '@shoelace-style/shoelace/dist/components/button/button.js'
-import '@shoelace-style/shoelace/dist/components/input/input.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import type SLInput from '@shoelace-style/shoelace/dist/components/input/input.js'
 import { Subject, Subscription, timer, debounce } from 'rxjs'
-import { SlInputEvent } from '@shoelace-style/shoelace'
 import { AppTableFilterEvent } from '@app/events/table.event'
 
 @customElement('app-table')
@@ -28,8 +23,8 @@ export class AppTable extends LitElement {
 				gap: 10px;
 				margin-bottom: 10px;
 
-				sl-input {
-					width: 350px;
+				input {
+					width: 300px;
 				}
 
 				.buttons {
@@ -124,7 +119,7 @@ export class AppTable extends LitElement {
 	clearAllFilters() {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
-		this.renderRoot.querySelectorAll('sl-input').forEach((input) => (input.value = ''))
+		this.renderRoot.querySelectorAll('input').forEach((input) => (input.value = ''))
 		this.columnFilters.forEach((columFilter) => columFilter.clearFilters())
 		this.dispatchEvent(new Event('app-table-clear'))
 	}
@@ -141,16 +136,12 @@ export class AppTable extends LitElement {
 				${when(
 					this.searchable,
 					() => html`
-						<sl-input
+						<input
 							autocomplete="off"
-							filled
-							pill
-							clearable
-							class="global-search"
 							type="search"
 							.value=${this.searchValue || ''}
 							placeholder="Search"
-							@sl-input=${(event: SlInputEvent) => this.globalSearch((<SLInput>event.target).value)}
+							@input=${(event: InputEvent) => this.globalSearch((<SLInput>event.target).value)}
 						>
 							<sl-icon name="search" slot="prefix"></sl-icon>
 						</sl-input>

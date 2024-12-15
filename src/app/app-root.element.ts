@@ -19,15 +19,15 @@ export class AppRoot extends LitElement {
 		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 5000 }))
 		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }))
 
-		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
-		serverEventSource.addEventListener('globalmessage', (event) => {
-			const data = JSON.parse(event.data)
-			globalMessage(data.message, data.type)
-		})
-		serverEventSource.addEventListener('error', () => {
-			serverEventSource.close()
-			// notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
-		})
+		// const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
+		// serverEventSource.addEventListener('globalmessage', (event) => {
+		// 	const data = JSON.parse(event.data)
+		// 	globalMessage(data.message, data.type)
+		// })
+		// serverEventSource.addEventListener('error', () => {
+		// 	serverEventSource.close()
+		// 	notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
+		// })
 	}
 
 	protected async firstUpdated() {

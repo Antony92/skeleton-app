@@ -8,12 +8,10 @@ export class AppIcon extends LitElement {
 	static styles = [
 		css`
 			:host {
-				display: inline-block;
 				width: 1em;
 				height: 1em;
 
 				svg {
-					display: block;
 					fill: currentColor;
 					width: 100%;
 					height: 100%;

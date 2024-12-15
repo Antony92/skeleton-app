@@ -5,6 +5,7 @@ import '@app/elements/dialog/app-dialog.element'
 import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
+import '@app/elements/input/app-input.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -59,6 +60,14 @@ export class AppDemo extends LitElement {
 					<app-icon prefix="fas" name="skull"></app-icon>
 				</app-button>
 				<app-button variant="primary" text>Only text</app-button>
+			</fieldset>
+
+			<fieldset>
+				<legend>Input</legend>
+				<app-input label="Input label" placeholder="Type something">
+					<app-icon slot="prefix" prefix="fas" name="skull"></app-icon>
+					<app-icon slot="suffix" prefix="fas" name="skull"></app-icon>
+				</app-input>
 			</fieldset>
 
 			<fieldset>
