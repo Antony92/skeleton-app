@@ -39,6 +39,8 @@ export class AppSnackbar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	open = false
 
+	private timeout = 0
+
 	async show() {
 		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
 			return
@@ -49,7 +51,8 @@ export class AppSnackbar extends LitElement {
 		await this.animation()
 		this.dispatchEvent(new Event('app-after-show'))
 		if (this.duration && !this.action) {
-			setTimeout(() => this.hide(), this.duration)
+			clearTimeout(this.timeout)
+			this.timeout = setTimeout(() => this.hide(), this.duration)
 		}
 	}
 
