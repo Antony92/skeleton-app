@@ -15,6 +15,14 @@ export class AppInput extends LitElement {
 				max-width: 300px;
 				gap: 5px;
 			}
+
+			:host:has(input[required]) {
+				
+				label::after {
+					content: ' *';
+					color: var(--theme-error-color);
+				}
+			}
 		`,
 	]
 
@@ -70,7 +78,7 @@ export class AppInput extends LitElement {
 		return html`
 			<label for="input" part="label">${this.label}</label>
 			<div class="input" part="input-wrapper">
-				<span class="prefix">
+				<span class="prefix" part="prefix">
 					<slot name="prefix"></slot>
 				</span>
 				<input
@@ -92,7 +100,7 @@ export class AppInput extends LitElement {
 					name=${ifDefined(this.name)}
 					.value=${this.value}
 				/>
-				<span class="suffix">
+				<span class="suffix" part="suffix">
 					<slot name="suffix"></slot>
 				</span>
 			</div>
