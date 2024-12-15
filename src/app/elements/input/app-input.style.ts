@@ -32,10 +32,6 @@ export const appInputStyle = css`
 			border-radius: 3px;
 			height: 30px;
 
-			&:has(input:user-invalid) {
-				border-color: var(--theme-invalid-color);
-			}
-
 			input {
 				width: 100%;
 				height: 100%;
@@ -75,6 +71,7 @@ export const appInputStyle = css`
 
 			&:has(input:user-invalid) {
 				outline-color: var(--theme-invalid-color);
+				border-color: var(--theme-invalid-color);
 			}
 
 			&:hover:not(:has(input:disabled, input:focus-within, input:user-invalid)) {

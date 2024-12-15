@@ -76,18 +76,20 @@ export class AppInput extends LitElement {
 	}
 
 	protected firstUpdated() {
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.updateForm()
 	}
 
 	formResetCallback() {
 		this.value = ''
-		this.input.value = this.value
-		this.internals.setValidity({})
-		this.internals.setFormValue(this.value)
+		this.updateForm()
 	}
 
 	onInput() {
-		this.value = this.input.value;
+		this.value = this.input.value
+		this.updateForm()
+	}
+
+	updateForm() {
 		this.internals.setFormValue(this.value)
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}

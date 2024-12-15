@@ -26,7 +26,6 @@ export class AppForm extends LitElement {
 
     submit(event: SubmitEvent) {
         event.preventDefault()
-        console.log(this.form.checkValidity())
         const data = serializeForm(this.form)
         console.log(data)
     }
@@ -34,7 +33,7 @@ export class AppForm extends LitElement {
 	render() {
 		return html`
             <form @submit=${this.submit}>
-                <app-input required name="email" label="Email"></app-input>
+                <app-input required name="email" label="Email" type="email"></app-input>
                 <div class="actions">
                     <app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
                     <app-button @click=${() => this.form.reset()}>Reset</app-button>
