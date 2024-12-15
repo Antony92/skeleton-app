@@ -1,14 +1,16 @@
+import { render } from 'lit'
+
 export const loading = async (show = false) => {
-    await import('@app/elements/loader/app-loader.element')
+	await import('@app/elements/loader/app-loader.element')
 
-    let element = document.body.querySelector('app-loader')
+	let loader = document.body.querySelector('app-loader')
 
-    if (show && !element) {
-        element = document.createElement('app-loader')
-        document.body.appendChild(element)
-    } 
-    
-    if (!show && element) {
-        element.remove()
-    }
+	if (show && !loader) {
+		loader = document.createElement('app-loader')
+		render(loader, document.body)
+	}
+
+	if (!show && loader) {
+		loader.remove()
+	}
 }

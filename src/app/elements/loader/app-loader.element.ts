@@ -6,8 +6,8 @@ export class AppLoader extends LitElement {
 	static styles = css`
 		:host {
 			position: fixed;
-			width: 100%;
-			height: 100%;
+			width: 100vw;
+			height: 100vh;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -18,11 +18,11 @@ export class AppLoader extends LitElement {
 		}
 
 		.loader-line {
-			width: 100%;
+			width: 100vw;
 			height: 3px;
 			position: relative;
 			overflow: hidden;
-			background-color: var(--sl-color-neutral-400);
+			background-color: var(--theme-default-color);
 
 			&::after {
 				content: '';
@@ -30,7 +30,7 @@ export class AppLoader extends LitElement {
 				left: -50%;
 				height: 3px;
 				width: 40%;
-				background-color: var(--sl-color-primary-500);
+				background-color: var(--theme-primary-color);
 				animation: line 1s linear infinite;
 			}
 		}

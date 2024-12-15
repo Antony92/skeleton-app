@@ -5,9 +5,11 @@ import '@app/elements/dialog/app-dialog.element'
 import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
+import '@app/elements/loader/app-loader.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
+import { loading } from '@app/shared/loader'
 
 @customElement('app-demo')
 export class AppDemo extends LitElement {
@@ -89,7 +91,6 @@ export class AppDemo extends LitElement {
 					@click=${() =>
 						notify({
 							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
-							variant: 'success',
 						})}
 				>
 					Open snackbar
@@ -99,6 +100,18 @@ export class AppDemo extends LitElement {
 			<fieldset>
 				<legend>Paginator</legend>
 				<app-paginator total="100"></app-paginator>
+			</fieldset>
+
+			<fieldset>
+				<legend>Loading</legend>
+				<app-button
+					variant="primary"
+					@click=${() => {
+						loading(true)
+						setTimeout(() => loading(false), 3000)
+					}}
+					>Long task</app-button
+				>
 			</fieldset>
 
 			<app-dialog header="Template dialog">
