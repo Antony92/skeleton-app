@@ -44,11 +44,11 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 		// If response status is not ok display message
 		if (!response.ok) {
 			const error = await response.clone().json()
-			notify({ message: `${url} failed: ${JSON.stringify(error)}`, variant: 'danger', duration: 6000 })
+			notify({ message: `${url} failed: ${JSON.stringify(error)}`, variant: 'error', duration: 6000 })
 			return Promise.reject(response)
 		}
 	} catch (error: any) {
-		notify({ message: `${error?.message || `${url} failed`}`, variant: 'danger', duration: 6000 })
+		notify({ message: `${error?.message || `${url} failed`}`, variant: 'error', duration: 6000 })
 		return Promise.reject(error)
 	} finally {
 		// Decrement request count by one and hide loading indicator if no more requests remain
