@@ -70,8 +70,6 @@ export class AppInput extends LitElement {
 
 	private internals!: ElementInternals
 
-	private firstUpdate = false
-
 	@query('input')
 	input!: HTMLInputElement
 
@@ -80,48 +78,49 @@ export class AppInput extends LitElement {
 		this.internals = this.attachInternals()
 		this.addEventListener('invalid', () => {
 			this.error = true
-			this.setStates('invalid')
+			this.setStates('invalid', 'user-invalid')
 		})
 	}
 
-	protected firstUpdated() {
-		this.firstUpdate = true
-	}
+	protected firstUpdated() {}
 
 	protected updated(changedProperties: PropertyValues): void {
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		if (changedProperties.keys().some((key) => ['value', 'required', 'disabled', 'type', 'pattern'].includes(key.toString()))) {
+			this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+			this.setStates(this.validity.valid ? 'valid' : 'invalid')
+		}
 		if (changedProperties.has('value')) {
 			this.internals.setFormValue(this.value)
 		}
-		if (!this.firstUpdate) {
-			this.setStates(this.validity.valid ? 'valid' : 'invalid')
-		}
-		this.firstUpdate = false
 	}
 
 	onInput() {
 		this.value = this.input.value
+		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.error = !this.validity.valid
+		this.setStates(this.validity.valid ? 'user-valid' : 'user-invalid')
 	}
 
 	onChange() {
 		this.value = this.input.value
+		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.error = !this.validity.valid
+		this.setStates(this.validity.valid ? 'user-valid' : 'user-invalid')
 	}
 
 	formAssociatedCallback(form: HTMLFormElement) {
 		console.log(form)
 	}
 
-	async formDisabledCallback(disabled: boolean) {
+	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
 		this.error = false
-		await this.updateComplete
 		this.internals.states.clear()
 	}
 
-	async formResetCallback() {
+	formResetCallback() {
 		this.value = ''
 		this.error = false
-		await this.updateComplete
 		this.internals.states.clear()
 	}
 
@@ -153,9 +152,22 @@ export class AppInput extends LitElement {
 		return this.internals.reportValidity()
 	}
 
-	setStates(...states: string[]) {
-		this.internals.states.clear()
-		states.forEach(state => this.internals.states.add(state))
+	setStates(...states: Array<'valid' | 'invalid' | 'user-valid' | 'user-invalid'>) {
+		states.forEach((state) => {
+			// Directly add the desired state and remove its opposite
+			this.internals.states.add(state)
+			if (state === 'valid') {
+				this.internals.states.delete('invalid')
+				this.internals.states.delete('user-invalid')
+			} else if (state === 'invalid') {
+				this.internals.states.delete('valid')
+				this.internals.states.delete('user-valid')
+			} else if (state === 'user-valid') {
+				this.internals.states.delete('user-invalid')
+			} else if (state === 'user-invalid') {
+				this.internals.states.delete('user-valid')
+			}
+		})
 	}
 
 	render() {
@@ -191,7 +203,7 @@ export class AppInput extends LitElement {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				${when(this.error, () => html`<small class="invalid" part="invalid">${this.validationMessage}</small>`)}
+				${when(this.error && this.internals.states.has('user-invalid'), () => html`<small class="invalid" part="invalid">${this.validationMessage}</small>`)}
 			</div>
 		`
 	}
