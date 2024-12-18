@@ -20,7 +20,7 @@ export class AppGlobalMessage extends LitElement {
 		`,
 	]
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	level: 'info' | 'warning' | 'error' = 'info'
 
 	@query('.global-message')

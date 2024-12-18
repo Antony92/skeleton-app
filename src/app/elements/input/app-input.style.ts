@@ -1,6 +1,24 @@
 import { css } from 'lit'
 
 export const appInputStyle = css`
+	:host(:state(invalid)) {
+
+		.form-control {
+			.input-wrapper {
+				outline-color: var(--theme-invalid-color);
+				border-color: var(--theme-invalid-color);
+
+				&:hover {
+					border-color: var(--theme-invalid-color);
+				}
+			}
+
+			label {
+				color: var(--theme-invalid-color);
+			}
+		}
+	}
+
 	.form-control {
 		display: flex;
 		flex-direction: column;
@@ -11,15 +29,13 @@ export const appInputStyle = css`
 			width: fit-content;
 		}
 
+		small {
+			color: var(--theme-invalid-color);
+		}
+
 		&:has(input[required]) {
 			label::after {
 				content: ' *';
-				color: var(--theme-invalid-color);
-			}
-		}
-
-		&:has(input:user-invalid) {
-			label {
 				color: var(--theme-invalid-color);
 			}
 		}
@@ -69,12 +85,7 @@ export const appInputStyle = css`
 				border-radius: 2px;
 			}
 
-			&:has(input:user-invalid) {
-				outline-color: var(--theme-invalid-color);
-				border-color: var(--theme-invalid-color);
-			}
-
-			&:hover:not(:has(input:disabled, input:focus-within, input:user-invalid)) {
+			&:hover:not(:has(input:disabled, input:focus-within)) {
 				border-color: var(--theme-primary-color);
 			}
 		}

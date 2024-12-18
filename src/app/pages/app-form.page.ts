@@ -15,6 +15,10 @@ export class AppForm extends LitElement {
                 justify-content: flex-start;
                 gap: 10px;
             }
+
+            input:user-invalid {
+                background: red;
+            }
 		`,
 	]
 
@@ -22,18 +26,29 @@ export class AppForm extends LitElement {
     form!: HTMLFormElement
 
 	protected async firstUpdated() {
+
+        setTimeout(() => {
+            // this.renderRoot.querySelector('app-input')!.value = 'test@mail.bg'
+        }, 5000)
+
+        // this.renderRoot.querySelector('input')?.addEventListener('invalid', () => console.log('invalid'))
     }
 
-    submit(event: SubmitEvent) {
+    async submit(event: SubmitEvent) {
         event.preventDefault()
+        if (!this.form.checkValidity()) {
+            this.form.querySelector<HTMLElement>('*:state(invalid)')?.focus()
+            return
+        }
         const data = serializeForm(this.form)
         console.log(data)
     }
 
 	render() {
 		return html`
-            <form @submit=${this.submit}>
-                <app-input required name="email" label="Email" type="email"></app-input>
+            <form @submit=${this.submit} novalidate>
+                <app-input required name="test1" label="Name" type="email"></app-input>
+                <!-- <app-input required name="test2" label="Name" type="email"></app-input> -->
                 <div class="actions">
                     <app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
                     <app-button @click=${() => this.form.reset()}>Reset</app-button>

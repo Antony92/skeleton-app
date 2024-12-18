@@ -8,25 +8,25 @@ import { focusStyle } from '@app/styles/focus.style'
 export class AppButton extends LitElement {
 	static styles = [appButtonStyle, focusStyle, css``]
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	disabled = false
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	autofocus = false
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	hidden = false
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	outlined = false
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	text = false
 
-	@property({ type: Boolean, reflect: true })
+	@property({ type: Boolean })
 	icon = false
 
 	render() {

@@ -27,10 +27,10 @@ export class AppSnackbar extends LitElement {
 	@property({ type: String })
 	action = ''
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom'
 
 	@property({ type: Number })
