@@ -72,47 +72,46 @@ export class AppInput extends LitElement {
 	@query('input')
 	input!: HTMLInputElement
 
+	private touched = false
+
 	connectedCallback(): void {
 		super.connectedCallback()
 		this.internals = this.attachInternals()
 		this.addEventListener('invalid', () => {
+			this.touched = true
 			this.error = true
 			this.errorMessage = this.validationMessage
 			this.internals.states.add('invalid')
+			this.internals.states.add('user-invalid')
 		})
 	}
 
 	protected updated(changedProperties: PropertyValues): void {
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.internals.states.clear()
+
+		this.internals.states.add(this.validity.valid ? 'valid' : 'invalid')
+
+		if (this.touched) {
+			this.internals.states.add(this.validity.valid ? 'user-valid' : 'user-invalid')
+		}
+
 		if (changedProperties.has('value')) {
 			this.internals.setFormValue(this.value)
-		}
-		if (this.internals.states.has('valid') && !this.internals.validity.valid) {
-			this.internals.states.add('invalid')
-			this.internals.states.delete('valid')
-		}
-		if (this.internals.states.has('invalid') && this.internals.validity.valid) {
-			this.internals.states.add('valid')
-			this.internals.states.delete('invalid')
 		}
 	}
 
 	onInput() {
 		this.value = this.input.value
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.touched = true
 	}
 
 	onChange() {
 		this.value = this.input.value
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.touched = true
 	}
 
-	onBlur() {
-		this.error = !this.validity.valid
-		this.errorMessage = this.validationMessage
-		this.internals.states.clear()
-		this.internals.states.add(this.input.validity.valid ? 'valid' : 'invalid')
-	}
+	onBlur() {}
 
 	formAssociatedCallback(form: HTMLFormElement) {
 		console.log(form)
@@ -120,16 +119,18 @@ export class AppInput extends LitElement {
 
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
+		this.touched = false
 		this.error = false
 		this.errorMessage = ''
-		this.internals.states.clear()
+		this.requestUpdate()
 	}
 
 	formResetCallback() {
 		this.value = ''
+		this.touched = false
 		this.error = false
 		this.errorMessage = ''
-		this.internals.states.clear()
+		this.requestUpdate()
 	}
 
 	focus(options?: FocusOptions) {

@@ -1,7 +1,7 @@
 import { css } from 'lit'
 
 export const appInputStyle = css`
-	:host(:state(invalid)) {
+	:host(:state(user-invalid)) {
 
 		.form-control {
 			.input-wrapper {
