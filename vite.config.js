@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import path from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
 	build: {
@@ -8,7 +11,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'@app': path.resolve(__dirname, './src/app'),
+			'@app': resolve(__dirname, './src/app'),
 		},
 	},
 	plugins: [VitePWA({ registerType: 'autoUpdate' })],
