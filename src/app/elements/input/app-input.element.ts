@@ -2,7 +2,6 @@ import { html, LitElement, css, PropertyValues } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
-import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 
 @customElement('app-input')
@@ -60,8 +59,8 @@ export class AppInput extends LitElement {
 	@property({ type: String })
 	pattern: string | undefined
 
-	@property({ type: String, attribute: 'invalid-message' })
-	invalidMessage: string = ''
+	@property({ type: String, attribute: 'error-message' })
+	errorMessage: string = ''
 
 	@state()
 	private error = false
@@ -78,11 +77,10 @@ export class AppInput extends LitElement {
 		this.internals = this.attachInternals()
 		this.addEventListener('invalid', () => {
 			this.error = true
+			this.errorMessage = this.validationMessage
 			this.internals.states.add('invalid')
 		})
 	}
-
-	protected firstUpdated() {}
 
 	protected updated(changedProperties: PropertyValues): void {
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
@@ -102,15 +100,16 @@ export class AppInput extends LitElement {
 	onInput() {
 		this.value = this.input.value
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		this.error = !this.validity.valid
-		this.internals.states.clear()
-		this.internals.states.add(this.input.validity.valid ? 'valid' : 'invalid')
 	}
 
 	onChange() {
 		this.value = this.input.value
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+	}
+
+	onBlur() {
 		this.error = !this.validity.valid
+		this.errorMessage = this.validationMessage
 		this.internals.states.clear()
 		this.internals.states.add(this.input.validity.valid ? 'valid' : 'invalid')
 	}
@@ -122,12 +121,14 @@ export class AppInput extends LitElement {
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
 		this.error = false
+		this.errorMessage = ''
 		this.internals.states.clear()
 	}
 
 	formResetCallback() {
 		this.value = ''
 		this.error = false
+		this.errorMessage = ''
 		this.internals.states.clear()
 	}
 
@@ -186,13 +187,14 @@ export class AppInput extends LitElement {
 						name=${ifDefined(this.name)}
 						@input=${this.onInput}
 						@change=${this.onChange}
+						@blur=${this.onBlur}
 						.value=${live(this.value)}
 					/>
 					<span class="suffix" part="suffix">
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				${when(this.error, () => html`<small class="invalid" part="invalid">${this.validationMessage}</small>`)}
+				<small class="invalid" part="invalid" ?hidden=${!this.error}>${this.errorMessage}</small>
 			</div>
 		`
 	}
