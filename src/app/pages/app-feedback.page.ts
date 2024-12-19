@@ -15,10 +15,10 @@ export class AppFeedback extends LitElement {
 	static styles = [appPageTitleStyle, formValidationStyle, basicFormStyle, css``]
 
     @query('form')
-	form!: HTMLFormElement
+	accessor form!: HTMLFormElement
 
     @query('sl-rating')
-	rating!: SlRating
+	accessor rating!: SlRating
 
 	connectedCallback() {
 		super.connectedCallback()

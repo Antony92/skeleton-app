@@ -12,7 +12,7 @@ export class AppRoot extends LitElement {
 	static styles = [mainStyle, css``]
 
 	@query('#outlet')
-	outlet!: HTMLElement
+	accessor outlet!: HTMLElement
 
 	connectedCallback() {
 		super.connectedCallback()

@@ -18,10 +18,10 @@ export class AppHeader extends LitElement {
 	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'
 
 	@state()
-	private user: User = null
+	private accessor user: User = null
 
 	@state()
-	private initials = ''
+	private accessor initials = ''
 
 	userSubscription = new Subscription()
 

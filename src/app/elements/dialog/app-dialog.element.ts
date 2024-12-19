@@ -20,19 +20,19 @@ export class AppDialog extends LitElement {
 	]
 
 	@property({ type: String })
-	header = ''
+	accessor header = ''
 
 	@property({ type: Boolean, reflect: true })
-	open = false
+	accessor open = false
 
 	@property({ type: Boolean })
-	modal = false
+	accessor modal = false
 
 	@query('dialog')
-	dialog!: HTMLDialogElement
+	accessor dialog!: HTMLDialogElement
 
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
-	closeElements!: Array<HTMLElement>
+	accessor closeElements!: Array<HTMLElement>
 
 	protected firstUpdated() {
 		this.dialog.addEventListener('click', ({ target: element }) => {

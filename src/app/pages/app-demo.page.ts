@@ -32,7 +32,7 @@ export class AppDemo extends LitElement {
 	]
 
 	@query('app-dialog')
-	appDialog!: AppDialog
+	accessor appDialog!: AppDialog
 
 	protected async firstUpdated() {}
 

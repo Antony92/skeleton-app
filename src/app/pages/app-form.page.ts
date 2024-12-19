@@ -23,7 +23,7 @@ export class AppForm extends LitElement {
 	]
 
     @query('form')
-    form!: HTMLFormElement
+    accessor form!: HTMLFormElement
 
 	protected async firstUpdated() {
 

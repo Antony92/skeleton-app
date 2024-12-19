@@ -49,19 +49,19 @@ export class AppADServerEvents extends LitElement {
 	]
 
 	@query('.server-event-dialog')
-	serverEventDialog!: SlDialog
+	accessor serverEventDialog!: SlDialog
 
 	@query('.server-event-dialog form')
-	serverEventDialogForm!: HTMLFormElement
+	accessor serverEventDialogForm!: HTMLFormElement
 
 	@state()
-	serverEvents = {
+	accessor serverEvents = {
 		data: [] as any[],
 		total: 0,
 	}
 
 	@state()
-	selectedEvent: any = null
+	accessor selectedEvent: any = null
 
 	connectedCallback() {
 		super.connectedCallback()
