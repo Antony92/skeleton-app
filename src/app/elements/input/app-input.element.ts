@@ -1,11 +1,12 @@
-import { html, LitElement, css, PropertyValues } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
+import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
 
 @customElement('app-input')
-export class AppInput extends LitElement {
+export class AppInput extends LitElement implements FormControl {
 	static styles = [appInputStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
@@ -63,42 +64,25 @@ export class AppInput extends LitElement {
 	errorMessage: string = ''
 
 	@state()
-	private error = false
+	touched = false
 
 	static formAssociated = true
-
-	private internals!: ElementInternals
 
 	@query('input')
 	input!: HTMLInputElement
 
-	private touched = false
+	formContol!: FormControlController
 
 	connectedCallback(): void {
 		super.connectedCallback()
-		this.internals = this.attachInternals()
-		this.addEventListener('invalid', () => {
+		this.formContol = new FormControlController(this)
+		this.addEventListener('invalid', async () => {
 			this.touched = true
-			this.error = true
-			this.errorMessage = this.validationMessage
-			this.internals.states.add('invalid')
-			this.internals.states.add('user-invalid')
 		})
 	}
 
-	protected updated(changedProperties: PropertyValues): void {
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		this.internals.states.clear()
-
-		this.internals.states.add(this.validity.valid ? 'valid' : 'invalid')
-
-		if (this.touched) {
-			this.internals.states.add(this.validity.valid ? 'user-valid' : 'user-invalid')
-		}
-
-		if (changedProperties.has('value')) {
-			this.internals.setFormValue(this.value)
-		}
+	protected updated() {
+		this.formContol.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
 
 	onInput() {
@@ -111,7 +95,9 @@ export class AppInput extends LitElement {
 		this.touched = true
 	}
 
-	onBlur() {}
+	onBlur() {
+		// this.touched = true
+	}
 
 	formAssociatedCallback(form: HTMLFormElement) {
 		console.log(form)
@@ -120,17 +106,11 @@ export class AppInput extends LitElement {
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
 		this.touched = false
-		this.error = false
-		this.errorMessage = ''
-		this.requestUpdate()
 	}
 
 	formResetCallback() {
 		this.value = ''
 		this.touched = false
-		this.error = false
-		this.errorMessage = ''
-		this.requestUpdate()
 	}
 
 	focus(options?: FocusOptions) {
@@ -138,27 +118,27 @@ export class AppInput extends LitElement {
 	}
 
 	get form() {
-		return this.internals.form
+		return this.formContol.form
 	}
 
 	get validity() {
-		return this.internals.validity
+		return this.formContol.validity
 	}
 
 	get validationMessage() {
-		return this.internals.validationMessage
+		return this.formContol.validationMessage
 	}
 
 	get willValidate() {
-		return this.internals.willValidate
+		return this.formContol.willValidate
 	}
 
 	checkValidity() {
-		return this.internals.checkValidity()
+		return this.formContol.checkValidity()
 	}
 
 	reportValidity() {
-		return this.internals.reportValidity()
+		return this.formContol.reportValidity()
 	}
 
 	render() {
@@ -195,7 +175,7 @@ export class AppInput extends LitElement {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${!this.error}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid">${this.validationMessage}</small>
 			</div>
 		`
 	}
