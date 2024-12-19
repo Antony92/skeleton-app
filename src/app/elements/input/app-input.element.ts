@@ -1,9 +1,9 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement, css, PropertyValues } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
-import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { FormControl } from '@app/controllers/form-control.controller'
 
 @customElement('app-input')
 export class AppInput extends LitElement implements FormControl {
@@ -67,22 +67,32 @@ export class AppInput extends LitElement implements FormControl {
 	touched = false
 
 	static formAssociated = true
+	internals!: ElementInternals
 
 	@query('input')
 	input!: HTMLInputElement
 
-	formContol!: FormControlController
-
 	connectedCallback(): void {
 		super.connectedCallback()
-		this.formContol = new FormControlController(this)
+		this.internals = this.attachInternals()
 		this.addEventListener('invalid', async () => {
 			this.touched = true
 		})
 	}
 
-	protected updated() {
-		this.formContol.setValidity(this.input.validity, this.input.validationMessage, this.input)
+	protected updated(changedProperties: PropertyValues) {
+		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.internals.states.clear()
+		const valid = this.internals.validity.valid
+		this.internals.states.add(valid ? 'valid' : 'invalid')
+
+		if (this.touched) {
+			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
+		}
+		
+		if (changedProperties.has('value')) {
+			this.internals.setFormValue(this.value)
+		}
 	}
 
 	onInput() {
@@ -118,27 +128,27 @@ export class AppInput extends LitElement implements FormControl {
 	}
 
 	get form() {
-		return this.formContol.form
+		return this.internals.form
 	}
 
 	get validity() {
-		return this.formContol.validity
+		return this.internals.validity
 	}
 
 	get validationMessage() {
-		return this.formContol.validationMessage
+		return this.internals.validationMessage
 	}
 
 	get willValidate() {
-		return this.formContol.willValidate
+		return this.internals.willValidate
 	}
 
 	checkValidity() {
-		return this.formContol.checkValidity()
+		return this.internals.checkValidity()
 	}
 
 	reportValidity() {
-		return this.formContol.reportValidity()
+		return this.internals.reportValidity()
 	}
 
 	render() {
