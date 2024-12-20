@@ -39,6 +39,9 @@ export class AppInput extends LitElement implements FormControl {
 	@property({ type: String })
 	accessor value = ''
 
+	@property({ type: String, attribute: 'default-value' })
+	accessor defaultValue = ''
+
 	@property({ type: String })
 	accessor placeholder: string | undefined
 
@@ -84,6 +87,10 @@ export class AppInput extends LitElement implements FormControl {
 		})
 	}
 
+	protected firstUpdated(): void {
+		this.value = this.defaultValue
+	}
+
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
@@ -109,10 +116,11 @@ export class AppInput extends LitElement implements FormControl {
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
 		this.touched = false
+		this.errorMessage = ''
 	}
 
 	formResetCallback() {
-		this.value = ''
+		this.value = this.defaultValue
 		this.touched = false
 		this.errorMessage = ''
 	}
