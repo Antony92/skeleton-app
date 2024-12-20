@@ -60,8 +60,8 @@ export class AppInput extends LitElement implements FormControl {
 	@property({ type: String })
 	accessor pattern: string | undefined
 
-	@property({ type: String, attribute: 'error-message' })
-	accessor errorMessage: string = ''
+	@state()
+	private accessor errorMessage: string = ''
 
 	@state()
 	accessor touched = false
