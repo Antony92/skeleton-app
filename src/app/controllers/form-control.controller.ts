@@ -3,7 +3,7 @@ import { ReactiveController, ReactiveControllerHost } from 'lit'
 export interface FormControl {
 	value: string
 	disabled: boolean
-    touched: boolean
+	touched: boolean
 	formAssociatedCallback?: (form: HTMLFormElement) => void
 	formDisabledCallback: (disabled: boolean) => void
 	formResetCallback: () => void
@@ -18,21 +18,17 @@ export interface FormControl {
 export class FormControlController implements ReactiveController {
 	host: ReactiveControllerHost & FormControl & HTMLElement
 
-    private internals!: ElementInternals
+	private internals!: ElementInternals
 
 	constructor(host: ReactiveControllerHost & FormControl & HTMLElement) {
 		this.host = host
-        this.internals = host.attachInternals()
+		this.internals = host.attachInternals()
 		this.host.addController(this)
 	}
 
-	hostConnected() {
-		
-    }
+	hostConnected() {}
 
-	hostUpdate() {
-        
-    }
+	hostUpdate() {}
 
 	async hostUpdated() {
 		await this.host.updateComplete
@@ -42,7 +38,7 @@ export class FormControlController implements ReactiveController {
 
 		const valid = this.internals.validity.valid
 		this.internals.states.add(valid ? 'valid' : 'invalid')
-        
+
 		if (this.host.touched) {
 			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 		}
@@ -52,7 +48,7 @@ export class FormControlController implements ReactiveController {
 
 	hostDisconnected() {}
 
-    get form() {
+	get form() {
 		return this.internals.form
 	}
 

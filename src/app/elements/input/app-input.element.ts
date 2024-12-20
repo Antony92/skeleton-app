@@ -105,10 +105,6 @@ export class AppInput extends LitElement implements FormControl {
 		this.touched = true
 	}
 
-	formAssociatedCallback(form: HTMLFormElement) {
-		// form linked
-	}
-
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled
 		this.touched = false
