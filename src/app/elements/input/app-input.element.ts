@@ -82,20 +82,20 @@ export class AppInput extends LitElement implements FormControl {
 
 	protected updated(changedProperties: PropertyValues) {
 		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		this.internals.states.clear()
+		if (changedProperties.has('value')) {
+			this.internals.setFormValue(this.value)
+		}
+
 		const valid = this.internals.validity.valid
+		this.internals.states.clear()
 		this.internals.states.add(valid ? 'valid' : 'invalid')
 
 		if (this.touched) {
 			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 		}
-		
-		if (changedProperties.has('value')) {
-			this.internals.setFormValue(this.value)
-		}
 
-		if (this.touched && !changedProperties.has('errorMessage') && !this.value) {
-			this.errorMessage = this.validationMessage
+		if (this.touched && !changedProperties.has('errorMessage')) {
+			this.errorMessage = !valid ? this.validationMessage : ''
 		}
 	}
 
