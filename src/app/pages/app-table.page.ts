@@ -10,6 +10,8 @@ import '@app/elements/paginator/app-paginator.element'
 import { TableColumn } from '@app/types/table.type'
 import { when } from 'lit/directives/when.js'
 import { AppPaginator } from '@app/elements/paginator/app-paginator.element'
+import { AppPaginateEvent } from '@app/events/pagination.event'
+import { AppTableFilterEvent } from '@app/events/table.event'
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -53,39 +55,16 @@ export class AppTablePage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback()
 		setDocumentTitle('Table')
-		this.searchParamsMap = getURLSearchParamsAsMap()
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
-		this.columns.forEach((column) => {
-			column.value = this.searchParamsMap.get(column.field) || column.value
-			if (column.field === this.searchParamsMap.get('sort')) {
-				column.order = this.searchParamsMap.get('order')
-			}
-		})
-		this.addEventListener('app-paginate', async (event) => {
-			const { pageSize, pageIndex } = event.value
-			this.limit = pageSize
-			localStorage.setItem(this.storageLimitName, this.limit.toString())
-			this.skip = pageSize * pageIndex
-			this.loadUsers()
-		})
-		this.addEventListener('app-table-filter', async (event) => {
-			this.searchParamsMap = event.filters
-			addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
-			this.skip = 0
-			await this.loadUsers()
-			this.paginator.reset()
-		})
-		this.addEventListener('app-table-clear', async () => {
-			this.searchParamsMap.clear()
-			clearSearchParamsFromURL()
-			this.skip = 0
-			this.columns.forEach((column) => {
-				column.value = ''
-				column.order = null
+		this.searchParamsMap = getURLSearchParamsAsMap()
+		this.columns
+			.filter((column) => this.searchParamsMap.has(column.field))
+			.forEach((column) => {
+				column.value = this.searchParamsMap.get(column.field)
+				if (column.field === this.searchParamsMap.get('sort')) {
+					column.order = this.searchParamsMap.get('order')
+				}
 			})
-			await this.loadUsers()
-			this.paginator.reset()
-		})
 		this.loadUsers()
 	}
 
@@ -97,9 +76,37 @@ export class AppTablePage extends LitElement {
 		this.loading = false
 	}
 
+	onPaginate(event: AppPaginateEvent) {
+		const { pageSize, pageIndex } = event.value
+		this.limit = pageSize
+		localStorage.setItem(this.storageLimitName, this.limit.toString())
+		this.skip = pageSize * pageIndex
+		this.loadUsers()
+	}
+
+	async onTableFilter(event: AppTableFilterEvent) {
+		this.searchParamsMap = event.filters
+		addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
+		this.skip = 0
+		await this.loadUsers()
+		this.paginator.reset()
+	}
+
+	async onTableClear() {
+		this.searchParamsMap.clear()
+		clearSearchParamsFromURL()
+		this.skip = 0
+		this.columns.forEach((column) => {
+			column.value = ''
+			column.order = null
+		})
+		await this.loadUsers()
+		this.paginator.reset()
+	}
+
 	render() {
 		return html`
-			<app-table searchable clearable>
+			<app-table searchable clearable @app-table-clear=${this.onTableClear} @app-table-filter=${this.onTableFilter}>
 				<table slot="table">
 					<thead>
 						<tr>
@@ -140,7 +147,14 @@ export class AppTablePage extends LitElement {
 						)}
 					</tbody>
 				</table>
-				<app-paginator slot="paginator" .pageSize=${this.limit} .pageSizeOptions=${[5, 10, 15]} .total=${this.users.total}></app-paginator>
+				<app-paginator
+					slot="paginator"
+					@app-paginate=${this.onPaginate}
+					.pageSize=${this.limit}
+					.pageSizeOptions=${[5, 10, 15]}
+					.total=${this.users.total}
+				>
+				</app-paginator>
 			</app-table>
 		`
 	}
