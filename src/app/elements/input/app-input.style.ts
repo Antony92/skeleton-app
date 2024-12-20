@@ -77,7 +77,10 @@ export const appInputStyle = css`
 
 			&:has(input:disabled) {
 				opacity: 0.5;
-				cursor: not-allowed;
+				
+				input {
+					cursor: not-allowed;
+				}
 			}
 
 			&:has(input:focus-visible) {

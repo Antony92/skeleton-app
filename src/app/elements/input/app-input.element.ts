@@ -39,7 +39,7 @@ export class AppInput extends LitElement implements FormControl {
 	@property({ type: String })
 	accessor value = ''
 
-	@property({ type: String, attribute: 'default-value' })
+	@property({ type: String })
 	accessor defaultValue = ''
 
 	@property({ type: String })
@@ -87,10 +87,6 @@ export class AppInput extends LitElement implements FormControl {
 		})
 	}
 
-	protected firstUpdated(): void {
-		this.value = this.defaultValue
-	}
-
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
@@ -110,7 +106,7 @@ export class AppInput extends LitElement implements FormControl {
 	}
 
 	formAssociatedCallback(form: HTMLFormElement) {
-		console.log(form)
+		// form linked
 	}
 
 	formDisabledCallback(disabled: boolean) {
@@ -130,7 +126,7 @@ export class AppInput extends LitElement implements FormControl {
 	}
 
 	validated(validity: ValidityState, message: string) {
-		this.errorMessage = this.touched ? message : ''
+		this.errorMessage = this.touched && !validity.valid ? message : ''
 	}
 
 	get form() {
@@ -192,7 +188,7 @@ export class AppInput extends LitElement implements FormControl {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				<small class="invalid" part="invalid">${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
 			</div>
 		`
 	}
