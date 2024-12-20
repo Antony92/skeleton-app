@@ -44,7 +44,7 @@ export const tableStyle = css`
 
 			td {
 				white-space: nowrap;
-				padding: 10px 20px;
+				padding: 10px;
 
 				&[textlimit] {
 					max-width: var(--textlimit, 300px);

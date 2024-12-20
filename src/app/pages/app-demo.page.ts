@@ -10,9 +10,10 @@ import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
 import { loading } from '@app/shared/loader'
+import { setDocumentTitle } from '@app/utils/html'
 
-@customElement('app-demo')
-export class AppDemo extends LitElement {
+@customElement('app-demo-page')
+export class AppDemoPage extends LitElement {
 	static styles = [
 		css`
 			:host {
@@ -33,6 +34,11 @@ export class AppDemo extends LitElement {
 
 	@query('app-dialog')
 	accessor appDialog!: AppDialog
+
+	connectedCallback() {
+		super.connectedCallback()
+		setDocumentTitle('Demo')
+	}
 
 	protected async firstUpdated() {}
 
@@ -64,7 +70,7 @@ export class AppDemo extends LitElement {
 
 			<fieldset>
 				<legend>Input</legend>
-				<app-input label="Input label" placeholder="Type something"></app-input>
+				<app-input label="Input label" placeholder="Type something" @app-input=${(event: Event) => console.log(event.target)}></app-input>
 				<app-input label="With prefix and suffix" placeholder="Type something">
 					<app-icon slot="prefix" prefix="fas" name="skull"></app-icon>
 					<app-icon slot="suffix" prefix="fas" name="skull"></app-icon>

@@ -94,15 +94,18 @@ export class AppInput extends LitElement implements FormControl {
 	onInput() {
 		this.value = this.input.value
 		this.touched = true
+		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
 	}
 
 	onChange() {
 		this.value = this.input.value
 		this.touched = true
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
 	}
 
 	onBlur() {
 		this.touched = true
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
 	}
 
 	formDisabledCallback(disabled: boolean) {

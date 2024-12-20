@@ -105,8 +105,10 @@ export class AppPaginator extends LitElement {
 		return html`
 			<label for="page-size">
 				Items per page:
-				<select id="page-size" .value=${this.pageSize.toString()} @change=${this.pageSizeChange}>
-					${this.pageSizeOptions.map((value) => html`<option .value=${value?.toString()}>${value}</option>`)}
+				<select id="page-size" @change=${this.pageSizeChange}>
+					${this.pageSizeOptions.map(
+						(value) => html`<option value=${value?.toString()} ?selected=${this.pageSize === value}>${value}</option>`
+					)}
 				</select>
 			</label>
 			${this.getRangeLabel()}

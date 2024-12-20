@@ -16,7 +16,7 @@ export class AppRoot extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 5000 }))
+		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 0 }))
 		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }))
 
 		// const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)

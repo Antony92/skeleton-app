@@ -37,10 +37,3 @@ export const mainStyle = css`
         }
     }
 `
-
-export const appPageTitleStyle = css`
-    h3.title {
-        margin: 0;
-        padding-bottom: 15px;
-    }
-`

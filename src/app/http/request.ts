@@ -20,7 +20,7 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 		// Increment requests by one
 		requestCount++
 		// Show loading if not disabled
-		await loading(!!options?.hideLoading)
+		await loading(!(options?.hideLoading ?? false))
 		// If auth option is provided set up access token header
 		if (options?.auth) {
 			Object.assign(options, { headers: { ...options.headers, Authorization: `Bearer ${getAccessToken()}` } })

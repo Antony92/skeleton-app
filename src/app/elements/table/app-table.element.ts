@@ -1,8 +1,12 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
-import { Subject, Subscription, timer, debounce } from 'rxjs'
 import { AppTableFilterEvent } from '@app/events/table.event'
+import '@app/elements/button/app-button.element'
+import '@app/elements/icon/app-icon.element'
+import '@app/elements/input/app-input.element'
+import { AppInput } from '@app/elements/input/app-input.element'
+import { debounce, Subject, Subscription, timer } from 'rxjs'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -23,13 +27,14 @@ export class AppTable extends LitElement {
 				gap: 10px;
 				margin-bottom: 10px;
 
-				input {
+				app-input {
 					width: 300px;
 				}
 
-				.buttons {
+				.actions {
 					display: flex;
 					gap: 10px;
+					flex-grow: 1;
 
 					.clear-filters {
 						margin-left: auto;
@@ -40,21 +45,19 @@ export class AppTable extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	searchable = false
+	accessor searchable = false
 
 	@property({ type: Boolean })
-	clearable = false
+	accessor clearable = false
 
 	@property({ type: String })
-	searchValue = ''
+	accessor searchValue = ''
 
 	@property({ type: Boolean })
-	filtersApplied = false
+	accessor filtersApplied = false
 
 	private searchParamsMap = new Map()
-
 	private searchEvent = new Subject<string>()
-
 	private searchSubscription: Subscription = new Subscription()
 
 	connectedCallback() {
@@ -70,7 +73,7 @@ export class AppTable extends LitElement {
 				this.searchParamsMap.delete(field)
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchFilterEvent()
+			this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = event.filter
@@ -83,20 +86,12 @@ export class AppTable extends LitElement {
 				this.searchParamsMap.delete('order')
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchFilterEvent()
+			this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
 		})
 		this.searchSubscription = this.searchEvent
 			.asObservable()
 			.pipe(debounce((value) => (value ? timer(300) : timer(0))))
-			.subscribe((value) => {
-				if (value) {
-					this.searchParamsMap.set('search', value)
-				} else {
-					this.searchParamsMap.delete('search')
-				}
-				this.filtersApplied = this.hasFiltersApplied()
-				this.dispatchFilterEvent()
-			})
+			.subscribe(() => this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap)))
 	}
 
 	disconnectedCallback() {
@@ -104,11 +99,13 @@ export class AppTable extends LitElement {
 		this.searchSubscription.unsubscribe()
 	}
 
-	private dispatchFilterEvent() {
-		this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
-	}
-
-	globalSearch(value: string) {
+	search(value: string) {
+		if (value) {
+			this.searchParamsMap.set('search', value)
+		} else {
+			this.searchParamsMap.delete('search')
+		}
+		this.filtersApplied = this.hasFiltersApplied()
 		this.searchEvent.next(value)
 	}
 
@@ -119,7 +116,7 @@ export class AppTable extends LitElement {
 	clearAllFilters() {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
-		this.renderRoot.querySelectorAll('input').forEach((input) => (input.value = ''))
+		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
 		this.columnFilters.forEach((columFilter) => columFilter.clearFilters())
 		this.dispatchEvent(new Event('app-table-clear'))
 	}
@@ -136,26 +133,31 @@ export class AppTable extends LitElement {
 				${when(
 					this.searchable,
 					() => html`
-						<input
+						<app-input
 							autocomplete="off"
-							type="search"
-							.value=${this.searchValue || ''}
+							.value=${this.searchValue}
 							placeholder="Search"
-							@input=${(event: InputEvent) => this.globalSearch((<SLInput>event.target).value)}
+							@app-input=${(event: Event) => this.search((<AppInput>event.target).value)}
 						>
-							<sl-icon name="search" slot="prefix"></sl-icon>
-						</sl-input>
+							<app-icon slot="prefix" name="magnifying-glass"></app-icon>
+						</app-input>
 					`
 				)}
-				<div class="buttons">
+				<div class="actions">
 					<slot name="actions"></slot>
 					${when(
 						this.clearable,
 						() => html`
-							<sl-button class="clear-filters" variant="default" pill @click=${this.clearAllFilters} ?disabled=${!this.filtersApplied}>
-								<sl-icon slot="prefix" name="funnel"></sl-icon>
+							<app-button
+								class="clear-filters"
+								variant="primary"
+								outlined
+								@click=${this.clearAllFilters}
+								?disabled=${!this.filtersApplied}
+							>
+								<app-icon name="filter-circle-xmark"></app-icon>
 								Clear filters
-							</sl-button>
+							</app-button>
 						`
 					)}
 				</div>

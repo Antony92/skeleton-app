@@ -9,8 +9,8 @@ import 'ldrs/ring2'
 import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
 
-@customElement('app-login')
-export class AppLogin extends LitElement {
+@customElement('app-login-page')
+export class AppLoginPage extends LitElement {
 	static styles = [
 		css`
 			.container {
