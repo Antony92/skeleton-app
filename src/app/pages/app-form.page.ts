@@ -15,10 +15,6 @@ export class AppForm extends LitElement {
                 justify-content: flex-start;
                 gap: 10px;
             }
-
-            /* app-input:state(invalid) {
-                color: green;
-            } */
 		`,
 	]
 
@@ -26,12 +22,7 @@ export class AppForm extends LitElement {
     accessor form!: HTMLFormElement
 
 	protected async firstUpdated() {
-
-        setTimeout(() => {
-            // this.renderRoot.querySelector('input')!.value = 'asdasdasda'
-        }, 5000)
-
-        // this.renderRoot.querySelector('input')?.addEventListener('invalid', () => console.log('invalid'))
+ 
     }
 
     async submit(event: SubmitEvent) {
@@ -47,8 +38,8 @@ export class AppForm extends LitElement {
 	render() {
 		return html`
             <form @submit=${this.submit} novalidate>
-                <app-input required name="test1" label="Name" type="email"></app-input>
-                <!-- <input required name="test2" label="Name" type="email" @invalid=${() => console.log('invalid input')}> -->
+                <app-input required name="name" label="Name"></app-input>
+                <app-input required name="email" label="Email" type="email"></app-input>
                 <div class="actions">
                     <app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
                     <app-button @click=${() => this.form.reset()}>Reset</app-button>

@@ -4,15 +4,15 @@ export interface FormControl {
 	value: string
 	disabled: boolean
     touched: boolean
-	formAssociatedCallback: (form: HTMLFormElement) => void
+	formAssociatedCallback?: (form: HTMLFormElement) => void
 	formDisabledCallback: (disabled: boolean) => void
 	formResetCallback: () => void
 	form: HTMLFormElement | null
 	validity: ValidityState
-	validationMessage: string
 	willValidate: boolean
 	checkValidity: () => boolean
 	reportValidity: () => boolean
+	validated?: (validity: ValidityState, message: string) => void
 }
 
 export class FormControlController implements ReactiveController {
@@ -37,17 +37,17 @@ export class FormControlController implements ReactiveController {
 	async hostUpdated() {
 		await this.host.updateComplete
 
-		this.internals.states.clear()
-		
 		this.internals.setFormValue(this.host.value)
+		this.internals.states.clear()
 
 		const valid = this.internals.validity.valid
-
 		this.internals.states.add(valid ? 'valid' : 'invalid')
         
 		if (this.host.touched) {
 			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 		}
+
+		this.host.validated?.(this.validity, this.validationMessage)
 	}
 
 	hostDisconnected() {}

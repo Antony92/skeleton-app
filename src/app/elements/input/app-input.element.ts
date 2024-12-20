@@ -1,9 +1,9 @@
-import { html, LitElement, css, PropertyValues } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
-import { FormControl } from '@app/controllers/form-control.controller'
+import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
 
 @customElement('app-input')
 export class AppInput extends LitElement implements FormControl {
@@ -66,37 +66,26 @@ export class AppInput extends LitElement implements FormControl {
 	@state()
 	accessor touched = false
 
-	static formAssociated = true
-	internals!: ElementInternals
-
 	@query('input')
 	accessor input!: HTMLInputElement
 
+	static formAssociated = true
+	formController!: FormControlController
+
+	constructor() {
+		super()
+		this.formController = new FormControlController(this)
+	}
+
 	connectedCallback(): void {
 		super.connectedCallback()
-		this.internals = this.attachInternals()
 		this.addEventListener('invalid', async () => {
 			this.touched = true
 		})
 	}
 
-	protected updated(changedProperties: PropertyValues) {
-		this.internals.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		if (changedProperties.has('value')) {
-			this.internals.setFormValue(this.value)
-		}
-
-		const valid = this.internals.validity.valid
-		this.internals.states.clear()
-		this.internals.states.add(valid ? 'valid' : 'invalid')
-
-		if (this.touched) {
-			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
-		}
-
-		if (this.touched && !changedProperties.has('errorMessage')) {
-			this.errorMessage = !valid ? this.validationMessage : ''
-		}
+	protected updated() {
+		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
 
 	onInput() {
@@ -132,28 +121,32 @@ export class AppInput extends LitElement implements FormControl {
 		this.input.focus(options)
 	}
 
+	validated(validity: ValidityState, message: string) {
+		this.errorMessage = this.touched ? message : ''
+	}
+
 	get form() {
-		return this.internals.form
+		return this.formController.form
 	}
 
 	get validity() {
-		return this.internals.validity
+		return this.formController.validity
 	}
 
 	get validationMessage() {
-		return this.internals.validationMessage
+		return this.formController.validationMessage
 	}
 
 	get willValidate() {
-		return this.internals.willValidate
+		return this.formController.willValidate
 	}
 
 	checkValidity() {
-		return this.internals.checkValidity()
+		return this.formController.checkValidity()
 	}
 
 	reportValidity() {
-		return this.internals.reportValidity()
+		return this.formController.reportValidity()
 	}
 
 	render() {
