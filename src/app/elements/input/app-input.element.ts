@@ -93,6 +93,10 @@ export class AppInput extends LitElement implements FormControl {
 		if (changedProperties.has('value')) {
 			this.internals.setFormValue(this.value)
 		}
+
+		if (this.touched && !changedProperties.has('errorMessage') && !this.value) {
+			this.errorMessage = this.validationMessage
+		}
 	}
 
 	onInput() {
@@ -106,7 +110,7 @@ export class AppInput extends LitElement implements FormControl {
 	}
 
 	onBlur() {
-		// this.touched = true
+		this.touched = true
 	}
 
 	formAssociatedCallback(form: HTMLFormElement) {
@@ -121,6 +125,7 @@ export class AppInput extends LitElement implements FormControl {
 	formResetCallback() {
 		this.value = ''
 		this.touched = false
+		this.errorMessage = ''
 	}
 
 	focus(options?: FocusOptions) {
@@ -185,7 +190,7 @@ export class AppInput extends LitElement implements FormControl {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				<small class="invalid" part="invalid">${this.validationMessage}</small>
+				<small class="invalid" part="invalid">${this.errorMessage}</small>
 			</div>
 		`
 	}
