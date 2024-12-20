@@ -165,6 +165,7 @@ export class AppInput extends LitElement implements FormControl {
 						<slot name="prefix"></slot>
 					</span>
 					<input
+						id="input"
 						part="input"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
