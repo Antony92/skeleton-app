@@ -21,13 +21,13 @@ export class AppIcon extends LitElement {
 	]
 
 	@property({ type: String, reflect: true })
-	accessor prefix: string = 'fas'
+	prefix: string = 'fas'
 
 	@property({ type: String, reflect: true })
-	accessor name: string = 'skull'
+	name: string = 'skull'
 
 	@state()
-	private accessor svg = ''
+	private svg = ''
 	
 	protected willUpdate(changedProperties: PropertyValues): void {
 		if (changedProperties.has('name')) {

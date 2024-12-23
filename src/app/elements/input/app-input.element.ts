@@ -10,67 +10,67 @@ export class AppInput extends LitElement implements FormControl {
 	static styles = [appInputStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
+	disabled = false
 
 	@property({ type: Boolean })
-	accessor autofocus = false
+	autofocus = false
 
 	@property({ type: Boolean })
-	accessor hidden = false
+	hidden = false
 
 	@property({ type: Boolean })
-	accessor readonly = false
+	readonly = false
 
 	@property({ type: Boolean })
-	accessor required = false
+	required = false
 
 	@property({ type: String })
-	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
+	type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
 	@property({ type: String })
-	accessor name = ''
+	name = ''
 
 	@property({ type: String })
-	accessor label = ''
+	label = ''
 
 	@property({ type: String })
-	accessor autocomplete: 'on' | 'off' = 'off'
+	autocomplete: 'on' | 'off' = 'off'
 
 	@property({ type: String })
-	accessor value = ''
+	value = ''
 
 	@property({ type: String })
-	accessor defaultValue = ''
+	defaultValue = ''
 
 	@property({ type: String })
-	accessor placeholder: string | undefined
+	placeholder: string | undefined
 
 	@property()
-	accessor max: number | string | undefined
+	max: number | string | undefined
 
 	@property()
-	accessor min: number | string | undefined
+	min: number | string | undefined
 
 	@property({ type: Number })
-	accessor step: number | undefined
+	step: number | undefined
 
 	@property({ type: Number })
-	accessor maxlength: number | undefined
+	maxlength: number | undefined
 
 	@property({ type: Number })
-	accessor minlength: number | undefined
+	minlength: number | undefined
 
 	@property({ type: String })
-	accessor pattern: string | undefined
+	pattern: string | undefined
 
 	@state()
-	private accessor errorMessage: string = ''
+	private errorMessage: string = ''
 
 	@state()
-	accessor touched = false
+	touched = false
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	input!: HTMLInputElement
 
 	static formAssociated = true
 	formController!: FormControlController

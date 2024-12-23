@@ -43,34 +43,34 @@ export class AppADUsers extends LitElement {
 	]
 
 	@query('app-table')
-	accessor table!: AppTable
+	table!: AppTable
 
 	@query('app-paginator')
-	accessor paginator!: AppPaginator
+	paginator!: AppPaginator
 
 	@query('#user-dialog')
-	accessor userDialog!: SlDialog
+	userDialog!: SlDialog
 
 	@query('#user-dialog form')
-	accessor userDialogForm!: HTMLFormElement
+	userDialogForm!: HTMLFormElement
 
 	@state()
-	accessor loading = false
+	loading = false
 
 	@state()
-	accessor users = {
+	users = {
 		data: [] as any[],
 		total: 0,
 	}
 
 	@state()
-	accessor selectedUser: any = null
+	selectedUser: any = null
 
 	@state()
-	accessor roles: string[] = []
+	roles: string[] = []
 
 	@state()
-	accessor columns: TableColumn[] = [
+	columns: TableColumn[] = [
 		{ header: 'Name', field: 'name', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Username', field: 'username', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{

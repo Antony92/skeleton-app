@@ -6,7 +6,7 @@ export class AppThemeSwitcher extends LitElement {
 	static styles = css``
 
 	@property({ type: String, reflect: true })
-	accessor theme: 'auto' | 'light' | 'dark' | string = localStorage.getItem('theme') || 'auto'
+	theme: 'auto' | 'light' | 'dark' | string = localStorage.getItem('theme') || 'auto'
 
 	preferedDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 	preferedLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches

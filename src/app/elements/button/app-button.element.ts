@@ -9,25 +9,25 @@ export class AppButton extends LitElement {
 	static styles = [appButtonStyle, focusStyle, css``]
 
 	@property({ type: String })
-	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
+	variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	disabled = false
 
 	@property({ type: Boolean })
-	accessor autofocus = false
+	autofocus = false
 
 	@property({ type: Boolean })
-	accessor hidden = false
+	hidden = false
 
 	@property({ type: Boolean })
-	accessor outlined = false
+	outlined = false
 
 	@property({ type: Boolean })
-	accessor text = false
+	text = false
 
 	@property({ type: Boolean })
-	accessor icon = false
+	icon = false
 
 	render() {
 		return html`

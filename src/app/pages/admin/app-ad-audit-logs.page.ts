@@ -40,12 +40,12 @@ export class AppADAuditLogs extends LitElement {
 	]
 
 	@query('app-table')
-	accessor table!: AppTable
+	table!: AppTable
 
 	@query('app-paginator')
-	accessor paginator!: AppPaginator
+	paginator!: AppPaginator
 
-	@query('data-dialog')
+	@query('#data-dialog')
 	dataDialog!: SlDialog
 
 	private searchParamsMap = new Map()
@@ -53,19 +53,19 @@ export class AppADAuditLogs extends LitElement {
 	private limit = 10
 
 	@state()
-	accessor loading = false
+	loading = false
 
 	@state()
-	accessor auditLogs = {
+	auditLogs = {
 		data: [] as any[],
 		total: 0,
 	}
 
 	@state()
-	accessor data = ''
+	data = ''
 
 	@state()
-	accessor columns: TableColumn[] = [
+	columns: TableColumn[] = [
 		{ header: 'Name', field: 'name', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Username', field: 'username', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Impersonated by', field: 'impersonated', type: 'text', filtarable: true, delay: 300 },
