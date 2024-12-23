@@ -6,6 +6,7 @@ export const appDialogStyle = css`
 		padding: 0;
 		outline: 0;
 		max-inline-size: min(90vw, 60ch);
+		min-inline-size: min(90vw, 60ch);
 		max-block-size: min(80vh, 100%);
 		overflow: hidden;
 		border: none;
@@ -32,16 +33,14 @@ export const appDialogStyle = css`
 		.container {
 			display: grid;
 			grid-template-rows: auto 1fr auto;
-			row-gap: 20px;
-			align-items: start;
 			max-block-size: 70vh;
-			padding: 15px;
 		}
 
 		header {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			padding: 15px;
 
 			h3 {
 				margin: 0;
@@ -58,14 +57,15 @@ export const appDialogStyle = css`
 			overflow-y: auto;
 			overscroll-behavior-y: contain;
 			display: grid;
-			justify-items: flex-start;
 			max-block-size: 100%;
+			padding: 0 15px;
 		}
 
 		footer {
 			display: flex;
 			justify-content: flex-end;
 			gap: 10px;
+			padding: 15px;
 		}
 	}
 `

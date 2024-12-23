@@ -4,6 +4,7 @@ import { appInputStyle } from './app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { when } from 'lit/directives/when.js'
 
 @customElement('app-input')
 export class AppInput extends LitElement implements FormControl {
@@ -155,7 +156,7 @@ export class AppInput extends LitElement implements FormControl {
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
-				<label for="input" part="label">${this.label}</label>
+				${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
 				<div class="input-wrapper" part="input-wrapper">
 					<span class="prefix" part="prefix">
 						<slot name="prefix"></slot>

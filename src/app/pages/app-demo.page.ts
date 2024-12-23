@@ -7,7 +7,7 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
 import '@app/elements/input/app-input.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
-import { confirmDialog } from '@app/shared/dialog'
+import { confirmDialog, confirmInputDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
 import { loading } from '@app/shared/loader'
 import { setDocumentTitle } from '@app/utils/html'
@@ -97,6 +97,17 @@ export class AppDemoPage extends LitElement {
 				>
 					Open confirm dialog
 				</app-button>
+				<app-button
+					variant="primary"
+					@click=${() =>
+						confirmInputDialog({
+							header: 'Confirm dialog',
+							message: `Type 'skeleton' to confirm operation`,
+							input: 'skeleton'
+						})}
+				>
+					Open confirm dialog with input
+				</app-button>
 			</fieldset>
 
 			<fieldset>
@@ -130,6 +141,28 @@ export class AppDemoPage extends LitElement {
 			</fieldset>
 
 			<app-dialog header="Template dialog">
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
 				ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 				<app-button slot="footer" variant="primary" autofocus app-dialog-close>Close</app-button>
