@@ -103,7 +103,7 @@ export const confirmDialog = async (options: { header: string; message: string }
  * @param options
  * @returns Promise
  */
-export const confirmInputDialog = async (options: { header: string; message: string; input: string }) => {
+export const confirmInputDialog = async (options: { header: string; message: string; word: string }) => {
 	await import('@app/elements/dialog/app-dialog.element')
 	await import('@app/elements/button/app-button.element')
 	await import('@app/elements/input/app-input.element')
@@ -116,11 +116,11 @@ export const confirmInputDialog = async (options: { header: string; message: str
 		return
 	}
 
-	const { header, message, input } = options
+	const { header, message, word } = options
 
 	const template = html`
 		<p>${message}</p>
-		<app-input placeholder="Type '${input}'" pattern="${input}" required autofocus></app-input>
+		<app-input placeholder="Type '${word}'" pattern="${word}" required autofocus></app-input>
 		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 		<app-button slot="footer" variant="primary" id="confirm">Confirm</app-button>
 	`
@@ -137,9 +137,11 @@ export const confirmInputDialog = async (options: { header: string; message: str
 	// On hide complete remove dialog from DOM
 	dialog.addEventListener('app-after-hide', () => dialog.remove())
 
-	// Validate input
+	// Input element
+	const input = dialog.querySelector('app-input')!
+
+	// Validate input on confirm click
 	dialog.querySelector('#confirm')?.addEventListener('click' , () => {
-		const input = dialog.querySelector('app-input')!
 		if (!input.checkValidity()) {
 			input.focus()
 		} else {

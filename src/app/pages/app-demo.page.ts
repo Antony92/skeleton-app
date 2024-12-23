@@ -103,7 +103,7 @@ export class AppDemoPage extends LitElement {
 						confirmInputDialog({
 							header: 'Confirm dialog',
 							message: `Type 'skeleton' to confirm operation`,
-							input: 'skeleton'
+							word: 'skeleton'
 						})}
 				>
 					Open confirm dialog with input
