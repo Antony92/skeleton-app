@@ -137,6 +137,7 @@ export const confirmInputDialog = async (options: { header: string; message: str
 	// On hide complete remove dialog from DOM
 	dialog.addEventListener('app-after-hide', () => dialog.remove())
 
+	// Validate input
 	dialog.querySelector('#confirm')?.addEventListener('click' , () => {
 		const input = dialog.querySelector('app-input')!
 		if (!input.checkValidity()) {
