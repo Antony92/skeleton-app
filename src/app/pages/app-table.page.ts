@@ -104,13 +104,31 @@ export class AppTablePage extends LitElement {
 		this.paginator.reset()
 	}
 
+	toggleSelection(event: Event) {
+		const checked = (<HTMLInputElement>event.target).checked
+		this.users.data.forEach((user) => (user.selected = checked))
+		this.requestUpdate()
+	}
+
+	toggleSelected(user: any) {
+		user.selected = !user.selected
+		this.requestUpdate()
+	}
+
 	render() {
 		return html`
 			<app-table searchable clearable @app-table-clear=${this.onTableClear} @app-table-filter=${this.onTableFilter}>
 				<table slot="table">
 					<thead>
 						<tr>
-							<th action sticky></th>
+							<th action sticky>
+								<input
+									type="checkbox"
+									@change=${this.toggleSelection}
+									.checked=${this.users.data.every((user) => user.selected)}
+									.indeterminate=${this.users.data.some((user) => user.selected) && this.users.data.some((user) => !user.selected)}
+								/>
+							</th>
 							${this.columns.map((column) => html` <th>${column.header}</th> `)}
 						</tr>
 					</thead>
@@ -118,7 +136,9 @@ export class AppTablePage extends LitElement {
 						${this.users.data.map(
 							(user) => html`
 								<tr>
-									<td sticky>action</td>
+									<td sticky>
+										<input type="checkbox" .checked=${user.selected} @change=${() => this.toggleSelected(user)} />
+									</td>
 									<td>${user.id}</td>
 									<td>${user.username}</td>
 									<td>${user.firstName}</td>
