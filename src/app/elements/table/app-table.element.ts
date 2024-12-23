@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement, property, queryAssignedElements } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { AppTableFilterEvent } from '@app/events/table.event'
 import '@app/elements/button/app-button.element'
@@ -56,6 +56,9 @@ export class AppTable extends LitElement {
 	@property({ type: Boolean })
 	filtersApplied = false
 
+	@queryAssignedElements({ slot: 'table', selector: 'table' })
+	tables!: Array<HTMLTableElement>
+
 	private searchParamsMap = new Map()
 	private searchEvent = new Subject<string>()
 	private searchSubscription: Subscription = new Subscription()
@@ -77,6 +80,7 @@ export class AppTable extends LitElement {
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = event.filter
+			console.log(event.filter, 1111)
 			this.columnFilters.filter((filter) => filter !== event.target).forEach((filter) => filter.clearOrderFilter())
 			if (order) {
 				this.searchParamsMap.set('sort', field)
@@ -122,8 +126,7 @@ export class AppTable extends LitElement {
 	}
 
 	get columnFilters() {
-		const slot = this.renderRoot.querySelector('slot[name="table"]')
-		const table = (<HTMLSlotElement>slot)?.assignedElements().filter((node) => node.matches('table'))[0]
+		const table = this.tables[0]
 		return Array.from(table?.querySelectorAll('app-table-column-filter') || [])
 	}
 

@@ -2,15 +2,9 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
-import '@shoelace-style/shoelace/dist/components/input/input.js'
-import '@shoelace-style/shoelace/dist/components/icon/icon.js'
-import '@shoelace-style/shoelace/dist/components/select/select.js'
-import '@shoelace-style/shoelace/dist/components/option/option.js'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
-import type SLInput from '@shoelace-style/shoelace/dist/components/input/input.js'
-import type SlSelect from '@shoelace-style/shoelace/dist/components/select/select.js'
-import { SlChangeEvent, SlInputEvent } from '@shoelace-style/shoelace'
 import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
+import '@app/elements/icon/app-icon.element'
 
 @customElement('app-table-column-filter')
 export class AppTableColumnFilter extends LitElement {
@@ -18,7 +12,7 @@ export class AppTableColumnFilter extends LitElement {
 		.filter {
 			display: flex;
 			align-items: center;
-			padding: 10px;
+			padding: 10px 0;
 			gap: 5px;
 			font-weight: bold;
 		}
@@ -26,28 +20,16 @@ export class AppTableColumnFilter extends LitElement {
 		.sortable {
 			cursor: pointer;
 
-			sl-icon {
-				margin-top: 3px;
-
-				&.placeholder {
+			&[order='none'] {
+				app-icon {
 					opacity: 0;
-					transition: all 0.3s;
-					translate: 0 25%;
+					transition: opacity 0.3s;
+				}
+
+				&:not(:focus):hover app-icon {
+					opacity: 0.5;
 				}
 			}
-
-			&:not(:focus):hover {
-				sl-icon.placeholder {
-					opacity: 0;
-					transition: all 0.3s;
-					translate: 0 25%;
-				}
-			}
-		}
-
-		sl-input,
-		sl-select {
-			min-width: 200px;
 		}
 	`
 
@@ -103,8 +85,8 @@ export class AppTableColumnFilter extends LitElement {
 		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }))
 	}
 
-	filterColumnValue(event: SlInputEvent | SlChangeEvent) {
-		const input = event.target as SLInput | SlSelect
+	filterColumnValue(event: Event) {
+		const input = event.target as HTMLInputElement | HTMLSelectElement
 		this.value = input.value?.toString()
 		this.filterEvent.next(this.value)
 	}
@@ -112,14 +94,12 @@ export class AppTableColumnFilter extends LitElement {
 	filterColumnOrder() {
 		if (!this.sortable) return
 		this.renderRoot.querySelector<HTMLElement>('.heading')?.focus()
-		
+
 		if (!this.order) {
 			this.order = 'asc'
-		}
-		if (this.order === 'asc') {
+		} else if (this.order === 'asc') {
 			this.order = 'desc'
-		}
-		if (this.order === 'desc') {
+		} else if (this.order === 'desc') {
 			this.order = null
 		}
 		this.dispatchFilterOrderEvent()
@@ -135,93 +115,87 @@ export class AppTableColumnFilter extends LitElement {
 	}
 
 	clearValueFilter() {
-		this.renderRoot.querySelectorAll('sl-input').forEach((input) => (input.value = ''))
-		this.renderRoot.querySelectorAll('sl-select').forEach((select) => (select.value = select.multiple ? [] : ''))
+		this.renderRoot.querySelectorAll('input').forEach((input) => (input.value = ''))
+		this.renderRoot.querySelectorAll('option').forEach((option) => (option.selected = false))
 	}
 
 	render() {
 		return html`
-			<div tabindex="-1" class=${classMap({ filter: true, sortable: this.sortable })} @click=${this.filterColumnOrder}>
+			<div
+				tabindex="-1"
+				order=${this.order || 'none'}
+				class=${classMap({ filter: true, sortable: this.sortable })}
+				@click=${this.filterColumnOrder}
+			>
 				<slot></slot>
-				${when(this.sortable && !this.order, () => html`<sl-icon class="placeholder" name="sort-up"></sl-icon>`)}
-				${when(this.sortable && this.order === 'desc', () => html`<sl-icon name="sort-down"></sl-icon>`)}
-				${when(this.sortable && this.order === 'asc', () => html`<sl-icon name="sort-up"></sl-icon>`)}
+				${when(this.sortable && !this.order, () => html`<app-icon name="sort"></app-icon>`)}
+				${when(this.sortable && this.order === 'desc', () => html`<app-icon name="sort-down"></app-icon>`)}
+				${when(this.sortable && this.order === 'asc', () => html`<app-icon name="sort-up"></app-icon>`)}
 			</div>
 			${when(
 				this.filterable && this.type === 'text',
 				() => html`
-					<sl-input
-						filled
+					<input
 						autocomplete="off"
-						clearable
 						type="text"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@sl-input=${this.filterColumnValue}
+						@input=${this.filterColumnValue}
 					>
-					</sl-input>
+					</input>
 				`
 			)}
 			${when(
 				this.filterable && this.type === 'number',
 				() => html`
-					<sl-input
-						filled
+					<input
 						autocomplete="off"
-						clearable
 						type="number"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@sl-input=${this.filterColumnValue}
+						@input=${this.filterColumnValue}
 					>
-					</sl-input>
+					</input>
 				`
 			)}
 			${when(
 				this.filterable && this.type === 'date',
 				() => html`
-					<sl-input
-						filled
+					<input
 						autocomplete="off"
-						clearable
 						type="date"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@sl-input=${this.filterColumnValue}
+						@input=${this.filterColumnValue}
 					>
-					</sl-input>
+					</input>
 				`
 			)}
 			${when(
 				this.filterable && this.type === 'select',
 				() => html`
-					<sl-select
-						filled
-						hoist
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						.value=${this.value}
-						@sl-change=${this.filterColumnValue}
-					>
-						${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
-					</sl-select>
+					<select placeholder="Filter by ${this.label?.toLowerCase()}" @change=${this.filterColumnValue}>
+						<option value="" disabled selected>None</option>
+						${this.list?.map(
+							(item) =>
+								html`
+									<option value=${item.value?.toString()} ?selected=${this.value === item.value?.toString()}>${item.label}</option>
+								`
+						)}
+					</select>
 				`
 			)}
 			${when(
 				this.filterable && this.type === 'select-multiple',
 				() => html`
-					<sl-select
-						filled
-						hoist
-						clearable
-						multiple
-						.maxOptionsVisible=${1}
-						.value=${this.value.split(',')}
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						@sl-change=${this.filterColumnValue}
-					>
-						${this.list?.map((item) => html`<sl-option value=${item.value?.toString()}>${item.label}</sl-option>`)}
-					</sl-select>
+					<select placeholder="Filter by ${this.label?.toLowerCase()}" @change=${this.filterColumnValue}>
+						${this.list?.map(
+							(item) =>
+								html`
+									<option value=${item.value?.toString()} ?selected=${this.value === item.value?.toString()}>${item.label}</option>
+								`
+						)}
+					</select>
 				`
 			)}
 		`

@@ -6,6 +6,7 @@ import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap
 import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import '@app/elements/table/app-table.element'
+import '@app/elements/table/app-table-column-filter.element'
 import '@app/elements/paginator/app-paginator.element'
 import { TableColumn } from '@app/types/table.type'
 import { when } from 'lit/directives/when.js'
@@ -129,7 +130,25 @@ export class AppTablePage extends LitElement {
 									.indeterminate=${this.users.data.some((user) => user.selected) && this.users.data.some((user) => !user.selected)}
 								/>
 							</th>
-							${this.columns.map((column) => html` <th>${column.header}</th> `)}
+							${this.columns.map(
+								(column) => html`
+									<th>
+										<app-table-column-filter
+											?sortable=${column.sortable}
+											?filterable=${column.filtarable}
+											.label=${column.header}
+											.field=${column.field}
+											.type=${column.type || 'text'}
+											.delay=${column.delay || 0}
+											.list=${column.list || []}
+											.value=${column.value || ''}
+											.order=${column.order || null}
+										>
+											${column.header}
+										</app-table-column-filter>
+									</th>
+								`
+							)}
 						</tr>
 					</thead>
 					<tbody>
