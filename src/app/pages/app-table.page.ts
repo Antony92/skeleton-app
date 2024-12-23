@@ -59,7 +59,6 @@ export class AppTablePage extends LitElement {
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
 		this.searchParamsMap = getURLSearchParamsAsMap()
 		this.columns
-			.filter((column) => this.searchParamsMap.has(column.field))
 			.forEach((column) => {
 				column.value = this.searchParamsMap.get(column.field)
 				if (column.field === this.searchParamsMap.get('sort')) {

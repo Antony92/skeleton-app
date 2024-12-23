@@ -80,7 +80,6 @@ export class AppTable extends LitElement {
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = event.filter
-			console.log(event.filter, 1111)
 			this.columnFilters.filter((filter) => filter !== event.target).forEach((filter) => filter.clearOrderFilter())
 			if (order) {
 				this.searchParamsMap.set('sort', field)
