@@ -119,7 +119,8 @@ export const confirmInputDialog = async (options: { header: string; message: str
 	const { header, message, word } = options
 
 	const template = html`
-		<p>${message}</p>
+		${message}
+		<br/><br/>
 		<app-input placeholder="Type '${word}'" pattern="${word}" required autofocus></app-input>
 		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 		<app-button slot="footer" variant="primary" id="confirm">Confirm</app-button>
