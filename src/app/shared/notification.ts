@@ -16,7 +16,7 @@ export const notify = async (notification: {
 	await import('@app/elements/icon/app-icon.element')
 	await import('@app/elements/button/app-button.element')
 
-	const { message, variant = 'default', duration = 3000, icon, action } = notification
+	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
 
 	const defaultIconMap = {
 		default: 'circle-info',
@@ -47,6 +47,7 @@ export const notify = async (notification: {
 		document.body.appendChild(snackbar)
 	}
 
+	// Add snackbar action callback
 	snackbar.addEventListener('app-snackbar-action', (event: Event) => action?.onAction?.(event))
 
 	// Remove from DOM after hide animation finishes
