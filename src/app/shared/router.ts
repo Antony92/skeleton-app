@@ -66,8 +66,8 @@ const routes: Route[] = [
 				path: '/users',
 				component: 'app-ad-users',
 				action: async (context, command) => {
-					await import('@app/pages/admin/app-ad-users.page')
-				},
+					// await import('@app/pages/admin/app-ad-users.page')
+				}
 			},
 			{
 				path: '/audit-logs',
@@ -77,7 +77,7 @@ const routes: Route[] = [
 					if (!canActivate) {
 						return command.redirect('/page-not-found')
 					}
-					await import('@app/pages/admin/app-ad-audit-logs.page')
+					// await import('@app/pages/admin/app-ad-audit-logs.page')
 				},
 			},
 		],

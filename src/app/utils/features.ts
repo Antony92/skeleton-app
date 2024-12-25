@@ -7,3 +7,10 @@
 // 		sheet.replaceSync(styles)
 // 		adoptStyles(this.shadowRoot!, [sheet]);
 // 	}
+
+
+
+
+
+// document.body.appendChild(element)
+// adoptStyles(element.shadowRoot!, [...element.shadowRoot!.adoptedStyleSheets, css`dialog { background: red !important }`])
