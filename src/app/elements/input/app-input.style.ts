@@ -85,7 +85,6 @@ export const appInputStyle = css`
 
 			&:has(input:focus-visible) {
 				outline: 2px solid var(--theme-color);
-				border-radius: 2px;
 			}
 
 			&:hover:not(:has(input:disabled, input:focus-within)) {
