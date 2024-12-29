@@ -117,6 +117,10 @@ export class AppDemoPage extends LitElement {
 					@click=${() =>
 						notify({
 							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+							action: {
+								label: 'Undo',
+								onAction: (event) => console.log(event)
+							}
 						})}
 				>
 					Open snackbar
