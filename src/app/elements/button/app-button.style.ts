@@ -14,6 +14,16 @@ export const appButtonStyle = css`
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
 
+		&:active {
+			opacity: 0.8;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			box-shadow: none;
+			cursor: not-allowed;
+		}
+
 		&.icon {
 			font-size: inherit;
 		}
@@ -47,6 +57,10 @@ export const appButtonStyle = css`
 				&.icon, &.text {
 					background-color: transparent;
 					color: var(--theme-default-hover);
+				}
+
+				&:active {
+					
 				}
 			}
 		}
@@ -145,12 +159,6 @@ export const appButtonStyle = css`
 					color: var(--theme-error-hover);
 				}
 			}
-		}
-
-		&:disabled {
-			opacity: 0.5;
-			box-shadow: none;
-			cursor: not-allowed;
 		}
 	}
 `
