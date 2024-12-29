@@ -103,7 +103,7 @@ export const confirmDialog = async (options: { header: string; message: string }
  * @param options
  * @returns Promise
  */
-export const confirmInputDialog = async (options: { header: string; message: string; word: string }) => {
+export const promptDialog = async (options: { header: string; message: string; promt: string }) => {
 	await import('@app/elements/dialog/app-dialog.element')
 	await import('@app/elements/button/app-button.element')
 	await import('@app/elements/input/app-input.element')
@@ -116,12 +116,12 @@ export const confirmInputDialog = async (options: { header: string; message: str
 		return
 	}
 
-	const { header, message, word } = options
+	const { header, message, promt } = options
 
 	const template = html`
 		${message}
 		<br/><br/>
-		<app-input placeholder="Type '${word}'" pattern="${word}" required autofocus></app-input>
+		<app-input placeholder="Type '${promt}'" pattern="${promt}" required autofocus></app-input>
 		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 		<app-button slot="footer" variant="primary" id="confirm">Confirm</app-button>
 	`

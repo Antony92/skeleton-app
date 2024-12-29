@@ -7,7 +7,7 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
 import '@app/elements/input/app-input.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
-import { confirmDialog, confirmInputDialog } from '@app/shared/dialog'
+import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
 import { loading } from '@app/shared/loader'
 import { setDocumentTitle } from '@app/utils/html'
@@ -100,10 +100,10 @@ export class AppDemoPage extends LitElement {
 				<app-button
 					variant="primary"
 					@click=${() =>
-						confirmInputDialog({
+						promptDialog({
 							header: 'Confirm dialog',
 							message: `Type 'skeleton' to confirm operation`,
-							word: 'skeleton'
+							promt: 'skeleton'
 						})}
 				>
 					Open confirm dialog with input
