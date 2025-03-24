@@ -6,6 +6,7 @@ import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
 import '@app/elements/input/app-input.element'
+import '@app/elements/badge/app-badge.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -125,6 +126,11 @@ export class AppDemoPage extends LitElement {
 				>
 					Open snackbar
 				</app-button>
+			</fieldset>
+
+			<fieldset>
+				<legend>Badge</legend>
+				<app-badge variant="primary" pulse>Default</app-badge>
 			</fieldset>
 
 			<fieldset>
