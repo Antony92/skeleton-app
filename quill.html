@@ -1,0 +1,27 @@
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	#editor {
+		height: calc(100% - 42px);
+	}
+</style>
+
+<script type="module">
+	import 'quill/dist/quill.snow.css'
+	import Quill from 'quill'
+
+	const params = Object.fromEntries(new URLSearchParams(window.location.search))
+
+	const quill = new Quill('#editor', {
+		placeholder: params.placeholder,
+		theme: 'snow',
+	})
+
+	window.quill = quill
+
+</script>
+
+<div id="editor"></div>
