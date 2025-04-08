@@ -37,7 +37,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/home" class=${classMap({ active: location.pathname.includes('/home') })}>
 							<span>
-								<app-icon name="home" class="icon"></app-icon>
+								<app-icon class="icon" filled>home</app-icon>
 							</span>
 							<span>Home</span>
 						</a>
@@ -45,7 +45,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/demo" class=${classMap({ active: location.pathname.includes('/demo') })}>
 							<span>
-								<app-icon name="skull" class="icon"></app-icon>
+								<app-icon class="icon" filled>skull</app-icon>
 							</span>
 							<span>Demo</span>
 						</a>
@@ -53,7 +53,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/form" class=${classMap({ active: location.pathname.includes('/form') })}>
 							<span>
-								<app-icon name="table-list" class="icon"></app-icon>
+								<app-icon class="icon" filled>list_alt</app-icon>
 							</span>
 							<span>Form</span>
 						</a>
@@ -61,7 +61,7 @@ export class AppSidebar extends LitElement {
 					<li>
 						<a href="/table" class=${classMap({ active: location.pathname.includes('/table') })}>
 							<span>
-								<app-icon name="table" class="icon"></app-icon>
+								<app-icon class="icon" filled>table</app-icon>
 							</span>
 							<span>Table</span>
 						</a>
@@ -72,7 +72,7 @@ export class AppSidebar extends LitElement {
 							<li class="bottom" hide-on-mobile>
 								<a href="/admin" class=${classMap({ active: location.pathname.includes('/admin') })}>
 									<span>
-										<app-icon name="screwdriver-wrench" class="icon"></app-icon>
+										<app-icon class="icon" filled>admin_panel_settings</app-icon>
 									</span>
 									<span>Admin</span>
 								</a>

@@ -1,43 +1,37 @@
-import { findIconDefinition, icon, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core'
-import { html, LitElement, css, PropertyValues } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js'
+import { html, LitElement, css } from 'lit'
+import { customElement, property } from 'lit/decorators.js'
 
 @customElement('app-icon')
 export class AppIcon extends LitElement {
 	static styles = [
 		css`
 			:host {
-				width: 1em;
-				height: 1em;
+				font-family: 'Material Symbols Rounded';
+				font-weight: normal;
+				font-style: normal;
+				font-size: 18px;
+				line-height: 1;
+				letter-spacing: normal;
+				text-transform: none;
+				display: inline-block;
+				white-space: nowrap;
+				word-wrap: normal;
+				direction: ltr;
+				-webkit-font-feature-settings: 'liga';
+				-webkit-font-smoothing: antialiased;
+			}
 
-				svg {
-					fill: currentColor;
-					width: 100%;
-					height: 100%;
-				}
+			:host([filled]) {
+				font-variation-settings: 'FILL' 1
 			}
 		`,
 	]
 
-	@property({ type: String, reflect: true })
-	prefix: string = 'fas'
-
-	@property({ type: String, reflect: true })
-	name: string = 'skull'
-
-	@state()
-	private svg = ''
-	
-	protected willUpdate(changedProperties: PropertyValues): void {
-		if (changedProperties.has('name')) {
-			const definition = findIconDefinition({ prefix: this.prefix as IconPrefix, iconName: this.name as IconName })
-			this.svg = icon(definition)?.html[0] || 'not_found'
-		}
-	}
+	@property({ type: Boolean })
+	filled = false
 
 	render() {
-		return html`${unsafeSVG(this.svg)}`
+		return html`<slot></slot>`
 	}
 }
 

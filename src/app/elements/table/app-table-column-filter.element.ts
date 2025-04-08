@@ -128,9 +128,9 @@ export class AppTableColumnFilter extends LitElement {
 				@click=${this.filterColumnOrder}
 			>
 				<slot></slot>
-				${when(this.sortable && !this.order, () => html`<app-icon name="sort"></app-icon>`)}
-				${when(this.sortable && this.order === 'desc', () => html`<app-icon name="sort-down"></app-icon>`)}
-				${when(this.sortable && this.order === 'asc', () => html`<app-icon name="sort-up"></app-icon>`)}
+				${when(this.sortable && !this.order, () => html`<app-icon>sort</app-icon>`)}
+				${when(this.sortable && this.order === 'desc', () => html`<app-icon>arrow_downward_alt</app-icon>`)}
+				${when(this.sortable && this.order === 'asc', () => html`<app-icon>arrow_upward_alt</app-icon>`)}
 			</div>
 			${when(
 				this.filterable && this.type === 'text',
@@ -141,8 +141,7 @@ export class AppTableColumnFilter extends LitElement {
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
 						@input=${this.filterColumnValue}
-					>
-					</input>
+					/>
 				`
 			)}
 			${when(

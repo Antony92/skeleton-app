@@ -13,6 +13,7 @@ export const appButtonStyle = css`
 		font-weight: var(--font-weight-6);
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
+		height: 36px;
 
 		&:active {
 			opacity: 0.8;

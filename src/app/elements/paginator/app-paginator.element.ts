@@ -113,16 +113,16 @@ export class AppPaginator extends LitElement {
 			</label>
 			${this.getRangeLabel()}
 			<app-button variant="primary" icon title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
-				<app-icon name="angles-left"></app-icon>
+				<app-icon>keyboard_double_arrow_left</app-icon>
 			</app-button>
 			<app-button variant="primary" icon title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
-				<app-icon name="angle-left"></app-icon>
+				<app-icon>keyboard_arrow_left</app-icon>
 			</app-button>
 			<app-button variant="primary" icon title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
-				<app-icon name="angle-right"></app-icon>
+				<app-icon>keyboard_arrow_right</app-icon>
 			</app-button>
 			<app-button variant="primary" icon title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
-				<app-icon name="angles-right"></app-icon>
+				<app-icon>keyboard_double_arrow_right</app-icon>
 			</app-button>
 		`
 	}

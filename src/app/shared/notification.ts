@@ -19,18 +19,18 @@ export const notify = async (notification: {
 	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
 
 	const defaultIconMap = {
-		default: 'circle-info',
-		primary: 'circle-info',
-		success: 'circle-check',
-		warning: 'triangle-exclamation',
-		error: 'circle-exclamation',
+		default: 'info',
+		primary: 'info',
+		success: 'check_circle',
+		warning: 'warning',
+		error: 'error',
 	}
 
 	let snackbar = document.querySelector<AppSnackbar>('app-snackbar#snackbar')
 
 	const iconName = typeof icon === 'string' ? icon : defaultIconMap[variant]
 
-	const template = html` ${when(icon, () => html`<app-icon slot="icon" name=${iconName}></app-icon>`)} ${message} `
+	const template = html` ${when(icon, () => html`<app-icon slot="icon" filled>${iconName}</app-icon>`)} ${message} `
 
 	// If exist update else create
 	if (snackbar) {

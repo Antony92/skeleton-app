@@ -119,6 +119,7 @@ export class AppTable extends LitElement {
 	clearAllFilters() {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
+		this.searchValue = ''
 		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
 		this.columnFilters.forEach((columFilter) => columFilter.clearFilters())
 		this.dispatchEvent(new Event('app-table-clear'))
@@ -141,7 +142,7 @@ export class AppTable extends LitElement {
 							placeholder="Search"
 							@app-input=${(event: Event) => this.search((<AppInput>event.target).value)}
 						>
-							<app-icon slot="prefix" name="magnifying-glass"></app-icon>
+							<app-icon slot="prefix" filled>search</app-icon>
 						</app-input>
 					`
 				)}
@@ -157,7 +158,7 @@ export class AppTable extends LitElement {
 								@click=${this.clearAllFilters}
 								?disabled=${!this.filtersApplied}
 							>
-								<app-icon name="filter-circle-xmark"></app-icon>
+								<app-icon filled>filter_alt_off</app-icon>
 								Clear filters
 							</app-button>
 						`

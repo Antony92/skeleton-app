@@ -2,7 +2,7 @@ import { css } from 'lit'
 
 export const appSidebarStyle = css`
 	aside {
-		width: 90px;
+		width: 80px;
 		height: 100%;
 		background-color: var(--theme-sidebar-background);
 		transition: background-color 300ms ease-in-out;

@@ -68,9 +68,9 @@ export class AppGlobalMessage extends LitElement {
 				${choose(
 					this.level,
 					[
-						['info', () => html`<app-icon class="icon" name="info-circle"></app-icon>`],
-						['warning', () => html`<app-icon class="icon" name="triangle-exclamation"></app-icon>`],
-						['error', () => html`<app-icon class="icon" name="circle-exclamation"></app-icon>`],
+						['info', () => html`<app-icon class="icon" filled>info</app-icon>`],
+						['warning', () => html`<app-icon class="icon" filled>warning</app-icon>`],
+						['error', () => html`<app-icon class="icon" filled>error</app-icon>`],
 					],
 					() => html``
 				)}

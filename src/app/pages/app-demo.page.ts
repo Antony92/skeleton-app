@@ -56,15 +56,15 @@ export class AppDemoPage extends LitElement {
 				<app-button variant="primary" outlined>Outlined</app-button>
 				<app-button variant="primary" disabled>Disabled</app-button>
 				<app-button variant="primary">
-					<app-icon prefix="fas" name="skull"></app-icon>
+					<app-icon filled>skull</app-icon>
 					Right icon
 				</app-button>
 				<app-button variant="primary">
 					Left icon
-					<app-icon prefix="fas" name="skull"></app-icon>
+					<app-icon filled>skull</app-icon>
 				</app-button>
 				<app-button variant="primary" icon>
-					<app-icon prefix="fas" name="skull"></app-icon>
+					<app-icon filled>skull</app-icon>
 				</app-button>
 				<app-button variant="primary" text>Only text</app-button>
 			</fieldset>
@@ -73,8 +73,8 @@ export class AppDemoPage extends LitElement {
 				<legend>Input</legend>
 				<app-input label="Input label" placeholder="Type something" @app-input=${(event: Event) => console.log(event.target)}></app-input>
 				<app-input label="With prefix and suffix" placeholder="Type something">
-					<app-icon slot="prefix" prefix="fas" name="skull"></app-icon>
-					<app-icon slot="suffix" prefix="fas" name="skull"></app-icon>
+					<app-icon slot="prefix" filled>search</app-icon>
+					<app-icon slot="suffix" filled>clear</app-icon>
 				</app-input>
 			</fieldset>
 
