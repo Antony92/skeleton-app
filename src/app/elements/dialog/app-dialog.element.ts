@@ -34,6 +34,12 @@ export class AppDialog extends LitElement {
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
 	closeElements!: Array<HTMLElement>
 
+	#returnValue: string | undefined = ''
+
+	get returnValue() {
+		return this.#returnValue
+	}
+	
 	protected firstUpdated() {
 		this.dialog.addEventListener('click', ({ target: element }) => {
 			if (element instanceof HTMLDialogElement === false) {
@@ -71,6 +77,7 @@ export class AppDialog extends LitElement {
 	}
 
 	async hide(value?: string) {
+		this.#returnValue = value
 		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
 			return
 		}
@@ -102,10 +109,6 @@ export class AppDialog extends LitElement {
 			fill: 'both',
 		})
 		return animation.finished
-	}
-
-	get returnValue() {
-		return this.dialog.returnValue
 	}
 
 	render() {
