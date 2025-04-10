@@ -22,7 +22,7 @@ export class AppIcon extends LitElement {
 			}
 
 			:host([filled]) {
-				font-variation-settings: 'FILL' 1
+				font-variation-settings: 'FILL' 1;
 			}
 		`,
 	]
