@@ -38,7 +38,6 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 			this.hasUnsavedChanges &&
 			!(await confirmDialog({ header: 'Confirm', message: 'You have unsaved changes. Are you sure you want to leave the page?' }))
 		) {
-			console.log('tuka')
 			return commands.prevent()
 		}
 	}
