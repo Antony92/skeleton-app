@@ -1,19 +1,7 @@
-import { Route, Router, Commands, RouteContext } from '@vaadin/router'
+import { Route, Router } from '@vaadin/router'
 import { Role } from '@app/types/user.type'
-import { getUser, hasUserRole } from '@app/shared/auth'
-
-const authGuard = (roles?: string[]) => {
-	return async (context: RouteContext, command: Commands) => {
-		const user = await getUser()
-		if (!user) {
-			localStorage.setItem('requested-page', `${context.pathname}${context.search}` || '/')
-			return command.redirect('/login')
-		}
-		if (user && roles && !user.roles.some((role: string) => roles.includes(role))) {
-			return command.redirect('/page-not-found')
-		}
-	}
-}
+import { hasUserRole } from '@app/shared/auth'
+import { authGuard } from '@app/shared/guard'
 
 const routes: Route[] = [
 	{
@@ -23,7 +11,7 @@ const routes: Route[] = [
 	{
 		path: '/home',
 		component: 'app-home-page',
-		action: async (context, command) => {
+		action: async () => {
 			await import('@app/pages/app-home.page')
 		},
 	},
@@ -33,7 +21,7 @@ const routes: Route[] = [
 			{
 				path: '/',
 				component: 'app-demo-page',
-				action: async (context, command) => {
+				action: async () => {
 					await import('@app/pages/app-demo.page')
 				},
 			},
@@ -45,7 +33,7 @@ const routes: Route[] = [
 			{
 				path: '/',
 				component: 'app-table-page',
-				action: async (context, command) => {
+				action: async () => {
 					await import('@app/pages/app-table.page')
 				},
 			},
@@ -57,7 +45,7 @@ const routes: Route[] = [
 			{
 				path: '/',
 				component: 'app-form-page',
-				action: async (context, command) => {
+				action: async () => {
 					await import('@app/pages/app-form.page')
 				},
 			},
@@ -70,14 +58,14 @@ const routes: Route[] = [
 			{
 				path: '/',
 				component: 'app-admin',
-				action: async (context, command) => {
+				action: async () => {
 					await import('@app/pages/admin/app-admin.page')
 				},
 			},
 			{
 				path: '/users',
 				component: 'app-ad-users',
-				action: async (context, command) => {
+				action: async () => {
 					// await import('@app/pages/admin/app-ad-users.page')
 				}
 			},
@@ -97,7 +85,7 @@ const routes: Route[] = [
 	{
 		path: '/login',
 		component: 'app-login-page',
-		action: async (context, command) => {
+		action: async () => {
 			await import('@app/pages/app-login.page')
 		},
 	},
@@ -108,7 +96,7 @@ const routes: Route[] = [
 			{
 				path: '/',
 				component: 'app-profile-page',
-				action: async (context, command) => {
+				action: async () => {
 					await import('@app/pages/app-profile.page')
 				},
 			},
@@ -117,7 +105,7 @@ const routes: Route[] = [
 	{
 		path: '(.*)',
 		component: 'app-not-found-page',
-		action: async (context, command) => {
+		action: async () => {
 			await import('@app/pages/app-not-found.page')
 		},
 	},
