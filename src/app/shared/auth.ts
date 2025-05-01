@@ -22,7 +22,7 @@ export const getUser = () => firstValueFrom(getUserObservable())
 
 export const hasUserRole = async (roles: string[]) => {
     const user = await getUser()
-    return user && roles && user.roles.some((role: string) => roles.includes(role))
+    return !!user && roles && user.roles.some((role: string) => roles.includes(role))
 }
 
 export const login = () => {
