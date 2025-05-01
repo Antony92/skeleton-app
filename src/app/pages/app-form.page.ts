@@ -3,7 +3,7 @@ import { customElement, query } from 'lit/decorators.js'
 import { PreventCommands, Router, RouterLocation, WebComponentInterface } from '@vaadin/router'
 import '@app/elements/input/app-input.element'
 import '@app/elements/button/app-button.element'
-import { serializeForm, setDocumentTitle } from '@app/utils/html'
+import { serializeForm, setPageTitle } from '@app/utils/html'
 import { formStyle } from '@app/styles/form.style'
 import { notify } from '@app/shared/notification'
 import { confirmDialog } from '@app/shared/dialog'
@@ -28,7 +28,7 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Form')
+		setPageTitle('Form')
 	}
 
 	protected async firstUpdated() {}

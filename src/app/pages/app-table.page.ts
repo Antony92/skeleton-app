@@ -1,7 +1,7 @@
 import { getUsers } from '@app/services/api.service'
 import { tableStyle } from '@app/styles/table.style'
 import { PaginatedResponse } from '@app/types/response.type'
-import { setDocumentTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html'
 import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap } from '@app/utils/url'
 import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
@@ -55,7 +55,7 @@ export class AppTablePage extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Table')
+		setPageTitle('Table')
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
 		this.searchParamsMap = getURLSearchParamsAsMap()
 		this.columns

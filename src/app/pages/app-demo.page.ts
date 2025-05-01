@@ -11,7 +11,7 @@ import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
 import { loading } from '@app/shared/loader'
-import { setDocumentTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html'
 
 @customElement('app-demo-page')
 export class AppDemoPage extends LitElement {
@@ -38,7 +38,7 @@ export class AppDemoPage extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Demo')
+		setPageTitle('Demo')
 	}
 
 	protected async firstUpdated() {}

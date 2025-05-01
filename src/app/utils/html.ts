@@ -11,7 +11,7 @@ export const escapeHtml = (html: string) => {
 		.replace(/`(.*?)`/g, '<code>$1</code>')
 }
 
-export const setDocumentTitle = (title: string) => {
+export const setPageTitle = (title: string) => {
 	document.title = `Skeleton App - ${title}`
 }
 

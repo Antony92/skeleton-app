@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import { setDocumentTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html'
 
 @customElement('app-admin')
 export class AppAdmin extends LitElement {
@@ -8,7 +8,7 @@ export class AppAdmin extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Admin')
+		setPageTitle('Admin')
 	}
 
 	render() {

@@ -4,7 +4,7 @@ import { getURLSearchParamsAsObject } from '@app/utils/url'
 import { login, setAccessToken, setUser } from '@app/shared/auth'
 import { when } from 'lit/directives/when.js'
 import { Router } from '@vaadin/router'
-import { setDocumentTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html'
 import 'ldrs/ring2'
 import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
@@ -29,7 +29,7 @@ export class AppLoginPage extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Login')
+		setPageTitle('Login')
 		const { token, error } = getURLSearchParamsAsObject()
 		if (error) {
 			this.error = error

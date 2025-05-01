@@ -1,4 +1,4 @@
-import { setDocumentTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import '@app/elements/rich-text-editor/app-rich-text-editor.element'
@@ -17,7 +17,7 @@ export class AppHomePage extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		setDocumentTitle('Home')
+		setPageTitle('Home')
 	}
 
 	protected firstUpdated() {}
