@@ -1,7 +1,19 @@
-import { Route, Router } from '@vaadin/router'
+import { Route, Router, Commands, RouteContext } from '@vaadin/router'
 import { Role } from '@app/types/user.type'
-import { authGuard } from '@app/shared/auth-guard'
-import { hasUserRole } from './auth'
+import { getUser, hasUserRole } from '@app/shared/auth'
+
+const authGuard = (roles?: string[]) => {
+	return async (context: RouteContext, command: Commands) => {
+		const user = await getUser()
+		if (!user) {
+			localStorage.setItem('requested-page', `${context.pathname}${context.search}` || '/')
+			return command.redirect('/login')
+		}
+		if (user && roles && !user.roles.some((role: string) => roles.includes(role))) {
+			return command.redirect('/page-not-found')
+		}
+	}
+}
 
 const routes: Route[] = [
 	{
