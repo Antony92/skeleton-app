@@ -1,3 +1,6 @@
+/**
+ * Apply default theme based on user preferences
+ */
 export const applyDefaultTheme = () => {
 	const theme = localStorage.getItem('theme')
 	const body = document.querySelector('body')
