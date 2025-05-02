@@ -7,11 +7,11 @@
 	--theme-background: light-dark(var(--gray-1), var(--gray-12));
 	--theme-background-inverse: light-dark(var(--gray-12), var(--gray-1));
 
-	/* Elements */
+	/* Theme Elements */
 	--theme-header-background: light-dark(var(--gray-4), var(--gray-10));
 	--theme-sidebar-background: light-dark(var(--gray-3), var(--gray-9));
 
-	/* Backgrounds */
+	/* Theme Backgrounds */
 	--theme-default-background: light-dark(var(--stone-8), var(--stone-8));
 	--theme-primary-background: light-dark(var(--blue-8), var(--blue-8));
 	--theme-neutral-background: light-dark(var(--stone-8), var(--stone-8));
@@ -19,7 +19,7 @@
 	--theme-success-background: light-dark(var(--green-8), var(--green-8));
 	--theme-error-background: light-dark(var(--red-8), var(--red-8));
 
-	/* Colors */
+	/* Theme Colors */
 	--theme-white-color: light-dark(var(--gray-1), var(--gray-1));
 	--theme-dark-color: light-dark(var(--gray-12), var(--gray-12));
 	--theme-invalid-color: light-dark(var(--red-7), var(--red-7));
@@ -29,7 +29,7 @@
 	--theme-success-color: light-dark(var(--green-8), var(--green-8));
 	--theme-error-color: light-dark(var(--red-8), var(--red-8));
 	
-	/* Hovers */
+	/* Theme Hovers */
 	--theme-white-hover: light-dark(var(--gray-2), var(--gray-2));
 	--theme-dark-hover: light-dark(var(--gray-11), var(--gray-11));
 	--theme-default-hover: light-dark(var(--stone-7), var(--stone-7));
@@ -39,7 +39,7 @@
 	--theme-success-hover: light-dark(var(--green-7), var(--green-7));
 	--theme-error-hover: light-dark(var(--red-7), var(--red-7));
 
-	/* Layers */
+	/* Theme Layers */
 	--theme-default-layer: light-dark(var(--gray-2), var(--gray-9));
 	--theme-inverse-layer: light-dark(var(--gray-9), var(--gray-2));
 	--theme-primary-layer: light-dark(var(--blue-8), var(--blue-8));
