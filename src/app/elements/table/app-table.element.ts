@@ -57,7 +57,7 @@ export class AppTable extends LitElement {
 	filtersApplied = false
 
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
-	tables!: Array<HTMLTableElement>
+	tables!: HTMLTableElement[]
 
 	private searchParamsMap = new Map()
 	private searchEvent = new Subject<string>()
