@@ -32,7 +32,7 @@ export class AppDialog extends LitElement {
 	dialog!: HTMLDialogElement
 
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
-	closeElements!: Array<HTMLElement>
+	closeElements!: HTMLElement[]
 
 	#returnValue: string | undefined = ''
 
