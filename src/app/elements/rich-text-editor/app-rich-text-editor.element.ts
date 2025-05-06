@@ -1,6 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import type Quill from 'quill'
+import { AppRichTextEditorChangeEvent } from '@app/events/rich-text-editor.event'
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends LitElement {
@@ -9,7 +10,7 @@ export class AppRichTextEditor extends LitElement {
 			iframe {
 				border: none;
 				width: 500px;
-				height: 300px
+				height: 200px
 			}
 		`,
 	]
@@ -37,6 +38,7 @@ export class AppRichTextEditor extends LitElement {
 				const text = quill.getText().trim()
 				const html = quill.getSemanticHTML()
 				this.value = text ? html : ''
+				this.dispatchEvent(new AppRichTextEditorChangeEvent({ text, html }))
 			})
 		})
 	}
