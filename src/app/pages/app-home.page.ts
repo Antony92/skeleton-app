@@ -1,7 +1,7 @@
 import { setPageTitle } from '@app/utils/html'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import '@app/elements/rich-text-editor/app-rich-text-editor.element'
+import '@app/elements/dropdown/app-dropdown.component'
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -24,7 +24,9 @@ export class AppHomePage extends LitElement {
 
 	render() {
 		return html`
-			<app-rich-text-editor placeholder="Write something" value="sup"></app-rich-text-editor>
+			<app-dropdown>
+				<button slot="trigger">Dropdown</button>
+			</app-dropdown>
 		`
 	}
 }

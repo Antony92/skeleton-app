@@ -21,16 +21,20 @@ export class AppDropdown extends LitElement {
 
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) =>
-			trigger.addEventListener('click', () => {
-				if (this.open) {
-					this.dropdown.hidePopover()
-				} else {
-					this.dropdown.showPopover()
-					this.calculatePosition(trigger)
-				}
-			})
+			trigger.addEventListener('click', () => this.toggleDropdown(trigger))
 		)
 		this.dropdown.addEventListener('toggle', (event) => (this.open = (<ToggleEvent>event).newState === 'open'))
+	}
+
+	toggleDropdown(anchor: HTMLElement) {
+		if (this.open) {
+			this.dropdown.hidePopover()
+			this.dispatchEvent(new Event('app-hide', { cancelable: true }))
+		} else {
+			this.dropdown.showPopover()
+			this.calculatePosition(anchor)
+			this.dispatchEvent(new Event('app-show', { cancelable: true }))
+		}
 	}
 
 	private calculatePosition(anchor: HTMLElement) {
@@ -52,8 +56,10 @@ export class AppDropdown extends LitElement {
 
 		if (spaceLeft > spaceRight && spaceRight < this.dropdown.offsetWidth) {
 			this.dropdown.style.right = `${viewportWidth - anchorRect.left - anchorRect.width}px`
+			this.dropdown.style.left = 'auto'
 		} else {
 			this.dropdown.style.left = `${anchorRect.left}px`
+			this.dropdown.style.right = 'auto'
 		}
 	}
 
