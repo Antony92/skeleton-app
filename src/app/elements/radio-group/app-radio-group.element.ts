@@ -64,12 +64,8 @@ export class AppRadioGroup extends LitElement implements FormControl {
 		})
 	}
 
-	protected firstUpdated() {
-		console.log(this.radios.filter(a => a))
-	}
-
 	protected updated() {
-		if (!this.value) {
+		if (!this.value && this.required) {
 			this.formController.setValidity({ valueMissing: true }, 'This field is required', this.fieldset)
 		} else {
 			this.formController.setValidity({})

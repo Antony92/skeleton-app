@@ -9,6 +9,8 @@ import '@app/elements/input/app-input.element'
 import '@app/elements/badge/app-badge.element'
 import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/rich-text-editor/app-rich-text-editor.element'
+import '@app/elements/radio/app-radio.element'
+import '@app/elements/radio-group/app-radio-group.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -83,6 +85,14 @@ export class AppDemoPage extends LitElement {
 			<fieldset>
 				<legend>Checkbox</legend>
 				<app-checkbox label="Check me!"></app-checkbox>
+			</fieldset>
+
+			<fieldset>
+				<legend>Radio Group</legend>
+				<app-radio-group label="Select one radio" value="1">
+					<app-radio label="Radio 1" value="1"></app-radio>
+					<app-radio label="Radio 2" value="2"></app-radio>
+				</app-radio-group>
 			</fieldset>
 
 			<fieldset>
