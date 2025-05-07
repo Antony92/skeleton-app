@@ -1,10 +1,10 @@
 import { css } from 'lit'
 
-export const appRadioStyle = css`
+export const appTextareaStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
-			.input-wrapper {
-				input {
+			.textarea-wrapper {
+				textarea {
 					outline-color: var(--theme-invalid-color);
 					border-color: var(--theme-invalid-color);
 
@@ -26,26 +26,37 @@ export const appRadioStyle = css`
 		width: 100%;
 		gap: 5px;
 
+		label {
+			width: fit-content;
+		}
+
 		small {
 			color: var(--theme-invalid-color);
 		}
 
-		&:has(input[required]) {
+		&:has(textarea[required]) {
 			label::after {
 				content: ' *';
 				color: var(--theme-invalid-color);
 			}
 		}
 
-		.input-wrapper {
+		.textarea-wrapper {
 			display: flex;
-			gap: 5px;
+			align-items: center;
+			width: 100%;
 
-			label {
-				width: fit-content;
-			}
+			textarea {
+				width: 100%;
+				resize: vertical;
+				border: 1px solid var(--theme-default-color);
+				border-radius: 3px;
+				background: none;
 
-			input {
+				&::placeholder {
+					color: var(--theme-default-color);
+				}
+
 				&:focus-visible {
 					outline: 2px solid var(--theme-color);
 				}
@@ -55,11 +66,10 @@ export const appRadioStyle = css`
 				}
 			}
 
-			&:has(input:disabled) {
+			&:has(textarea:disabled) {
 				opacity: 0.5;
 
-				input,
-				label {
+				textarea {
 					cursor: not-allowed;
 				}
 			}

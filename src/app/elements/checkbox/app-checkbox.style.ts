@@ -3,13 +3,14 @@ import { css } from 'lit'
 export const appCheckStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
-
-			input {
-				outline-color: var(--theme-invalid-color);
-				border-color: var(--theme-invalid-color);
-
-				&:hover {
+			.input-wrapper {
+				input {
+					outline-color: var(--theme-invalid-color);
 					border-color: var(--theme-invalid-color);
+
+					&:hover {
+						border-color: var(--theme-invalid-color);
+					}
 				}
 			}
 
@@ -40,13 +41,11 @@ export const appCheckStyle = css`
 			display: flex;
 			gap: 5px;
 
-
 			label {
 				width: fit-content;
 			}
 
 			input {
-
 				&:focus-visible {
 					outline: 2px solid var(--theme-color);
 				}
@@ -59,7 +58,8 @@ export const appCheckStyle = css`
 			&:has(input:disabled) {
 				opacity: 0.5;
 
-				input, label {
+				input,
+				label {
 					cursor: not-allowed;
 				}
 			}

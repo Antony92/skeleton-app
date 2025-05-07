@@ -2,7 +2,6 @@ import { css } from 'lit'
 
 export const appInputStyle = css`
 	:host(:state(user-invalid)) {
-
 		.form-control {
 			.input-wrapper {
 				outline-color: var(--theme-invalid-color);
@@ -77,7 +76,7 @@ export const appInputStyle = css`
 
 			&:has(input:disabled) {
 				opacity: 0.5;
-				
+
 				input {
 					cursor: not-allowed;
 				}
