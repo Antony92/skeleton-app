@@ -85,7 +85,7 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Textarea</legend>
-				<app-textarea label="Textarea"></app-textarea>
+				<app-textarea label="Textarea" placeholder="Type something"></app-textarea>
 			</fieldset>
 
 			<fieldset>
