@@ -7,6 +7,7 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/paginator/app-paginator.element'
 import '@app/elements/input/app-input.element'
 import '@app/elements/badge/app-badge.element'
+import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/rich-text-editor/app-rich-text-editor.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
@@ -77,6 +78,11 @@ export class AppDemoPage extends LitElement {
 					<app-icon slot="prefix" filled>search</app-icon>
 					<app-icon slot="suffix" filled>clear</app-icon>
 				</app-input>
+			</fieldset>
+
+			<fieldset>
+				<legend>Checkbox</legend>
+				<app-checkbox label="Check me!"></app-checkbox>
 			</fieldset>
 
 			<fieldset>
