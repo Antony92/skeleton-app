@@ -21,10 +21,13 @@ export class AppDropdown extends LitElement {
 	open = false
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) =>
-			trigger.addEventListener('click', () => this.toggleDropdown(trigger))
-		)
-		this.dropdown.addEventListener('toggle', (event) => (this.open = (<ToggleEvent>event).newState === 'open'))
+		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown(trigger)))
+		this.dropdown.addEventListener('toggle', (event) => {
+			this.open = (<ToggleEvent>event).newState === 'open'
+			if (!this.open) {
+				this.dropdown.removeAttribute('style')
+			}
+		})
 	}
 
 	toggleDropdown(anchor: HTMLElement) {

@@ -2,6 +2,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 import { PreventCommands, Router, RouterLocation, WebComponentInterface } from '@vaadin/router'
 import '@app/elements/input/app-input.element'
+import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/button/app-button.element'
 import { serializeForm, setPageTitle } from '@app/utils/html'
 import { formStyle } from '@app/styles/form.style'
@@ -59,6 +60,7 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 			<form @submit=${this.submit} @change=${() => (this.hasUnsavedChanges = true)} novalidate>
 				<app-input required name="name" label="Name"></app-input>
 				<app-input required name="email" label="Email" type="email"></app-input>
+				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
 					<app-button @click=${() => this.form.reset()}>Reset</app-button>
