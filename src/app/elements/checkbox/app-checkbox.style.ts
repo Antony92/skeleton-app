@@ -3,7 +3,7 @@ import { css } from 'lit'
 export const appCheckStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
-			.input-wrapper {
+			.checkbox-wrapper {
 				input {
 					outline-color: var(--theme-invalid-color);
 					border-color: var(--theme-invalid-color);
@@ -37,7 +37,7 @@ export const appCheckStyle = css`
 			}
 		}
 
-		.input-wrapper {
+		.checkbox-wrapper {
 			display: flex;
 			gap: 5px;
 

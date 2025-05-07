@@ -136,7 +136,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
-				<div class="input-wrapper" part="input-wrapper">
+				<div class="checkbox-wrapper" part="checkbox-wrapper">
 					<input
 						id="checkbox"
 						part="checkbox"

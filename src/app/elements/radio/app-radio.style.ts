@@ -3,7 +3,7 @@ import { css } from 'lit'
 export const appRadioStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
-			.input-wrapper {
+			.radio-wrapper {
 				input {
 					outline-color: var(--theme-invalid-color);
 					border-color: var(--theme-invalid-color);
@@ -37,7 +37,7 @@ export const appRadioStyle = css`
 			}
 		}
 
-		.input-wrapper {
+		.radio-wrapper {
 			display: flex;
 			gap: 5px;
 

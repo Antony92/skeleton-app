@@ -4,6 +4,7 @@ import { PreventCommands, Router, RouterLocation, WebComponentInterface } from '
 import '@app/elements/input/app-input.element'
 import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/radio/app-radio.element'
+import '@app/elements/radio-group/app-radio-group.element'
 import '@app/elements/textarea/app-textarea.element'
 import '@app/elements/button/app-button.element'
 import { serializeForm, setPageTitle } from '@app/utils/html'
@@ -64,9 +65,11 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 				<app-input required name="email" label="Email" type="email"></app-input>
 				<app-textarea required name="textarea" label="Textarea"></app-textarea>
 				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
-				<app-radio label="Radio 1" value="1"></app-radio>
-				<app-radio label="Radio 2" value="2"></app-radio>
-
+				<app-radio-group name="radio" required label="Select one radio" value="2">
+					<app-radio label="Radio 1" value="1"></app-radio>
+					<app-radio label="Radio 2" value="2"></app-radio>
+				</app-radio-group>
+				
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
 					<app-button @click=${() => this.form.reset()}>Reset</app-button>

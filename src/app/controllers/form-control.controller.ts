@@ -72,7 +72,7 @@ export class FormControlController implements ReactiveController {
 		return this.internals.reportValidity()
 	}
 
-	setValidity(validity: ValidityState, validationMessage: string, anchor?: HTMLElement) {
-		return this.internals.setValidity(validity, validationMessage, anchor)
+	setValidity(flags?: ValidityStateFlags, message?: string, anchor?: HTMLElement) {
+		return this.internals.setValidity(flags, message, anchor)
 	}
 }

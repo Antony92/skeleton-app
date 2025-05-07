@@ -1,26 +1,20 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
-import { appRadioStyle } from './app-radio.style'
+import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
 import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { AppRadio } from '../radio/app-radio.element'
+import { appRadioGroupStyle } from './app-radio-group.style'
 
-@customElement('app-radio')
-export class AppRadio extends LitElement implements FormControl {
-	static styles = [appRadioStyle, css``]
+@customElement('app-radio-group')
+export class AppRadioGroup extends LitElement implements FormControl {
+	static styles = [appRadioGroupStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false
 
 	@property({ type: Boolean })
-	autofocus = false
-
-	@property({ type: Boolean })
 	hidden = false
-
-	@property({ type: Boolean })
-	readonly = false
 
 	@property({ type: Boolean })
 	required = false
@@ -37,17 +31,17 @@ export class AppRadio extends LitElement implements FormControl {
 	@property({ type: String })
 	defaultValue = ''
 
-	@property({ type: Boolean })
-	checked = false
-
 	@state()
 	private errorMessage: string = ''
 
 	@state()
 	touched = false
 
-	@query('input')
-	input!: HTMLInputElement
+	@query('fieldset')
+	fieldset!: HTMLFieldSetElement
+
+	@queryAssignedElements()
+	radios!: AppRadio[]
 
 	static formAssociated = true
 	formController!: FormControlController
@@ -62,30 +56,25 @@ export class AppRadio extends LitElement implements FormControl {
 		this.addEventListener('invalid', async () => {
 			this.touched = true
 		})
+		this.addEventListener('app-change', (event) => {
+			const radio = event.target as AppRadio
+			this.value = radio.value
+			this.touched = true
+			this.radios.filter(r => r.value !== radio.value).forEach(r => r.checked = false)
+		})
+	}
+
+	protected firstUpdated() {
+		console.log(this.radios.filter(a => a))
 	}
 
 	protected updated() {
-		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
-	}
-
-	onInput() {
-		this.value = this.input.value
-		this.checked = this.input.checked
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
-	}
-
-	onChange() {
-		this.value = this.input.value
-		this.checked = this.input.checked
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
-	}
-
-	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
+		if (!this.value) {
+			this.formController.setValidity({ valueMissing: true }, 'This field is required', this.fieldset)
+		} else {
+			this.formController.setValidity({})
+			this.radios.filter(r => r.value === this.value).forEach(r => r.checked = true)
+		}
 	}
 
 	formDisabledCallback(disabled: boolean) {
@@ -95,14 +84,9 @@ export class AppRadio extends LitElement implements FormControl {
 	}
 
 	formResetCallback() {
-		this.checked = false
-		this.value = this.defaultValue || this.value
+		this.value = this.defaultValue
 		this.touched = false
 		this.errorMessage = ''
-	}
-
-	focus(options?: FocusOptions) {
-		this.input.focus(options)
 	}
 
 	validated(validity: ValidityState, message: string) {
@@ -136,25 +120,10 @@ export class AppRadio extends LitElement implements FormControl {
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
-				<div class="radio-wrapper" part="radio-wrapper">
-					<input
-						id="radio"
-						part="radio"
-						.checked=${this.checked}
-						?disabled=${this.disabled}
-						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
-						?readonly=${this.readonly}
-						?required=${this.required}
-						name=${ifDefined(this.name)}
-						@input=${this.onInput}
-						@change=${this.onChange}
-						@blur=${this.onBlur}
-						.value=${live(this.value)}
-						type="radio"
-					/>
-					${when(this.label, () => html`<label for="radio" part="label">${this.label}</label>`)}
-				</div>
+				<fieldset ?disabled=${this.disabled} ?hidden=${this.hidden} name=${ifDefined(this.name)}>
+					${when(this.label, () => html`<legend>${this.label}</legend>`)}
+					<slot></slot>
+				</fieldset>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
 			</div>
 		`
@@ -163,6 +132,6 @@ export class AppRadio extends LitElement implements FormControl {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-radio': AppRadio
+		'app-radio-group': AppRadioGroup
 	}
 }
