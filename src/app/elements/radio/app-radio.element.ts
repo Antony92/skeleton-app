@@ -96,7 +96,6 @@ export class AppRadio extends LitElement implements FormControl {
 
 	formResetCallback() {
 		this.checked = false
-		this.input.checked = false
 		this.value = this.defaultValue
 		this.touched = false
 		this.errorMessage = ''
@@ -141,7 +140,7 @@ export class AppRadio extends LitElement implements FormControl {
 					<input
 						id="radio"
 						part="radio"
-						?checked=${this.checked}
+						.checked=${this.checked}
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}

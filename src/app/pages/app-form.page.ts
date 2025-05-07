@@ -63,7 +63,9 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 				<app-input required name="email" label="Email" type="email"></app-input>
 				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
 
-				<app-radio name="radio" label="Radio 1" value="1"></app-radio>
+				<app-radio label="Radio 1" value="1"></app-radio>
+				<app-radio label="Radio 2" value="2"></app-radio>
+				
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
 					<app-button @click=${() => this.form.reset()}>Reset</app-button>

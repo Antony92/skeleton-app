@@ -99,7 +99,6 @@ export class AppCheckbox extends LitElement implements FormControl {
 		this.checked = false
 		this.touched = false
 		this.errorMessage = ''
-		this.input.checked = false
 	}
 
 	focus(options?: FocusOptions) {
@@ -141,7 +140,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 					<input
 						id="checkbox"
 						part="checkbox"
-						?checked=${this.checked}
+						.checked=${this.checked}
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}
