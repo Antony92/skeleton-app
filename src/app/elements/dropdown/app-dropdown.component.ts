@@ -7,6 +7,7 @@ export class AppDropdown extends LitElement {
 		div[popover] {
 			inset: unset;
 			position: absolute;
+			overflow: auto;
 		}
 	`
 
@@ -48,6 +49,14 @@ export class AppDropdown extends LitElement {
 		const spaceRight = viewportWidth - anchorRect.right
 		const spaceLeft = anchorRect.left
 
+		if (spaceAbove > spaceBelow && spaceAbove < this.dropdown.offsetHeight) {
+			this.dropdown.style.height = spaceAbove < this.dropdown.offsetHeight ? `${spaceAbove - 15}px` : 'auto'
+		}
+
+		if (spaceBelow > spaceAbove && spaceBelow < this.dropdown.offsetHeight) {
+			this.dropdown.style.height = spaceAbove < this.dropdown.offsetHeight ? `${spaceBelow - 15}px` : 'auto'
+		}
+
 		if (spaceAbove > spaceBelow && spaceBelow < this.dropdown.offsetHeight) {
 			this.dropdown.style.top = `${anchor.offsetTop - this.dropdown.offsetHeight}px`
 		} else {
@@ -69,6 +78,9 @@ export class AppDropdown extends LitElement {
 			<div popover>
 				<ul>
 					<li>Menu Item 1</li>
+					<li>Menu Item 2</li>
+					<li>Menu Item 2</li>
+					<li>Menu Item 2</li>
 					<li>Menu Item 2</li>
 				</ul>
 			</div>
