@@ -3,8 +3,8 @@ import { customElement, property, query, queryAssignedElements, state } from 'li
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
-import { AppRadio } from '../radio/app-radio.element'
-import { appRadioGroupStyle } from './app-radio-group.style'
+import { AppRadio } from '@app/elements/radio/app-radio.element'
+import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style'
 
 @customElement('app-radio-group')
 export class AppRadioGroup extends LitElement implements FormControl {

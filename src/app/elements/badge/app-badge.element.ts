@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { appBadgeStyle } from './app-badge.style'
+import { appBadgeStyle } from '@app/elements/badge/app-badge.style'
 import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-badge')

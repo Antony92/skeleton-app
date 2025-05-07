@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { appButtonStyle } from './app-button.style'
+import { appButtonStyle } from '@app/elements/button/app-button.style'
 import { classMap } from 'lit/directives/class-map.js'
 import { focusStyle } from '@app/styles/focus.style'
 

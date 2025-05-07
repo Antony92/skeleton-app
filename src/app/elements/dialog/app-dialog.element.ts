@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { appDialogStyle } from './app-dialog.style'
+import { appDialogStyle } from '@app/elements/dialog/app-dialog.style'
 import { focusStyle } from '@app/styles/focus.style'
 
 @customElement('app-dialog')

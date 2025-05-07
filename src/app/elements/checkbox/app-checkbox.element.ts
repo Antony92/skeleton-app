@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
-import { appCheckStyle } from './app-checkbox.style'
+import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { FormControl, FormControlController } from '@app/controllers/form-control.controller'

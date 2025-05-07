@@ -2,7 +2,7 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js'
 import { focusStyle } from '@app/styles/focus.style'
-import { appGlobalMessageStyle } from './app-global-message.style'
+import { appGlobalMessageStyle } from '@app/elements/global-message/app-global-message.style'
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {

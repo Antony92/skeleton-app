@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
-import { appSnackbarStyle } from './app-snackbar.style'
+import { appSnackbarStyle } from '@app/elements/snackbar/app-snackbar.style'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import { focusStyle } from '@app/styles/focus.style'
