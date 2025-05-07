@@ -11,6 +11,7 @@ import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/rich-text-editor/app-rich-text-editor.element'
 import '@app/elements/radio/app-radio.element'
 import '@app/elements/radio-group/app-radio-group.element'
+import '@app/elements/textarea/app-textarea.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -80,6 +81,11 @@ export class AppDemoPage extends LitElement {
 					<app-icon slot="prefix" filled>search</app-icon>
 					<app-icon slot="suffix" filled>clear</app-icon>
 				</app-input>
+			</fieldset>
+
+			<fieldset>
+				<legend>Textarea</legend>
+				<app-textarea label="Textarea"></app-textarea>
 			</fieldset>
 
 			<fieldset>
