@@ -153,8 +153,7 @@ export class AppTableColumnFilter extends LitElement {
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
 						@input=${this.filterColumnValue}
-					>
-					</input>
+					/>
 				`
 			)}
 			${when(
@@ -166,8 +165,7 @@ export class AppTableColumnFilter extends LitElement {
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
 						@input=${this.filterColumnValue}
-					>
-					</input>
+					/>
 				`
 			)}
 			${when(
