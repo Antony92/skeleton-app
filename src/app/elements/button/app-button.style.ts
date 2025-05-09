@@ -59,10 +59,6 @@ export const appButtonStyle = css`
 					background-color: transparent;
 					color: var(--theme-default-hover);
 				}
-
-				&:active {
-					
-				}
 			}
 		}
 		

@@ -12,6 +12,8 @@ import '@app/elements/rich-text-editor/app-rich-text-editor.element'
 import '@app/elements/radio/app-radio.element'
 import '@app/elements/radio-group/app-radio-group.element'
 import '@app/elements/textarea/app-textarea.element'
+import '@app/elements/dropdown/app-dropdown.element'
+import '@app/elements/dropdown-item/app-dropdown-item.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -99,6 +101,24 @@ export class AppDemoPage extends LitElement {
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
+			</fieldset>
+
+			<fieldset>
+				<legend>Dropdown</legend>
+				<app-dropdown>
+					<app-button slot="trigger" variant="primary">
+						Dropdown
+						<app-icon filled>arrow_drop_down</app-icon>
+					</app-button>
+					<app-dropdown-item value="1">
+						<app-icon slot="prefix">save</app-icon>
+						Save
+					</app-dropdown-item>
+					<app-dropdown-item disabled>
+						<app-icon slot="prefix">delete</app-icon>
+						Delete
+					</app-dropdown-item>
+				</app-dropdown>
 			</fieldset>
 
 			<fieldset>
