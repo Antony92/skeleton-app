@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { AppDropdownItem } from '../dropdown-item/app-dropdown-item.element'
+import { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
 import { AppDropdownItemSelectedEvent } from '@app/events/dropdown.event'
 
 @customElement('app-dropdown')
@@ -24,6 +24,7 @@ export class AppDropdown extends LitElement {
 			&[open] {
 				display: flex;
 				flex-direction: column;
+				z-index: var(--layer-5);
 			}
 		}
 	`

@@ -14,6 +14,8 @@ import '@app/elements/radio-group/app-radio-group.element'
 import '@app/elements/textarea/app-textarea.element'
 import '@app/elements/dropdown/app-dropdown.element'
 import '@app/elements/dropdown-item/app-dropdown-item.element'
+import '@app/elements/select/app-select.element'
+import '@app/elements/select-option/app-select-option.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -101,6 +103,26 @@ export class AppDemoPage extends LitElement {
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
+			</fieldset>
+
+			<fieldset>
+				<legend>Select</legend>
+				
+				<app-select label="Select single">
+					<app-select-option value="option-1">Option 1</app-select-option>
+					<app-select-option value="option-2">Option 2</app-select-option>
+					<app-select-option value="option-3">Option 3</app-select-option>
+					<app-select-option value="option-4">Option 4</app-select-option>
+					<app-select-option value="option-5">Option 5</app-select-option>
+				</app-select>
+
+				<app-select label="Select multiple" value="option-1" multiple>
+					<app-select-option value="option-1">Option 1</app-select-option>
+					<app-select-option value="option-2">Option 2</app-select-option>
+					<app-select-option value="option-3">Option 3</app-select-option>
+					<app-select-option value="option-4">Option 4</app-select-option>
+					<app-select-option value="option-5">Option 5</app-select-option>
+				</app-select>
 			</fieldset>
 
 			<fieldset>

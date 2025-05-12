@@ -7,6 +7,8 @@ import '@app/elements/radio/app-radio.element'
 import '@app/elements/radio-group/app-radio-group.element'
 import '@app/elements/textarea/app-textarea.element'
 import '@app/elements/button/app-button.element'
+import '@app/elements/select/app-select.element'
+import '@app/elements/select-option/app-select-option.element'
 import { serializeForm, setPageTitle } from '@app/utils/html'
 import { formStyle } from '@app/styles/form.style'
 import { notify } from '@app/shared/notification'
@@ -69,6 +71,14 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
+
+				<app-select required name="select" label="Select">
+					<app-select-option value="option-1">Option 1</app-select-option>
+					<app-select-option value="option-2">Option 2</app-select-option>
+					<app-select-option value="option-3">Option 3</app-select-option>
+					<app-select-option value="option-4">Option 4</app-select-option>
+					<app-select-option value="option-5">Option 5</app-select-option>
+				</app-select>
 				
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
