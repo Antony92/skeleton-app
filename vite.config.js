@@ -8,6 +8,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
 	build: {
 		target: 'esnext',
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, 'index.html'),
+				quill: resolve(__dirname, 'quill.html'),
+			},
+		},
 	},
 	resolve: {
 		alias: {

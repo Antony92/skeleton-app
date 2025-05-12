@@ -65,7 +65,7 @@ export class AppHeader extends LitElement {
 	render() {
 		return html`
 			<header>
-				<img class="logo" src="assets/logo.png" />
+				<img class="logo" src="/images/logo.png" />
 				<h2 class="title">${this.appTitle}</h2>
 				${when(this.user?.impersonated, () => html`Impersonate mode`)}
 				<div class="spacer"></div>
