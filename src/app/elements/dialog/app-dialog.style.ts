@@ -15,7 +15,7 @@ export const appDialogStyle = css`
 
 		&::backdrop {
 			background: rgb(0 0 0 / 0%);
-			transition: background-color 200ms ease;
+			/* transition: background-color 200ms ease; */
 		}
 
 		&[open] {
