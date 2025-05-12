@@ -16,6 +16,9 @@ import '@app/elements/dropdown/app-dropdown.element'
 import '@app/elements/dropdown-item/app-dropdown-item.element'
 import '@app/elements/select/app-select.element'
 import '@app/elements/select-option/app-select-option.element'
+import '@app/elements/tab/app-tab.element'
+import '@app/elements/tab-group/app-tab-group.element'
+import '@app/elements/tab-panel/app-tab-panel.element'
 import { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -107,7 +110,7 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Select</legend>
-				
+
 				<app-select label="Select single">
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
@@ -206,6 +209,21 @@ export class AppDemoPage extends LitElement {
 			<fieldset>
 				<legend>Paginator</legend>
 				<app-paginator total="100"></app-paginator>
+			</fieldset>
+
+			<fieldset>
+				<legend>Tabs</legend>
+				<app-tab-group>
+					<app-tab slot="tab" panel="general">General</app-tab>
+					<app-tab slot="tab" panel="custom">Custom</app-tab>
+					<app-tab slot="tab" panel="advanced">Advanced</app-tab>
+					<app-tab slot="tab" panel="disabled" disabled>Disabled</app-tab>
+
+					<app-tab-panel name="general">This is the general tab panel.</app-tab-panel>
+					<app-tab-panel name="custom">This is the custom tab panel.</app-tab-panel>
+					<app-tab-panel name="advanced">This is the advanced tab panel.</app-tab-panel>
+					<app-tab-panel name="disabled">This is a disabled tab panel.</app-tab-panel>
+				</app-tab-group>
 			</fieldset>
 
 			<fieldset>

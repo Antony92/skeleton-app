@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
-import { AppDropdownItemSelectedEvent } from '@app/events/dropdown.event'
+import { AppSelectEvent } from '@app/events/select.event'
 
 @customElement('app-dropdown')
 export class AppDropdown extends LitElement {
@@ -49,7 +49,7 @@ export class AppDropdown extends LitElement {
 		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown(trigger)))
 		this.items.forEach((item) =>
 			item.addEventListener('click', () => {
-				this.dispatchEvent(new AppDropdownItemSelectedEvent(item.value))
+				this.dispatchEvent(new AppSelectEvent(item.value))
 				this.closeDropdown()
 			})
 		)
