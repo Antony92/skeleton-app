@@ -3,7 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js'
 import { appTextareaStyle } from '@app/elements/textarea/app-textarea.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
-import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 
 @customElement('app-textarea')

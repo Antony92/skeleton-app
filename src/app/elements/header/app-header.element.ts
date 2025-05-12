@@ -5,9 +5,9 @@ import { login, logout } from '@app/shared/auth'
 import { getUserObservable } from '@app/shared/auth'
 import { appHeaderStyle } from '@app/elements/header/app-header.style'
 import { Subscription } from 'rxjs'
-import { Router, RouterLocation } from '@vaadin/router'
+import { Router, type RouterLocation } from '@vaadin/router'
 import { when } from 'lit/directives/when.js'
-import { User } from '@app/types/user.type'
+import type { User } from '@app/types/user.type'
 import '@app/elements/button/app-button.element'
 
 @customElement('app-header')

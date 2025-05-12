@@ -1,4 +1,4 @@
-import { Route, Router } from '@vaadin/router'
+import { type Route, Router } from '@vaadin/router'
 import { Role } from '@app/types/user.type'
 import { hasUserRole } from '@app/shared/auth'
 import { authGuard } from '@app/shared/guard'

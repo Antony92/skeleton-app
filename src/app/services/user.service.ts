@@ -1,5 +1,5 @@
 import { request } from '@app/http/request'
-import { SearchParams } from '@app/types/search.type'
+import type { SearchParams } from '@app/types/search.type'
 import { searchParamsToQuery } from '@app/utils/url'
 
 export const getUsers = async (params?: SearchParams, hideLoading = true) => {

@@ -1,9 +1,9 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
-import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
-import { AppRadio } from '@app/elements/radio/app-radio.element'
+import type { AppRadio } from '@app/elements/radio/app-radio.element'
 import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style'
 
 @customElement('app-radio-group')

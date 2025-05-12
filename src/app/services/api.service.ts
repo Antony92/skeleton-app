@@ -1,7 +1,7 @@
 import { request } from '@app/http/request'
 import { searchParamsToQuery } from '@app/utils/url'
-import { SearchParams } from '@app/types/search.type'
-import { PaginatedResponse } from '@app/types/response.type'
+import type { SearchParams } from '@app/types/search.type'
+import type { PaginatedResponse } from '@app/types/response.type'
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {

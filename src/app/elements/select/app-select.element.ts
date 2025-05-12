@@ -1,11 +1,11 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
-import { FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { appSelectStyle } from '@app/elements/select/app-select.style'
-import { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
+import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
 
 @customElement('app-select')
 export class AppSelect extends LitElement implements FormControl {

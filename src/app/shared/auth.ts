@@ -1,6 +1,6 @@
 import { request } from '@app/http/request'
+import type { User } from '@app/types/user.type'
 import { BehaviorSubject, firstValueFrom } from 'rxjs'
-import { User } from '@app/types/user.type'
 
 // in memory access token
 let accessToken = ''

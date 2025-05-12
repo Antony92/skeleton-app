@@ -1,4 +1,4 @@
-import { AppSnackbar } from '@app/elements/snackbar/app-snackbar.element'
+import type { AppSnackbar } from '@app/elements/snackbar/app-snackbar.element'
 import { html, render } from 'lit'
 import { when } from 'lit/directives/when.js'
 

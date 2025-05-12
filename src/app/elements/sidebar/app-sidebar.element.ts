@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style'
-import { Router, RouterLocation } from '@vaadin/router'
+import { Router, type RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'

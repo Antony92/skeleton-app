@@ -1,4 +1,4 @@
-import { AppGlobalMessage } from '@app/elements/global-message/app-global-message.element'
+import type { AppGlobalMessage } from '@app/elements/global-message/app-global-message.element'
 import { html, render } from 'lit'
 
 /**

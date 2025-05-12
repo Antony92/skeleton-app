@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
-import { PreventCommands, Router, RouterLocation, WebComponentInterface } from '@vaadin/router'
+import type { PreventCommands, Router, RouterLocation, WebComponentInterface } from '@vaadin/router'
 import '@app/elements/input/app-input.element'
 import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/radio/app-radio.element'
@@ -9,6 +9,7 @@ import '@app/elements/textarea/app-textarea.element'
 import '@app/elements/button/app-button.element'
 import '@app/elements/select/app-select.element'
 import '@app/elements/select-option/app-select-option.element'
+import '@app/elements/file-upload/app-file-upload.element'
 import { serializeForm, setPageTitle } from '@app/utils/html'
 import { formStyle } from '@app/styles/form.style'
 import { notify } from '@app/shared/notification'
@@ -63,7 +64,7 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 	render() {
 		return html`
 			<form @submit=${this.submit} @change=${() => (this.hasUnsavedChanges = true)} novalidate>
-				<app-input required name="name" label="Name"></app-input>
+				<!-- <app-input required name="name" label="Name"></app-input>
 				<app-input required name="email" label="Email" type="email"></app-input>
 				<app-textarea required name="textarea" label="Textarea"></app-textarea>
 				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
@@ -78,7 +79,11 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 					<app-select-option value="option-3">Option 3</app-select-option>
 					<app-select-option value="option-4">Option 4</app-select-option>
 					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select>
+				</app-select> -->
+
+				<app-file-upload name="file" size="1">
+					<button slot="trigger">Upload</button>
+				</app-file-upload>
 				
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>

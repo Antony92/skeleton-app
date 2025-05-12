@@ -1,44 +1,35 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
-import { appInputStyle } from '@app/elements/input/app-input.style'
+import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
+import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 
-@customElement('app-input')
-export class AppInput extends LitElement implements FormControl {
-	static styles = [appInputStyle, css``]
+@customElement('app-file-upload')
+export class AppFileUpload extends LitElement implements FormControl {
+	static styles = [appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false
 
 	@property({ type: Boolean })
-	autofocus = false
-
-	@property({ type: Boolean })
-	hidden = false
-
-	@property({ type: Boolean })
-	readonly = false
-
-	@property({ type: Boolean })
 	required = false
-
-	@property({ type: String })
-	type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
 	@property({ type: String })
 	name = ''
 
 	@property({ type: String })
+	accept = ''
+
+	@property({ type: String })
 	label = ''
 
 	@property({ type: String })
-	autocomplete: 'on' | 'off' = 'off'
-
-	@property({ type: String })
 	value = ''
+
+	@property({ attribute: false })
+	files: FileList | null = null
 
 	@property({ type: String })
 	defaultValue = ''
@@ -46,23 +37,11 @@ export class AppInput extends LitElement implements FormControl {
 	@property({ type: String })
 	placeholder: string | undefined
 
-	@property()
-	max: number | string | undefined
-
-	@property()
-	min: number | string | undefined
-
 	@property({ type: Number })
-	step: number | undefined
+	size: number | undefined
 
-	@property({ type: Number })
-	maxlength: number | undefined
-
-	@property({ type: Number })
-	minlength: number | undefined
-
-	@property({ type: String })
-	pattern: string | undefined
+	@state()
+	fileName = ''
 
 	@state()
 	private errorMessage: string = ''
@@ -72,6 +51,9 @@ export class AppInput extends LitElement implements FormControl {
 
 	@query('input')
 	input!: HTMLInputElement
+
+	@queryAssignedElements({ slot: 'trigger' })
+	triggers!: HTMLElement[]
 
 	static formAssociated = true
 	formController!: FormControlController
@@ -88,26 +70,29 @@ export class AppInput extends LitElement implements FormControl {
 		})
 	}
 
-	protected updated() {
-		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
+	protected firstUpdated() {
+		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => {
+			if (!this.disabled) {
+				this.input.click()
+			}
+		}))
 	}
 
-	onInput() {
-		this.value = this.input.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
+	protected updated() {
+		if (!this.isFileSizeValid()) {
+			this.formController.setValidity({ rangeOverflow: true }, 'File too large.', this.input)
+		} else {
+			this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		}
 	}
 
 	onChange() {
-		this.value = this.input.value
 		this.touched = true
+		this.files = this.input.files
+		this.value = this.input.value
+		this.fileName = this.files && this.files[0] ? this.files[0].name : ''
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
 		this.dispatchEvent(new Event('change', { bubbles: true }))
-	}
-
-	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
 	}
 
 	formDisabledCallback(disabled: boolean) {
@@ -118,12 +103,21 @@ export class AppInput extends LitElement implements FormControl {
 
 	formResetCallback() {
 		this.value = this.defaultValue
+		this.files = null
+		this.fileName = ''
 		this.touched = false
 		this.errorMessage = ''
 	}
 
 	focus(options?: FocusOptions) {
 		this.input.focus(options)
+	}
+
+	isFileSizeValid() {
+		if (this.size && this.files && this.files[0] && this.files[0].size > this.size) {
+			return false
+		}
+		return true
 	}
 
 	validated(validity: ValidityState, message: string) {
@@ -158,36 +152,20 @@ export class AppInput extends LitElement implements FormControl {
 		return html`
 			<div class="form-control" part="form-control">
 				${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
-				<div class="input-wrapper" part="input-wrapper">
-					<span class="prefix" part="prefix">
-						<slot name="prefix"></slot>
-					</span>
+				<div class="file-upload-wrapper" part="file-upload-wrapper">
+					<slot name="trigger"></slot>
 					<input
 						id="input"
-						part="input"
+						hidden
 						?disabled=${this.disabled}
-						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
-						?readonly=${this.readonly}
 						?required=${this.required}
-						autocomplete=${ifDefined(this.autocomplete)}
-						placeholder=${ifDefined(this.placeholder)}
-						minlength=${ifDefined(this.minlength)}
-						maxlength=${ifDefined(this.maxlength)}
-						min=${ifDefined(this.min)}
-						max=${ifDefined(this.max)}
-						step=${ifDefined(this.step)}
-						type=${ifDefined(this.type)}
-						pattern=${ifDefined(this.pattern)}
 						name=${ifDefined(this.name)}
-						@input=${this.onInput}
 						@change=${this.onChange}
-						@blur=${this.onBlur}
 						.value=${live(this.value)}
+						accept=${ifDefined(this.accept)}
+						type="file"
 					/>
-					<span class="suffix" part="suffix">
-						<slot name="suffix"></slot>
-					</span>
+					${this.fileName}
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
 			</div>
@@ -197,6 +175,6 @@ export class AppInput extends LitElement implements FormControl {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-input': AppInput
+		'app-file-upload': AppFileUpload
 	}
 }

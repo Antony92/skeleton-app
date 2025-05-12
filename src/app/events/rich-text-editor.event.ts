@@ -1,4 +1,4 @@
-import { RichTextEditorValue } from '@app/types/rich-text-editor.type'
+import type { RichTextEditorValue } from '@app/types/rich-text-editor.type'
 
 export class AppRichTextEditorChangeEvent extends Event {
 	readonly value: RichTextEditorValue

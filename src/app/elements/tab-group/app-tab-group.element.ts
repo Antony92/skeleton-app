@@ -1,7 +1,7 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, queryAssignedElements } from 'lit/decorators.js'
-import { AppTab } from '@app/elements/tab/app-tab.element'
-import { AppTabPanel } from '@app/elements/tab-panel/app-tab-panel.element'
+import type { AppTab } from '@app/elements/tab/app-tab.element'
+import type { AppTabPanel } from '@app/elements/tab-panel/app-tab-panel.element'
 import { AppTabChangeEvent } from '@app/events/tab.event'
 
 @customElement('app-tab-group')

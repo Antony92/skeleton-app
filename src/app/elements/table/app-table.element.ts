@@ -5,7 +5,7 @@ import { AppTableFilterEvent } from '@app/events/table.event'
 import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/input/app-input.element'
-import { AppInput } from '@app/elements/input/app-input.element'
+import type { AppInput } from '@app/elements/input/app-input.element'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
 
 @customElement('app-table')
@@ -140,7 +140,7 @@ export class AppTable extends LitElement {
 							autocomplete="off"
 							.value=${this.searchValue}
 							placeholder="Search"
-							@app-input=${(event: Event) => this.search((<AppInput>event.target).value)}
+							@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
 						>
 							<app-icon slot="prefix" filled>search</app-icon>
 						</app-input>

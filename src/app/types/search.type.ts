@@ -1,3 +1,3 @@
 export type SearchParams = { 
-    [key: string]: any
+    [key: string]: string | number | boolean | undefined | null
 }

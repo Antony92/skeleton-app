@@ -1,4 +1,4 @@
-import { PaginateValue } from '@app/types/paginate.type'
+import type { PaginateValue } from '@app/types/paginate.type'
 
 export class AppPaginateEvent extends Event {
 	readonly value: PaginateValue

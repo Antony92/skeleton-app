@@ -1,6 +1,6 @@
 import { getUsers } from '@app/services/api.service'
 import { tableStyle } from '@app/styles/table.style'
-import { PaginatedResponse } from '@app/types/response.type'
+import type { PaginatedResponse } from '@app/types/response.type'
 import { setPageTitle } from '@app/utils/html'
 import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap } from '@app/utils/url'
 import { html, LitElement, css } from 'lit'
@@ -8,7 +8,7 @@ import { customElement, query, state } from 'lit/decorators.js'
 import '@app/elements/table/app-table.element'
 import '@app/elements/table/app-table-column-filter.element'
 import '@app/elements/paginator/app-paginator.element'
-import { TableColumn } from '@app/types/table.type'
+import type { TableColumn } from '@app/types/table.type'
 import { when } from 'lit/directives/when.js'
 import { AppPaginator } from '@app/elements/paginator/app-paginator.element'
 import { AppPaginateEvent } from '@app/events/pagination.event'
@@ -105,7 +105,7 @@ export class AppTablePage extends LitElement {
 	}
 
 	toggleSelection(event: Event) {
-		const checked = (<HTMLInputElement>event.target).checked
+		const checked = (event.target as HTMLInputElement).checked
 		this.users.data.forEach((user) => (user.selected = checked))
 		this.requestUpdate()
 	}

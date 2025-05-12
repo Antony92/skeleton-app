@@ -1,4 +1,4 @@
-import { RouteContext, Commands, RedirectResult } from '@vaadin/router'
+import type { RouteContext, Commands, RedirectResult } from '@vaadin/router'
 import { getUser } from '@app/shared/auth'
 
 /**

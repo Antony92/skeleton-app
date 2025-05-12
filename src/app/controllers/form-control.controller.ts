@@ -1,6 +1,7 @@
-import { ReactiveController, ReactiveControllerHost } from 'lit'
+import type { ReactiveController, ReactiveControllerHost } from 'lit'
 
 export interface FormControl {
+	name: string
 	value: string
 	disabled: boolean
 	touched: boolean

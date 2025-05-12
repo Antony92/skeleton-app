@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
+import type { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
 import { AppSelectEvent } from '@app/events/select.event'
 
 @customElement('app-dropdown')
