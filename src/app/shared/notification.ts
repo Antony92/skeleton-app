@@ -8,13 +8,15 @@ export const notify = async (notification: {
 	icon?: string | boolean
 	duration?: number
 	action?: {
-		label: string,
+		label: string
 		onAction?: (event: Event) => void
 	}
 }) => {
-	await import('@app/elements/snackbar/app-snackbar.element')
-	await import('@app/elements/icon/app-icon.element')
-	await import('@app/elements/button/app-button.element')
+	await Promise.all([
+		import('@app/elements/snackbar/app-snackbar.element'),
+		import('@app/elements/icon/app-icon.element'),
+		import('@app/elements/button/app-button.element'),
+	])
 
 	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
 
@@ -54,6 +56,6 @@ export const notify = async (notification: {
 	snackbar.addEventListener('app-after-hide', () => snackbar.remove())
 
 	snackbar.show()
-	
+
 	return snackbar
 }

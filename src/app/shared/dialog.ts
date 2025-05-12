@@ -7,8 +7,10 @@ import { html, render } from 'lit'
  * @returns Promise
  */
 export const dialog = async (options: { header: string; message: string; modal?: boolean }) => {
-	await import('@app/elements/dialog/app-dialog.element')
-	await import('@app/elements/button/app-button.element')
+	await Promise.all([
+		import('@app/elements/dialog/app-dialog.element'),
+		import('@app/elements/button/app-button.element')
+	])
 
 	const { promise, resolve, reject } = Promise.withResolvers<void>()
 
@@ -55,8 +57,10 @@ export const dialog = async (options: { header: string; message: string; modal?:
  * @returns Promise
  */
 export const confirmDialog = async (options: { header: string; message: string }) => {
-	await import('@app/elements/dialog/app-dialog.element')
-	await import('@app/elements/button/app-button.element')
+	await Promise.all([
+		import('@app/elements/dialog/app-dialog.element'),
+		import('@app/elements/button/app-button.element')
+	])
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
 
@@ -104,9 +108,11 @@ export const confirmDialog = async (options: { header: string; message: string }
  * @returns Promise
  */
 export const promptDialog = async (options: { header: string; message: string; promt: string }) => {
-	await import('@app/elements/dialog/app-dialog.element')
-	await import('@app/elements/button/app-button.element')
-	await import('@app/elements/input/app-input.element')
+	await Promise.all([
+		import('@app/elements/dialog/app-dialog.element'),
+		import('@app/elements/button/app-button.element'),
+		import('@app/elements/input/app-input.element')
+	])
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
 
