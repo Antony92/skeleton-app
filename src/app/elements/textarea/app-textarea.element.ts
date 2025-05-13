@@ -72,7 +72,7 @@ export class AppTextarea extends LitElement implements FormControl {
 		this.formController = new FormControlController(this)
 	}
 
-	connectedCallback(): void {
+	connectedCallback() {
 		super.connectedCallback()
 		this.addEventListener('invalid', async () => {
 			this.touched = true

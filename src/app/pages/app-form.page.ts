@@ -81,7 +81,7 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select> -->
 
-				<app-file-upload name="file" size="1">
+				<app-file-upload name="file" size="1024" required accept=".ts" fileName="test.ts" fileURL="1">
 					<button slot="trigger">Upload</button>
 				</app-file-upload>
 				

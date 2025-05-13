@@ -5,6 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { formatBytes } from '@app/utils/html'
+import { AppFileUploadEvent } from '@app/events/file-upload.event'
 
 @customElement('app-file-upload')
 export class AppFileUpload extends LitElement implements FormControl {
@@ -25,14 +27,11 @@ export class AppFileUpload extends LitElement implements FormControl {
 	@property({ type: String })
 	label = ''
 
-	@property({ type: String })
+	@property({ type: String, attribute: false })
 	value = ''
 
 	@property({ attribute: false })
 	files: FileList | null = null
-
-	@property({ type: String })
-	defaultValue = ''
 
 	@property({ type: String })
 	placeholder: string | undefined
@@ -40,8 +39,11 @@ export class AppFileUpload extends LitElement implements FormControl {
 	@property({ type: Number })
 	size: number | undefined
 
-	@state()
+	@property({ type: String })
 	fileName = ''
+
+	@property({ type: String })
+	fileURL = ''
 
 	@state()
 	private errorMessage: string = ''
@@ -63,11 +65,16 @@ export class AppFileUpload extends LitElement implements FormControl {
 		this.formController = new FormControlController(this)
 	}
 
-	connectedCallback(): void {
+	connectedCallback() {
 		super.connectedCallback()
 		this.addEventListener('invalid', async () => {
 			this.touched = true
 		})
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
+		URL.revokeObjectURL(this.fileURL)
 	}
 
 	protected firstUpdated() {
@@ -79,18 +86,14 @@ export class AppFileUpload extends LitElement implements FormControl {
 	}
 
 	protected updated() {
-		if (!this.isFileSizeValid()) {
-			this.formController.setValidity({ rangeOverflow: true }, 'File too large.', this.input)
-		} else {
-			this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		}
+		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
 
 	onChange() {
 		this.touched = true
 		this.files = this.input.files
 		this.value = this.input.value
-		this.fileName = this.files && this.files[0] ? this.files[0].name : ''
+		this.checkFileValidation()
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
 		this.dispatchEvent(new Event('change', { bubbles: true }))
 	}
@@ -102,22 +105,45 @@ export class AppFileUpload extends LitElement implements FormControl {
 	}
 
 	formResetCallback() {
-		this.value = this.defaultValue
+		this.value = ''
 		this.files = null
 		this.fileName = ''
+		this.fileURL = ''
 		this.touched = false
 		this.errorMessage = ''
+		URL.revokeObjectURL(this.fileURL)
+		this.input.setCustomValidity('')
 	}
 
 	focus(options?: FocusOptions) {
 		this.input.focus(options)
 	}
 
-	isFileSizeValid() {
-		if (this.size && this.files && this.files[0] && this.files[0].size > this.size) {
-			return false
+	checkFileValidation() {
+		const file = this.files?.[0]
+		this.input.setCustomValidity('')
+
+		if (!file) {		
+			return
 		}
-		return true
+
+		this.fileURL = URL.createObjectURL(file)
+		this.fileName = file.name
+
+		if (this.size && file.size > this.size) {
+			this.input.setCustomValidity(`File size too large. Maximum allowed is ${formatBytes(this.size)}.`)
+			return
+		}
+
+		this.dispatchEvent(new AppFileUploadEvent(file))
+	}
+
+	deleteFile() {
+		this.value = ''
+		this.files = null
+		this.fileName = ''
+		this.fileURL = ''
+		this.input.setCustomValidity('')
 	}
 
 	validated(validity: ValidityState, message: string) {
@@ -165,7 +191,13 @@ export class AppFileUpload extends LitElement implements FormControl {
 						accept=${ifDefined(this.accept)}
 						type="file"
 					/>
-					${this.fileName}
+					${when(this.fileURL, () => html`
+						<div>
+							<a download=${this.fileName} href=${this.fileURL} @click=${() => URL.revokeObjectURL(this.fileURL)}>${this.fileName}</a>
+							<button @click=${this.deleteFile}>X</button>
+						</div>
+					`)}
+					
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
 			</div>

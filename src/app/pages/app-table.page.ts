@@ -68,7 +68,7 @@ export class AppTablePage extends LitElement {
 		this.loadUsers()
 	}
 
-	protected firstUpdated(): void {}
+	protected firstUpdated() {}
 
 	async loadUsers() {
 		this.loading = true
