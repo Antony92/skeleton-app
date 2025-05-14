@@ -193,7 +193,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 					/>
 					${when(this.fileURL, () => html`
 						<div>
-							<a download=${this.fileName} href=${this.fileURL} @click=${() => URL.revokeObjectURL(this.fileURL)}>${this.fileName}</a>
+							<a download=${this.fileName} href=${this.fileURL}>${this.fileName}</a>
 							<button @click=${this.deleteFile}>X</button>
 						</div>
 					`)}
