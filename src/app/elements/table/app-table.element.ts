@@ -7,6 +7,7 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/input/app-input.element'
 import type { AppInput } from '@app/elements/input/app-input.element'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
+import type { AppTableColumn } from '@app/elements/table-column/app-table-column.element'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -59,6 +60,9 @@ export class AppTable extends LitElement {
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
 	tables!: HTMLTableElement[]
 
+	@queryAssignedElements({ slot: 'table', selector: 'app-table-column' })
+	columns!: AppTableColumn[]
+
 	private searchParamsMap = new Map()
 	private searchEvent = new Subject<string>()
 	private searchSubscription: Subscription = new Subscription()
@@ -80,7 +84,7 @@ export class AppTable extends LitElement {
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = event.filter
-			this.columnFilters.filter((filter) => filter !== event.target).forEach((filter) => filter.clearOrderFilter())
+			this.columns.filter((column) => column !== event.target).forEach((column) => column.clearOrderFilter())
 			if (order) {
 				this.searchParamsMap.set('sort', field)
 				this.searchParamsMap.set('order', order)
@@ -121,13 +125,8 @@ export class AppTable extends LitElement {
 		this.searchParamsMap.clear()
 		this.searchValue = ''
 		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
-		this.columnFilters.forEach((columFilter) => columFilter.clearFilters())
+		this.columns.forEach((column) => column.clearFilters())
 		this.dispatchEvent(new Event('app-table-clear'))
-	}
-
-	get columnFilters() {
-		const table = this.tables[0]
-		return Array.from(table?.querySelectorAll('app-table-column-filter') || [])
 	}
 
 	render() {

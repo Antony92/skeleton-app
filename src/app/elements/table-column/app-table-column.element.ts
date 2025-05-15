@@ -6,8 +6,8 @@ import { debounce, Subject, Subscription, timer } from 'rxjs'
 import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
 import '@app/elements/icon/app-icon.element'
 
-@customElement('app-table-column-filter')
-export class AppTableColumnFilter extends LitElement {
+@customElement('app-table-column')
+export class AppTableColumn extends LitElement {
 	static styles = css`
 		.filter {
 			display: flex;
@@ -201,6 +201,6 @@ export class AppTableColumnFilter extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-table-column-filter': AppTableColumnFilter
+		'app-table-column': AppTableColumn
 	}
 }
