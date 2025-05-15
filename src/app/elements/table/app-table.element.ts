@@ -7,7 +7,6 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/input/app-input.element'
 import type { AppInput } from '@app/elements/input/app-input.element'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
-import type { AppTableColumn } from '@app/elements/table-column/app-table-column.element'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -60,18 +59,12 @@ export class AppTable extends LitElement {
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
 	tables!: HTMLTableElement[]
 
-	@queryAssignedElements({ slot: 'table', selector: 'app-table-column' })
-	columns!: AppTableColumn[]
-
 	private searchParamsMap = new Map()
 	private searchEvent = new Subject<string>()
 	private searchSubscription: Subscription = new Subscription()
 
 	connectedCallback() {
 		super.connectedCallback()
-		if (this.searchValue) {
-			this.searchParamsMap.set('search', this.searchValue)
-		}
 		this.addEventListener('app-table-column-filter-value', (event) => {
 			const { field, value } = event.filter
 			if (value) {
@@ -80,7 +73,7 @@ export class AppTable extends LitElement {
 				this.searchParamsMap.delete(field)
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
+			this.dispatchFilterEvent()
 		})
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			const { field, order } = event.filter
@@ -93,17 +86,23 @@ export class AppTable extends LitElement {
 				this.searchParamsMap.delete('order')
 			}
 			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
+			this.dispatchFilterEvent()
 		})
 		this.searchSubscription = this.searchEvent
 			.asObservable()
 			.pipe(debounce((value) => (value ? timer(300) : timer(0))))
-			.subscribe(() => this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap)))
+			.subscribe(() => this.dispatchFilterEvent())
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
 		this.searchSubscription.unsubscribe()
+	}
+
+	protected firstUpdated() {
+		if (this.searchValue) {
+			this.searchParamsMap.set('search', this.searchValue)
+		}
 	}
 
 	search(value: string) {
@@ -120,6 +119,10 @@ export class AppTable extends LitElement {
 		return this.searchParamsMap.size > 0
 	}
 
+	dispatchFilterEvent() {
+		this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
+	}
+
 	clearAllFilters() {
 		this.filtersApplied = false
 		this.searchParamsMap.clear()
@@ -127,6 +130,11 @@ export class AppTable extends LitElement {
 		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
 		this.columns.forEach((column) => column.clearFilters())
 		this.dispatchEvent(new Event('app-table-clear'))
+	}
+
+	get columns() {
+		const table = this.tables[0]
+		return Array.from(table?.querySelectorAll('app-table-column') || [])
 	}
 
 	render() {

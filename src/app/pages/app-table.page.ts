@@ -34,7 +34,9 @@ export class AppTablePage extends LitElement {
 	private skip = 0
 	private limit = 10
 	private storageLimitName = 'table-limit'
-	private columns: TableColumn[] = [
+
+	@state()
+	columns: TableColumn[] = [
 		{ header: '#', field: 'id', type: 'number', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Username', field: 'username', type: 'text', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'First Name', field: 'firstName', type: 'text', sortable: true, filtarable: true, delay: 300 },
@@ -79,7 +81,6 @@ export class AppTablePage extends LitElement {
 	onPaginate(event: AppPaginateEvent) {
 		const { pageSize, pageIndex } = event.value
 		this.limit = pageSize
-		localStorage.setItem(this.storageLimitName, this.limit.toString())
 		this.skip = pageSize * pageIndex
 		this.loadUsers()
 	}
@@ -117,7 +118,13 @@ export class AppTablePage extends LitElement {
 
 	render() {
 		return html`
-			<app-table searchable clearable @app-table-clear=${this.onTableClear} @app-table-filter=${this.onTableFilter}>
+			<app-table
+				.searchValue=${this.searchParamsMap.get('search') || ''}
+				.filtersApplied=${this.searchParamsMap.size > 0 }
+				searchable 
+				clearable 
+				@app-table-clear=${this.onTableClear} 
+				@app-table-filter=${this.onTableFilter}>
 				<table slot="table">
 					<thead>
 						<tr>

@@ -26,6 +26,9 @@ export class AppPaginator extends LitElement {
 	@property({ type: Array })
 	pageSizeOptions = [5, 10, 20]
 
+	@property({ type: String, attribute: 'save-page-size' })
+	savePageSize = ''
+
 	private previousPageIndex = 0
 
 	private pageSizeChange(event: Event) {
@@ -35,6 +38,9 @@ export class AppPaginator extends LitElement {
 		this.previousPageIndex = this.pageIndex
 		this.pageIndex = Math.floor(startIndex / pageSize) || 0
 		this.pageSize = pageSize
+		if (this.savePageSize) {
+			localStorage.setItem(this.savePageSize, this.pageSize.toString())
+		}
 		this.emitPageEvent()
 	}
 
