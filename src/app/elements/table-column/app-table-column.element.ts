@@ -9,25 +9,31 @@ import '@app/elements/icon/app-icon.element'
 @customElement('app-table-column')
 export class AppTableColumn extends LitElement {
 	static styles = css`
-		.filter {
+		button {
 			display: flex;
 			align-items: center;
-			padding: 10px 0;
+			padding: 5px 0;
 			gap: 5px;
 			font-weight: bold;
-		}
+			border: none;
+			background: none;
 
-		.sortable {
-			cursor: pointer;
+			&.sortable {
+				cursor: pointer;
 
-			&[order='none'] {
-				app-icon {
-					opacity: 0;
-					transition: opacity 0.3s;
+				&[order='none'] {
+					app-icon {
+						opacity: 0;
+						transition: opacity 0.3s;
+					}
+
+					&:not(:focus):hover app-icon {
+						opacity: 0.5;
+					}
 				}
 
-				&:not(:focus):hover app-icon {
-					opacity: 0.5;
+				&:not([order='none']) {
+					color: var(--theme-primary-color);
 				}
 			}
 		}
@@ -93,7 +99,6 @@ export class AppTableColumn extends LitElement {
 
 	filterColumnOrder() {
 		if (!this.sortable) return
-		this.renderRoot.querySelector<HTMLElement>('.heading')?.focus()
 
 		if (!this.order) {
 			this.order = 'asc'
@@ -121,17 +126,12 @@ export class AppTableColumn extends LitElement {
 
 	render() {
 		return html`
-			<div
-				tabindex="-1"
-				order=${this.order || 'none'}
-				class=${classMap({ filter: true, sortable: this.sortable })}
-				@click=${this.filterColumnOrder}
-			>
+			<button order=${this.order || 'none'} class=${classMap({ sortable: this.sortable })} @click=${this.filterColumnOrder}>
 				<slot></slot>
 				${when(this.sortable && !this.order, () => html`<app-icon>sort</app-icon>`)}
 				${when(this.sortable && this.order === 'desc', () => html`<app-icon>arrow_downward_alt</app-icon>`)}
 				${when(this.sortable && this.order === 'asc', () => html`<app-icon>arrow_upward_alt</app-icon>`)}
-			</div>
+			</button>
 			${when(
 				this.filterable && this.type === 'text',
 				() => html`
