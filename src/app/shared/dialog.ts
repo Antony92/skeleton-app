@@ -24,7 +24,7 @@ export const dialog = async (options: { header: string; message: string; modal?:
 
 	const template = html`
 		${message}
-		<app-button slot="footer" class="primary" autofocus app-dialog-close>Close</app-button>
+		<app-button slot="footer" variant="primary" autofocus app-dialog-close>Close</app-button>
 	`
 
 	const dialog = Object.assign(document.createElement('app-dialog'), {
