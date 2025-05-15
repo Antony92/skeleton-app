@@ -74,7 +74,8 @@ export class AppTablePage extends LitElement {
 
 	async loadUsers() {
 		this.loading = true
-		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...Object.fromEntries(this.searchParamsMap) })
+		const searchParams = Object.fromEntries(this.searchParamsMap)
+		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...searchParams })
 		this.loading = false
 	}
 
