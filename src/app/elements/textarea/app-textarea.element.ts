@@ -171,7 +171,7 @@ export class AppTextarea extends LitElement implements FormControl {
 					>
 					</textarea>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}

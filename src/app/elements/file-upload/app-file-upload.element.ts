@@ -199,7 +199,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 					`)}
 					
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}

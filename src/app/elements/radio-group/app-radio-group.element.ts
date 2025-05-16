@@ -120,7 +120,7 @@ export class AppRadioGroup extends LitElement implements FormControl {
 					${when(this.label, () => html`<legend>${this.label}</legend>`)}
 					<slot></slot>
 				</fieldset>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}

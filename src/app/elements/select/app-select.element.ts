@@ -407,7 +407,7 @@ export class AppSelect extends LitElement implements FormControl {
 						<slot></slot>
 					</div>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}

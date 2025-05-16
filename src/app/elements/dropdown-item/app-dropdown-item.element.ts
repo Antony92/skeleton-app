@@ -1,15 +1,18 @@
+import { defaultStyle } from '@app/styles/default.style'
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { when } from 'lit/directives/when.js'
 
 @customElement('app-dropdown-item')
 export class AppDropdownItem extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			::slotted(app-icon) {
 				font-size: 20px;
 			}
 
-			button {
+			button, a {
 				cursor: pointer;
 				display: flex;
 				align-items: center;
@@ -22,6 +25,7 @@ export class AppDropdownItem extends LitElement {
 				width: 100%;
 				color: light-dark(var(--gray-8), var(--gray-4));
 				background: none;
+				text-decoration: none;
 
 				.prefix {
 					display: flex;
@@ -53,14 +57,30 @@ export class AppDropdownItem extends LitElement {
 	@property({ type: String })
 	value = ''
 
+	@property({ type: String })
+	href = ''
+
 	render() {
 		return html`
-			<button part="item" ?disabled=${this.disabled} .value=${this.value}>
-				<span class="prefix">
-					<slot name="prefix"></slot>
-				</span>
-				<slot></slot>
-			</button>
+			${when(
+				this.href,
+				() => html`
+					<a part="item" href=${this.href}>
+						<span class="prefix">
+							<slot name="prefix"></slot>
+						</span>
+						<slot></slot>
+					</a>
+				`,
+				() => html`
+					<button part="item" ?disabled=${this.disabled} .value=${this.value}>
+						<span class="prefix">
+							<slot name="prefix"></slot>
+						</span>
+						<slot></slot>
+					</button>
+				`
+			)}
 		`
 	}
 }

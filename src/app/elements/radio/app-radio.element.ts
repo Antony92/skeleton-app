@@ -155,7 +155,7 @@ export class AppRadio extends LitElement implements FormControl {
 					/>
 					${when(this.label, () => html`<label for="radio" part="label">${this.label}</label>`)}
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}

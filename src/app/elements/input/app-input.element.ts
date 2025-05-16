@@ -189,7 +189,7 @@ export class AppInput extends LitElement implements FormControl {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>
 		`
 	}
