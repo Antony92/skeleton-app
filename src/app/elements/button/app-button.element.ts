@@ -5,6 +5,7 @@ import { classMap } from 'lit/directives/class-map.js'
 import { focusStyle } from '@app/styles/focus.style'
 import { when } from 'lit/directives/when.js'
 import { defaultStyle } from '@app/styles/default.style'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
 @customElement('app-button')
 export class AppButton extends LitElement {
@@ -34,6 +35,9 @@ export class AppButton extends LitElement {
 	@property({ type: String })
 	href = ''
 
+	@property({ type: String })
+	download: string | undefined
+
 	render() {
 		return html`
 			${when(
@@ -50,6 +54,7 @@ export class AppButton extends LitElement {
 							['focus-visible']: true,
 						})}
 						href=${this.href}
+						download=${ifDefined(this.download)}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}
 					>
