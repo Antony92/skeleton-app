@@ -28,15 +28,18 @@ export const notify = async (notification: {
 		error: 'error',
 	}
 
-	let snackbar = document.querySelector<AppSnackbar>('app-snackbar#snackbar')
+	let snackbar = document.querySelector<AppSnackbar & { actionHandler: (event: Event) => void }>('app-snackbar#snackbar')
 
 	const iconName = typeof icon === 'string' ? icon : defaultIconMap[variant]
 
 	const template = html` ${when(icon, () => html`<app-icon slot="icon" filled>${iconName}</app-icon>`)} ${message} `
 
+	const actionHandler = (event: Event) => action?.onAction?.(event)
+
 	// If exist update else create
 	if (snackbar) {
-		Object.assign(snackbar, { variant, duration, action: action?.label })
+		snackbar.removeEventListener('cc-snackbar-action', snackbar.actionHandler)
+		Object.assign(snackbar, { variant, duration, action: action?.label, actionHandler })
 		render(template, snackbar)
 	} else {
 		snackbar = Object.assign(document.createElement('app-snackbar'), {
@@ -44,18 +47,19 @@ export const notify = async (notification: {
 			variant,
 			duration,
 			action: action?.label,
+			actionHandler,
 		})
-
-		// Add snackbar action callback
-		snackbar.addEventListener('app-snackbar-action', (event: Event) => action?.onAction?.(event))
 
 		// Remove from DOM after hide animation finishes
 		snackbar.addEventListener('app-after-hide', () => snackbar?.remove())
-		
+
 		// Render
 		render(template, snackbar)
 		document.body.appendChild(snackbar)
 	}
+
+	// Add snackbar action callback
+	snackbar.addEventListener('app-snackbar-action', actionHandler)
 
 	snackbar.show()
 
