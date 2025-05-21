@@ -23,12 +23,12 @@ export const appSnackbarStyle = css`
 
 		&.top-right {
 			right: 15px;
-			left: 0;
+			left: auto;
 			top: 15px;
 		}
 
 		&.top-left {
-			right: 0;
+			right: auto;
 			left: 15px;
 			top: 15px;
 		}
@@ -42,12 +42,12 @@ export const appSnackbarStyle = css`
 
 		&.bottom-right {
 			right: 15px;
-			left: 0;
+			left: auto;
 			bottom: 15px;
 		}
 
 		&.bottom-left {
-			right: 0;
+			right: auto;
 			left: 15px;
 			bottom: 15px;
 		}

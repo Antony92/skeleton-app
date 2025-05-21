@@ -22,12 +22,14 @@ export const globalMessage = async (message: string, level: 'info' | 'warning' |
 			id: 'global-message',
 			level,
 		})
+		
+		// Remove from DOM after hide animation finishes
+		globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove())
+
+		// Render
 		render(template, globalMessage)
 		document.body.appendChild(globalMessage)
 	}
-
-	// Remove from DOM after hide animation finishes
-	globalMessage.addEventListener('app-after-hide', () => globalMessage.remove())
 
 	return globalMessage.show()
 }

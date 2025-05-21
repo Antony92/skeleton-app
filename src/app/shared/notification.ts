@@ -45,15 +45,17 @@ export const notify = async (notification: {
 			duration,
 			action: action?.label,
 		})
+
+		// Add snackbar action callback
+		snackbar.addEventListener('app-snackbar-action', (event: Event) => action?.onAction?.(event))
+
+		// Remove from DOM after hide animation finishes
+		snackbar.addEventListener('app-after-hide', () => snackbar?.remove())
+		
+		// Render
 		render(template, snackbar)
 		document.body.appendChild(snackbar)
 	}
-
-	// Add snackbar action callback
-	snackbar.addEventListener('app-snackbar-action', (event: Event) => action?.onAction?.(event))
-
-	// Remove from DOM after hide animation finishes
-	snackbar.addEventListener('app-after-hide', () => snackbar.remove())
 
 	snackbar.show()
 
