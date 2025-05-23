@@ -91,7 +91,9 @@ export class AppSelect extends LitElement implements FormControl {
 	popup!: HTMLElement
 
 	@queryAssignedElements({ selector: 'app-select-option' })
-	options!: AppSelectOption[]
+	assignedOptions!: AppSelectOption[]
+
+	private attachedOptions = new WeakSet<AppSelectOption>()
 
 	static formAssociated = true
 	formController!: FormControlController
@@ -113,7 +115,7 @@ export class AppSelect extends LitElement implements FormControl {
 
 			event.preventDefault()
 
-			const activeOptions = this.options.filter((option) => !option.disabled)
+			const activeOptions = this.getSlottedOptions().filter((option) => !option.disabled)
 
 			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0)
 
@@ -140,32 +142,39 @@ export class AppSelect extends LitElement implements FormControl {
 		})
 	}
 
+	private attachOptionListeners(option: AppSelectOption) {
+		if (this.attachedOptions.has(option)) {
+			return
+		}
+		this.attachedOptions.add(option)
+		option.addEventListener('click', () => {
+			if (this.multiple) {
+				option.selected = !option.selected
+				option.tabIndex = option.selected ? 0 : -1
+				this.value = this.getMultiValue()
+			} else {
+				option.selected = true
+				option.tabIndex = 0
+				this.value = option.value
+				this.getSlottedOptions()
+					.filter((opt) => opt.value !== this.value)
+					.forEach((opt) => {
+						opt.selected = false
+						opt.tabIndex = -1
+					})
+				this.closeSelect()
+				this.focus()
+			}
+			this.displayValue = this.getDisplayValue()
+			this.onChange()
+		})
+	}
+
 	protected firstUpdated() {
-		this.options
+		this.getSlottedOptions()
 			.filter((option) => !option.disabled)
-			.forEach((option) => {
-				option.addEventListener('click', () => {
-					if (this.multiple) {
-						option.selected = !option.selected
-						option.tabIndex = option.selected ? 0 : -1
-						this.value = this.getMultiValue()
-					} else {
-						option.selected = true
-						option.tabIndex = 0
-						this.value = option.value
-						this.options
-							.filter((option) => option.value !== this.value)
-							.forEach((option) => {
-								option.selected = false
-								option.tabIndex = -1
-							})
-						this.closeSelect()
-						this.focus()
-					}
-					this.displayValue = this.getDisplayValue()
-					this.onChange()
-				})
-			})
+			.forEach((option) => this.attachOptionListeners(option))
+		this.onOptionsAdded() // Initial setup for pre-rendered options
 	}
 
 	protected updated() {
@@ -217,7 +226,7 @@ export class AppSelect extends LitElement implements FormControl {
 	}
 
 	private focusSelectedOption() {
-		const options = this.options
+		const options = this.getSlottedOptions()
 			.filter((option) => !option.disabled)
 			.map((option) => {
 				option.tabIndex = option.selected ? 0 : -1
@@ -227,29 +236,34 @@ export class AppSelect extends LitElement implements FormControl {
 		firstSelected?.focus()
 	}
 
+	private getSlottedOptions(): AppSelectOption[] {
+		return this.assignedOptions
+	}
+
 	private onOptionsAdded() {
-		this.options
-			.filter((option) =>
-				this.value
-					.split(',')
-					.map((v) => v.trim())
-					.includes(option.value)
-			)
-			.forEach((option) => {
+		this.getSlottedOptions().forEach((option) => {
+			this.attachOptionListeners(option)
+			const shouldBeSelected = this.value
+				.split(',')
+				.map((v) => v.trim())
+				.filter((v) => !!v)
+				.includes(option.value)
+			if (shouldBeSelected) {
 				option.selected = true
-			})
+			}
+		})
 		this.displayValue = this.getDisplayValue()
 	}
 
 	private getMultiValue() {
-		return this.options
+		return this.getSlottedOptions()
 			.filter((option) => option.selected)
 			.map((option) => option.value)
 			.join(',')
 	}
 
 	private getDisplayValue() {
-		return this.options
+		return this.getSlottedOptions()
 			.filter((option) =>
 				this.value
 					.split(',')
@@ -259,6 +273,13 @@ export class AppSelect extends LitElement implements FormControl {
 			.map((option) => option.textContent)
 			.filter((v) => !!v)
 			.join(', ')
+	}
+
+	private handleSlotChange() {
+		this.getSlottedOptions()
+			.filter((option) => !this.attachedOptions.has(option))
+			.forEach((option) => this.attachOptionListeners(option))
+		this.onOptionsAdded() // Re-evaluate selected options after new ones are added
 	}
 
 	onChange() {
@@ -323,7 +344,7 @@ export class AppSelect extends LitElement implements FormControl {
 
 	formResetCallback() {
 		this.value = this.defaultValue
-		this.displayValue = this.options.find((option) => option.value === this.value)?.textContent || ''
+		this.displayValue = this.getSlottedOptions().find((option) => option.value === this.value)?.textContent || ''
 		this.touched = false
 		this.errorMessage = ''
 	}
@@ -403,7 +424,7 @@ export class AppSelect extends LitElement implements FormControl {
 							</svg>
 						</span>
 					</div>
-					<div id="popover" part="popover" ?open=${this.open} @slotchange=${this.onOptionsAdded}>
+					<div id="popover" part="popover" ?open=${this.open} @slotchange=${this.handleSlotChange}>
 						<slot></slot>
 					</div>
 				</div>
