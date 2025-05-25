@@ -49,12 +49,12 @@ export class AppPaginator extends LitElement {
 	}
 
 	hasPreviousPage() {
-		return this.pageIndex >= 1 && this.pageSize != 0
+		return this.pageIndex >= 1 && this.pageSize !== 0
 	}
 
 	hasNextPage() {
 		const maxPageIndex = this.getNumberOfPages() - 1
-		return this.pageIndex < maxPageIndex && this.pageSize != 0
+		return this.pageIndex < maxPageIndex && this.pageSize !== 0
 	}
 
 	getNumberOfPages() {
