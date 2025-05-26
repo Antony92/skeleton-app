@@ -150,18 +150,12 @@ export class AppSelect extends LitElement implements FormControl {
 		option.addEventListener('click', () => {
 			if (this.multiple) {
 				option.selected = !option.selected
-				option.tabIndex = option.selected ? 0 : -1
 				this.value = this.getMultiValue()
 			} else {
 				option.selected = true
 				option.tabIndex = 0
 				this.value = option.value
-				this.assignedOptions
-					.filter((opt) => opt.value !== this.value)
-					.forEach((opt) => {
-						opt.selected = false
-						opt.tabIndex = -1
-					})
+				this.assignedOptions.filter((opt) => opt.value !== this.value).forEach((opt) => (opt.selected = false))
 				this.closeSelect()
 				this.focus()
 			}
@@ -406,7 +400,7 @@ export class AppSelect extends LitElement implements FormControl {
 							</svg>
 						</span>
 					</div>
-					<div id="popover" part="popover" ?open=${this.open} >
+					<div id="popover" part="popover" ?open=${this.open}>
 						<slot @slotchange=${this.onOptionsAdded}></slot>
 					</div>
 				</div>
