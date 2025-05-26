@@ -50,7 +50,7 @@ export class AppSelectOption extends LitElement {
 	@property({ type: String })
 	value = ''
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	selected = false
 
 	@query('button')

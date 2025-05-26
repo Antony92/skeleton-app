@@ -115,7 +115,7 @@ export class AppSelect extends LitElement implements FormControl {
 
 			event.preventDefault()
 
-			const activeOptions = this.getSlottedOptions().filter((option) => !option.disabled)
+			const activeOptions = this.assignedOptions.filter((option) => !option.disabled)
 
 			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0)
 
@@ -156,7 +156,7 @@ export class AppSelect extends LitElement implements FormControl {
 				option.selected = true
 				option.tabIndex = 0
 				this.value = option.value
-				this.getSlottedOptions()
+				this.assignedOptions
 					.filter((opt) => opt.value !== this.value)
 					.forEach((opt) => {
 						opt.selected = false
@@ -170,12 +170,7 @@ export class AppSelect extends LitElement implements FormControl {
 		})
 	}
 
-	protected firstUpdated() {
-		this.getSlottedOptions()
-			.filter((option) => !option.disabled)
-			.forEach((option) => this.attachOptionListeners(option))
-		this.onOptionsAdded() // Initial setup for pre-rendered options
-	}
+	protected firstUpdated() {}
 
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
@@ -226,7 +221,7 @@ export class AppSelect extends LitElement implements FormControl {
 	}
 
 	private focusSelectedOption() {
-		const options = this.getSlottedOptions()
+		const options = this.assignedOptions
 			.filter((option) => !option.disabled)
 			.map((option) => {
 				option.tabIndex = option.selected ? 0 : -1
@@ -236,12 +231,8 @@ export class AppSelect extends LitElement implements FormControl {
 		firstSelected?.focus()
 	}
 
-	private getSlottedOptions(): AppSelectOption[] {
-		return this.assignedOptions
-	}
-
 	private onOptionsAdded() {
-		this.getSlottedOptions().forEach((option) => {
+		this.assignedOptions.forEach((option) => {
 			this.attachOptionListeners(option)
 			const shouldBeSelected = this.value
 				.split(',')
@@ -256,14 +247,14 @@ export class AppSelect extends LitElement implements FormControl {
 	}
 
 	private getMultiValue() {
-		return this.getSlottedOptions()
+		return this.assignedOptions
 			.filter((option) => option.selected)
 			.map((option) => option.value)
 			.join(',')
 	}
 
 	private getDisplayValue() {
-		return this.getSlottedOptions()
+		return this.assignedOptions
 			.filter((option) =>
 				this.value
 					.split(',')
@@ -273,13 +264,6 @@ export class AppSelect extends LitElement implements FormControl {
 			.map((option) => option.textContent)
 			.filter((v) => !!v)
 			.join(', ')
-	}
-
-	private handleSlotChange() {
-		this.getSlottedOptions()
-			.filter((option) => !this.attachedOptions.has(option))
-			.forEach((option) => this.attachOptionListeners(option))
-		this.onOptionsAdded() // Re-evaluate selected options after new ones are added
 	}
 
 	onChange() {
@@ -344,7 +328,7 @@ export class AppSelect extends LitElement implements FormControl {
 
 	formResetCallback() {
 		this.value = this.defaultValue
-		this.displayValue = this.getSlottedOptions().find((option) => option.value === this.value)?.textContent || ''
+		this.displayValue = this.assignedOptions.find((option) => option.value === this.value)?.textContent || ''
 		this.touched = false
 		this.errorMessage = ''
 	}
@@ -424,8 +408,8 @@ export class AppSelect extends LitElement implements FormControl {
 							</svg>
 						</span>
 					</div>
-					<div id="popover" part="popover" ?open=${this.open} @slotchange=${this.handleSlotChange}>
-						<slot></slot>
+					<div id="popover" part="popover" ?open=${this.open} >
+						<slot @slotchange=${this.onOptionsAdded}></slot>
 					</div>
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>

@@ -36,10 +36,12 @@ export class AppDropdown extends LitElement {
 	triggers!: HTMLElement[]
 
 	@queryAssignedElements({ selector: 'app-dropdown-item' })
-	items!: AppDropdownItem[]
+	assignedItems!: AppDropdownItem[]
 
 	@property({ type: Boolean })
 	open = false
+
+	private attachedItems = new WeakSet<AppDropdownItem>()
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -47,12 +49,6 @@ export class AppDropdown extends LitElement {
 
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown(trigger)))
-		this.items.forEach((item) =>
-			item.addEventListener('click', () => {
-				this.dispatchEvent(new AppSelectEvent(item.value))
-				this.closeDropdown()
-			})
-		)
 	}
 
 	closeDropdown() {
@@ -91,6 +87,21 @@ export class AppDropdown extends LitElement {
 		if (event.key === 'Escape') {
 			this.closeDropdown()
 		}
+	}
+
+	private onItemsAdded() {
+		this.assignedItems.forEach(item => this.attachItemListeners(item))
+	}
+
+	private attachItemListeners(item: AppDropdownItem) {
+		if (this.attachedItems.has(item)) {
+			return
+		}
+		this.attachedItems.add(item)
+		item.addEventListener('click', () => {
+			this.dispatchEvent(new AppSelectEvent(item.value))
+			this.closeDropdown()
+		})
 	}
 
 	private calculatePosition(anchor: HTMLElement) {
@@ -198,7 +209,7 @@ export class AppDropdown extends LitElement {
 			<div class="container">
 				<slot name="trigger"></slot>
 				<div id="popover" part="popover" ?open=${this.open}>
-					<slot></slot>
+					<slot @slotchange=${this.onItemsAdded}></slot>
 				</div>
 			</div>
 		`
