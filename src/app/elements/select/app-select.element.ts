@@ -239,9 +239,7 @@ export class AppSelect extends LitElement implements FormControl {
 				.map((v) => v.trim())
 				.filter((v) => !!v)
 				.includes(option.value)
-			if (shouldBeSelected) {
-				option.selected = true
-			}
+			option.selected = shouldBeSelected
 		})
 		this.displayValue = this.getDisplayValue()
 	}
