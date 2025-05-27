@@ -59,6 +59,7 @@ export const appSelectStyle = css`
 			width: 100%;
 			border-radius: 3px;
 			height: 30px;
+			position: relative;
 
 			input {
 				width: 100%;
