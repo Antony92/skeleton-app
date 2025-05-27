@@ -7,10 +7,12 @@ import { live } from 'lit/directives/live.js'
 import { appSelectStyle } from '@app/elements/select/app-select.style'
 import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
 import { unsafeHTML } from 'lit/directives/unsafe-html.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-select')
 export class CCSelect extends LitElement implements FormControl {
 	static styles = [
+    defaultStyle,
 		appSelectStyle,
 		css`
 			[popover] {
