@@ -83,7 +83,10 @@ export class AppDropdown extends LitElement {
 			return
 		}
 		this.attachedItems.add(item)
-		item.addEventListener('click', () => {
+		item.addEventListener('click', (event: Event) => {
+			if (event.defaultPrevented) {
+				return
+			}
 			this.dispatchEvent(new AppSelectEvent(item.value))
 			this.closeDropdown()
 		})

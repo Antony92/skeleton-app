@@ -42,7 +42,10 @@ export class AppTabGroup extends LitElement {
 			activePanel.active = true
 		}
 		this.tabs.forEach((tab) =>
-			tab.addEventListener('click', () => {
+			tab.addEventListener('click', (event: Event) => {
+				if (event.defaultPrevented) {
+					return
+				}
 				tab.active = true
 				const panel = this.panels.find((p) => p.name === tab.panel)
 				if (panel) {
