@@ -4,7 +4,7 @@ export const appSelectStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
 
-			&:has(#popover[open]) {
+			&:has([popover][open]) {
 				.select-wrapper {
 					outline-color: var(--theme-invalid-color);
 				}
@@ -46,7 +46,7 @@ export const appSelectStyle = css`
 			}
 		}
 
-		&:has(#popover[open]) {
+		&:has([popover][open]) {
 			.select-wrapper {
 				outline: 2px solid var(--theme-color);
 			}
@@ -118,7 +118,7 @@ export const appSelectStyle = css`
 			}
 		}
 
-		&:has(#popover[open]) {
+		&:has([popover][open]) {
 			.caret {
 				rotate: -180deg;
 			}

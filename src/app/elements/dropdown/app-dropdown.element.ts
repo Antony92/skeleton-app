@@ -11,8 +11,7 @@ export class AppDropdown extends LitElement {
 			width: fit-content;
 		}
 
-		#popover {
-			display: none;
+		[popover] {
 			position: absolute;
 			border: 1px solid light-dark(var(--gray-4), var(--gray-8));
 			background-color: var(--theme-default-layer);
@@ -21,15 +20,14 @@ export class AppDropdown extends LitElement {
 			padding: 5px 0;
 			margin: 0;
 
-			&[open] {
+			&:popover-open {
 				display: flex;
 				flex-direction: column;
-				z-index: var(--layer-5);
 			}
 		}
 	`
 
-	@query('#popover')
+	@query('[popover]')
 	popup!: HTMLElement
 
 	@queryAssignedElements({ slot: 'trigger' })
@@ -38,7 +36,7 @@ export class AppDropdown extends LitElement {
 	@queryAssignedElements({ selector: 'app-dropdown-item' })
 	assignedItems!: AppDropdownItem[]
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	open = false
 
 	private attachedItems = new WeakSet<AppDropdownItem>()
@@ -49,12 +47,17 @@ export class AppDropdown extends LitElement {
 
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown(trigger)))
+		this.popup.addEventListener('toggle', (event: Event) => {
+			const toggleEvent = event as ToggleEvent
+			if (toggleEvent.newState === 'closed') {
+				this.closeDropdown()
+			}
+		})
 	}
 
 	closeDropdown() {
-		window.removeEventListener('keyup', this.handleKeyup)
-		window.removeEventListener('mousedown', this.handleMouseDown)
 		this.open = false
+		this.popup.hidePopover()
 		this.popup.removeAttribute('style')
 		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
 	}
@@ -62,10 +65,9 @@ export class AppDropdown extends LitElement {
 	async openDropdown(anchor: HTMLElement) {
 		this.open = true
 		await this.updateComplete
+		this.popup.showPopover()
 		this.calculatePosition(anchor)
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
-		window.addEventListener('keyup', this.handleKeyup)
-		window.addEventListener('mousedown', this.handleMouseDown)
 	}
 
 	toggleDropdown(anchor: HTMLElement) {
@@ -74,23 +76,6 @@ export class AppDropdown extends LitElement {
 		} else {
 			this.openDropdown(anchor)
 		}
-	}
-
-	private handleMouseDown = (event: MouseEvent) => {
-		const path = event.composedPath()
-		if (!path.includes(this)) {
-			this.closeDropdown()
-		}
-	}
-
-	private handleKeyup = (event: KeyboardEvent) => {
-		if (event.key === 'Escape') {
-			this.closeDropdown()
-		}
-	}
-
-	private onItemsAdded() {
-		this.assignedItems.forEach(item => this.attachItemListeners(item))
 	}
 
 	private attachItemListeners(item: AppDropdownItem) {
@@ -104,46 +89,11 @@ export class AppDropdown extends LitElement {
 		})
 	}
 
-	private calculatePosition(anchor: HTMLElement) {
-		const anchorRect = anchor.getBoundingClientRect()
-
-		const viewportWidth = window.innerWidth
-		const viewportHeight = window.innerHeight
-
-		const popoverHeight = this.popup.offsetHeight
-		const popoverWidth = this.popup.offsetWidth
-
-		const spaceBelow = viewportHeight - anchorRect.bottom
-		const spaceAbove = anchorRect.top
-		const spaceRight = viewportWidth - anchorRect.right
-		const spaceLeft = anchorRect.left
-
-		// default position
-		this.popup.style.top = `auto`
-		this.popup.style.bottom = `auto`
-		this.popup.style.left = `auto`
-		this.popup.style.right = `auto`
-
-		if (spaceAbove > spaceBelow && spaceBelow < popoverHeight) {
-			this.popup.style.bottom = `${anchorRect.height}px`
-			this.popup.style.top = `auto`
-		}
-
-		if (spaceLeft > spaceRight && spaceRight < popoverWidth) {
-			this.popup.style.right = `0px`
-			this.popup.style.left = `auto`
-		}
-
-		if (spaceAbove > spaceBelow && spaceAbove < popoverHeight) {
-			this.popup.style.height = `${spaceAbove - 15}px`
-		}
-
-		if (spaceBelow > spaceAbove && spaceBelow < popoverHeight) {
-			this.popup.style.height = `${spaceBelow - 15}px`
-		}
+	private onItemsAdded() {
+		this.assignedItems.forEach((item) => this.attachItemListeners(item))
 	}
 
-	private calculatePositionPopover(anchor: HTMLElement) {
+	private calculatePosition(anchor: HTMLElement) {
 		// Get the bounding rectangle of the anchor element.
 		const anchorRect = anchor.getBoundingClientRect()
 
@@ -193,7 +143,7 @@ export class AppDropdown extends LitElement {
 		// If there's more space above than below, position the top of the popup above the top of the anchor.
 		// Calculate the top position by subtracting the popover's height from the anchor's bottom position,
 		// and adding the vertical scroll offset.
-		if (spaceAbove > spaceBelow) {
+		if (spaceAbove > spaceBelow && spaceBelow < popoverHeight) {
 			this.popup.style.insetBlockStart = `${anchorRect.bottom - anchorRect.height - popoverHeight + scrollY}px`
 		}
 
@@ -208,7 +158,7 @@ export class AppDropdown extends LitElement {
 		return html`
 			<div class="container">
 				<slot name="trigger"></slot>
-				<div id="popover" part="popover" ?open=${this.open}>
+				<div part="popover" popover>
 					<slot @slotchange=${this.onItemsAdded}></slot>
 				</div>
 			</div>
