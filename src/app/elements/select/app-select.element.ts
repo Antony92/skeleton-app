@@ -254,7 +254,7 @@ export class CCSelect extends LitElement implements FormControl {
 					.map((v) => v.trim())
 					.includes(option.value)
 			)
-			.map((option) => option.textContent)
+			.map((option) => option.textContent?.trim())
 			.filter((v) => !!v)
 			.join(', ')
 	}
