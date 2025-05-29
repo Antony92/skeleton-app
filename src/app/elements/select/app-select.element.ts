@@ -6,7 +6,6 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { appSelectStyle } from '@app/elements/select/app-select.style'
 import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
-import { unsafeHTML } from 'lit/directives/unsafe-html.js'
 import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-select')
@@ -15,8 +14,15 @@ export class CCSelect extends LitElement implements FormControl {
     defaultStyle,
 		appSelectStyle,
 		css`
+			.form-control {
+				anchor-name: --anchor;
+			}
+
 			[popover] {
-				position: absolute;
+				inset: unset;
+				position-anchor: --anchor;
+				left: anchor(left);
+				top: anchor(bottom);
 				border: 1px solid light-dark(var(--gray-4), var(--gray-8));
 				background-color: var(--theme-default-layer);
 				border-radius: var(--radius-2);
@@ -27,7 +33,6 @@ export class CCSelect extends LitElement implements FormControl {
 				&:popover-open {
 					display: flex;
 					flex-direction: column;
-					z-index: var(--layer-5);
 				}
 			}
 		`,
@@ -50,9 +55,6 @@ export class CCSelect extends LitElement implements FormControl {
 
 	@property({ type: String })
 	label = ''
-
-	@property({ type: String })
-	description = ''
 
 	@property({ type: String })
 	autocomplete: 'on' | 'off' = 'off'
@@ -290,61 +292,61 @@ export class CCSelect extends LitElement implements FormControl {
 
 		this.popup.style.width = `${this.trigger.offsetWidth}px`
 
-		// Get the viewport dimensions.
-		const viewportWidth = window.innerWidth
-		const viewportHeight = window.innerHeight
+		// // Get the viewport dimensions.
+		// const viewportWidth = window.innerWidth
+		// const viewportHeight = window.innerHeight
 
-		// Get the current height of the popup. It might be adjusted later.
-		let popoverHeight = this.popup.offsetHeight
-		// Get the width of the popup.
-		const popoverWidth = this.popup.offsetWidth
+		// // Get the current height of the popup. It might be adjusted later.
+		// let popoverHeight = this.popup.offsetHeight
+		// // Get the width of the popup.
+		// const popoverWidth = this.popup.offsetWidth
 
-		// Calculate the available space below the anchor.
-		const spaceBelow = viewportHeight - anchorRect.bottom
-		// Calculate the available space above the anchor.
-		const spaceAbove = anchorRect.top
-		// Calculate the available space to the right of the anchor.
-		const spaceRight = viewportWidth - anchorRect.right
-		// Calculate the available space to the left of the anchor.
-		const spaceLeft = anchorRect.left
+		// // Calculate the available space below the anchor.
+		// const spaceBelow = viewportHeight - anchorRect.bottom
+		// // Calculate the available space above the anchor.
+		// const spaceAbove = anchorRect.top
+		// // Calculate the available space to the right of the anchor.
+		// const spaceRight = viewportWidth - anchorRect.right
+		// // Calculate the available space to the left of the anchor.
+		// const spaceLeft = anchorRect.left
 
-		// Get the current vertical scroll position of the window.
-		const scrollY = Math.round(window.scrollY)
+		// // Get the current vertical scroll position of the window.
+		// const scrollY = Math.round(window.scrollY)
 
-		// If there's more space above than below, and the space above is less than the current popover height,
-		// reduce the popover's height to fit within the available space above (with a 15px margin).
-		if (spaceAbove > spaceBelow && spaceAbove < popoverHeight) {
-			this.popup.style.height = `${spaceAbove - 15}px`
-			// Update the popover height after resizing.
-			popoverHeight = this.popup.offsetHeight
-		}
+		// // If there's more space above than below, and the space above is less than the current popover height,
+		// // reduce the popover's height to fit within the available space above (with a 15px margin).
+		// if (spaceAbove > spaceBelow && spaceAbove < popoverHeight) {
+		// 	this.popup.style.height = `${spaceAbove - 15}px`
+		// 	// Update the popover height after resizing.
+		// 	popoverHeight = this.popup.offsetHeight
+		// }
 
-		// If there's more space below than above, and the space below is less than the current popover height,
-		// reduce the popover's height to fit within the available space below (with a 15px margin).
-		if (spaceBelow > spaceAbove && spaceBelow < popoverHeight) {
-			this.popup.style.height = `${spaceBelow - 15}px`
-			// Update the popover height after resizing.
-			popoverHeight = this.popup.offsetHeight
-		}
+		// // If there's more space below than above, and the space below is less than the current popover height,
+		// // reduce the popover's height to fit within the available space below (with a 15px margin).
+		// if (spaceBelow > spaceAbove && spaceBelow < popoverHeight) {
+		// 	this.popup.style.height = `${spaceBelow - 15}px`
+		// 	// Update the popover height after resizing.
+		// 	popoverHeight = this.popup.offsetHeight
+		// }
 
-		// Default positioning: place the top of the popup below the bottom of the anchor,
-		// and the left side of the popup aligned with the left side of the anchor.
-		// Add the vertical scroll offset to the top position to account for scrolling.
-		this.popup.style.insetBlockStart = `${anchorRect.top + scrollY + anchorRect.height}px`
-		this.popup.style.insetInlineStart = `${anchorRect.left}px`
+		// // Default positioning: place the top of the popup below the bottom of the anchor,
+		// // and the left side of the popup aligned with the left side of the anchor.
+		// // Add the vertical scroll offset to the top position to account for scrolling.
+		// this.popup.style.insetBlockStart = `${anchorRect.top + scrollY + anchorRect.height}px`
+		// this.popup.style.insetInlineStart = `${anchorRect.left}px`
 
-		// If there's more space above than below, position the top of the popup above the top of the anchor.
-		// Calculate the top position by subtracting the popover's height from the anchor's bottom position,
-		// and adding the vertical scroll offset.
-		if (spaceAbove > spaceBelow && spaceBelow < popoverHeight) {
-			this.popup.style.insetBlockStart = `${anchorRect.bottom - anchorRect.height - popoverHeight + scrollY}px`
-		}
+		// // If there's more space above than below, position the top of the popup above the top of the anchor.
+		// // Calculate the top position by subtracting the popover's height from the anchor's bottom position,
+		// // and adding the vertical scroll offset.
+		// if (spaceAbove > spaceBelow && spaceBelow < popoverHeight) {
+		// 	this.popup.style.insetBlockStart = `${anchorRect.bottom - anchorRect.height - popoverHeight + scrollY}px`
+		// }
 
-		// If there's more space to the left than to the right, position the right side of the popup aligned with the right side of the anchor.
-		// Calculate the left position by subtracting the popover's width from the anchor's right position.
-		if (spaceLeft > spaceRight) {
-			this.popup.style.insetInlineStart = `${anchorRect.right - popoverWidth}px`
-		}
+		// // If there's more space to the left than to the right, position the right side of the popup aligned with the right side of the anchor.
+		// // Calculate the left position by subtracting the popover's width from the anchor's right position.
+		// if (spaceLeft > spaceRight) {
+		// 	this.popup.style.insetInlineStart = `${anchorRect.right - popoverWidth}px`
+		// }
 	}
 
 	formDisabledCallback(disabled: boolean) {
@@ -396,7 +398,6 @@ export class CCSelect extends LitElement implements FormControl {
 		return html`
 			<div class="form-control" part="form-control">
 				${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
-				${when(this.description, () => html`<div class="description" part="description">${unsafeHTML(this.description)}</div>`)}
 				<div class="select-wrapper" part="select-wrapper">
 					<span class="prefix" part="prefix">
 						<slot name="prefix"></slot>

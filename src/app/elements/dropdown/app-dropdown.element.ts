@@ -7,12 +7,15 @@ import { AppSelectEvent } from '@app/events/select.event'
 export class AppDropdown extends LitElement {
 	static styles = css`
 		.container {
-			position: relative;
+			anchor-name: --anchor;
 			width: fit-content;
 		}
 
 		[popover] {
-			position: absolute;
+			inset: unset;
+			position-anchor: --anchor;
+			left: anchor(left);
+  			top: anchor(bottom);
 			border: 1px solid light-dark(var(--gray-4), var(--gray-8));
 			background-color: var(--theme-default-layer);
 			border-radius: var(--radius-2);
@@ -66,7 +69,7 @@ export class AppDropdown extends LitElement {
 		this.open = true
 		await this.updateComplete
 		this.popup.showPopover()
-		this.calculatePosition(anchor)
+		// this.calculatePosition(anchor)
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
 	}
 
