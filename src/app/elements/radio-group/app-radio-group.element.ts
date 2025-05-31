@@ -69,7 +69,10 @@ export class AppRadioGroup extends LitElement implements FormControl {
 		} else {
 			this.formController.setValidity({})
 		}
-		this.radios.forEach(r => r.checked = r.value === this.value)
+		this.radios.forEach(r => {
+			r.checked = r.value === this.value
+			r.disabled = this.disabled
+		})
 	}
 
 	formDisabledCallback(disabled: boolean) {
