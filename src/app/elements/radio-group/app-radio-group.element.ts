@@ -60,7 +60,6 @@ export class AppRadioGroup extends LitElement implements FormControl {
 			const radio = event.target as AppRadio
 			this.value = radio.value
 			this.touched = true
-			this.radios.filter(r => r.value !== radio.value).forEach(r => r.checked = false)
 		})
 	}
 
@@ -69,7 +68,7 @@ export class AppRadioGroup extends LitElement implements FormControl {
 			this.formController.setValidity({ valueMissing: true }, 'This field is required', this.fieldset)
 		} else {
 			this.formController.setValidity({})
-			this.radios.filter(r => r.value === this.value).forEach(r => r.checked = true)
+			this.radios.forEach(r => r.checked = r.value === this.value)
 		}
 	}
 
