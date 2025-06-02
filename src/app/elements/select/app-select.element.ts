@@ -1,4 +1,4 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement, css, type PropertyValues } from 'lit'
 import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
@@ -11,7 +11,7 @@ import { defaultStyle } from '@app/styles/default.style'
 @customElement('app-select')
 export class CCSelect extends LitElement implements FormControl {
 	static styles = [
-    defaultStyle,
+		defaultStyle,
 		appSelectStyle,
 		css`
 			.form-control {
@@ -166,6 +166,20 @@ export class CCSelect extends LitElement implements FormControl {
 	}
 
 	protected firstUpdated() {}
+
+	protected willUpdate(_changedProperties: PropertyValues): void {
+		if (!_changedProperties.has('displayValue') && _changedProperties.has('value')) {
+			this.assignedOptions.forEach((option) => {
+				const shouldBeSelected = this.value
+					.split(',')
+					.map((v) => v.trim())
+					.filter((v) => !!v)
+					.includes(option.value)
+				option.selected = shouldBeSelected
+			})
+			this.displayValue = this.getDisplayValue()
+		}
+	}
 
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
