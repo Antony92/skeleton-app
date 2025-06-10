@@ -1,4 +1,4 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement, css, type PropertyValues } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
@@ -64,19 +64,23 @@ export class AppCheckbox extends LitElement implements FormControl {
 		})
 	}
 
+	protected willUpdate(_changedProperties: PropertyValues): void {
+		if (_changedProperties.has('checked')) {
+			this.value = this.checked ? 'on' : 'off'
+		}
+	}
+
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
 
 	onInput() {
-		this.value = this.input.checked ? 'on' : 'off'
 		this.checked = this.input.checked
 		this.touched = true
 		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
 	}
 
 	onChange() {
-		this.value = this.input.checked ? 'on' : 'off'
 		this.checked = this.input.checked
 		this.touched = true
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
