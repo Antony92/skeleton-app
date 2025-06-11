@@ -45,7 +45,6 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 		if (!response.ok) {
 			const error = await response.clone().json()
 			notify({ message: `${url} failed: ${JSON.stringify(error)}`, variant: 'error', duration: 6000 })
-			return Promise.reject(response)
 		}
 	} catch (error: any) {
 		notify({ message: `${error?.message || `${url} failed`}`, variant: 'error', duration: 6000 })
