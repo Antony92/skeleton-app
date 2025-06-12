@@ -2,7 +2,6 @@ import { html, LitElement, css, type PropertyValues } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 
@@ -32,10 +31,10 @@ export class AppCheckbox extends LitElement implements FormControl {
 	label = ''
 
 	@property({ type: String })
-	value: 'on' | 'off' = 'off'
+	value = ''
 
 	@property({ type: String })
-	defaultValue: 'on' | 'off' = 'off'
+	defaultValue = ''
 
 	@property({ type: Boolean })
 	checked = false
@@ -66,7 +65,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 
 	protected willUpdate(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has('checked')) {
-			this.value = this.checked ? 'on' : 'off'
+			this.value = this.checked ? this.value || 'on' : ''
 		}
 	}
 
@@ -154,7 +153,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 						@input=${this.onInput}
 						@change=${this.onChange}
 						@blur=${this.onBlur}
-						.value=${live(this.value)}
+						value=${ifDefined(this.value)}
 						type="checkbox"
 					/>
 					${when(this.label, () => html`<label for="checkbox" part="label">${this.label}</label>`)}
