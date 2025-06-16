@@ -64,7 +64,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 	}
 
 	protected willUpdate(_changedProperties: PropertyValues): void {
-		if (_changedProperties.has('checked')) {
+		if (_changedProperties.has('checked') && !_changedProperties.has('value')) {
 			this.value = this.checked ? this.value || 'on' : ''
 		}
 	}
