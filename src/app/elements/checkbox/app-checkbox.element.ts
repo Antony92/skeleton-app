@@ -54,7 +54,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 
 	constructor() {
 		super()
-		this.formController = new FormControlController(this)
+		this.formController = new FormControlController(this, { autoBindValue: false })
 	}
 
 	connectedCallback() {
@@ -66,7 +66,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
-		this.formController.setFormValue(this.checked ? this.value || 'on' : null)
+		this.formController.setValue(this.checked ? this.value || 'on' : null)
 	}
 
 	onInput() {

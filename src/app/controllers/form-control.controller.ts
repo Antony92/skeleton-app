@@ -1,5 +1,8 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit'
 
+type FormControlOptions = {
+	autoBindValue: boolean
+}
 export interface FormControl {
 	name: string
 	value: string
@@ -18,11 +21,13 @@ export interface FormControl {
 
 export class FormControlController implements ReactiveController {
 	host: ReactiveControllerHost & FormControl & HTMLElement
+	options: FormControlOptions
 
 	private internals!: ElementInternals
 
-	constructor(host: ReactiveControllerHost & FormControl & HTMLElement) {
+	constructor(host: ReactiveControllerHost & FormControl & HTMLElement, options: FormControlOptions = { autoBindValue: true }) {
 		this.host = host
+		this.options = options
 		this.internals = host.attachInternals()
 		this.host.addController(this)
 	}
@@ -31,8 +36,19 @@ export class FormControlController implements ReactiveController {
 
 	hostUpdate() {}
 
-	async hostUpdated() {
-		this.internals.setFormValue(this.host.value)
+	hostUpdated() {
+		if (!this.options.autoBindValue) {
+			return
+		}
+		this.setValue(this.host.value)
+	}
+
+	hostDisconnected() {}
+
+	async setValue(value: string | null) {
+		await this.host.updateComplete
+
+		this.internals.setFormValue(value)
 		this.internals.states.clear()
 
 		const valid = this.internals.validity.valid
@@ -42,15 +58,7 @@ export class FormControlController implements ReactiveController {
 			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 		}
 
-		await this.host.updateComplete
 		this.host.validated?.(this.validity, this.validationMessage)
-	}
-
-	hostDisconnected() {}
-
-
-	setFormValue(value: string | null) {
-		this.internals.setFormValue(value)
 	}
 
 	get form() {
