@@ -69,7 +69,7 @@ export class AppRadioGroup extends LitElement implements FormControl {
 		} else {
 			this.formController.setValidity({})
 		}
-		this.radios.forEach(r => {
+		this.radios.forEach((r) => {
 			r.checked = r.value === this.value
 			r.disabled = this.disabled
 		})
@@ -113,6 +113,13 @@ export class AppRadioGroup extends LitElement implements FormControl {
 
 	reportValidity() {
 		return this.formController.reportValidity()
+	}
+
+	focus(options?: FocusOptions) {
+		this.radios
+			.filter((r) => !r.checked)
+			.at(0)
+			?.focus(options)
 	}
 
 	render() {
