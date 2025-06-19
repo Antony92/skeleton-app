@@ -32,8 +32,6 @@ export class FormControlController implements ReactiveController {
 	hostUpdate() {}
 
 	async hostUpdated() {
-		await this.host.updateComplete
-
 		this.internals.setFormValue(this.host.value)
 		this.internals.states.clear()
 
@@ -44,10 +42,16 @@ export class FormControlController implements ReactiveController {
 			this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 		}
 
+		await this.host.updateComplete
 		this.host.validated?.(this.validity, this.validationMessage)
 	}
 
 	hostDisconnected() {}
+
+
+	setFormValue(value: string | null) {
+		this.internals.setFormValue(value)
+	}
 
 	get form() {
 		return this.internals.form

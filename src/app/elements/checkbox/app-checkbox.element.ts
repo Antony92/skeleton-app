@@ -1,9 +1,10 @@
-import { html, LitElement, css, type PropertyValues } from 'lit'
+import { html, LitElement, css } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { live } from 'lit/directives/live.js'
 
 @customElement('app-checkbox')
 export class AppCheckbox extends LitElement implements FormControl {
@@ -63,24 +64,21 @@ export class AppCheckbox extends LitElement implements FormControl {
 		})
 	}
 
-	protected willUpdate(_changedProperties: PropertyValues): void {
-		if (_changedProperties.has('checked') && !_changedProperties.has('value')) {
-			this.value = this.checked ? this.value || 'on' : ''
-		}
-	}
-
 	protected updated() {
 		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
+		this.formController.setFormValue(this.checked ? this.value || 'on' : null)
 	}
 
 	onInput() {
 		this.checked = this.input.checked
+    	this.value = this.input.value
 		this.touched = true
 		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
 	}
 
 	onChange() {
 		this.checked = this.input.checked
+    	this.value = this.input.value
 		this.touched = true
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
 		this.dispatchEvent(new Event('change', { bubbles: true }))
@@ -143,7 +141,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 					<input
 						id="checkbox"
 						part="checkbox"
-						.checked=${this.checked}
+						.checked=${live(this.checked)} 
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}
@@ -153,7 +151,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 						@input=${this.onInput}
 						@change=${this.onChange}
 						@blur=${this.onBlur}
-						value=${ifDefined(this.value)}
+						.value=${live(this.value)} 
 						type="checkbox"
 					/>
 					${when(this.label, () => html`<label for="checkbox" part="label">${this.label}</label>`)}
