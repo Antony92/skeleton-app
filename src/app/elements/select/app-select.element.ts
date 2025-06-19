@@ -168,7 +168,7 @@ export class CCSelect extends LitElement implements FormControl {
 	protected firstUpdated() {}
 
 	protected willUpdate(_changedProperties: PropertyValues): void {
-		if (!_changedProperties.has('displayValue') && _changedProperties.has('value')) {
+		if (_changedProperties.has('value')) {
 			this.assignedOptions.forEach((option) => {
 				const shouldBeSelected = this.value
 					.split(',')
@@ -177,6 +177,8 @@ export class CCSelect extends LitElement implements FormControl {
 					.includes(option.value)
 				option.selected = shouldBeSelected
 			})
+		}
+		if (!_changedProperties.has('displayValue') && _changedProperties.has('value')) {
 			this.displayValue = this.getDisplayValue()
 		}
 	}
