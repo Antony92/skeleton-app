@@ -3,12 +3,10 @@ export const loading = async (show = false) => {
 
 	let loader = document.body.querySelector('app-loader')
 
-	if (show && !loader) {
+	if (!loader) {
 		loader = document.createElement('app-loader')
 		document.body.appendChild(loader)
 	}
 
-	if (!show && loader) {
-		loader.remove()
-	}
+	loader.active = show
 }

@@ -1,5 +1,5 @@
 import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 @customElement('app-loader')
 export class AppLoader extends LitElement {
@@ -13,8 +13,12 @@ export class AppLoader extends LitElement {
 			right: 0;
 			bottom: 0;
 			z-index: var(--layer-important);
-			display: grid;
+			display: none;
 			cursor: progress;
+		}
+
+		:host([active]) {
+			display: grid;
 		}
 
 		.loader-line {
@@ -51,6 +55,9 @@ export class AppLoader extends LitElement {
 			}
 		}
 	`
+
+	@property({ type: Boolean, reflect: true })
+	active = false
 
 	render() {
 		return html`<div class="loader-line"></div>`
