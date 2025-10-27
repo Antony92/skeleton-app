@@ -45,6 +45,9 @@ export class AppTooltip extends LitElement {
   @property({ type: Number })
   delay = 100
 
+  @property({ type: Boolean, attribute: 'on-overflow-only' })
+  onOverflowOnly = false
+
   @property({ type: String })
   position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
 
@@ -61,8 +64,12 @@ export class AppTooltip extends LitElement {
   }
 
   protected firstUpdated() {
-    this.trigger.addEventListener('mouseover', (event: MouseEvent) => {
-      if (event.target !== this.trigger || this.timeout !== 0) {
+    this.trigger.addEventListener('mouseover', () => {
+      if (this.timeout !== 0) {
+        return
+      }
+      const isOverflowing = this.trigger.scrollWidth > this.trigger.clientWidth
+      if (this.onOverflowOnly && !isOverflowing) {
         return
       }
       this.timeout = setTimeout(() => {
