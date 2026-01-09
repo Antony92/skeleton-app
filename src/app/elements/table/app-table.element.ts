@@ -120,7 +120,7 @@ export class AppTable extends LitElement {
 	}
 
 	dispatchFilterEvent() {
-		this.dispatchEvent(new AppTableFilterEvent(this.searchParamsMap))
+		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.searchParamsMap])))
 	}
 
 	clearAllFilters() {
