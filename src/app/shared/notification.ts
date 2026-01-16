@@ -38,7 +38,7 @@ export const notify = async (notification: {
 
 	// If exist update else create
 	if (snackbar) {
-		snackbar.removeEventListener('cc-snackbar-action', snackbar.actionHandler)
+		snackbar.removeEventListener('app-snackbar-action', snackbar.actionHandler)
 		Object.assign(snackbar, { variant, duration, action: action?.label, actionHandler })
 		render(template, snackbar)
 	} else {
