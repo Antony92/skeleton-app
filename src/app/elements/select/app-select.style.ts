@@ -3,7 +3,6 @@ import { css } from 'lit'
 export const appSelectStyle = css`
 	:host(:state(user-invalid)) {
 		.form-control {
-
 			&:has([popover][open]) {
 				.select-wrapper {
 					outline-color: var(--theme-invalid-color);
@@ -91,9 +90,9 @@ export const appSelectStyle = css`
 			}
 
 			.caret {
-                position: absolute;
-                right: 0;
-                pointer-events: none;
+				position: absolute;
+				right: 0;
+				pointer-events: none;
 				display: flex;
 				align-items: center;
 				cursor: pointer;

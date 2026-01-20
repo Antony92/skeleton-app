@@ -19,6 +19,7 @@ import '@app/elements/select-option/app-select-option.element'
 import '@app/elements/tab/app-tab.element'
 import '@app/elements/tab-group/app-tab-group.element'
 import '@app/elements/tab-panel/app-tab-panel.element'
+import '@app/elements/tooltip/app-tooltip.element'
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -111,7 +112,7 @@ export class AppDemoPage extends LitElement {
 			<fieldset>
 				<legend>Select</legend>
 
-				<app-select label="Select single">
+				<app-select label="Select single" placeholder="Select">
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
 					<app-select-option value="option-3">Option 3</app-select-option>
@@ -119,7 +120,7 @@ export class AppDemoPage extends LitElement {
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select>
 
-				<app-select label="Select multiple" value="option-1" multiple>
+				<app-select label="Select multiple" value="option-1" multiple placeholder="Select multiple">
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
 					<app-select-option value="option-3">Option 3</app-select-option>

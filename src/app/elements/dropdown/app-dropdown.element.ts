@@ -12,10 +12,12 @@ export class AppDropdown extends LitElement {
 		}
 
 		[popover] {
-			inset: unset;
 			position-anchor: --anchor;
+			width: anchor-size(width);
+			position-try: flip-block;
+			position-area: span-bottom;
 			left: anchor(left);
-  			top: anchor(bottom);
+			top: anchor(bottom);
 			border: 1px solid light-dark(var(--gray-4), var(--gray-8));
 			background-color: var(--theme-default-layer);
 			border-radius: var(--radius-2);
@@ -49,7 +51,7 @@ export class AppDropdown extends LitElement {
 	}
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown(trigger)))
+		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown()))
 		this.popup.addEventListener('toggle', (event: Event) => {
 			const toggleEvent = event as ToggleEvent
 			if (toggleEvent.newState === 'closed') {
@@ -65,19 +67,18 @@ export class AppDropdown extends LitElement {
 		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
 	}
 
-	async openDropdown(anchor: HTMLElement) {
+	async openDropdown() {
 		this.open = true
 		await this.updateComplete
 		this.popup.showPopover()
-		// this.calculatePosition(anchor)
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
 	}
 
-	toggleDropdown(anchor: HTMLElement) {
+	toggleDropdown() {
 		if (this.open) {
 			this.closeDropdown()
 		} else {
-			this.openDropdown(anchor)
+			this.openDropdown()
 		}
 	}
 
@@ -97,67 +98,6 @@ export class AppDropdown extends LitElement {
 
 	private onItemsAdded() {
 		this.assignedItems.forEach((item) => this.attachItemListeners(item))
-	}
-
-	private calculatePosition(anchor: HTMLElement) {
-		// Get the bounding rectangle of the anchor element.
-		const anchorRect = anchor.getBoundingClientRect()
-
-		// Get the viewport dimensions.
-		const viewportWidth = window.innerWidth
-		const viewportHeight = window.innerHeight
-
-		// Get the current height of the popup. It might be adjusted later.
-		let popoverHeight = this.popup.offsetHeight
-		// Get the width of the popup.
-		const popoverWidth = this.popup.offsetWidth
-
-		// Calculate the available space below the anchor.
-		const spaceBelow = viewportHeight - anchorRect.bottom
-		// Calculate the available space above the anchor.
-		const spaceAbove = anchorRect.top
-		// Calculate the available space to the right of the anchor.
-		const spaceRight = viewportWidth - anchorRect.right
-		// Calculate the available space to the left of the anchor.
-		const spaceLeft = anchorRect.left
-
-		// Get the current vertical scroll position of the window.
-		const scrollY = Math.round(window.scrollY)
-
-		// If there's more space above than below, and the space above is less than the current popover height,
-		// reduce the popover's height to fit within the available space above (with a 15px margin).
-		if (spaceAbove > spaceBelow && spaceAbove < popoverHeight) {
-			this.popup.style.height = `${spaceAbove - 15}px`
-			// Update the popover height after resizing.
-			popoverHeight = this.popup.offsetHeight
-		}
-
-		// If there's more space below than above, and the space below is less than the current popover height,
-		// reduce the popover's height to fit within the available space below (with a 15px margin).
-		if (spaceBelow > spaceAbove && spaceBelow < popoverHeight) {
-			this.popup.style.height = `${spaceBelow - 15}px`
-			// Update the popover height after resizing.
-			popoverHeight = this.popup.offsetHeight
-		}
-
-		// Default positioning: place the top of the popup below the bottom of the anchor,
-		// and the left side of the popup aligned with the left side of the anchor.
-		// Add the vertical scroll offset to the top position to account for scrolling.
-		this.popup.style.insetBlockStart = `${anchorRect.top + scrollY + anchorRect.height}px`
-		this.popup.style.insetInlineStart = `${anchorRect.left}px`
-
-		// If there's more space above than below, position the top of the popup above the top of the anchor.
-		// Calculate the top position by subtracting the popover's height from the anchor's bottom position,
-		// and adding the vertical scroll offset.
-		if (spaceAbove > spaceBelow && spaceBelow < popoverHeight) {
-			this.popup.style.insetBlockStart = `${anchorRect.bottom - anchorRect.height - popoverHeight + scrollY}px`
-		}
-
-		// If there's more space to the left than to the right, position the right side of the popup aligned with the right side of the anchor.
-		// Calculate the left position by subtracting the popover's width from the anchor's right position.
-		if (spaceLeft > spaceRight) {
-			this.popup.style.insetInlineStart = `${anchorRect.right - popoverWidth}px`
-		}
 	}
 
 	render() {

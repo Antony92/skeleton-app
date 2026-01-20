@@ -5,173 +5,128 @@ import { customElement, property, query, queryAssignedElements } from 'lit/decor
 
 @customElement('app-tooltip')
 export class AppTooltip extends LitElement {
-  static styles = [
-    defaultStyle,
-    focusStyle,
-    css`
-      :host {
-        display: contents;
-      }
+	static styles = [
+		defaultStyle,
+		focusStyle,
+		css`
+			:host {
+				display: contents;
+			}
 
-      slot {
-        display: contents;
-      }
+			slot {
+				display: contents;
+			}
 
-      [popover] {
-        position: absolute;
-        border: none;
-        background-color: var(--gray-9);
-        color: var(--white);
-        border-radius: 4px;
-        padding: 5px;
-        margin: 0;
-        font-size: 12px;
-        font-weight: 500;
-        max-width: 300px;
-        overflow-wrap: break-word;
-        white-space: normal;
+			::slotted(*) {
+				anchor-name: --anchor;
+			}
 
-        &:popover-open {
-          display: flex;
-          flex-direction: column;
-        }
-      }
-    `,
-  ]
+			[popover] {
+				position-anchor: --anchor;
+				position-try: flip-block;
+				border: none;
+				position-area: right center;
+				top: anchor(center);
+				bottom: anchor(center);
+				right: anchor(right);
+				background-color: var(--gray-9);
+				color: var(--white);
+				border-radius: 4px;
+				padding: 5px;
+				margin: 0;
+				font-size: 12px;
+				font-weight: 500;
+				overflow-wrap: break-word;
+				white-space: normal;
 
-  @property({ type: String })
-  content = ''
+				&:popover-open {
+					display: flex;
+					flex-direction: column;
+				}
+			}
 
-  @property({ type: Number })
-  delay = 100
+			:host([position='top']) [popover] {
+				position-area: top center;
+				bottom: anchor(top);
+				left: anchor(center);
+				right: anchor(center);
+			}
 
-  @property({ type: Boolean, attribute: 'on-overflow-only' })
-  onOverflowOnly = false
+			:host([position='bottom']) [popover] {
+				position-area: bottom center;
+				top: anchor(bottom);
+				left: anchor(center);
+				right: anchor(center);
+			}
 
-  @property({ type: String })
-  position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
+			:host([position='left']) [popover] {
+				position-area: left center;
+				top: anchor(center);
+				bottom: anchor(center);
+				left: anchor(left);
+			}
 
-  @query('[popover]')
-  popup!: HTMLElement
+			:host([position='right']) [popover] {
+				position-area: right center;
+				top: anchor(center);
+				bottom: anchor(center);
+				right: anchor(right);
+			}
+		`,
+	]
 
-  @queryAssignedElements()
-  triggers!: HTMLElement[]
+	@property({ type: String })
+	content = ''
 
-  private timeout = 0
+	@property({ type: Number })
+	delay = 100
 
-  get trigger() {
-    return this.triggers[0]
-  }
+	@property({ type: Boolean, attribute: 'on-overflow-only' })
+	onOverflowOnly = false
 
-  protected firstUpdated() {
-    this.trigger.addEventListener('mouseover', () => {
-      if (this.timeout !== 0) {
-        return
-      }
-      const isOverflowing = this.trigger.scrollWidth > this.trigger.clientWidth
-      if (this.onOverflowOnly && !isOverflowing) {
-        return
-      }
-      this.timeout = setTimeout(() => {
-        this.popup.showPopover()
-        this.calculatePosition(this.trigger)
-      }, this.delay)
-    })
-    this.trigger.addEventListener('mouseleave', () => {
-      clearTimeout(this.timeout)
-      this.timeout = 0
-      this.popup.hidePopover()
-    })
-  }
+	@property({ type: String })
+	position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
 
-  private calculatePosition(anchor: HTMLElement) {
-    // Get the bounding rectangle of the anchor element.
-    const anchorRect = anchor.getBoundingClientRect()
+	@query('[popover]')
+	popup!: HTMLElement
 
-    // Get the current height of the popup.
-    const popoverHeight = this.popup.offsetHeight
-    // Get the width of the popup.
-    const popoverWidth = this.popup.offsetWidth
+	@queryAssignedElements()
+	triggers!: HTMLElement[]
 
-    // Calculate the available space to the left of the anchor.
-    const spaceLeft = anchorRect.left
+	private timeout = 0
 
-    // Get the current vertical scroll position of the window.
-    const scrollY = Math.round(window.scrollY)
+	get trigger() {
+		return this.triggers[0]
+	}
 
-    // margin
-    const margin = 5
+	protected firstUpdated() {
+		this.trigger.addEventListener('mouseover', () => {
+			if (this.timeout !== 0) {
+				return
+			}
+			const isOverflowing = this.trigger.scrollWidth > this.trigger.clientWidth
+			if (this.onOverflowOnly && !isOverflowing) {
+				return
+			}
+			this.timeout = setTimeout(() => this.popup.showPopover(), this.delay)
+		})
+		this.trigger.addEventListener('mouseleave', () => {
+			clearTimeout(this.timeout)
+			this.timeout = 0
+			this.popup.hidePopover()
+		})
+	}
 
-    // Pre-calculate half offsets for centering the popover relative to the anchor
-    const horizontalCenterOffset = (anchorRect.width - popoverWidth) / 2
-    const verticalCenterOffset = (anchorRect.height - popoverHeight) / 2
-
-    // Initialize popup's top and left positions
-    let popupTop = 0
-    let popupLeft = 0
-
-    // Determine the popover's position based on 'this.position'
-    switch (this.position) {
-      case 'top':
-        // Position above the anchor
-        popupTop = anchorRect.top - popoverHeight - margin + scrollY
-        // Attempt to center horizontally
-        popupLeft = anchorRect.left + horizontalCenterOffset
-
-        // If there's not enough space on the left to center,
-        // snap the popover's left edge to the anchor's left edge.
-        // We use Math.abs because horizontalCenterOffset can be negative if popover is wider.
-        if (spaceLeft < Math.abs(horizontalCenterOffset)) {
-          popupLeft = anchorRect.left
-        }
-        break
-
-      case 'bottom':
-        // Position below the anchor
-        popupTop = anchorRect.bottom + margin + scrollY // anchorRect.top + anchorRect.height + margin + scrollY is equivalent
-        // Attempt to center horizontally
-        popupLeft = anchorRect.left + horizontalCenterOffset
-
-        // If there's not enough space on the left to center,
-        // snap the popover's left edge to the anchor's left edge.
-        if (spaceLeft < Math.abs(horizontalCenterOffset)) {
-          popupLeft = anchorRect.left
-        }
-        break
-
-      case 'left':
-        // Position to the left of the anchor
-        popupLeft = anchorRect.left - popoverWidth - margin
-        // Attempt to center vertically
-        popupTop = anchorRect.top + verticalCenterOffset + scrollY
-        break
-
-      case 'right':
-        // Position to the right of the anchor
-        popupLeft = anchorRect.right + margin // anchorRect.left + anchorRect.width + margin is equivalent
-        // Attempt to center vertically
-        popupTop = anchorRect.top + verticalCenterOffset + scrollY
-        break
-
-      default:
-        return
-    }
-
-    // Apply the calculated styles
-    this.popup.style.top = `${popupTop}px`
-    this.popup.style.left = `${popupLeft}px`
-  }
-
-  render() {
-    return html`
-      <slot></slot>
-      <div class="tooltip" popover>${this.content}</div>
-    `
-  }
+	render() {
+		return html`
+			<slot></slot>
+			<div class="tooltip" popover>${this.content}</div>
+		`
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'app-tooltip': AppTooltip
-  }
+	interface HTMLElementTagNameMap {
+		'app-tooltip': AppTooltip
+	}
 }
