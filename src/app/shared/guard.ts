@@ -10,13 +10,29 @@ export const authGuard = (roles?: string[]) => {
 		const user = await getUser()
 		if (!user) {
 			localStorage.setItem('requested-page', `${url.pathname}${url.search}` || '/')
-      navigate('/login')
-      return false
+			navigate('/login')
+			return false
 		}
 		if (user && roles && !user.roles.some((role) => roles.includes(role))) {
-      navigate('/page-not-found')
+			navigate('/page-not-found')
 			return false
-    }
-    return true
+		}
+		return true
+	}
+}
+
+/**
+ * Triggers a sequence of guards againts the route (useful if you need multiple guards)
+ * @param guards
+ * @returns boolean
+ */
+export const sequence = (guards: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[]) => {
+	return async (url: URL, params: RouteParams) => {
+		for (const guard of guards) {
+			const result = await guard(url, params)
+			if (!result) {
+				return result // Stop if a guard returns false
+			}
+		}
 	}
 }

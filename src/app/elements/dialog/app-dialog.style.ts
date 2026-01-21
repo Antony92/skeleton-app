@@ -57,7 +57,7 @@ export const appDialogStyle = css`
 			overscroll-behavior-y: contain;
 			display: grid;
 			max-block-size: 100%;
-			padding: 0 15px;
+			padding: 5px 15px;
 		}
 
 		footer {

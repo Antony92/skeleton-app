@@ -1,6 +1,6 @@
 import { html } from 'lit/static-html.js'
 import type { Route } from '@app/shared/navigation'
-import { authGuard } from './guard'
+import { authGuard } from '@app/shared/guard'
 import { Role } from '@app/types/user.type'
 
 export const routes: Route[] = [

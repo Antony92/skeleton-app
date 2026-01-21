@@ -82,7 +82,7 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 const handleUnsavedChanges = async (url: URL) => {
 	const confirm = await confirmDialog({ header: 'Confirm', message: 'You have unsaved changes. Are you sure you want to leave the page?' })
 	if (confirm) {
-		hasUnsavedChanges = false
+    hasUnsavedChanges = false
 		navigate(url.href)
 	}
 }
