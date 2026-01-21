@@ -5,10 +5,10 @@ import { login, logout } from '@app/shared/auth'
 import { getUserObservable } from '@app/shared/auth'
 import { appHeaderStyle } from '@app/elements/header/app-header.style'
 import { Subscription } from 'rxjs'
-import { Router, type RouterLocation } from '@vaadin/router'
 import { when } from 'lit/directives/when.js'
 import type { User } from '@app/types/user.type'
 import '@app/elements/button/app-button.element'
+import { navigate } from '@app/shared/navigation'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
@@ -27,7 +27,7 @@ export class AppHeader extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
+		window.navigation.addEventListener('navigatesuccess', this.setActiveLink)
 		this.userSubscription = getUserObservable().subscribe((user) => {
 			this.user = user
 			this.initials =
@@ -40,16 +40,15 @@ export class AppHeader extends LitElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
-		window.removeEventListener('vaadin-router-location-changed', this.setActiveLink)
+		window.navigation.removeEventListener('navigatesuccess', this.setActiveLink)
 		this.userSubscription.unsubscribe()
 	}
 
-	setActiveLink = (event: CustomEvent<{ router: Router; location: RouterLocation }>) => {
-		const {
-			location: { pathname },
-		} = event.detail
+	setActiveLink = (event: Event) => {
+		const target = event.target as Navigation
+		const url = new URL(target.currentEntry?.url || '')
 		this.renderRoot.querySelector('a.active')?.classList.remove('active')
-		this.renderRoot.querySelector(`a[href="/${pathname.split('/')[1]}"]`)?.classList.add('active')
+		this.renderRoot.querySelector(`a[href="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
 	}
 
 	async signIn() {
@@ -58,7 +57,7 @@ export class AppHeader extends LitElement {
 	}
 
 	async signOut() {
-		Router.go('/')
+		navigate('/')
 		await logout()
 	}
 
@@ -73,7 +72,7 @@ export class AppHeader extends LitElement {
 				${when(
 					this.user,
 					() => html`<div class="avatar" @click=${() => this.signOut()}>${this.initials}</div>`,
-					() => html`<app-button variant="primary" @click=${() => this.signIn()}>Sign in</app-button>`
+					() => html`<app-button variant="primary" @click=${() => this.signIn()}>Sign in</app-button>`,
 				)}
 			</header>
 		`

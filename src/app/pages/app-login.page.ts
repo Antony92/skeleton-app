@@ -3,11 +3,11 @@ import { customElement, state } from 'lit/decorators.js'
 import { getURLSearchParamsAsObject } from '@app/utils/url'
 import { login, setAccessToken, setUser } from '@app/shared/auth'
 import { when } from 'lit/directives/when.js'
-import { Router } from '@vaadin/router'
 import { setPageTitle } from '@app/utils/html'
 import 'ldrs/ring2'
 import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
+import { navigate } from '@app/shared/navigation'
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
@@ -51,7 +51,7 @@ export class AppLoginPage extends LitElement {
 			// const { user } = JSON.parse(window.atob(token.split('.')[1]))
 			// setUser(user)
 			setAccessToken(token)
-			Router.go(localStorage.getItem('requested-page') || '/')
+			navigate(localStorage.getItem('requested-page') || '/')
 			localStorage.removeItem('requested-page')
 		} catch (error) {
 			console.error(error)

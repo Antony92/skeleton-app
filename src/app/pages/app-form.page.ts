@@ -1,6 +1,5 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
-import type { PreventCommands, Router, RouterLocation, WebComponentInterface } from '@vaadin/router'
 import '@app/elements/input/app-input.element'
 import '@app/elements/checkbox/app-checkbox.element'
 import '@app/elements/radio/app-radio.element'
@@ -13,10 +12,10 @@ import '@app/elements/file-upload/app-file-upload.element'
 import { serializeForm, setPageTitle } from '@app/utils/html'
 import { formStyle } from '@app/styles/form.style'
 import { notify } from '@app/shared/notification'
-import { confirmDialog } from '@app/shared/dialog'
+import { pageHasUnsavedChanges } from '@app/shared/navigation'
 
 @customElement('app-form-page')
-export class AppFormPage extends LitElement implements WebComponentInterface {
+export class AppFormPage extends LitElement {
 	static styles = [
 		formStyle,
 		css`
@@ -31,23 +30,12 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 	@query('form')
 	form!: HTMLFormElement
 
-	hasUnsavedChanges = false
-
 	connectedCallback() {
 		super.connectedCallback()
 		setPageTitle('Form')
 	}
 
 	protected async firstUpdated() {}
-
-	async onBeforeLeave(location: RouterLocation, commands: PreventCommands, router: Router) {
-		if (
-			this.hasUnsavedChanges &&
-			!(await confirmDialog({ header: 'Confirm', message: 'You have unsaved changes. Are you sure you want to leave the page?' }))
-		) {
-			return commands.prevent()
-		}
-	}
 
 	async submit(event: SubmitEvent) {
 		event.preventDefault()
@@ -56,15 +44,15 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 			return
 		}
 		const data = serializeForm(this.form)
-		this.hasUnsavedChanges = false
+		pageHasUnsavedChanges(false)
 		notify({ message: 'Form submitted', variant: 'success' })
 		console.log(data)
 	}
 
 	render() {
 		return html`
-			<form @submit=${this.submit} @change=${() => (this.hasUnsavedChanges = true)} novalidate>
-				<!-- <app-input required name="name" label="Name"></app-input>
+			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
+				<app-input required name="name" label="Name"></app-input>
 				<app-input required name="email" label="Email" type="email"></app-input>
 				<app-textarea required name="textarea" label="Textarea"></app-textarea>
 				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
@@ -79,12 +67,12 @@ export class AppFormPage extends LitElement implements WebComponentInterface {
 					<app-select-option value="option-3">Option 3</app-select-option>
 					<app-select-option value="option-4">Option 4</app-select-option>
 					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select> -->
+				</app-select>
 
 				<app-file-upload name="file" size="1024" accept=".ts">
 					<button slot="trigger">Upload</button>
 				</app-file-upload>
-				
+
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
 					<app-button @click=${() => this.form.reset()}>Reset</app-button>

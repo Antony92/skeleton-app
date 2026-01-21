@@ -5,7 +5,8 @@ import '@app/elements/sidebar/app-sidebar.element'
 import { mainStyle } from '@app/styles/main.style'
 import { notify } from '@app/shared/notification'
 import { globalMessage } from '@app/shared/global-message'
-import { initializeRouter } from '@app/shared/router'
+import { initializeNavigation } from '@app/shared/navigation'
+import { routes } from '@app/shared/routes'
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -31,7 +32,7 @@ export class AppRoot extends LitElement {
 	}
 
 	protected async firstUpdated() {
-		await initializeRouter(this.outlet)
+		initializeNavigation({ routes, outlet: this.outlet })
 	}
 
 	render() {

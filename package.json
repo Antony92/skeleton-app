@@ -20,21 +20,22 @@
   "dependencies": {
     "@lit/context": "~1.1.6",
     "@lit/task": "~1.0.3",
-    "@vaadin/router": "~2.0.1",
     "ldrs": "~1.1.9",
-    "lit": "~3.3.1",
+    "lit": "~3.3.2",
     "open-props": "~1.7.17",
     "quill": "~2.0.3",
-    "rxjs": "~7.8.2"
+    "rxjs": "~7.8.2",
+    "urlpattern-polyfill": "~10.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "~9.39.1",
-    "@vitest/ui": "~4.0.15",
-    "eslint": "~9.39.1",
+    "@eslint/js": "~9.39.2",
+    "@types/dom-navigation": "~1.0.6",
+    "@vitest/ui": "~4.0.17",
+    "eslint": "~9.39.2",
     "typescript": "~5.9.3",
-    "typescript-eslint": "~8.48.1",
-    "vite": "~7.2.6",
+    "typescript-eslint": "~8.53.1",
+    "vite": "~7.3.1",
     "vite-plugin-pwa": "~1.2.0",
-    "vitest": "~4.0.15"
+    "vitest": "~4.0.17"
   }
 }

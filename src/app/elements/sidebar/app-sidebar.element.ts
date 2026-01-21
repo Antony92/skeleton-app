@@ -1,11 +1,10 @@
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style'
-import { Router, type RouterLocation } from '@vaadin/router'
 import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'
-import "@app/elements/icon/app-icon.element"
+import '@app/elements/icon/app-icon.element'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
@@ -13,23 +12,21 @@ export class AppSidebar extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.addEventListener('vaadin-router-location-changed', this.setActiveLink)
+		window.navigation.addEventListener('navigatesuccess', this.setActiveLink)
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
-		window.removeEventListener('vaadin-router-location-changed', this.setActiveLink)
+		window.navigation.removeEventListener('navigatesuccess', this.setActiveLink)
 	}
 
-	setActiveLink = (event: CustomEvent<{ router: Router; location: RouterLocation }>) => {
-		const {
-			location: { pathname },
-		} = event.detail
+	setActiveLink = (event: Event) => {
+		const target = event.target as Navigation
+		const url = new URL(target.currentEntry?.url || '')
 		this.renderRoot.querySelector('a.active')?.classList.remove('active')
-		this.renderRoot.querySelector(`a[href="/${pathname.split('/')[1]}"]`)?.classList.add('active')
+		this.renderRoot.querySelector(`a[href="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
 	}
 
-	// use router-ignore attribute for ignoring routing
 	render() {
 		return html`
 			<aside>
@@ -77,7 +74,7 @@ export class AppSidebar extends LitElement {
 									<span>Admin</span>
 								</a>
 							</li>
-						`
+						`,
 					)}
 				</ul>
 			</aside>

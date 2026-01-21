@@ -17,4 +17,3 @@ Promise.allSettled([
     document.querySelector('body')?.classList.remove('initializing')
     document.querySelector('.initializing-loader')?.remove()
 })
-
