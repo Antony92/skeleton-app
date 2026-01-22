@@ -5,10 +5,11 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-textarea')
 export class AppTextarea extends LitElement implements FormControl {
-	static styles = [appTextareaStyle, css``]
+	static styles = [defaultStyle, appTextareaStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false

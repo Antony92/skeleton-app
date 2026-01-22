@@ -6,10 +6,11 @@ import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import type { AppSelectEvent } from '@app/events/select.event'
 import { choose } from 'lit/directives/choose.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-theme-switcher')
 export class AppThemeSwitcher extends LitElement {
-	static styles = css``
+	static styles = [defaultStyle, css``]
 
 	@property({ type: String, reflect: true })
 	theme: 'auto' | 'light' | 'dark' | string = localStorage.getItem('theme') || 'auto'

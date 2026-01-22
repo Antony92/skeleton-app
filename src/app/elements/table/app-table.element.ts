@@ -7,10 +7,12 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/input/app-input.element'
 import type { AppInput } from '@app/elements/input/app-input.element'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			::slotted(app-paginator) {
 				margin-top: 10px;
@@ -151,7 +153,7 @@ export class AppTable extends LitElement {
 						>
 							<app-icon slot="prefix" filled>search</app-icon>
 						</app-input>
-					`
+					`,
 				)}
 				<div class="actions">
 					<slot name="actions"></slot>
@@ -168,7 +170,7 @@ export class AppTable extends LitElement {
 								<app-icon filled>filter_alt_off</app-icon>
 								Clear filters
 							</app-button>
-						`
+						`,
 					)}
 				</div>
 			</div>

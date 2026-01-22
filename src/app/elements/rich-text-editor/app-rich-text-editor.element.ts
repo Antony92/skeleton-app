@@ -2,15 +2,17 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import type Quill from 'quill'
 import { AppRichTextEditorChangeEvent } from '@app/events/rich-text-editor.event'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			iframe {
 				border: none;
 				width: 500px;
-				height: 200px
+				height: 200px;
 			}
 		`,
 	]

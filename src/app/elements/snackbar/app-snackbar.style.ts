@@ -33,7 +33,6 @@ export const appSnackbarStyle = css`
 			top: 15px;
 		}
 
-
 		&.bottom {
 			right: 0;
 			left: 0;
@@ -90,7 +89,7 @@ export const appSnackbarStyle = css`
 			color: var(--theme-white-color);
 		}
 
-		slot[name="icon"] {
+		slot[name='icon'] {
 			font-size: 1.2rem;
 		}
 	}

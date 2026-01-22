@@ -5,10 +5,11 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-input')
 export class AppInput extends LitElement implements FormControl {
-	static styles = [appInputStyle, css``]
+	static styles = [defaultStyle, appInputStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false

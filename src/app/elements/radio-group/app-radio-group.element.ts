@@ -5,10 +5,11 @@ import { type FormControl, FormControlController } from '@app/controllers/form-c
 import { when } from 'lit/directives/when.js'
 import type { AppRadio } from '@app/elements/radio/app-radio.element'
 import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-radio-group')
 export class AppRadioGroup extends LitElement implements FormControl {
-	static styles = [appRadioGroupStyle, css``]
+	static styles = [defaultStyle, appRadioGroupStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false

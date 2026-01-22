@@ -7,10 +7,11 @@ import { type FormControl, FormControlController } from '@app/controllers/form-c
 import { when } from 'lit/directives/when.js'
 import { formatBytes } from '@app/utils/html'
 import { AppFileUploadEvent } from '@app/events/file-upload.event'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-file-upload')
 export class AppFileUpload extends LitElement implements FormControl {
-	static styles = [appFileUploadStyle, css``]
+	static styles = [defaultStyle, appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false
@@ -78,11 +79,13 @@ export class AppFileUpload extends LitElement implements FormControl {
 	}
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => {
-			if (!this.disabled) {
-				this.input.click()
-			}
-		}))
+		this.triggers.forEach((trigger) =>
+			trigger.addEventListener('click', () => {
+				if (!this.disabled) {
+					this.input.click()
+				}
+			}),
+		)
 	}
 
 	protected updated() {
@@ -123,7 +126,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 		const file = this.files?.[0]
 		this.input.setCustomValidity('')
 
-		if (!file) {		
+		if (!file) {
 			return
 		}
 
@@ -191,13 +194,15 @@ export class AppFileUpload extends LitElement implements FormControl {
 						accept=${ifDefined(this.accept)}
 						type="file"
 					/>
-					${when(this.fileURL, () => html`
-						<div>
-							<a download=${this.fileName} href=${this.fileURL}>${this.fileName}</a>
-							<button @click=${this.deleteFile}>X</button>
-						</div>
-					`)}
-					
+					${when(
+						this.fileURL,
+						() => html`
+							<div>
+								<a download=${this.fileName} href=${this.fileURL}>${this.fileName}</a>
+								<button @click=${this.deleteFile}>X</button>
+							</div>
+						`,
+					)}
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
 			</div>

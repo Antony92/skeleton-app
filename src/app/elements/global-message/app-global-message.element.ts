@@ -3,10 +3,12 @@ import { customElement, property, query } from 'lit/decorators.js'
 import { choose } from 'lit/directives/choose.js'
 import { focusStyle } from '@app/styles/focus.style'
 import { appGlobalMessageStyle } from '@app/elements/global-message/app-global-message.style'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {
 	static styles = [
+		defaultStyle,
 		appGlobalMessageStyle,
 		focusStyle,
 		css`
@@ -57,7 +59,7 @@ export class AppGlobalMessage extends LitElement {
 				direction: reverse ? 'reverse' : 'normal',
 				duration: 200,
 				fill: 'both',
-			}
+			},
 		)
 		return animation.finished
 	}
@@ -72,7 +74,7 @@ export class AppGlobalMessage extends LitElement {
 						['warning', () => html`<app-icon class="icon" filled>warning</app-icon>`],
 						['error', () => html`<app-icon class="icon" filled>error</app-icon>`],
 					],
-					() => html``
+					() => html``,
 				)}
 				<slot></slot>
 				<button class="focus-visible" @click=${this.hide}>✕</button>

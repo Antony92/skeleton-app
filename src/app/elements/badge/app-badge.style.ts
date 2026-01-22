@@ -40,10 +40,10 @@ export const appBadgeStyle = css`
 
 	@keyframes pulse-animation {
 		0% {
-			box-shadow: 0 0 0 0px #0080FF90;
+			box-shadow: 0 0 0 0px #0080ff90;
 		}
 		100% {
-			box-shadow: 0 0 0 10px #0080FF00;
+			box-shadow: 0 0 0 10px #0080ff00;
 		}
 	}
 `

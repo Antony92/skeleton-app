@@ -29,7 +29,9 @@ export const appButtonStyle = css`
 			font-size: inherit;
 		}
 
-		&.icon, &.text, &.outlined {
+		&.icon,
+		&.text,
+		&.outlined {
 			box-shadow: none;
 			background-color: transparent;
 		}
@@ -41,8 +43,10 @@ export const appButtonStyle = css`
 		&.default {
 			background-color: var(--theme-default-background);
 			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
+
+			&.icon,
+			&.text,
+			&.outlined {
 				background-color: transparent;
 				color: var(--theme-default-color);
 			}
@@ -55,18 +59,21 @@ export const appButtonStyle = css`
 				background-color: var(--theme-default-hover);
 				color: var(--theme-white-color);
 
-				&.icon, &.text {
+				&.icon,
+				&.text {
 					background-color: transparent;
 					color: var(--theme-default-hover);
 				}
 			}
 		}
-		
+
 		&.primary {
 			background-color: var(--theme-primary-background);
 			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
+
+			&.icon,
+			&.text,
+			&.outlined {
 				background-color: transparent;
 				color: var(--theme-primary-color);
 			}
@@ -79,7 +86,8 @@ export const appButtonStyle = css`
 				background-color: var(--theme-primary-hover);
 				color: var(--theme-white-color);
 
-				&.icon, &.text {
+				&.icon,
+				&.text {
 					background-color: transparent;
 					color: var(--theme-primary-hover);
 				}
@@ -89,8 +97,10 @@ export const appButtonStyle = css`
 		&.success {
 			background-color: var(--theme-success-background);
 			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
+
+			&.icon,
+			&.text,
+			&.outlined {
 				background-color: transparent;
 				color: var(--theme-success-color);
 			}
@@ -103,7 +113,8 @@ export const appButtonStyle = css`
 				background-color: var(--theme-success-hover);
 				color: var(--theme-white-color);
 
-				&.icon, &.text {
+				&.icon,
+				&.text {
 					background-color: transparent;
 					color: var(--theme-success-hover);
 				}
@@ -113,8 +124,10 @@ export const appButtonStyle = css`
 		&.warning {
 			background-color: var(--theme-warning-background);
 			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
+
+			&.icon,
+			&.text,
+			&.outlined {
 				background-color: transparent;
 				color: var(--theme-warning-color);
 			}
@@ -128,7 +141,8 @@ export const appButtonStyle = css`
 				background-color: var(--theme-warning-hover);
 				color: var(--theme-white-color);
 
-				&.icon, &.text {
+				&.icon,
+				&.text {
 					background-color: transparent;
 					color: var(--theme-warning-hover);
 				}
@@ -138,8 +152,10 @@ export const appButtonStyle = css`
 		&.error {
 			background-color: var(--theme-error-background);
 			color: var(--theme-white-color);
-			
-			&.icon, &.text, &.outlined {
+
+			&.icon,
+			&.text,
+			&.outlined {
 				color: var(--theme-error-color);
 			}
 
@@ -151,7 +167,8 @@ export const appButtonStyle = css`
 				background-color: var(--theme-error-hover);
 				color: var(--theme-white-color);
 
-				&.icon, &.text {
+				&.icon,
+				&.text {
 					background-color: transparent;
 					color: var(--theme-error-hover);
 				}

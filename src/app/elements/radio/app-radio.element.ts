@@ -5,10 +5,11 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-radio')
 export class AppRadio extends LitElement implements FormControl {
-	static styles = [appRadioStyle, css``]
+	static styles = [defaultStyle, appRadioStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false

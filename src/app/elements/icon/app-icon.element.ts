@@ -1,9 +1,11 @@
+import { defaultStyle } from '@app/styles/default.style'
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 @customElement('app-icon')
 export class AppIcon extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			:host {
 				font-family: 'Material Symbols Rounded';

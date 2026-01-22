@@ -11,9 +11,9 @@ export const appRadioGroupStyle = css`
 
 	:host([required]) {
 		legend::after {
-				content: ' *';
-				color: var(--theme-invalid-color);
-			}
+			content: ' *';
+			color: var(--theme-invalid-color);
+		}
 	}
 
 	.form-control {

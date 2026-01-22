@@ -12,7 +12,8 @@ export class AppDropdownItem extends LitElement {
 				font-size: 20px;
 			}
 
-			button, a {
+			button,
+			a {
 				cursor: pointer;
 				display: flex;
 				align-items: center;
@@ -79,7 +80,7 @@ export class AppDropdownItem extends LitElement {
 						</span>
 						<slot></slot>
 					</button>
-				`
+				`,
 			)}
 		`
 	}

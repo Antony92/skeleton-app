@@ -9,10 +9,11 @@ import { when } from 'lit/directives/when.js'
 import type { User } from '@app/types/user.type'
 import '@app/elements/button/app-button.element'
 import { navigate } from '@app/shared/navigation'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-	static styles = [appHeaderStyle, css``]
+	static styles = [defaultStyle, appHeaderStyle, css``]
 
 	private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App'
 	private appVersion = import.meta.env.VITE_APP_VERSION || '-1'

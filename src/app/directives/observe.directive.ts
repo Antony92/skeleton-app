@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs'
 import { noChange } from 'lit'
 
 class Observe extends AsyncDirective {
-
 	private subscription: Subscription = new Subscription()
 
 	render(observable: Observable<unknown>, result: (value: unknown) => unknown) {

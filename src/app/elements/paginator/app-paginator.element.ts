@@ -5,31 +5,35 @@ import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/select/app-select.element'
 import '@app/elements/select-option/app-select-option.element'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
-	static styles = css`
-		:host {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
-
-		label {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-
-			app-select {
-				width: 70px;
+	static styles = [
+		defaultStyle,
+		css`
+			:host {
+				display: flex;
+				align-items: center;
+				gap: 10px;
 			}
-		}
 
-		app-button::part(button) {
-			padding: 0;
-			height: auto;
-		}
-	`
+			label {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+
+				app-select {
+					width: 70px;
+				}
+			}
+
+			app-button::part(button) {
+				padding: 0;
+				height: auto;
+			}
+		`,
+	]
 
 	@property({ type: Number })
 	total = 0

@@ -3,10 +3,12 @@ import { customElement, queryAssignedElements } from 'lit/decorators.js'
 import type { AppTab } from '@app/elements/tab/app-tab.element'
 import type { AppTabPanel } from '@app/elements/tab-panel/app-tab-panel.element'
 import { AppTabChangeEvent } from '@app/events/tab.event'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-tab-group')
 export class AppTabGroup extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			.container {
 				display: flex;

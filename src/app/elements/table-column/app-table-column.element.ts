@@ -8,44 +8,48 @@ import '@app/elements/icon/app-icon.element'
 import '@app/elements/select/app-select.element'
 import '@app/elements/select-option/app-select-option.element'
 import '@app/elements/input/app-input.element'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-table-column')
 export class AppTableColumn extends LitElement {
-	static styles = css`
-		:host {
-			display: block;
-			min-width: 100px;
-		}
+	static styles = [
+		defaultStyle,
+		css`
+			:host {
+				display: block;
+				min-width: 100px;
+			}
 
-		button {
-			display: flex;
-			align-items: center;
-			padding: 5px 0;
-			gap: 5px;
-			font-weight: bold;
-			border: none;
-			background: none;
+			button {
+				display: flex;
+				align-items: center;
+				padding: 5px 0;
+				gap: 5px;
+				font-weight: bold;
+				border: none;
+				background: none;
 
-			&.sortable {
-				cursor: pointer;
+				&.sortable {
+					cursor: pointer;
 
-				&[order='none'] {
-					app-icon {
-						opacity: 0;
-						transition: opacity 0.3s;
+					&[order='none'] {
+						app-icon {
+							opacity: 0;
+							transition: opacity 0.3s;
+						}
+
+						&:not(:focus):hover app-icon {
+							opacity: 0.5;
+						}
 					}
 
-					&:not(:focus):hover app-icon {
-						opacity: 0.5;
+					&:not([order='none']) {
+						color: var(--theme-primary-color);
 					}
-				}
-
-				&:not([order='none']) {
-					color: var(--theme-primary-color);
 				}
 			}
-		}
-	`
+		`,
+	]
 
 	@property({ type: String })
 	label = ''

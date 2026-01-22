@@ -1,3 +1,4 @@
+import { defaultStyle } from '@app/styles/default.style'
 import { focusStyle } from '@app/styles/focus.style'
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
@@ -6,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js'
 @customElement('app-tab')
 export class AppTab extends LitElement {
 	static styles = [
+		defaultStyle,
 		focusStyle,
 		css`
 			button {

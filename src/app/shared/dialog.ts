@@ -7,10 +7,7 @@ import { html, render } from 'lit'
  * @returns Promise
  */
 export const dialog = async (options: { header: string; message: string; modal?: boolean }) => {
-	await Promise.all([
-		import('@app/elements/dialog/app-dialog.element'),
-		import('@app/elements/button/app-button.element')
-	])
+	await Promise.all([import('@app/elements/dialog/app-dialog.element'), import('@app/elements/button/app-button.element')])
 
 	const { promise, resolve, reject } = Promise.withResolvers<void>()
 
@@ -57,10 +54,7 @@ export const dialog = async (options: { header: string; message: string; modal?:
  * @returns Promise
  */
 export const confirmDialog = async (options: { header: string; message: string }) => {
-	await Promise.all([
-		import('@app/elements/dialog/app-dialog.element'),
-		import('@app/elements/button/app-button.element')
-	])
+	await Promise.all([import('@app/elements/dialog/app-dialog.element'), import('@app/elements/button/app-button.element')])
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
 
@@ -111,7 +105,7 @@ export const promptDialog = async (options: { header: string; message: string; p
 	await Promise.all([
 		import('@app/elements/dialog/app-dialog.element'),
 		import('@app/elements/button/app-button.element'),
-		import('@app/elements/input/app-input.element')
+		import('@app/elements/input/app-input.element'),
 	])
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>()
@@ -126,7 +120,7 @@ export const promptDialog = async (options: { header: string; message: string; p
 
 	const template = html`
 		${message}
-		<br/><br/>
+		<br /><br />
 		<app-input placeholder="Type '${promt}'" pattern="${promt}" required autofocus></app-input>
 		<app-button slot="footer" variant="primary" text app-dialog-close="false">Cancel</app-button>
 		<app-button slot="footer" variant="primary" id="confirm">Confirm</app-button>
@@ -148,7 +142,7 @@ export const promptDialog = async (options: { header: string; message: string; p
 	const input = dialog.querySelector('app-input')!
 
 	// Validate input on confirm click
-	dialog.querySelector('#confirm')?.addEventListener('click' , () => {
+	dialog.querySelector('#confirm')?.addEventListener('click', () => {
 		if (!input.checkValidity()) {
 			input.focus()
 		} else {

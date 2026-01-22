@@ -1,3 +1,4 @@
+import { defaultStyle } from '@app/styles/default.style'
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
@@ -5,6 +6,7 @@ import { classMap } from 'lit/directives/class-map.js'
 @customElement('app-select-option')
 export class AppSelectOption extends LitElement {
 	static styles = [
+		defaultStyle,
 		css`
 			:host {
 				min-width: max-content;

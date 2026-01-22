@@ -5,10 +5,11 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-checkbox')
 export class AppCheckbox extends LitElement implements FormControl {
-	static styles = [appCheckStyle, css``]
+	static styles = [defaultStyle, appCheckStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false
@@ -141,7 +142,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 					<input
 						id="checkbox"
 						part="checkbox"
-						.checked=${live(this.checked)} 
+						.checked=${live(this.checked)}
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}
@@ -151,7 +152,7 @@ export class AppCheckbox extends LitElement implements FormControl {
 						@input=${this.onInput}
 						@change=${this.onChange}
 						@blur=${this.onBlur}
-						.value=${live(this.value)} 
+						.value=${live(this.value)}
 						type="checkbox"
 					/>
 					${when(this.label, () => html`<label for="checkbox" part="label">${this.label}</label>`)}

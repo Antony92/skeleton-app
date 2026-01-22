@@ -113,7 +113,7 @@ export const appSelectStyle = css`
 				outline: 2px solid var(--theme-color);
 			}
 
-			&:hover:not(:has(input:disabled, input:focus-within, ~[popover][open])) {
+			&:hover:not(:has(input:disabled, input:focus-within, ~ [popover][open])) {
 				border-color: var(--theme-primary-color);
 			}
 		}

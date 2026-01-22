@@ -2,10 +2,12 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { appDialogStyle } from '@app/elements/dialog/app-dialog.style'
 import { focusStyle } from '@app/styles/focus.style'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-	static styles = [
+  static styles = [
+    defaultStyle,
 		appDialogStyle,
 		focusStyle,
 		css`
@@ -39,7 +41,7 @@ export class AppDialog extends LitElement {
 	get returnValue() {
 		return this.#returnValue
 	}
-	
+
 	protected firstUpdated() {
 		this.dialog.addEventListener('click', ({ target: element }) => {
 			if (element instanceof HTMLDialogElement === false) {

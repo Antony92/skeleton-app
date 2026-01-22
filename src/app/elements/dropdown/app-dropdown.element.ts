@@ -2,36 +2,40 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import type { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
 import { AppSelectEvent } from '@app/events/select.event'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-dropdown')
 export class AppDropdown extends LitElement {
-	static styles = css`
-		.container {
-			anchor-name: --anchor;
-			width: fit-content;
-		}
-
-		[popover] {
-			position-anchor: --anchor;
-			width: fit-content;
-			min-width: anchor-size(--anchor);
-			position-try: flip-block;
-			position-area: span-right;
-			left: anchor(left);
-			top: anchor(bottom);
-			border: 1px solid light-dark(var(--gray-4), var(--gray-8));
-			background-color: var(--theme-default-layer);
-			border-radius: var(--radius-2);
-			overflow: auto;
-			padding: 5px 0;
-			margin: 0;
-
-			&:popover-open {
-				display: flex;
-				flex-direction: column;
+	static styles = [
+		defaultStyle,
+		css`
+			.container {
+				anchor-name: --anchor;
+				width: fit-content;
 			}
-		}
-	`
+
+			[popover] {
+				position-anchor: --anchor;
+				width: fit-content;
+				min-width: anchor-size(--anchor);
+				position-try: flip-block;
+				position-area: span-right;
+				left: anchor(left);
+				top: anchor(bottom);
+				border: 1px solid light-dark(var(--gray-4), var(--gray-8));
+				background-color: var(--theme-default-layer);
+				border-radius: var(--radius-2);
+				overflow: auto;
+				padding: 5px 0;
+				margin: 0;
+
+				&:popover-open {
+					display: flex;
+					flex-direction: column;
+				}
+			}
+		`,
+	]
 
 	@query('[popover]')
 	popup!: HTMLElement

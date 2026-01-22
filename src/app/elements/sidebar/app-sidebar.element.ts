@@ -5,10 +5,11 @@ import { whenUserRole } from '@app/directives/when-user-role.directive'
 import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'
 import '@app/elements/icon/app-icon.element'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
-	static styles = [appSidebarStyle, css``]
+	static styles = [defaultStyle, appSidebarStyle, css``]
 
 	connectedCallback() {
 		super.connectedCallback()

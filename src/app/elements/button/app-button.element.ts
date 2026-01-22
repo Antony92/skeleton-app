@@ -78,7 +78,7 @@ export class AppButton extends LitElement {
 					>
 						<slot></slot>
 					</button>
-				`
+				`,
 			)}
 		`
 	}

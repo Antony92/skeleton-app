@@ -60,13 +60,12 @@ export class AppTablePage extends LitElement {
 		setPageTitle('Table')
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
 		this.searchParamsMap = getURLSearchParamsAsMap()
-		this.columns
-			.forEach((column) => {
-				column.value = this.searchParamsMap.get(column.field)
-				if (column.field === this.searchParamsMap.get('sort')) {
-					column.order = this.searchParamsMap.get('order')
-				}
-			})
+		this.columns.forEach((column) => {
+			column.value = this.searchParamsMap.get(column.field)
+			if (column.field === this.searchParamsMap.get('sort')) {
+				column.order = this.searchParamsMap.get('order')
+			}
+		})
 		this.loadUsers()
 	}
 
@@ -121,11 +120,12 @@ export class AppTablePage extends LitElement {
 		return html`
 			<app-table
 				.searchValue=${this.searchParamsMap.get('search') || ''}
-				.filtersApplied=${this.searchParamsMap.size > 0 }
+				.filtersApplied=${this.searchParamsMap.size > 0}
 				searchable
 				clearable
 				@app-table-clear=${this.onTableClear}
-				@app-table-filter=${this.onTableFilter}>
+				@app-table-filter=${this.onTableFilter}
+			>
 				<table slot="table">
 					<thead>
 						<tr>
@@ -154,7 +154,7 @@ export class AppTablePage extends LitElement {
 											${column.header}
 										</app-table-column>
 									</th>
-								`
+								`,
 							)}
 						</tr>
 					</thead>
@@ -173,7 +173,7 @@ export class AppTablePage extends LitElement {
 									<td textlimit title=${user.userAgent}>${user.userAgent}</td>
 									<td>${user.role}</td>
 								</tr>
-							`
+							`,
 						)}
 						${when(
 							this.users.data.length === 0 && this.loading,
@@ -181,7 +181,7 @@ export class AppTablePage extends LitElement {
 								<tr>
 									<td colspan=${this.columns.length}>Loading...</td>
 								</tr>
-							`
+							`,
 						)}
 						${when(
 							this.users.data.length === 0 && !this.loading,
@@ -189,7 +189,7 @@ export class AppTablePage extends LitElement {
 								<tr>
 									<td colspan=${this.columns.length}>No results found</td>
 								</tr>
-							`
+							`,
 						)}
 					</tbody>
 				</table>

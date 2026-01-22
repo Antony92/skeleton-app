@@ -4,10 +4,12 @@ import { appSnackbarStyle } from '@app/elements/snackbar/app-snackbar.style'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
 import { focusStyle } from '@app/styles/focus.style'
+import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-snackbar')
 export class AppSnackbar extends LitElement {
 	static styles = [
+		defaultStyle,
 		appSnackbarStyle,
 		focusStyle,
 		css`
@@ -78,7 +80,7 @@ export class AppSnackbar extends LitElement {
 				direction: reverse ? 'reverse' : 'normal',
 				duration: 200,
 				fill: 'both',
-			}
+			},
 		)
 		return animation.finished
 	}
