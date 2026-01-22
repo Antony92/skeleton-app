@@ -6,7 +6,7 @@ import { navigate, type RouteParams } from '@app/shared/navigation'
  * @param roles
  */
 export const authGuard = (roles?: string[]) => {
-	return async (url: URL, params: RouteParams) => {
+	return async (url: URL) => {
 		const user = await getUser()
 		if (!user) {
 			localStorage.setItem('requested-page', `${url.pathname}${url.search}` || '/')

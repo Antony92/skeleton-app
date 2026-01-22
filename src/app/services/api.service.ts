@@ -24,7 +24,7 @@ export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse
 			order: params?.order,
 		})
 		const req = await request(`${import.meta.env.VITE_API}/users${query}`)
-		const res = await req.json() as any
+		const res = await req.json()
 		return {
 			total: res.total,
 			data: res.users,
@@ -46,10 +46,12 @@ export const dummyLogin = async (user: { username: string; password: string }) =
 			json: true,
 			body: JSON.stringify(user),
 		})
-		const res: any = await req.json()
-		window.location.href = `${location.origin}/login?token=${res.accessToken}`
+		const res = await req.json()
+    window.location.href = `${location.origin}/login?token=${res.accessToken}`
+    location.reload()
 	} catch (error) {
 		console.error(error)
-		window.location.href = `${location.origin}/login?error=Something went wrong!`
+    window.location.href = `${location.origin}/login?error=Something went wrong!`
+		location.reload()
 	}
 }

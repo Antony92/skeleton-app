@@ -1,155 +1,161 @@
 import { render } from 'lit'
-import { URLPattern } from 'urlpattern-polyfill/urlpattern'
 import { confirmDialog } from '@app/shared/dialog'
 import { loading } from '@app/shared/loader'
 
-let hasUnsavedChanges = false
-let currentRoute: Route | null = null
+/* Internal Router State */
 
-export const initializeNavigation = (options: NavigationOptions) => {
-	handleInitialLoad(options)
-	window.navigation.addEventListener('navigate', (event) => onNavigation(event, options))
-	window.navigation.addEventListener('navigatesuccess', (event) => onNavigationSuccess(event, options))
-	window.navigation.addEventListener('navigateerror', (event) => onNavigationError(event, options))
+const state: State = {
+	hasUnsavedChanges: false,
+	currentRoute: null,
+	options: null,
 }
 
-const onNavigation = async (event: NavigateEvent, options: NavigationOptions) => {
-	if (shouldNotIntercept(event)) {
-		return
-	}
+/* Public API */
+
+export const initializeNavigation = (options: NavigationOptions) => {
+	// 1. Pre-compile patterns for performance
+	options.routes = options.routes.map((route) => ({
+		...route,
+		pattern: route.pattern ?? new URLPattern({ pathname: route.path }),
+	}))
+
+	state.options = options
+
+	// 2. Setup listeners
+	window.navigation.addEventListener('navigate', onNavigation)
+	window.navigation.addEventListener('navigatesuccess', onNavigationSuccess)
+	window.navigation.addEventListener('navigateerror', onNavigationError)
+
+	// 3. Handle first load
+	handleInitialLoad()
+}
+
+export const destroyNavigation = () => {
+	window.navigation.removeEventListener('navigate', onNavigation)
+	window.navigation.removeEventListener('navigatesuccess', onNavigationSuccess)
+	window.navigation.removeEventListener('navigateerror', onNavigationError)
+}
+
+export const navigate = (url: string) => window.navigation.navigate(url)
+
+export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value)
+
+export const getRouteParams = (): RouteParams => {
+	return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {}
+}
+
+/* Internal Logic */
+
+const findRoute = (url: string) => {
+	return state.options?.routes.find((r) => r.pattern?.test(url))
+}
+
+const handleInitialLoad = async () => {
+	if (!state.options) return
+
+	const url = new URL(location.href)
+	const route = findRoute(url.href)
+
+	if (!route) return
+	if (route.redirect) return navigate(route.redirect)
+
+	state.currentRoute = route
+	await interceptHandler(url, route, state.options.outlet)
+}
+
+const onNavigation = async (event: NavigateEvent) => {
+	if (shouldNotIntercept(event) || !state.options) return
+
 	const url = new URL(event.destination.url)
 	const currentEntry = window.navigation.currentEntry
-	const destination = event.destination
-	const { routes, outlet } = options
 
-	if (destination.url === currentEntry?.url) {
-		event.preventDefault()
-		return
+	// Avoid redundant navigation
+	if (event.destination.url === currentEntry?.url) {
+		return event.preventDefault()
 	}
 
-	const route = routes.find((route) => {
-		if (!route.pattern) {
-			route.pattern = new URLPattern({ pathname: route.path })
-		}
-		return route.pattern.test(url.href)
-	})
+	const route = findRoute(url.href)
+	if (!route) return
 
-	if (!route) {
-		return
-	}
-
+	// Handle Redirects
 	if (route.redirect) {
 		event.preventDefault()
 		return navigate(route.redirect)
-	}
+  }
 
-	if (hasUnsavedChanges) {
+	// Handle Unsaved Changes
+	if (state.hasUnsavedChanges) {
 		event.preventDefault()
-		return handleUnsavedChanges(url)
+		const confirm = await confirmDialog({
+			header: 'Unsaved Changes',
+			message: 'You have unsaved changes. Are you sure you want to leave?',
+		})
+		if (confirm) {
+			state.hasUnsavedChanges = false
+			navigate(url.href)
+		}
+		return
 	}
 
-  currentRoute = route
-
+	state.currentRoute = route
   loading(true)
 
 	event.intercept({
-		handler: () => interceptHandler(url, route, outlet),
+		handler: () => interceptHandler(url, route, state.options!.outlet),
 	})
 }
 
-const onNavigationSuccess = (event: Event, options: NavigationOptions) => {
-	const navigation = event.target as Navigation
-	const url = new URL(navigation.currentEntry?.url || '')
+const onNavigationSuccess = () => {
 	loading(false)
 }
 
-const onNavigationError = (event: Event, options: NavigationOptions) => {
-	const navigation = event.target as Navigation
-	const url = new URL(navigation.currentEntry?.url || '')
+const onNavigationError = () => {
 	loading(false)
 }
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {
 	const params = route.pattern?.exec(url.href)?.pathname.groups || {}
+
+	// 1. Guard check
 	if (route.guard && !(await route.guard(url, params))) {
+		loading(false)
 		return
 	}
-	if (route.enter) {
-		await route.enter(url, params)
-	}
+
+	// 2. Enter hook
+	if (route.enter) await route.enter(url, params)
+
+	// 3. Render
 	if (route.render) {
 		render(route.render(url, params), outlet)
 	}
 }
 
-const handleUnsavedChanges = async (url: URL) => {
-	const confirm = await confirmDialog({ header: 'Confirm', message: 'You have unsaved changes. Are you sure you want to leave the page?' })
-	if (confirm) {
-    hasUnsavedChanges = false
-		navigate(url.href)
-	}
-}
-
-const handleInitialLoad = (options: NavigationOptions) => {
-	const { routes, outlet } = options
-	const url = new URL(location.href)
-
-	const route = routes.find((route) => {
-		if (!route.pattern) {
-			route.pattern = new URLPattern({ pathname: route.path })
-		}
-		return route.pattern.test(url.href)
-	})
-
-	if (!route) {
-		return
-	}
-
-	if (route.redirect) {
-		return navigate(route.redirect)
-	}
-
-	currentRoute = route
-
-	interceptHandler(url, route, outlet)
-}
-
 const shouldNotIntercept = (event: NavigateEvent) => {
-	return (
-		// Vite Hot Reload
-		event.navigationType === 'reload' ||
-		!event.canIntercept ||
-		// If this is just a hashChange,
-		// just let the browser handle scrolling to the content.
-		event.hashChange ||
-		// If this is a download,
-		// let the browser perform the download.
-		event.downloadRequest ||
-		// If this is a form submission,
-		// let that go to the server.
-		event.formData
-	)
+	return event.navigationType === 'reload' || !event.canIntercept || event.hashChange || event.downloadRequest || !!event.formData
 }
 
-export const navigate = (url: string) => {
-	window.navigation.navigate(url)
-}
+/* Types */
 
-export const pageHasUnsavedChanges = (hasChanges = true) => (hasUnsavedChanges = hasChanges)
-
-export const getRouteParams = () => {
-	return currentRoute?.pattern?.exec(location.href)?.pathname.groups || {}
-}
+export type RouteParams = Record<string, string | undefined>
 
 export type Route = {
 	name?: string
 	path: string
 	redirect?: string
-	pattern?: URLPattern
+	pattern?: URLPattern // Now pre-populated
 	render?: (url: URL, params: RouteParams) => unknown
 	enter?: (url: URL, params: RouteParams) => Promise<void> | void
 	guard?: (url: URL, params: RouteParams) => Promise<boolean> | boolean
 }
 
-export type RouteParams = { [key: string]: string | undefined }
-type NavigationOptions = { outlet: HTMLElement; routes: Route[] }
+export type NavigationOptions = {
+	outlet: HTMLElement
+	routes: Route[]
+}
+
+type State = {
+  hasUnsavedChanges: boolean,
+	currentRoute: Route | null,
+	options: NavigationOptions | null,
+}

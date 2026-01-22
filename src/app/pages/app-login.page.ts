@@ -30,7 +30,7 @@ export class AppLoginPage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback()
 		setPageTitle('Login')
-		const { token, error } = getURLSearchParamsAsObject()
+    const { token, error } = getURLSearchParamsAsObject()
 		if (error) {
 			this.error = error
 			return
@@ -39,7 +39,7 @@ export class AppLoginPage extends LitElement {
 			dummyLogin({ username: 'emilys', password: 'emilyspass' })
 			// login()
 			return
-		}
+    }
 		try {
 			const user = JSON.parse(window.atob(token.split('.')[1]))
 			setUser({
@@ -50,7 +50,7 @@ export class AppLoginPage extends LitElement {
 			})
 			// const { user } = JSON.parse(window.atob(token.split('.')[1]))
 			// setUser(user)
-			setAccessToken(token)
+      setAccessToken(token)
 			navigate(localStorage.getItem('requested-page') || '/')
 			localStorage.removeItem('requested-page')
 		} catch (error) {

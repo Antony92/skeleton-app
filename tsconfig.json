@@ -24,7 +24,7 @@
 		},
 
 		/* Types */
-		"types": ["vite/client", "vite-plugin-pwa/client", "@types/dom-navigation"]
+		"types": ["vite/client", "vite-plugin-pwa/client", "@types/dom-navigation", "urlpattern-polyfill"]
 	},
 	"include": ["src"]
 }

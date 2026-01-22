@@ -5,7 +5,7 @@ import '@app/elements/sidebar/app-sidebar.element'
 import { mainStyle } from '@app/styles/main.style'
 import { notify } from '@app/shared/notification'
 import { globalMessage } from '@app/shared/global-message'
-import { initializeNavigation } from '@app/shared/navigation'
+import { destroyNavigation, initializeNavigation } from '@app/shared/navigation'
 import { routes } from '@app/shared/routes'
 
 @customElement('app-root')
@@ -20,20 +20,26 @@ export class AppRoot extends LitElement {
 		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 0 }))
 		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }))
 
-		// const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
-		// serverEventSource.addEventListener('globalmessage', (event) => {
-		// 	const data = JSON.parse(event.data)
-		// 	globalMessage(data.message, data.type)
-		// })
-		// serverEventSource.addEventListener('error', () => {
-		// 	serverEventSource.close()
-		// 	notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
-		// })
-	}
+		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
+		serverEventSource.addEventListener('globalmessage', (event) => {
+			const data = JSON.parse(event.data)
+			globalMessage(data.message, data.type)
+		})
+		serverEventSource.addEventListener('error', () => {
+			serverEventSource.close()
+			// notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
+		})
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    destroyNavigation()
+  }
 
 	protected async firstUpdated() {
 		initializeNavigation({ routes, outlet: this.outlet })
-	}
+  }
+
 
 	render() {
 		return html`
