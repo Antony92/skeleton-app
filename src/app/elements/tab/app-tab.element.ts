@@ -43,10 +43,10 @@ export class AppTab extends LitElement {
 		`,
 	]
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	disabled = false
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	active = false
 
 	@property({ type: String })

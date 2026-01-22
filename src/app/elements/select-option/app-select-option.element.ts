@@ -6,6 +6,11 @@ import { when } from 'lit/directives/when.js'
 export class AppSelectOption extends LitElement {
 	static styles = [
 		css`
+			:host {
+				min-width: max-content;
+				width: auto;
+			}
+
 			button {
 				cursor: pointer;
 				display: flex;
@@ -24,7 +29,8 @@ export class AppSelectOption extends LitElement {
 					background: light-dark(var(--gray-4), var(--gray-8));
 				}
 
-				&:focus-visible, &:focus-within {
+				&:focus-visible,
+				&:focus-within {
 					background: var(--theme-primary-background);
 					color: var(--theme-white-color);
 					outline: none;
@@ -39,6 +45,7 @@ export class AppSelectOption extends LitElement {
 				svg {
 					width: auto;
 					height: 100%;
+					flex-shrink: 0;
 				}
 			}
 		`,
@@ -76,7 +83,7 @@ export class AppSelectOption extends LitElement {
 								</g>
 							</g>
 						</svg>
-					`
+					`,
 				)}
 				<slot></slot>
 			</button>

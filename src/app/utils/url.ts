@@ -2,7 +2,7 @@ import type { SearchParams } from '@app/types/search.type'
 
 /**
  * Add search params to current url
- * @param searchParams 
+ * @param searchParams
  */
 export const addSearchParamsToURL = (searchParams: SearchParams) => {
 	const search = new URLSearchParams()
@@ -11,19 +11,21 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
 		.map((key) => search.set(key, searchParams[key]!.toString()))
 	const query = search.toString()
 	const url = `${window.location.pathname}${query ? `?${query}` : ''}`
-	history.replaceState(null, '', url)
+	//history.replaceState(null, '', url)
+	window.navigation.navigate(url, { history: 'replace' })
 }
 
 /**
  * Remove all search params from current URL
  */
 export const clearSearchParamsFromURL = () => {
-	history.replaceState(null, '', window.location.pathname)
+  // history.replaceState(null, '', window.location.pathname)
+	window.navigation.navigate(window.location.pathname, { history: 'replace' })
 }
 
 /**
  * Transform search params to ready to append string for API calls
- * @param searchParams 
+ * @param searchParams
  * @returns string with ?
  */
 export const searchParamsToQuery = (searchParams: SearchParams) => {

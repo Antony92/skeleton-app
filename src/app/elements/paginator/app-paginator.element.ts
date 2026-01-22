@@ -3,6 +3,8 @@ import { customElement, property } from 'lit/decorators.js'
 import { AppPaginateEvent } from '@app/events/pagination.event'
 import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
+import '@app/elements/select/app-select.element'
+import '@app/elements/select-option/app-select-option.element'
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
@@ -11,6 +13,21 @@ export class AppPaginator extends LitElement {
 			display: flex;
 			align-items: center;
 			gap: 10px;
+		}
+
+		label {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			app-select {
+				width: 70px;
+			}
+		}
+
+		app-button::part(button) {
+			padding: 0;
+			height: auto;
 		}
 	`
 
@@ -21,10 +38,10 @@ export class AppPaginator extends LitElement {
 	pageIndex = 0
 
 	@property({ type: Number, attribute: 'page-size' })
-	pageSize = 5
+	pageSize = 10
 
 	@property({ type: Array })
-	pageSizeOptions = [5, 10, 20]
+	pageSizeOptions = [10, 50, 100]
 
 	@property({ type: String, attribute: 'save-page-size' })
 	savePageSize = ''
@@ -103,19 +120,17 @@ export class AppPaginator extends LitElement {
 				pageIndex: this.pageIndex,
 				previousPageIndex: this.previousPageIndex,
 				total: this.total,
-			})
+			}),
 		)
 	}
 
 	render() {
 		return html`
-			<label for="page-size">
+			<label>
 				Items per page:
-				<select id="page-size" @change=${this.pageSizeChange}>
-					${this.pageSizeOptions.map(
-						(value) => html`<option value=${value?.toString()} ?selected=${this.pageSize === value}>${value}</option>`
-					)}
-				</select>
+				<app-select @app-change=${this.pageSizeChange} .value=${this.pageSize.toString()}>
+					${this.pageSizeOptions.map((value) => html`<app-select-option value=${value?.toString()}>${value}</<app-select-option>`)}
+				</app-select>
 			</label>
 			${this.getRangeLabel()}
 			<app-button variant="primary" icon title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>

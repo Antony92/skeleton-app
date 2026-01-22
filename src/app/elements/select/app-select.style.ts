@@ -66,7 +66,7 @@ export const appSelectStyle = css`
 				border: none;
 				outline: none;
 				background: none;
-				padding: 0 10px;
+				padding: 0px 35px 0px 10px;
 				cursor: pointer;
 
 				&::placeholder {
@@ -113,7 +113,7 @@ export const appSelectStyle = css`
 				outline: 2px solid var(--theme-color);
 			}
 
-			&:hover:not(:has(input:disabled, input:focus-within)) {
+			&:hover:not(:has(input:disabled, input:focus-within, ~[popover][open])) {
 				border-color: var(--theme-primary-color);
 			}
 		}

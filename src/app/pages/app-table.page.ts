@@ -122,9 +122,9 @@ export class AppTablePage extends LitElement {
 			<app-table
 				.searchValue=${this.searchParamsMap.get('search') || ''}
 				.filtersApplied=${this.searchParamsMap.size > 0 }
-				searchable 
-				clearable 
-				@app-table-clear=${this.onTableClear} 
+				searchable
+				clearable
+				@app-table-clear=${this.onTableClear}
 				@app-table-filter=${this.onTableFilter}>
 				<table slot="table">
 					<thead>
@@ -195,9 +195,10 @@ export class AppTablePage extends LitElement {
 				</table>
 				<app-paginator
 					slot="paginator"
+					save-page-size=${this.storageLimitName}
 					@app-paginate=${this.onPaginate}
 					.pageSize=${this.limit}
-					.pageSizeOptions=${[5, 10, 15]}
+					.pageSizeOptions=${[10, 50, 100]}
 					.total=${this.users.total}
 				>
 				</app-paginator>

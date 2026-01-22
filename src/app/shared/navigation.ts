@@ -1,6 +1,7 @@
 import { render } from 'lit'
 import { URLPattern } from 'urlpattern-polyfill/urlpattern'
 import { confirmDialog } from '@app/shared/dialog'
+import { loading } from '@app/shared/loader'
 
 let hasUnsavedChanges = false
 let currentRoute: Route | null = null
@@ -47,7 +48,9 @@ const onNavigation = async (event: NavigateEvent, options: NavigationOptions) =>
 		return handleUnsavedChanges(url)
 	}
 
-	currentRoute = route
+  currentRoute = route
+
+  loading(true)
 
 	event.intercept({
 		handler: () => interceptHandler(url, route, outlet),
@@ -57,13 +60,13 @@ const onNavigation = async (event: NavigateEvent, options: NavigationOptions) =>
 const onNavigationSuccess = (event: Event, options: NavigationOptions) => {
 	const navigation = event.target as Navigation
 	const url = new URL(navigation.currentEntry?.url || '')
-	// TODO
+	loading(false)
 }
 
 const onNavigationError = (event: Event, options: NavigationOptions) => {
 	const navigation = event.target as Navigation
 	const url = new URL(navigation.currentEntry?.url || '')
-	// TODO
+	loading(false)
 }
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {
@@ -114,7 +117,7 @@ const handleInitialLoad = (options: NavigationOptions) => {
 const shouldNotIntercept = (event: NavigateEvent) => {
 	return (
 		// Vite Hot Reload
-		!event.userInitiated ||
+		event.navigationType === 'reload' ||
 		!event.canIntercept ||
 		// If this is just a hashChange,
 		// just let the browser handle scrolling to the content.

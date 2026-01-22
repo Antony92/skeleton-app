@@ -13,7 +13,7 @@ export class AppTable extends LitElement {
 	static styles = [
 		css`
 			::slotted(app-paginator) {
-				margin-top: 5px;
+				margin-top: 10px;
 				justify-content: flex-end;
 			}
 

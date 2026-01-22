@@ -5,10 +5,18 @@ import { when } from 'lit/directives/when.js'
 import { debounce, Subject, Subscription, timer } from 'rxjs'
 import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
 import '@app/elements/icon/app-icon.element'
+import '@app/elements/select/app-select.element'
+import '@app/elements/select-option/app-select-option.element'
+import '@app/elements/input/app-input.element'
 
 @customElement('app-table-column')
 export class AppTableColumn extends LitElement {
 	static styles = css`
+		:host {
+			display: block;
+			min-width: 100px;
+		}
+
 		button {
 			display: flex;
 			align-items: center;
@@ -120,8 +128,8 @@ export class AppTableColumn extends LitElement {
 	}
 
 	clearValueFilter() {
-		this.renderRoot.querySelectorAll('input').forEach((input) => (input.value = ''))
-		this.renderRoot.querySelectorAll('option').forEach((option) => (option.selected = false))
+		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
+		this.renderRoot.querySelectorAll('app-select').forEach((select) => (select.value = ''))
 	}
 
 	render() {
@@ -135,65 +143,54 @@ export class AppTableColumn extends LitElement {
 			${when(
 				this.filterable && this.type === 'text',
 				() => html`
-					<input
-						autocomplete="off"
-						type="text"
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						.value=${this.value}
-						@input=${this.filterColumnValue}
-					/>
-				`
+					<app-input placeholder="Filter by ${this.label?.toLowerCase()}" .value=${this.value} @app-input=${this.filterColumnValue}>
+					</app-input>
+				`,
 			)}
 			${when(
 				this.filterable && this.type === 'number',
 				() => html`
-					<input
-						autocomplete="off"
+					<app-input
 						type="number"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@input=${this.filterColumnValue}
-					/>
-				`
+						@app-input=${this.filterColumnValue}
+					>
+					</app-input>
+				`,
 			)}
 			${when(
 				this.filterable && this.type === 'date',
 				() => html`
-					<input
-						autocomplete="off"
+					<app-input
 						type="date"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@input=${this.filterColumnValue}
-					/>
-				`
+						@cc-input=${this.filterColumnValue}
+					>
+					</app-input>
+				`,
 			)}
 			${when(
 				this.filterable && this.type === 'select',
 				() => html`
-					<select placeholder="Filter by ${this.label?.toLowerCase()}" @change=${this.filterColumnValue}>
-						<option value="" disabled selected>None</option>
-						${this.list?.map(
-							(item) =>
-								html`
-									<option value=${item.value?.toString()} ?selected=${this.value === item.value?.toString()}>${item.label}</option>
-								`
-						)}
-					</select>
-				`
+					<app-select placeholder="Filter by ${this.label?.toLowerCase()}" @app-change=${this.filterColumnValue} .value=${this.value}>
+						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
+					</app-select>
+				`,
 			)}
 			${when(
 				this.filterable && this.type === 'select-multiple',
 				() => html`
-					<select placeholder="Filter by ${this.label?.toLowerCase()}" @change=${this.filterColumnValue}>
-						${this.list?.map(
-							(item) =>
-								html`
-									<option value=${item.value?.toString()} ?selected=${this.value === item.value?.toString()}>${item.label}</option>
-								`
-						)}
-					</select>
-				`
+					<app-select
+						multiple
+						placeholder="Filter by ${this.label?.toLowerCase()}"
+						@app-change=${this.filterColumnValue}
+						.value=${this.value}
+					>
+						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
+					</app-select>
+				`,
 			)}
 		`
 	}

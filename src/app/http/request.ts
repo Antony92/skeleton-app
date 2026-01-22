@@ -46,8 +46,8 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 			const error = await response.clone().json()
 			notify({ message: `${url} failed: ${JSON.stringify(error)}`, variant: 'error', duration: 6000 })
 		}
-	} catch (error: any) {
-		notify({ message: `${error?.message || `${url} failed`}`, variant: 'error', duration: 6000 })
+	} catch (error: unknown) {
+		notify({ message: `${url} failed`, variant: 'error', duration: 6000 })
 		return Promise.reject(error)
 	} finally {
 		// Decrement request count by one and hide loading indicator if no more requests remain
