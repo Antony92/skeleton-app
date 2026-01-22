@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('app-select-option')
 export class AppSelectOption extends LitElement {
@@ -15,9 +15,9 @@ export class AppSelectOption extends LitElement {
 				cursor: pointer;
 				display: flex;
 				align-items: center;
-				gap: 10px;
+				gap: 5px;
 				border: none;
-				padding: 10px;
+				padding: 10px 5px;
 				white-space: nowrap;
 				height: 36px;
 				font-size: inherit;
@@ -43,9 +43,14 @@ export class AppSelectOption extends LitElement {
 				}
 
 				svg {
+					visibility: hidden;
 					width: auto;
 					height: 100%;
 					flex-shrink: 0;
+
+					&.visible {
+						visibility: visible;
+					}
 				}
 			}
 		`,
@@ -70,21 +75,16 @@ export class AppSelectOption extends LitElement {
 	render() {
 		return html`
 			<button part="option" ?disabled=${this.disabled} .value=${this.value} ?selected=${this.selected}>
-				${when(
-					this.selected,
-					() => html`
-						<svg part="checked-icon svg" viewBox="0 0 16 16">
-							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
-								<g stroke="currentColor">
-									<g transform="translate(3.428571, 3.428571)">
-										<path d="M0,5.71428571 L3.42857143,9.14285714"></path>
-										<path d="M9.14285714,0 L3.42857143,9.14285714"></path>
-									</g>
-								</g>
+				<svg part="checked-icon svg" viewBox="0 0 16 16" class=${classMap({ visible: this.selected })}>
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+						<g stroke="currentColor">
+							<g transform="translate(3.428571, 3.428571)">
+								<path d="M0,5.71428571 L3.42857143,9.14285714"></path>
+								<path d="M9.14285714,0 L3.42857143,9.14285714"></path>
 							</g>
-						</svg>
-					`,
-				)}
+						</g>
+					</g>
+				</svg>
 				<slot></slot>
 			</button>
 		`

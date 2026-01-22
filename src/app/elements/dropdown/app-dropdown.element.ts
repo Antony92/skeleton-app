@@ -13,9 +13,10 @@ export class AppDropdown extends LitElement {
 
 		[popover] {
 			position-anchor: --anchor;
-			width: anchor-size(width);
+			width: fit-content;
+			min-width: anchor-size(--anchor);
 			position-try: flip-block;
-			position-area: span-bottom;
+			position-area: span-right;
 			left: anchor(left);
 			top: anchor(bottom);
 			border: 1px solid light-dark(var(--gray-4), var(--gray-8));
