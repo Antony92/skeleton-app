@@ -59,9 +59,6 @@ export class AppRichTextEditor extends LitElement {
     if (_changedProperties.has('value') && !this.isTnternalChange && this.quill) {
       this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
     }
-    if (_changedProperties.has('value') && !this.isTnternalChange && this.quill) {
-      this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
-    }
     if (_changedProperties.has('disabled') && this.disabled && this.quill) {
       this.quill.disable()
     }
