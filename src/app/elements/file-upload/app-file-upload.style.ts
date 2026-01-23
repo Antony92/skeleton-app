@@ -44,6 +44,7 @@ export const appFileUploadStyle = css`
 			align-items: center;
 			border: 2px dotted var(--theme-default-color);
 			padding: 10px;
+			gap: 10px;
 			border-radius: var(--radius-2);
 
 			&:has(input:disabled) {

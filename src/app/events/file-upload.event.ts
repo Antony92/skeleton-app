@@ -7,6 +7,14 @@ export class AppFileUploadEvent extends Event {
 	}
 }
 
+export class AppFileUploadErrorEvent extends Event {
+	readonly message: string
+
+	constructor(message: string) {
+		super('app-file-upload-error', { bubbles: true, composed: true })
+		this.message = message
+	}
+}
 declare global {
 	interface GlobalEventHandlersEventMap {
 		'app-file-upload': AppFileUploadEvent

@@ -5,8 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
-import { formatBytes } from '@app/utils/html'
-import { AppFileUploadEvent } from '@app/events/file-upload.event'
+import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event'
 import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-file-upload')
@@ -123,23 +122,30 @@ export class AppFileUpload extends LitElement implements FormControl {
 	}
 
 	checkFileValidation() {
-		const file = this.files?.[0]
+    const file = this.files?.[0]
 		this.input.setCustomValidity('')
 
 		if (!file) {
 			return
 		}
 
-		this.fileURL = URL.createObjectURL(file)
-		this.fileName = file.name
+    const fileSizeInMB = file.size / (1024 ** 2)
 
-		if (this.size && file.size > this.size) {
-			this.input.setCustomValidity(`File size too large. Maximum allowed is ${formatBytes(this.size)}.`)
+		if (this.size && fileSizeInMB > this.size) {
+      this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`)
 			return
 		}
 
+		this.fileURL = URL.createObjectURL(file)
+		this.fileName = file.name
 		this.dispatchEvent(new AppFileUploadEvent(file))
-	}
+  }
+
+  setCustomError(error: string) {
+    this.input.setCustomValidity(error)
+    this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage))
+    this.value = ''
+  }
 
 	deleteFile() {
 		this.value = ''

@@ -1,7 +1,6 @@
 import { setPageTitle } from '@app/utils/html'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
-import '@app/elements/file-upload/app-file-upload.element'
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -24,7 +23,7 @@ export class AppHomePage extends LitElement {
 
 	render() {
 		return html`
-			<app-file-upload size="1000" label="Upload" accept=".ts">
+			<app-file-upload size="1" label="Upload">
 				<button slot="trigger">Trigger</button>
 			</app-file-upload>
 		`
