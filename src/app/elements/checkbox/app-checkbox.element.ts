@@ -12,43 +12,43 @@ export class AppCheckbox extends LitElement implements FormControl {
 	static styles = [defaultStyle, appCheckStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	autofocus = false
+	accessor autofocus = false
 
 	@property({ type: Boolean })
-	hidden = false
+	accessor hidden = false
 
 	@property({ type: Boolean })
-	readonly = false
+	accessor readonly = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	defaultValue = ''
+	accessor defaultValue = ''
 
 	@property({ type: Boolean })
-	checked = false
+	accessor checked = false
 
 	@state()
-	private errorMessage: string = ''
+	private accessor errorMessage: string = ''
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@query('input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	static formAssociated = true
 	formController!: FormControlController

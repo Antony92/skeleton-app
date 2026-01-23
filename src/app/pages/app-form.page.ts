@@ -28,7 +28,7 @@ export class AppFormPage extends LitElement {
 	]
 
 	@query('form')
-	form!: HTMLFormElement
+	accessor form!: HTMLFormElement
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -69,7 +69,7 @@ export class AppFormPage extends LitElement {
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select>
 
-				<app-file-upload name="file" size="1024" accept=".ts">
+				<app-file-upload name="file" size="1" accept=".pdf">
 					<button slot="trigger">Upload</button>
 				</app-file-upload>
 

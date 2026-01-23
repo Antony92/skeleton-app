@@ -12,37 +12,37 @@ export class AppRadioGroup extends LitElement implements FormControl {
 	static styles = [defaultStyle, appRadioGroupStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	hidden = false
+	accessor hidden = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	defaultValue = ''
+	accessor defaultValue = ''
 
 	@state()
-	private errorMessage: string = ''
+	private accessor errorMessage: string = ''
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@query('fieldset')
-	fieldset!: HTMLFieldSetElement
+	accessor fieldset!: HTMLFieldSetElement
 
 	@queryAssignedElements()
-	radios!: AppRadio[]
+	accessor radios!: AppRadio[]
 
 	static formAssociated = true
 	formController!: FormControlController

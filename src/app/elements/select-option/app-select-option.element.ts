@@ -59,16 +59,16 @@ export class AppSelectOption extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: Boolean, reflect: true })
-	selected = false
+	accessor selected = false
 
 	@query('button')
-	option!: HTMLButtonElement
+	accessor option!: HTMLButtonElement
 
 	focus(options?: FocusOptions) {
 		this.option?.focus(options)

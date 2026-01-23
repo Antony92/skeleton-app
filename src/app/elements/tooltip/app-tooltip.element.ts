@@ -76,22 +76,22 @@ export class AppTooltip extends LitElement {
 	]
 
 	@property({ type: String })
-	content = ''
+	accessor content = ''
 
 	@property({ type: Number })
-	delay = 100
+	accessor delay = 100
 
 	@property({ type: Boolean, attribute: 'on-overflow-only' })
-	onOverflowOnly = false
+	accessor onOverflowOnly = false
 
 	@property({ type: String })
-	position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
+	accessor position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
 
 	@query('[popover]')
-	popup!: HTMLElement
+	accessor popup!: HTMLElement
 
 	@queryAssignedElements()
-	triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[]
 
 	private timeout = 0
 

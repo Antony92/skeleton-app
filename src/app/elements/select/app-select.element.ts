@@ -41,61 +41,61 @@ export class CCSelect extends LitElement implements FormControl {
 	]
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	autofocus = false
+	accessor autofocus = false
 
 	@property({ type: Boolean })
-	hidden = false
+	accessor hidden = false
 
 	@property({ type: String })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String })
-	autocomplete: 'on' | 'off' = 'off'
+	accessor autocomplete: 'on' | 'off' = 'off'
 
 	@property({ type: String })
-	value: string = ''
+	accessor value: string = ''
 
 	@property({ type: String })
-	defaultValue = ''
+	accessor defaultValue = ''
 
 	@property({ type: String })
-	displayValue = ''
+	accessor displayValue = ''
 
 	@property({ type: String })
-	placeholder: string | undefined
+	accessor placeholder: string | undefined
 
 	@property({ type: Boolean, reflect: true })
-	open = false
+	accessor open = false
 
 	@property({ type: Boolean })
-	multiple = false
+	accessor multiple = false
 
 	@state()
-	private errorMessage: string = ''
+	private accessor errorMessage: string = ''
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@query('#input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	@query('#trigger')
-	trigger!: HTMLInputElement
+	accessor trigger!: HTMLInputElement
 
 	@query('[popover]')
-	popup!: HTMLElement
+	accessor popup!: HTMLElement
 
 	@queryAssignedElements({ selector: 'app-select-option' })
-	assignedOptions!: AppSelectOption[]
+	accessor assignedOptions!: AppSelectOption[]
 
 	private attachedOptions = new WeakSet<AppSelectOption>()
 

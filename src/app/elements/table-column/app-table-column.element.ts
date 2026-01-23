@@ -52,31 +52,31 @@ export class AppTableColumn extends LitElement {
 	]
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: Boolean })
-	sortable = false
+	accessor sortable = false
 
 	@property({ type: String })
-	order: 'asc' | 'desc' | null = null
+	accessor order: 'asc' | 'desc' | null = null
 
 	@property({ type: Boolean })
-	filterable = false
+	accessor filterable = false
 
 	@property({ type: String })
-	field = ''
+	accessor field = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String, reflect: true })
-	type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
+	accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
 
 	@property({ type: Array })
-	list: { label: string; value: string | boolean | number }[] = []
+	accessor list: { label: string; value: string | boolean | number }[] = []
 
 	@property({ type: Number })
-	delay = 0
+	accessor delay = 0
 
 	private filterEvent = new Subject<string>()
 

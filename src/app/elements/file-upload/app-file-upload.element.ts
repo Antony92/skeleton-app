@@ -13,49 +13,49 @@ export class AppFileUpload extends LitElement implements FormControl {
 	static styles = [defaultStyle, appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	accept = ''
+	accessor accept = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String, attribute: false })
-	value = ''
+	accessor value = ''
 
 	@property({ attribute: false })
-	files: FileList | null = null
+	accessor files: FileList | null = null
 
 	@property({ type: String })
-	placeholder: string | undefined
+	accessor placeholder: string | undefined
 
 	@property({ type: Number })
-	size: number | undefined
+	accessor size: number | undefined
 
 	@property({ type: String })
-	fileName = ''
+	accessor fileName = ''
 
 	@property({ type: String })
-	fileURL = ''
+	accessor fileURL = ''
 
 	@state()
-	private errorMessage: string = ''
+	private accessor errorMessage: string = ''
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@query('input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	@queryAssignedElements({ slot: 'trigger' })
-	triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[]
 
 	static formAssociated = true
 	formController!: FormControlController

@@ -53,13 +53,13 @@ export class AppDropdownItem extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	href = ''
+	accessor href = ''
 
 	render() {
 		return html`

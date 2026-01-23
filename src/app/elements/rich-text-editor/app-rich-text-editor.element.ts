@@ -18,13 +18,13 @@ export class AppRichTextEditor extends LitElement {
 	]
 
 	@query('iframe')
-	iframe!: HTMLIFrameElement
+	accessor iframe!: HTMLIFrameElement
 
 	@property({ type: String })
-	placeholder = ''
+	accessor placeholder = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	protected firstUpdated() {
 		this.iframe.addEventListener('load', () => {

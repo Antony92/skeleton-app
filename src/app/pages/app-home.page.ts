@@ -22,10 +22,6 @@ export class AppHomePage extends LitElement {
 	protected firstUpdated() {}
 
 	render() {
-		return html`
-			<app-file-upload size="1" label="Upload">
-				<button slot="trigger">Trigger</button>
-			</app-file-upload>
-		`
+		return html`Home`
 	}
 }

@@ -25,7 +25,7 @@ export class AppLoginPage extends LitElement {
 	]
 
 	@state()
-	private error = ''
+	private accessor error = ''
 
 	connectedCallback() {
 		super.connectedCallback()

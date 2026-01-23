@@ -38,16 +38,16 @@ export class AppDropdown extends LitElement {
 	]
 
 	@query('[popover]')
-	popup!: HTMLElement
+	accessor popup!: HTMLElement
 
 	@queryAssignedElements({ slot: 'trigger' })
-	triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[]
 
 	@queryAssignedElements({ selector: 'app-dropdown-item' })
-	assignedItems!: AppDropdownItem[]
+	accessor assignedItems!: AppDropdownItem[]
 
 	@property({ type: Boolean, reflect: true })
-	open = false
+	accessor open = false
 
 	private attachedItems = new WeakSet<AppDropdownItem>()
 

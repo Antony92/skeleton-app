@@ -12,58 +12,58 @@ export class AppTextarea extends LitElement implements FormControl {
 	static styles = [defaultStyle, appTextareaStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	autofocus = false
+	accessor autofocus = false
 
 	@property({ type: Boolean })
-	hidden = false
+	accessor hidden = false
 
 	@property({ type: Boolean })
-	readonly = false
+	accessor readonly = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
+	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
 	@property({ type: String })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String })
-	autocomplete: 'on' | 'off' = 'off'
+	accessor autocomplete: 'on' | 'off' = 'off'
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	defaultValue = ''
+	accessor defaultValue = ''
 
 	@property({ type: String })
-	placeholder: string | undefined
+	accessor placeholder: string | undefined
 
 	@property({ type: Number })
-	rows = 4
+	accessor rows = 4
 
 	@property({ type: Number })
-	maxlength: number | undefined
+	accessor maxlength: number | undefined
 
 	@property({ type: Number })
-	minlength: number | undefined
+	accessor minlength: number | undefined
 
 	@state()
-	private errorMessage: string = ''
+	private accessor errorMessage: string = ''
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@query('textarea')
-	textarea!: HTMLTextAreaElement
+	accessor textarea!: HTMLTextAreaElement
 
 	static formAssociated = true
 	formController!: FormControlController

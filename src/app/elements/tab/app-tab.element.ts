@@ -46,13 +46,13 @@ export class AppTab extends LitElement {
 	]
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean, reflect: true })
-	active = false
+	accessor active = false
 
 	@property({ type: String })
-	panel = ''
+	accessor panel = ''
 
 	render() {
 		return html`

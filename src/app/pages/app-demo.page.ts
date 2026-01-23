@@ -48,7 +48,7 @@ export class AppDemoPage extends LitElement {
 	]
 
 	@query('app-dialog')
-	appDialog!: AppDialog
+	accessor appDialog!: AppDialog
 
 	connectedCallback() {
 		super.connectedCallback()

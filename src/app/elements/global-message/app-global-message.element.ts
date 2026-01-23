@@ -23,13 +23,13 @@ export class AppGlobalMessage extends LitElement {
 	]
 
 	@property({ type: String })
-	level: 'info' | 'warning' | 'error' = 'info'
+	accessor level: 'info' | 'warning' | 'error' = 'info'
 
 	@query('.global-message')
-	globalMessage!: HTMLDivElement
+	accessor globalMessage!: HTMLDivElement
 
 	@property({ type: Boolean, reflect: true })
-	open = false
+	accessor open = false
 
 	async show() {
 		this.dispatchEvent(new Event('app-show'))

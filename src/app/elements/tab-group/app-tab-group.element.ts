@@ -29,10 +29,10 @@ export class AppTabGroup extends LitElement {
 	]
 
 	@queryAssignedElements({ slot: 'tab' })
-	tabs!: AppTab[]
+	accessor tabs!: AppTab[]
 
 	@queryAssignedElements()
-	panels!: AppTabPanel[]
+	accessor panels!: AppTabPanel[]
 
 	private attachedTabs = new WeakSet<AppTab>()
 
