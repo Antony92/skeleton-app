@@ -1,4 +1,4 @@
-import { html, LitElement, css } from 'lit'
+import { html, LitElement, css, type PropertyValues } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import type Quill from 'quill'
 import { AppRichTextEditorChangeEvent } from '@app/events/rich-text-editor.event'
@@ -15,7 +15,10 @@ export class AppRichTextEditor extends LitElement {
 				height: 200px;
 			}
 		`,
-	]
+  ]
+
+  @property({ type: Boolean })
+  accessor disabled = false
 
 	@query('iframe')
 	accessor iframe!: HTMLIFrameElement
@@ -24,29 +27,52 @@ export class AppRichTextEditor extends LitElement {
 	accessor placeholder = ''
 
 	@property({ type: String })
-	accessor value = ''
+  accessor value = ''
+
+  @property({ type: String })
+  accessor toolbar = 'header text list link clear'
+
+  quill!: Quill
+  isTnternalChange = false
 
 	protected firstUpdated() {
 		this.iframe.addEventListener('load', () => {
 			const iframeWindow = this.iframe.contentWindow as Window & { quill: Quill }
 
-			const quill = iframeWindow.quill
+			this.quill = iframeWindow.quill
 
 			// set initial value
-			quill.setContents(quill.clipboard.convert({ html: this.value }), 'silent')
+			this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
 
 			// text change listener
-			quill.on('text-change', () => {
-				const text = quill.getText().trim()
-				const html = quill.getSemanticHTML()
-				this.value = text ? html : ''
+			this.quill.on('text-change', () => {
+				const text = this.quill.getText().trim()
+        const html = this.quill.getSemanticHTML()
+				this.isTnternalChange = true
+        this.value = text ? html : ''
 				this.dispatchEvent(new AppRichTextEditorChangeEvent({ text, html }))
 			})
 		})
-	}
+  }
+
+  protected updated(_changedProperties: PropertyValues) {
+    if (_changedProperties.has('value') && !this.isTnternalChange && this.quill) {
+      this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
+    }
+    if (_changedProperties.has('value') && !this.isTnternalChange && this.quill) {
+      this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
+    }
+    if (_changedProperties.has('disabled') && this.disabled && this.quill) {
+      this.quill.disable()
+    }
+    if (_changedProperties.has('disabled') && !this.disabled && this.quill && !this.quill.isEnabled()) {
+      this.quill.enable()
+    }
+    this.isTnternalChange = false
+  }
 
 	render() {
-		return html` <iframe src="quill.html?placeholder=${this.placeholder}" scrolling="no"></iframe> `
+		return html` <iframe src="quill.html?toolbar=${this.toolbar}&placeholder=${this.placeholder}" scrolling="no"></iframe> `
 	}
 }
 

@@ -15,13 +15,53 @@
 
 	const params = Object.fromEntries(new URLSearchParams(window.location.search))
 
+	// Default toolbar
+	let toolbar = params.toolbar?.split(' ') || ['header', 'text', 'list', 'link', 'color', 'clear']
+
+	// Toolbar mapping
+	toolbar = toolbar.map((value) => {
+		if (value === 'header') {
+			return [{ header: [1, 2, false] }]
+		}
+		if (value === 'text') {
+			return ['bold', 'italic', 'underline']
+		}
+		if (value === 'list') {
+			return [{ list: 'ordered' }, { list: 'bullet' }]
+		}
+		if (value === 'link') {
+			return ['link']
+		}
+		if (value === 'clear') {
+			return ['clean']
+		}
+		if (value === 'color') {
+			return [{ color: [] }]
+		}
+	})
+
 	const quill = new Quill('#editor', {
 		placeholder: params.placeholder,
 		theme: 'snow',
+		modules: {
+			toolbar,
+			keyboard: {
+				bindings: {
+					tab: {
+						key: 9,
+						handler: () => {
+							// Handle tab
+							// quil handles tab key in order to add indentation
+							// this reverts default tab behaviour to focus next interactable element in dom
+							return true
+						},
+					},
+				},
+			},
+		},
 	})
 
 	window.quill = quill
-
 </script>
 
 <div id="editor"></div>
