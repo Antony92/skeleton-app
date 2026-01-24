@@ -9,7 +9,7 @@ import type { AppSelectOption } from '@app/elements/select-option/app-select-opt
 import { defaultStyle } from '@app/styles/default.style'
 
 @customElement('app-select')
-export class CCSelect extends LitElement implements FormControl {
+export class AppSelect extends LitElement implements FormControl {
 	static styles = [
 		defaultStyle,
 		appSelectStyle,
@@ -401,6 +401,6 @@ export class CCSelect extends LitElement implements FormControl {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-select': CCSelect
+		'app-select': AppSelect
 	}
 }
