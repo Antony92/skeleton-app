@@ -1,6 +1,8 @@
 import { setPageTitle } from '@app/utils/html'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
+import '@app/elements/select/app-select.element'
+import '@app/elements/select-option/app-select-option.element'
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -22,6 +24,13 @@ export class AppHomePage extends LitElement {
 	protected firstUpdated() {}
 
 	render() {
-		return html`Home`
+        return html`
+            <app-select combobox>
+                <app-select-option value="option-1">Option 1</app-select-option>
+       					<app-select-option value="option-2">Option 2</app-select-option>
+       					<app-select-option value="option-3">Option 3</app-select-option>
+       					<app-select-option value="option-4">Option 4</app-select-option>
+       					<app-select-option value="option-5">Option 5</app-select-option>
+            </app-select>`
 	}
 }

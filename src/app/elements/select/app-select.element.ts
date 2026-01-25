@@ -59,9 +59,6 @@ export class AppSelect extends LitElement implements FormControl {
 	accessor label = ''
 
 	@property({ type: String })
-	accessor autocomplete: 'on' | 'off' = 'off'
-
-	@property({ type: String })
 	accessor value: string = ''
 
 	@property({ type: String })
@@ -77,7 +74,10 @@ export class AppSelect extends LitElement implements FormControl {
 	accessor open = false
 
 	@property({ type: Boolean })
-	accessor multiple = false
+  accessor multiple = false
+
+  @property({ type: Boolean })
+	accessor combobox = false
 
 	@state()
 	private accessor errorMessage: string = ''
@@ -93,6 +93,7 @@ export class AppSelect extends LitElement implements FormControl {
 
 	@query('[popover]')
 	accessor popup!: HTMLElement
+
 
 	@queryAssignedElements({ selector: 'app-select-option' })
 	accessor assignedOptions!: AppSelectOption[]
@@ -143,7 +144,7 @@ export class AppSelect extends LitElement implements FormControl {
 					option.tabIndex = -1
 				}
 			})
-		})
+    })
 	}
 
 	private attachOptionListeners(option: AppSelectOption) {
@@ -194,7 +195,6 @@ export class AppSelect extends LitElement implements FormControl {
 		window.removeEventListener('mousedown', this.handleMouseDown)
 		this.open = false
 		this.popup.hidePopover()
-		this.popup.removeAttribute('style')
 		this.onBlur()
 		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
 	}
@@ -202,8 +202,10 @@ export class AppSelect extends LitElement implements FormControl {
 	async openSelect() {
 		this.open = true
 		await this.updateComplete
-		this.popup.showPopover()
-		this.focusSelectedOption()
+    this.popup.showPopover()
+    if (!this.combobox) {
+      this.focusSelectedOption()
+		}
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
 		window.addEventListener('keyup', this.handleKeyup)
 		window.addEventListener('mousedown', this.handleMouseDown)
@@ -361,8 +363,9 @@ export class AppSelect extends LitElement implements FormControl {
 						part="input"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
+						autocomplete="off"
 						?hidden=${this.hidden}
-						readonly
+						?readonly=${!this.combobox}
 						?required=${this.required}
 						placeholder=${ifDefined(this.placeholder)}
 						.value=${live(this.displayValue)}
