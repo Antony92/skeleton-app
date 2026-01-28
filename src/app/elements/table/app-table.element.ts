@@ -25,6 +25,7 @@ export class AppTable extends LitElement {
 
 			.actions-container {
 				display: flex;
+				align-items: center;
 				flex-wrap: wrap;
 				gap: 10px;
 				margin-bottom: 10px;

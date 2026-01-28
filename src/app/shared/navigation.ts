@@ -68,7 +68,6 @@ const handleInitialLoad = async () => {
 
 const onNavigation = async (event: NavigateEvent) => {
 	if (shouldNotIntercept(event) || !state.options) return
-
 	const url = new URL(event.destination.url)
 	const currentEntry = navigation.currentEntry
 
@@ -107,6 +106,7 @@ const onNavigation = async (event: NavigateEvent) => {
 
 	event.intercept({
 		handler: () => interceptHandler(url, route, state.options!.outlet),
+		focusReset: 'manual',
 	})
 }
 

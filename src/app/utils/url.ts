@@ -11,7 +11,6 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
 		.map((key) => search.set(key, searchParams[key]!.toString()))
 	const query = search.toString()
 	const url = `${location.pathname}${query ? `?${query}` : ''}`
-	//history.replaceState(null, '', url)
 	navigation.navigate(url, { history: 'replace' })
 }
 
@@ -19,7 +18,6 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
  * Remove all search params from current URL
  */
 export const clearSearchParamsFromURL = () => {
-  // history.replaceState(null, '', window.location.pathname)
 	navigation.navigate(location.pathname, { history: 'replace' })
 }
 
