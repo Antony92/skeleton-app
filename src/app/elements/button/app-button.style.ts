@@ -13,11 +13,11 @@ export const appButtonStyle = css`
 		padding: 0 15px;
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
-		height: 40px;
+		height: 36px;
 		background-color: var(--background);
 		color: var(--color);
 		font-family: var(--font-system-ui);
-		font-size: var(--font-size-1);
+		font-size: 0.875rem;
 		font-weight: var(--font-weight-6);
 		text-decoration: none;
 
@@ -88,6 +88,12 @@ export const appButtonStyle = css`
 			&:hover:not(:active, :disabled) {
 				background-color: color-mix(in oklab, var(--background), black 60%);
 			}
+		}
+	}
+
+	:host(:not([appearance='plain'])) {
+		::slotted(app-icon) {
+			font-size: 20px;
 		}
 	}
 `

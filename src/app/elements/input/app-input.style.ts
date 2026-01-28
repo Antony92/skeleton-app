@@ -45,7 +45,7 @@ export const appInputStyle = css`
 			border: 1px solid var(--theme-default-color);
 			width: 100%;
 			border-radius: var(--radius-2);
-			height: 40px;
+			height: 36px;
 
 			input {
 				width: 100%;
