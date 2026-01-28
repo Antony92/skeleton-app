@@ -44,8 +44,8 @@ export const appInputStyle = css`
 			align-items: center;
 			border: 1px solid var(--theme-default-color);
 			width: 100%;
-			border-radius: 3px;
-			height: 30px;
+			border-radius: var(--radius-2);
+			height: 40px;
 
 			input {
 				width: 100%;
@@ -54,6 +54,9 @@ export const appInputStyle = css`
 				outline: none;
 				background: none;
 				padding: 0 10px;
+				font-family: var(--font-system-ui);
+				font-size: var(--font-size-1);
+				font-weight: var(--font-weight-4);
 
 				&::placeholder {
 					color: var(--theme-default-color);

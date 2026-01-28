@@ -49,6 +49,7 @@ export const appDialogStyle = css`
 				background: none;
 				cursor: pointer;
 				border: none;
+				font-size: var(--font-size-1);
 			}
 		}
 

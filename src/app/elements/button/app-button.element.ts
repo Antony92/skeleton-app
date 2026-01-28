@@ -1,7 +1,6 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { appButtonStyle } from '@app/elements/button/app-button.style'
-import { classMap } from 'lit/directives/class-map.js'
 import { focusStyle } from '@app/styles/focus.style'
 import { when } from 'lit/directives/when.js'
 import { defaultStyle } from '@app/styles/default.style'
@@ -9,10 +8,23 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 
 @customElement('app-button')
 export class AppButton extends LitElement {
-	static styles = [defaultStyle, appButtonStyle, focusStyle, css``]
+	static styles = [
+    defaultStyle,
+		appButtonStyle,
+		focusStyle,
+		css`
+			:host {
+				--background: var(--theme-default-background);
+				--color: var(--theme-white-color);
+			}
+		`,
+	]
 
 	@property({ type: String })
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
+
+	@property({ type: String })
+	accessor appearance: 'normal' | 'outlined' | 'plain' = 'normal'
 
 	@property({ type: Boolean })
 	accessor disabled = false
@@ -46,13 +58,7 @@ export class AppButton extends LitElement {
 					<a
 						part="button"
 						role="button"
-						class=${classMap({
-							[this.variant]: true,
-							outlined: this.outlined,
-							text: this.text,
-							icon: this.icon,
-							['focus-visible']: true,
-						})}
+						class="focus-visible"
 						href=${this.href}
 						download=${ifDefined(this.download)}
 						?autofocus=${this.autofocus}
@@ -65,13 +71,7 @@ export class AppButton extends LitElement {
 					<button
 						part="button"
 						role="button"
-						class=${classMap({
-							[this.variant]: true,
-							outlined: this.outlined,
-							text: this.text,
-							icon: this.icon,
-							['focus-visible']: true,
-						})}
+						class="focus-visible"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						?hidden=${this.hidden}

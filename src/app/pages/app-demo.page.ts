@@ -71,20 +71,20 @@ export class AppDemoPage extends LitElement {
 				<app-button variant="success">Success</app-button>
 				<app-button variant="warning">Warning</app-button>
 				<app-button variant="error">Error</app-button>
-				<app-button variant="primary" outlined>Outlined</app-button>
+				<app-button variant="primary" appearance='outlined'>Outlined</app-button>
 				<app-button variant="primary" disabled>Disabled</app-button>
 				<app-button variant="primary">
 					<app-icon filled>skull</app-icon>
-					Right icon
+					Left icon
 				</app-button>
 				<app-button variant="primary">
-					Left icon
+					Right icon
 					<app-icon filled>skull</app-icon>
 				</app-button>
-				<app-button variant="primary" icon>
+				<app-button variant="primary" appearance="plain">
 					<app-icon filled>skull</app-icon>
 				</app-button>
-				<app-button variant="primary" text>Only text</app-button>
+				<app-button variant="primary" appearance="plain" href="#" target="_blank">Link</app-button>
 			</fieldset>
 
 			<fieldset>

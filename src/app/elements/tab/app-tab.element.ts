@@ -11,6 +11,7 @@ export class AppTab extends LitElement {
 		focusStyle,
 		css`
 			button {
+			    font-family: var(--font-system-ui);
 				cursor: pointer;
 				display: flex;
 				align-items: center;

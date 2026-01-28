@@ -24,13 +24,17 @@ export class AppPaginator extends LitElement {
 				gap: 10px;
 
 				app-select {
-					width: 70px;
+					width: 75px;
 				}
 			}
 
 			app-button::part(button) {
 				padding: 0;
 				height: auto;
+			}
+
+			app-select::part(select-wrapper) {
+				height: 30px;
 			}
 		`,
 	]
@@ -137,16 +141,16 @@ export class AppPaginator extends LitElement {
 				</app-select>
 			</label>
 			${this.getRangeLabel()}
-			<app-button variant="primary" icon title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
+			<app-button variant="primary" appearance="plain" title="First" @click=${this.firstPage} ?disabled=${!this.hasPreviousPage()}>
 				<app-icon>keyboard_double_arrow_left</app-icon>
 			</app-button>
-			<app-button variant="primary" icon title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
+			<app-button variant="primary" appearance="plain" title="Previous" @click=${this.previousPage} ?disabled=${!this.hasPreviousPage()}>
 				<app-icon>keyboard_arrow_left</app-icon>
 			</app-button>
-			<app-button variant="primary" icon title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
+			<app-button variant="primary" appearance="plain" title="Next" @click=${this.nextPage} ?disabled=${!this.hasNextPage()}>
 				<app-icon>keyboard_arrow_right</app-icon>
 			</app-button>
-			<app-button variant="primary" icon title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
+			<app-button variant="primary" appearance="plain" title="Last" @click=${this.lastPage} ?disabled=${!this.hasNextPage()}>
 				<app-icon>keyboard_double_arrow_right</app-icon>
 			</app-button>
 		`

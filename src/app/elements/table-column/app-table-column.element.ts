@@ -25,6 +25,7 @@ export class AppTableColumn extends LitElement {
 			button {
 				display: flex;
 				align-items: center;
+				font-family: var(--font-system-ui);
 				padding: 5px 0;
 				gap: 5px;
 				font-weight: bold;

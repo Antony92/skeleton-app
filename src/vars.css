@@ -28,16 +28,6 @@
 	--theme-warning-color: light-dark(var(--yellow-8), var(--yellow-8));
 	--theme-success-color: light-dark(var(--green-8), var(--green-8));
 	--theme-error-color: light-dark(var(--red-8), var(--red-8));
-	
-	/* Theme Hovers */
-	--theme-white-hover: light-dark(var(--gray-2), var(--gray-2));
-	--theme-dark-hover: light-dark(var(--gray-11), var(--gray-11));
-	--theme-default-hover: light-dark(var(--stone-7), var(--stone-7));
-	--theme-primary-hover: light-dark(var(--blue-7), var(--blue-7));
-	--theme-neutral-hover: light-dark(var(--stone-7), var(--stone-7));
-	--theme-warning-hover: light-dark(var(--yellow-7), var(--yellow-7));
-	--theme-success-hover: light-dark(var(--green-7), var(--green-7));
-	--theme-error-hover: light-dark(var(--red-7), var(--red-7));
 
 	/* Theme Layers */
 	--theme-default-layer: light-dark(var(--gray-2), var(--gray-9));

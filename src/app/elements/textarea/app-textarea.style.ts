@@ -50,8 +50,11 @@ export const appTextareaStyle = css`
 				width: 100%;
 				resize: vertical;
 				border: 1px solid var(--theme-default-color);
-				border-radius: 3px;
+				border-radius: var(--radius-2);
 				background: none;
+				font-family: var(--font-system-ui);
+				font-size: var(--font-size-1);
+				font-weight: var(--font-weight-4);
 
 				&::placeholder {
 					color: var(--theme-default-color);

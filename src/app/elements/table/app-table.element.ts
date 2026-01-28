@@ -154,7 +154,7 @@ export class AppTable extends LitElement {
 							<app-button
 								class="clear-filters"
 								variant="primary"
-								outlined
+								appearance="outlined"
 								@click=${this.clearAllFilters}
 								?disabled=${!this.filtersApplied}
 							>

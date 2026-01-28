@@ -14,6 +14,7 @@ export class AppSelectOption extends LitElement {
 			}
 
 			button {
+			    font-family: var(--font-system-ui);
 				cursor: pointer;
 				display: flex;
 				align-items: center;

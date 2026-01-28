@@ -8,7 +8,7 @@ export const appGlobalMessageStyle = css`
 		box-shadow: var(--shadow-2);
 		padding: 15px;
 		border: none;
-		border-radius: 0.25rem;
+		border-radius: var(--radius-2);
 		font-weight: var(--font-weight-5);
 		color: var(--theme-white-color);
 
@@ -34,7 +34,6 @@ export const appGlobalMessageStyle = css`
 
 		.icon {
 			color: var(--theme-white-color);
-			font-size: 1.2rem;
 		}
 
 		button {
@@ -43,6 +42,7 @@ export const appGlobalMessageStyle = css`
 			cursor: pointer;
 			border: none;
 			color: var(--theme-white-color);
+			font-size: var(--font-size-1);
 		}
 	}
 `

@@ -38,7 +38,7 @@ export class AppThemeSwitcher extends LitElement {
 	render() {
 		return html`
 			<app-dropdown @app-select=${this.changeTheme} title="Choose theme">
-				<app-button slot="trigger" icon>
+				<app-button slot="trigger" appearance="plain">
 					<app-icon filled>
 						${choose(this.theme, [
 							['light', () => html`light_mode`],
