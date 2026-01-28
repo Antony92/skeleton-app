@@ -13,6 +13,10 @@ export class AppHomePage extends LitElement {
 				width: 100%;
 				height: 100%;
 			}
+
+			h3 {
+				margin: 0 0 10px 0;
+			}
 		`,
 	]
 
@@ -24,13 +28,13 @@ export class AppHomePage extends LitElement {
 	protected firstUpdated() {}
 
 	render() {
-        return html`
-            <app-select combobox>
-                <app-select-option value="option-1">Option 1</app-select-option>
-       					<app-select-option value="option-2">Option 2</app-select-option>
-       					<app-select-option value="option-3">Option 3</app-select-option>
-       					<app-select-option value="option-4">Option 4</app-select-option>
-       					<app-select-option value="option-5">Option 5</app-select-option>
-            </app-select>`
+		return html` <h3>Home</h3>
+			<app-select combobox>
+				<app-select-option value="option-1">Option 1</app-select-option>
+				<app-select-option value="option-2">Option 2</app-select-option>
+				<app-select-option value="option-3">Option 3</app-select-option>
+				<app-select-option value="option-4">Option 4</app-select-option>
+				<app-select-option value="option-5">Option 5</app-select-option>
+			</app-select>`
 	}
 }

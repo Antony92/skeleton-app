@@ -34,7 +34,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 	accessor files: FileList | null = null
 
 	@property({ type: String })
-	accessor placeholder: string | undefined
+	accessor placeholder = ''
 
 	@property({ type: Number })
 	accessor size: number | undefined
@@ -46,7 +46,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 	accessor fileURL = ''
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false

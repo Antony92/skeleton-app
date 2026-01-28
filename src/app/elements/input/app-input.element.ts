@@ -45,7 +45,7 @@ export class AppInput extends LitElement implements FormControl {
 	accessor defaultValue = ''
 
 	@property({ type: String })
-	accessor placeholder: string | undefined
+	accessor placeholder = ''
 
 	@property()
 	accessor max: number | string | undefined
@@ -66,7 +66,7 @@ export class AppInput extends LitElement implements FormControl {
 	accessor pattern: string | undefined
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false

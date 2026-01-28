@@ -1,13 +1,12 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { getURLSearchParamsAsObject } from '@app/utils/url'
-import { login, setAccessToken, setUser } from '@app/shared/auth'
 import { when } from 'lit/directives/when.js'
 import { setPageTitle } from '@app/utils/html'
-import 'ldrs/ring2'
 import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
 import { navigate } from '@app/shared/navigation'
+import { setUser } from '@app/shared/auth'
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
@@ -41,16 +40,14 @@ export class AppLoginPage extends LitElement {
 			return
 		}
 		try {
-			const user = JSON.parse(window.atob(token.split('.')[1]))
+			const user = JSON.parse(atob(token.split('.')[1]))
 			setUser({
 				id: user.id,
 				username: user.email,
 				name: `${user.firstName} ${user.lastName}`,
-				roles: [Role.ADMIN],
+        roles: [Role.ADMIN],
+        accessToken: token
 			})
-			// const { user } = JSON.parse(window.atob(token.split('.')[1]))
-			// setUser(user)
-			setAccessToken(token)
 			navigate(localStorage.getItem('requested-page') || '/')
 			localStorage.removeItem('requested-page')
 		} catch (error) {
@@ -66,7 +63,6 @@ export class AppLoginPage extends LitElement {
 					this.error,
 					() => html`<p>${this.error}</p>`,
 					() => html`
-						<l-ring-2 color="var(--theme-primary-color)"></l-ring-2>
 						<p>Authenticating...</p>
 					`,
 				)}

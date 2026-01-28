@@ -2,13 +2,15 @@ import { html, LitElement, css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { when } from 'lit/directives/when.js'
-import { debounce, Subject, Subscription, timer } from 'rxjs'
 import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/select/app-select.element'
 import '@app/elements/select-option/app-select-option.element'
 import '@app/elements/input/app-input.element'
 import { defaultStyle } from '@app/styles/default.style'
+import type { AppInput } from '@app/elements/input/app-input.element'
+import type { AppSelect } from '@app/elements/select/app-select.element'
+import { debounce } from '@app/utils/html'
 
 @customElement('app-table-column')
 export class AppTableColumn extends LitElement {
@@ -78,22 +80,7 @@ export class AppTableColumn extends LitElement {
 	@property({ type: Number })
 	accessor delay = 0
 
-	private filterEvent = new Subject<string>()
-
-	private filterSubscription: Subscription = new Subscription()
-
-	connectedCallback() {
-		super.connectedCallback()
-		this.filterSubscription = this.filterEvent
-			.asObservable()
-			.pipe(debounce((value) => (value ? timer(this.delay) : timer(0))))
-			.subscribe(() => this.dispatchFilterValueEvent())
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-		this.filterSubscription.unsubscribe()
-	}
+	private debouncedSearch?: ReturnType<typeof debounce>
 
 	dispatchFilterValueEvent() {
 		this.dispatchEvent(new AppTableColumnFilterValueEvent({ field: this.field, value: this.value }))
@@ -103,13 +90,21 @@ export class AppTableColumn extends LitElement {
 		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }))
 	}
 
-	filterColumnValue(event: Event) {
-		const input = event.target as HTMLInputElement | HTMLSelectElement
-		this.value = input.value?.toString()
-		this.filterEvent.next(this.value)
+	private search(value: string) {
+		this.value = value
+		if (!this.debouncedSearch) {
+			this.debouncedSearch = debounce(() => this.dispatchFilterValueEvent(), this.delay)
+		}
+		return this.debouncedSearch()
 	}
 
-	filterColumnOrder() {
+	private filterColumnValue(event: Event) {
+		const input = event.target as AppInput | AppSelect
+		this.value = input.value
+		this.dispatchFilterValueEvent()
+	}
+
+	private filterColumnOrder() {
 		if (!this.sortable) return
 
 		if (!this.order) {
@@ -147,7 +142,11 @@ export class AppTableColumn extends LitElement {
 			${when(
 				this.filterable && this.type === 'text',
 				() => html`
-					<app-input placeholder="Filter by ${this.label?.toLowerCase()}" .value=${this.value} @app-input=${this.filterColumnValue}>
+					<app-input
+						placeholder="Filter by ${this.label?.toLowerCase()}"
+						.value=${this.value}
+						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+					>
 					</app-input>
 				`,
 			)}
@@ -158,7 +157,7 @@ export class AppTableColumn extends LitElement {
 						type="number"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@app-input=${this.filterColumnValue}
+						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
 					>
 					</app-input>
 				`,
@@ -170,7 +169,7 @@ export class AppTableColumn extends LitElement {
 						type="date"
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@cc-input=${this.filterColumnValue}
+						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
 					>
 					</app-input>
 				`,

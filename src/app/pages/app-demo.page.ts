@@ -44,6 +44,10 @@ export class AppDemoPage extends LitElement {
 				gap: 10px;
 				border-radius: var(--radius-2);
 			}
+
+			h3 {
+				margin: 0 0 10px 0;
+			}
 		`,
 	]
 
@@ -59,7 +63,7 @@ export class AppDemoPage extends LitElement {
 
 	render() {
 		return html`
-			Demo
+			<h3>Demo</h3>
 			<fieldset>
 				<legend>Buttons</legend>
 				<app-button variant="default">Default</app-button>

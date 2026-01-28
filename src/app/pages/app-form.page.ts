@@ -24,6 +24,10 @@ export class AppFormPage extends LitElement {
 				justify-content: flex-start;
 				gap: 10px;
 			}
+
+			h3 {
+				margin: 0 0 10px 0;
+			}
 		`,
 	]
 
@@ -51,6 +55,7 @@ export class AppFormPage extends LitElement {
 
 	render() {
 		return html`
+			<h3>Form</h3>
 			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
 				<app-input required name="name" label="Name"></app-input>
 				<app-input required name="email" label="Email" type="email"></app-input>

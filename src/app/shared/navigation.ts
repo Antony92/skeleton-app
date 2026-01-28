@@ -22,21 +22,21 @@ export const initializeNavigation = (options: NavigationOptions) => {
 	state.options = options
 
 	// 2. Setup listeners
-	window.navigation.addEventListener('navigate', onNavigation)
-	window.navigation.addEventListener('navigatesuccess', onNavigationSuccess)
-	window.navigation.addEventListener('navigateerror', onNavigationError)
+	navigation.addEventListener('navigate', onNavigation)
+	navigation.addEventListener('navigatesuccess', onNavigationSuccess)
+	navigation.addEventListener('navigateerror', onNavigationError)
 
 	// 3. Handle first load
 	handleInitialLoad()
 }
 
 export const destroyNavigation = () => {
-	window.navigation.removeEventListener('navigate', onNavigation)
-	window.navigation.removeEventListener('navigatesuccess', onNavigationSuccess)
-	window.navigation.removeEventListener('navigateerror', onNavigationError)
+	navigation.removeEventListener('navigate', onNavigation)
+	navigation.removeEventListener('navigatesuccess', onNavigationSuccess)
+	navigation.removeEventListener('navigateerror', onNavigationError)
 }
 
-export const navigate = (url: string) => window.navigation.navigate(url)
+export const navigate = (url: string) => navigation.navigate(url)
 
 export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value)
 
@@ -57,7 +57,10 @@ const handleInitialLoad = async () => {
 	const route = findRoute(url.href)
 
 	if (!route) return
-	if (route.redirect) return navigate(route.redirect)
+	if (route.redirect) {
+		navigate(route.redirect)
+		return
+	}
 
 	state.currentRoute = route
 	await interceptHandler(url, route, state.options.outlet)
@@ -67,11 +70,12 @@ const onNavigation = async (event: NavigateEvent) => {
 	if (shouldNotIntercept(event) || !state.options) return
 
 	const url = new URL(event.destination.url)
-	const currentEntry = window.navigation.currentEntry
+	const currentEntry = navigation.currentEntry
 
 	// Avoid redundant navigation
 	if (event.destination.url === currentEntry?.url) {
-		return event.preventDefault()
+		event.preventDefault()
+		return
 	}
 
 	const route = findRoute(url.href)
@@ -80,8 +84,9 @@ const onNavigation = async (event: NavigateEvent) => {
 	// Handle Redirects
 	if (route.redirect) {
 		event.preventDefault()
-		return navigate(route.redirect)
-  }
+		navigate(route.redirect)
+		return
+	}
 
 	// Handle Unsaved Changes
 	if (state.hasUnsavedChanges) {
@@ -98,7 +103,7 @@ const onNavigation = async (event: NavigateEvent) => {
 	}
 
 	state.currentRoute = route
-  loading(true)
+	loading(true)
 
 	event.intercept({
 		handler: () => interceptHandler(url, route, state.options!.outlet),
@@ -143,7 +148,7 @@ export type Route = {
 	name?: string
 	path: string
 	redirect?: string
-	pattern?: URLPattern // Now pre-populated
+	pattern?: URLPattern
 	render?: (url: URL, params: RouteParams) => unknown
 	enter?: (url: URL, params: RouteParams) => Promise<void> | void
 	guard?: (url: URL, params: RouteParams) => Promise<boolean> | boolean
@@ -155,7 +160,7 @@ export type NavigationOptions = {
 }
 
 type State = {
-  hasUnsavedChanges: boolean,
-	currentRoute: Route | null,
-	options: NavigationOptions | null,
+	hasUnsavedChanges: boolean
+	currentRoute: Route | null
+	options: NavigationOptions | null
 }

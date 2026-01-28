@@ -1,89 +1,56 @@
 import { request } from '@app/http/request'
 import type { User } from '@app/types/user.type'
-import { BehaviorSubject, firstValueFrom } from 'rxjs'
+import { signal } from '@lit-labs/signals'
 
-// in memory access token
-let accessToken = ''
+const $user = signal<User>(null)
 
-// user subject which starts null by default until user login
-const $user = new BehaviorSubject<User>(null)
+export const getUser = () => $user.get()
 
-// user observable for subscriptions
-const $userObservable = $user.asObservable()
+export const getAccessToken = () => $user.get()?.accessToken
 
-/**
- * Set current user (should be called on login or impersonation)
- * @param user
- */
-export const setUser = (user: User) => $user.next(user)
+export const setUser = (user: User) => $user.set(user)
 
-/**
- * Remove current user (should be called on logout or end impersonation)
- */
-export const removeUser = () => $user.next(null)
-
-/**
- * Get user observable to listen for user changes
- * @returns Observable
- */
-export const getUserObservable = () => $userObservable
-
-/**
- * Set access token
- * @param token
- * @returns string
- */
-export const setAccessToken = (token: string) => (accessToken = token)
-
-/**
- * Get access token
- * @returns string
- */
-export const getAccessToken = () => accessToken
-
-/**
- * Get current user
- * @returns Promise
- */
-export const getUser = () => firstValueFrom(getUserObservable())
-
-/**
- * Check if user has roles
- * @param roles
- * @returns boolean
- */
-export const hasUserRole = async (roles: string[]) => {
-	const user = await getUser()
-	return !!user && roles && user.roles.some((role: string) => roles.includes(role))
+export const hasUserRole = (roles: string[]) => {
+	const user = $user.get()
+	return user && user.roles.some((role) => roles.includes(role))
 }
 
-/**
- * Login using oauth
- */
 export const login = () => {
-	// window.location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
-	window.location.href = `${import.meta.env.VITE_API}/login`
+	// location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
+	location.href = `${location.origin}/login`
 }
 
-/**
- * Logout
- */
 export const logout = async () => {
 	try {
-		removeUser()
+		setUser(null)
 		const req = await request(`${import.meta.env.VITE_API}/auth/logout`, { method: 'POST', credentials: 'include' })
 		const res = await req.json()
 		return res
 	} catch (error) {
-		console.error(error)
+		console.error('Logout failed: ', error)
 	}
 }
 
-/**
- * Try to impersonate user
- * @param username
- * @returns boolean
- */
+export const refreshTokenSilently = async () => {
+	if (location.pathname === '/login') {
+		return true
+	}
+	try {
+		const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' })
+		if (!req.ok) {
+			return false
+    }
+		if (!req.ok) return false
+		const { accessToken } = await req.json()
+		const { user } = JSON.parse(atob(accessToken.split('.')[1]))
+		setUser({ ...user, accessToken })
+		return true
+	} catch (error) {
+    console.error('Token refresh failed: ', error)
+		return false
+	}
+}
+
 export const impersonate = async (username: string) => {
 	try {
 		const req = await request(`${import.meta.env.VITE_API}/auth/impersonate`, {
@@ -93,38 +60,13 @@ export const impersonate = async (username: string) => {
 			json: true,
 			body: JSON.stringify({ username }),
 		})
-		if (req.ok) {
-			const res = await req.json()
-			const { user } = JSON.parse(window.atob(res.accessToken.split('.')[1]))
-			setAccessToken(res.accessToken)
-			setUser(user)
-		}
+		if (!req.ok) return false
+		const { accessToken } = await req.json()
+		const { user } = JSON.parse(atob(accessToken.split('.')[1]))
+		setUser({ ...user, accessToken })
 		return true
 	} catch (error) {
-		console.error(error)
-		return false
-	}
-}
-
-/**
- * Try to refresh token
- * @returns boolean
- */
-export const refreshTokenSilently = async () => {
-	if (location.pathname === '/login') {
-		return true
-	}
-	try {
-		const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' })
-		if (req.ok) {
-			const res = await req.json()
-			const { user } = JSON.parse(window.atob(res.accessToken.split('.')[1]))
-			setAccessToken(res.accessToken)
-			setUser(user)
-		}
-		return req.ok
-	} catch (error) {
-		console.error(error)
+	  console.error('Impersonation failed: ', error)
 		return false
 	}
 }

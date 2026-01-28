@@ -2,10 +2,10 @@ import { request } from '@app/http/request'
 import type { SearchParams } from '@app/types/search.type'
 import { searchParamsToQuery } from '@app/utils/url'
 
-export const getUsers = async (params?: SearchParams, hideLoading = true) => {
+export const getUsers = async (params?: SearchParams, loader = true) => {
 	try {
 		const query = searchParamsToQuery({ ...params })
-		const req = await request(`${import.meta.env.VITE_API}/users${query}`, { auth: true, hideLoading })
+		const req = await request(`${import.meta.env.VITE_API}/users${query}`, { auth: true, loader })
 		const res = await req.json()
 		return {
 			data: res.data as [],

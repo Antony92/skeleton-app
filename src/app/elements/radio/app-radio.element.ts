@@ -42,7 +42,7 @@ export class AppRadio extends LitElement implements FormControl {
 	accessor checked = false
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false

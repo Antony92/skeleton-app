@@ -1,6 +1,6 @@
 /**
  * Escape string from all html specific tags
- * @param html 
+ * @param html
  * @returns escaped string
  */
 export const escapeHtml = (html: string) => {
@@ -18,7 +18,7 @@ export const escapeHtml = (html: string) => {
 
 /**
  * Set page title based on app config + provided title
- * @param title 
+ * @param title
  */
 export const setPageTitle = (title: string) => {
 	document.title = `${import.meta.env.VITE_APP_TITLE} - ${title}`
@@ -26,7 +26,7 @@ export const setPageTitle = (title: string) => {
 
 /**
  * Transform html form to object
- * @param form 
+ * @param form
  * @returns object
  */
 export const serializeForm = (form: HTMLFormElement) => {
@@ -35,8 +35,8 @@ export const serializeForm = (form: HTMLFormElement) => {
 
 /**
  * Format bytes to user readable
- * @param bytes 
- * @param decimals 
+ * @param bytes
+ * @param decimals
  * @returns pretty string
  */
 export const formatBytes = (bytes: number, decimals = 2) => {
@@ -49,4 +49,14 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 	const i = Math.floor(Math.log(bytes) / Math.log(k))
 
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+export const debounce = (func: Function, timeout = 300) => {
+	let timer: number
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	return (...args: any) => {
+		clearTimeout(timer)
+		timer = setTimeout(() => func.apply(this, args), timeout)
+	}
 }

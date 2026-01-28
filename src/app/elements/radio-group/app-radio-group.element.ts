@@ -33,7 +33,7 @@ export class AppRadioGroup extends LitElement implements FormControl {
 	accessor defaultValue = ''
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false

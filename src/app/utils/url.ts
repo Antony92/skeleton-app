@@ -10,9 +10,9 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
 		.filter((key) => searchParams[key] !== null && searchParams[key] !== undefined && searchParams[key] !== '')
 		.map((key) => search.set(key, searchParams[key]!.toString()))
 	const query = search.toString()
-	const url = `${window.location.pathname}${query ? `?${query}` : ''}`
+	const url = `${location.pathname}${query ? `?${query}` : ''}`
 	//history.replaceState(null, '', url)
-	window.navigation.navigate(url, { history: 'replace' })
+	navigation.navigate(url, { history: 'replace' })
 }
 
 /**
@@ -20,7 +20,7 @@ export const addSearchParamsToURL = (searchParams: SearchParams) => {
  */
 export const clearSearchParamsFromURL = () => {
   // history.replaceState(null, '', window.location.pathname)
-	window.navigation.navigate(window.location.pathname, { history: 'replace' })
+	navigation.navigate(location.pathname, { history: 'replace' })
 }
 
 /**
@@ -42,7 +42,7 @@ export const searchParamsToQuery = (searchParams: SearchParams) => {
  * @returns object
  */
 export const getURLSearchParamsAsObject = () => {
-	return Object.fromEntries(new URLSearchParams(window.location.search))
+	return Object.fromEntries(new URLSearchParams(location.search))
 }
 
 /**
@@ -50,6 +50,6 @@ export const getURLSearchParamsAsObject = () => {
  * @returns Map
  */
 export const getURLSearchParamsAsMap = () => {
-	const object = Object.fromEntries(new URLSearchParams(window.location.search))
+	const object = Object.fromEntries(new URLSearchParams(location.search))
 	return new Map(Object.entries(object))
 }

@@ -6,19 +6,20 @@ import { classMap } from 'lit/directives/class-map.js'
 import { Role } from '@app/types/user.type'
 import '@app/elements/icon/app-icon.element'
 import { defaultStyle } from '@app/styles/default.style'
+import { SignalWatcher } from '@lit-labs/signals'
 
 @customElement('app-sidebar')
-export class AppSidebar extends LitElement {
-	static styles = [defaultStyle, appSidebarStyle, css``]
+export class AppSidebar extends SignalWatcher(LitElement) {
+  static styles = [defaultStyle, appSidebarStyle, css``]
 
 	connectedCallback() {
 		super.connectedCallback()
-		window.navigation.addEventListener('navigatesuccess', this.setActiveLink)
+		navigation.addEventListener('navigatesuccess', this.setActiveLink)
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
-		window.navigation.removeEventListener('navigatesuccess', this.setActiveLink)
+		navigation.removeEventListener('navigatesuccess', this.setActiveLink)
 	}
 
 	setActiveLink = (event: Event) => {

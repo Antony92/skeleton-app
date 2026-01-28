@@ -45,7 +45,7 @@ export class AppTextarea extends LitElement implements FormControl {
 	accessor defaultValue = ''
 
 	@property({ type: String })
-	accessor placeholder: string | undefined
+	accessor placeholder = ''
 
 	@property({ type: Number })
 	accessor rows = 4
@@ -57,7 +57,7 @@ export class AppTextarea extends LitElement implements FormControl {
 	accessor minlength: number | undefined
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false

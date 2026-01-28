@@ -59,7 +59,7 @@ export class AppSelect extends LitElement implements FormControl {
 	accessor label = ''
 
 	@property({ type: String })
-	accessor value: string = ''
+	accessor value = ''
 
 	@property({ type: String })
 	accessor defaultValue = ''
@@ -68,19 +68,19 @@ export class AppSelect extends LitElement implements FormControl {
 	accessor displayValue = ''
 
 	@property({ type: String })
-	accessor placeholder: string | undefined
+	accessor placeholder = ''
 
 	@property({ type: Boolean, reflect: true })
 	accessor open = false
 
 	@property({ type: Boolean })
-  accessor multiple = false
+	accessor multiple = false
 
-  @property({ type: Boolean })
+	@property({ type: Boolean })
 	accessor combobox = false
 
 	@state()
-	private accessor errorMessage: string = ''
+	private accessor errorMessage = ''
 
 	@state()
 	accessor touched = false
@@ -93,7 +93,6 @@ export class AppSelect extends LitElement implements FormControl {
 
 	@query('[popover]')
 	accessor popup!: HTMLElement
-
 
 	@queryAssignedElements({ selector: 'app-select-option' })
 	accessor assignedOptions!: AppSelectOption[]
@@ -144,7 +143,7 @@ export class AppSelect extends LitElement implements FormControl {
 					option.tabIndex = -1
 				}
 			})
-    })
+		})
 	}
 
 	private attachOptionListeners(option: AppSelectOption) {
@@ -202,9 +201,9 @@ export class AppSelect extends LitElement implements FormControl {
 	async openSelect() {
 		this.open = true
 		await this.updateComplete
-    this.popup.showPopover()
-    if (!this.combobox) {
-      this.focusSelectedOption()
+		this.popup.showPopover()
+		if (!this.combobox) {
+			this.focusSelectedOption()
 		}
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
 		window.addEventListener('keyup', this.handleKeyup)

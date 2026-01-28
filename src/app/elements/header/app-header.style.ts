@@ -35,5 +35,7 @@ export const appHeaderStyle = css`
 		align-items: center;
 		justify-content: center;
 		box-shadow: var(--shadow-1);
+		font-size: 1.2rem;
+		border: none;
 	}
 `

@@ -16,7 +16,14 @@ import { AppTableFilterEvent } from '@app/events/table.event'
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
-	static styles = [tableStyle, css``]
+	static styles = [
+		tableStyle,
+		css`
+			h3 {
+				margin: 0 0 10px 0;
+			}
+		`,
+	]
 
 	@state()
 	accessor users: PaginatedResponse<any> = {
@@ -118,6 +125,7 @@ export class AppTablePage extends LitElement {
 
 	render() {
 		return html`
+			<h3>Table</h3>
 			<app-table
 				.searchValue=${this.searchParamsMap.get('search') || ''}
 				.filtersApplied=${this.searchParamsMap.size > 0}

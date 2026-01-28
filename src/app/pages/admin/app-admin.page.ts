@@ -4,7 +4,13 @@ import { setPageTitle } from '@app/utils/html'
 
 @customElement('app-admin-page')
 export class AppAdminPage extends LitElement {
-	static styles = [css``]
+	static styles = [
+		css`
+			h3 {
+				margin: 0 0 10px 0;
+			}
+		`,
+	]
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -12,6 +18,6 @@ export class AppAdminPage extends LitElement {
 	}
 
 	render() {
-		return html` Admin `
+		return html` <h3>Admin</h3> `
 	}
 }

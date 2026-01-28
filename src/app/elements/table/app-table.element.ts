@@ -6,8 +6,8 @@ import '@app/elements/button/app-button.element'
 import '@app/elements/icon/app-icon.element'
 import '@app/elements/input/app-input.element'
 import type { AppInput } from '@app/elements/input/app-input.element'
-import { debounce, Subject, Subscription, timer } from 'rxjs'
 import { defaultStyle } from '@app/styles/default.style'
+import { debounce } from '@app/utils/html'
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -61,9 +61,8 @@ export class AppTable extends LitElement {
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
 	accessor tables!: HTMLTableElement[]
 
-	private searchParamsMap = new Map()
-	private searchEvent = new Subject<string>()
-	private searchSubscription: Subscription = new Subscription()
+  private searchParamsMap = new Map()
+  private debouncedSearch?: ReturnType<typeof debounce>
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -90,31 +89,22 @@ export class AppTable extends LitElement {
 			this.filtersApplied = this.hasFiltersApplied()
 			this.dispatchFilterEvent()
 		})
-		this.searchSubscription = this.searchEvent
-			.asObservable()
-			.pipe(debounce((value) => (value ? timer(300) : timer(0))))
-			.subscribe(() => this.dispatchFilterEvent())
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-		this.searchSubscription.unsubscribe()
-	}
-
-	protected firstUpdated() {
 		if (this.searchValue) {
 			this.searchParamsMap.set('search', this.searchValue)
 		}
-	}
+  }
 
-	search(value: string) {
-		if (value) {
+ 	private search(value: string) {
+    if (value) {
 			this.searchParamsMap.set('search', value)
 		} else {
 			this.searchParamsMap.delete('search')
 		}
 		this.filtersApplied = this.hasFiltersApplied()
-		this.searchEvent.next(value)
+		if (!this.debouncedSearch) {
+			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), 300)
+		}
+		return this.debouncedSearch()
 	}
 
 	hasFiltersApplied() {

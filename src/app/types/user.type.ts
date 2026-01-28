@@ -3,7 +3,8 @@ export type User = {
 	name: string
 	username: string
 	roles: string[]
-	impersonated?: string
+  impersonated?: string
+	accessToken?: string
 } | null
 
 export const Role = {

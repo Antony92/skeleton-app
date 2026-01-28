@@ -47,11 +47,11 @@ export const dummyLogin = async (user: { username: string; password: string }) =
 			body: JSON.stringify(user),
 		})
 		const res = await req.json()
-    window.location.href = `${location.origin}/login?token=${res.accessToken}`
-    location.reload()
+		location.href = `${location.origin}/login?token=${res.accessToken}`
+		location.reload()
 	} catch (error) {
 		console.error(error)
-    window.location.href = `${location.origin}/login?error=Something went wrong!`
+		location.href = `${location.origin}/login?error=Something went wrong!`
 		location.reload()
 	}
 }
