@@ -15,5 +15,5 @@ Promise.allSettled([
     customElements.whenDefined('app-root')
 ]).then(() => {
     document.querySelector('body')?.classList.remove('initializing')
-    document.querySelector('.initializing-loader')?.remove()
+    document.querySelector('.loader')?.remove()
 })
