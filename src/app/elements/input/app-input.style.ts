@@ -71,10 +71,12 @@ export const appInputStyle = css`
 
 			.prefix ::slotted(*) {
 				padding-left: 10px;
+				font-size: 20px;
 			}
 
 			.suffix ::slotted(*) {
 				padding-right: 10px;
+				font-size: 20px;
 			}
 
 			&:has(input:disabled) {
