@@ -9,27 +9,22 @@ import { html, render } from 'lit'
 export const globalMessage = async (message: string, level: 'info' | 'warning' | 'error' = 'info') => {
 	await import('@app/elements/global-message/app-global-message.element')
 
+	// Locate or create GlobalMessage
 	let globalMessage = document.querySelector<AppGlobalMessage>('app-global-message#global-message')
 
-	const template = html`${message}`
-
-	// If exist update else create
-	if (globalMessage) {
-		Object.assign(globalMessage, { level })
-		render(template, globalMessage)
-	} else {
-		globalMessage = Object.assign(document.createElement('app-global-message'), {
-			id: 'global-message',
-			level,
-		})
-
-		// Remove from DOM after hide animation finishes
+	if (!globalMessage) {
+		globalMessage = document.createElement('app-global-message')
+		globalMessage.id = 'global-message'
 		globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove())
-
-		// Render
-		render(template, globalMessage)
 		document.body.appendChild(globalMessage)
 	}
+
+	// Set up new state
+	const template = html`${message}`
+	Object.assign(globalMessage, { level })
+
+	// render
+	render(template, globalMessage)
 
 	return globalMessage.show()
 }
