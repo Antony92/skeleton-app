@@ -1,7 +1,7 @@
 import { css } from 'lit'
 
 export const appSnackbarStyle = css`
-	.snackbar {
+	[popover] {
 		align-items: center;
 		gap: 10px;
 		max-width: 85vw;
@@ -9,6 +9,8 @@ export const appSnackbarStyle = css`
 		padding: 15px;
 		border: none;
 		border-radius: 0.25rem;
+		background-color: var(--background);
+		color: var(--color);
 
 		&:popover-open {
 			display: flex;
@@ -52,46 +54,45 @@ export const appSnackbarStyle = css`
 		}
 
 		button {
-		    font-family: var(--font-system-ui);
+			font-family: var(--font-system-ui);
 			margin-left: auto;
 			background: none;
 			cursor: pointer;
 			border: none;
-			color: var(--theme-primary-color);
+			color: var(--action);
 			font-weight: var(--font-weight-6);
 
 			&:hover {
-				color: color-mix(in oklab, var(--theme-primary-color), black 8%);
+				color: color-mix(in oklab, var(--action), black 8%);
 			}
 		}
+	}
 
-		&.default {
-			background-color: var(--theme-inverse-layer);
-			color: var(--theme-color-inverse);
-		}
+	:host([variant='primary']) {
+		--background: var(--theme-primary-layer);
+		--color: var(--theme-white-color);
+		--action: var(--theme-white-color);
+	}
 
-		&.primary {
-			background-color: var(--theme-primary-layer);
-			color: var(--theme-white-color);
-		}
+	:host([variant='success']) {
+		--background: var(--theme-success-layer);
+		--color: var(--theme-white-color);
+		--action: var(--theme-white-color);
+	}
 
-		&.success {
-			background-color: var(--theme-success-layer);
-			color: var(--theme-white-color);
-		}
+	:host([variant='warning']) {
+		--background: var(--theme-warning-layer);
+		--color: var(--theme-white-color);
+		--action: var(--theme-white-color);
+	}
 
-		&.error {
-			background-color: var(--theme-error-layer);
-			color: var(--theme-white-color);
-		}
+	:host([variant='error']) {
+		--background: var(--theme-error-layer);
+		--color: var(--theme-white-color);
+		--action: var(--theme-white-color);
+	}
 
-		&.warning {
-			background-color: var(--theme-warning-layer);
-			color: var(--theme-white-color);
-		}
-
-		slot[name='icon'] {
-			font-size: 1.2rem;
-		}
+	slot[name='icon'] {
+		font-size: 1.2rem;
 	}
 `

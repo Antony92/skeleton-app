@@ -16,7 +16,7 @@ export const getProducts = async (search?: string, limit = 10) => {
 
 export const getProduct = async (id: string, loader = true) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader })
+    const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader })
 		const res = await req.json()
 		return res
 	} catch (error) {

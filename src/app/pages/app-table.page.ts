@@ -173,7 +173,9 @@ export class AppTablePage extends LitElement {
 									<td sticky>
 										<input type="checkbox" .checked=${user.selected} @change=${() => this.toggleSelected(user)} />
 									</td>
-									<td>${user.id}</td>
+									<td>
+										<a href="/test/${user.id}">${user.id} </a>
+									</td>
 									<td>${user.username}</td>
 									<td>${user.firstName}</td>
 									<td>${user.lastName}</td>

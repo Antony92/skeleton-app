@@ -15,6 +15,9 @@ export class AppSnackbar extends LitElement {
 		css`
 			:host {
 				display: none;
+				--background: var(--theme-inverse-layer);
+				--color: var(--theme-color-inverse);
+				--action: var(--theme-primary-color);
 			}
 
 			:host([open]) {
@@ -23,16 +26,16 @@ export class AppSnackbar extends LitElement {
 		`,
 	]
 
-	@query('.snackbar')
+	@query('[popover]')
 	accessor snackbar!: HTMLDivElement
 
 	@property({ type: String })
 	accessor action = ''
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	accessor variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
 
-	@property({ type: String })
+	@property({ type: String, reflect: true})
 	accessor position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom'
 
 	@property({ type: Number })
@@ -94,7 +97,7 @@ export class AppSnackbar extends LitElement {
 
 	render() {
 		return html`
-			<div class="snackbar" popover="manual" class=${classMap({ snackbar: true, [this.variant]: true, [this.position]: true })}>
+			<div popover="manual" class=${classMap({ [this.position]: true })}>
 				<slot name="icon"></slot>
 				<slot></slot>
 				${when(this.action, () => html`<button class="focus-visible" @click=${this.onAction}>${this.action}</button>`)}
