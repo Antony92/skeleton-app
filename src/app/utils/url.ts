@@ -12,6 +12,6 @@ export const searchParamsToQuery = (params: SearchParams) => {
 			search.set(key, String(value))
 		}
 	})
-	const query = search.toString()
-	return query ? `?${query}` : ``
+	const query = search.size > 0 ? `?${search.toString()}` : ``
+	return query
 }

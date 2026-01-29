@@ -35,10 +35,14 @@ export class AppTableColumn extends LitElement {
 				&.sortable {
 					cursor: pointer;
 
+					app-icon {
+						font-size: 20px;
+						transition: opacity 0.3s;
+					}
+
 					&[order='none'] {
 						app-icon {
 							opacity: 0;
-							transition: opacity 0.3s;
 						}
 
 						&:not(:focus):hover app-icon {

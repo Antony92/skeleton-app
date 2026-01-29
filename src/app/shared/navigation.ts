@@ -61,10 +61,8 @@ export const addSearchToRoute = (params: SearchParams) => {
 			search.set(key, String(value))
 		}
 	})
-	const query = search.toString()
-	if (query) {
-		navigation.navigate(`${location.pathname}?${query}`, { history: 'replace' })
-	}
+	const query = search.size > 0 ? `?${search.toString()}` : ``
+	navigation.navigate(`${location.pathname}${query}`, { history: 'replace' })
 }
 
 export const clearRouteSearch = () => {
