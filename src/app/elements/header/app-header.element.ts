@@ -34,23 +34,6 @@ export class AppHeader extends SignalWatcher(LitElement) {
 			.toUpperCase()
 	})
 
-	connectedCallback() {
-		super.connectedCallback()
-		navigation.addEventListener('navigatesuccess', this.setActiveLink)
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-		navigation.removeEventListener('navigatesuccess', this.setActiveLink)
-	}
-
-	setActiveLink = (event: Event) => {
-		const target = event.target as Navigation
-		const url = new URL(target.currentEntry?.url || '')
-		this.renderRoot.querySelector('a.active')?.classList.remove('active')
-		this.renderRoot.querySelector(`a[href="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
-	}
-
 	async signIn() {
 		localStorage.removeItem('requested-page')
 		login()

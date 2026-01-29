@@ -25,8 +25,8 @@ export class AppSidebar extends SignalWatcher(LitElement) {
 	setActiveLink = (event: Event) => {
 		const target = event.target as Navigation
 		const url = new URL(target.currentEntry?.url || '')
-		this.renderRoot.querySelector('a.active')?.classList.remove('active')
-		this.renderRoot.querySelector(`a[href="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
+    this.renderRoot.querySelector('a.active')?.classList.remove('active')
+		this.renderRoot.querySelector(`a[href^="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
 	}
 
 	render() {
@@ -63,6 +63,14 @@ export class AppSidebar extends SignalWatcher(LitElement) {
 								<app-icon class="icon" filled>table</app-icon>
 							</span>
 							<span>Table</span>
+						</a>
+					</li>
+					<li>
+						<a href="/test/1" class=${classMap({ active: location.pathname.includes('/test') })}>
+							<span>
+								<app-icon class="icon" filled>unknown_document</app-icon>
+							</span>
+							<span>Page</span>
 						</a>
 					</li>
 					${whenUserRole(

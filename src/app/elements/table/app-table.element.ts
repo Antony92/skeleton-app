@@ -62,7 +62,7 @@ export class AppTable extends LitElement {
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
 	accessor tables!: HTMLTableElement[]
 
-  private searchParamsMap = new Map()
+  private filterMap = new Map()
   private debouncedSearch?: ReturnType<typeof debounce>
 
 	connectedCallback() {
@@ -70,9 +70,9 @@ export class AppTable extends LitElement {
 		this.addEventListener('app-table-column-filter-value', (event) => {
 			const { field, value } = event.filter
 			if (value) {
-				this.searchParamsMap.set(field, value)
+				this.filterMap.set(field, value)
 			} else {
-				this.searchParamsMap.delete(field)
+				this.filterMap.delete(field)
 			}
 			this.filtersApplied = this.hasFiltersApplied()
 			this.dispatchFilterEvent()
@@ -81,25 +81,25 @@ export class AppTable extends LitElement {
 			const { field, order } = event.filter
 			this.columns.filter((column) => column !== event.target).forEach((column) => column.clearOrderFilter())
 			if (order) {
-				this.searchParamsMap.set('sort', field)
-				this.searchParamsMap.set('order', order)
+				this.filterMap.set('sort', field)
+				this.filterMap.set('order', order)
 			} else {
-				this.searchParamsMap.delete('sort')
-				this.searchParamsMap.delete('order')
+				this.filterMap.delete('sort')
+				this.filterMap.delete('order')
 			}
 			this.filtersApplied = this.hasFiltersApplied()
 			this.dispatchFilterEvent()
 		})
 		if (this.searchValue) {
-			this.searchParamsMap.set('search', this.searchValue)
+			this.filterMap.set('search', this.searchValue)
 		}
   }
 
  	private search(value: string) {
     if (value) {
-			this.searchParamsMap.set('search', value)
+			this.filterMap.set('search', value)
 		} else {
-			this.searchParamsMap.delete('search')
+			this.filterMap.delete('search')
 		}
 		this.filtersApplied = this.hasFiltersApplied()
 		if (!this.debouncedSearch) {
@@ -109,16 +109,16 @@ export class AppTable extends LitElement {
 	}
 
 	hasFiltersApplied() {
-		return this.searchParamsMap.size > 0
+		return this.filterMap.size > 0
 	}
 
 	dispatchFilterEvent() {
-		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.searchParamsMap])))
+		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap])))
 	}
 
 	clearAllFilters() {
 		this.filtersApplied = false
-		this.searchParamsMap.clear()
+		this.filterMap.clear()
 		this.searchValue = ''
 		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
 		this.columns.forEach((column) => column.clearFilters())

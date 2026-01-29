@@ -2,7 +2,6 @@ import { getUsers } from '@app/services/api.service'
 import { tableStyle } from '@app/styles/table.style'
 import type { PaginatedResponse } from '@app/types/response.type'
 import { setPageTitle } from '@app/utils/html'
-import { addSearchParamsToURL, clearSearchParamsFromURL, getURLSearchParamsAsMap } from '@app/utils/url'
 import { html, LitElement, css } from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import '@app/elements/table/app-table.element'
@@ -13,6 +12,7 @@ import { when } from 'lit/directives/when.js'
 import { AppPaginator } from '@app/elements/paginator/app-paginator.element'
 import { AppPaginateEvent } from '@app/events/pagination.event'
 import { AppTableFilterEvent } from '@app/events/table.event'
+import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation'
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -37,7 +37,7 @@ export class AppTablePage extends LitElement {
 	@query('app-paginator')
 	accessor paginator!: AppPaginator
 
-	private searchParamsMap = new Map()
+	private filterMap = new Map()
 	private skip = 0
 	private limit = 10
 	private storageLimitName = 'table-limit'
@@ -66,11 +66,11 @@ export class AppTablePage extends LitElement {
 		super.connectedCallback()
 		setPageTitle('Table')
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
-		this.searchParamsMap = getURLSearchParamsAsMap()
+		this.filterMap = getRouteSearchMap()
 		this.columns.forEach((column) => {
-			column.value = this.searchParamsMap.get(column.field)
-			if (column.field === this.searchParamsMap.get('sort')) {
-				column.order = this.searchParamsMap.get('order')
+			column.value = this.filterMap.get(column.field)
+			if (column.field === this.filterMap.get('sort')) {
+				column.order = this.filterMap.get('order')
 			}
 		})
 		this.loadUsers()
@@ -80,8 +80,8 @@ export class AppTablePage extends LitElement {
 
 	async loadUsers() {
 		this.loading = true
-		const searchParams = Object.fromEntries(this.searchParamsMap)
-		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...searchParams })
+		const filters = Object.fromEntries(this.filterMap)
+		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...filters })
 		this.loading = false
 	}
 
@@ -93,16 +93,16 @@ export class AppTablePage extends LitElement {
 	}
 
 	async onTableFilter(event: AppTableFilterEvent) {
-		this.searchParamsMap = event.filters
-		addSearchParamsToURL(Object.fromEntries(this.searchParamsMap))
+		this.filterMap = event.filters
+		addSearchToRoute(Object.fromEntries(this.filterMap))
 		this.skip = 0
 		await this.loadUsers()
 		this.paginator.reset()
 	}
 
 	async onTableClear() {
-		this.searchParamsMap.clear()
-		clearSearchParamsFromURL()
+		this.filterMap.clear()
+		clearRouteSearch()
 		this.skip = 0
 		this.columns.forEach((column) => {
 			column.value = ''
@@ -127,8 +127,8 @@ export class AppTablePage extends LitElement {
 		return html`
 			<h3>Table</h3>
 			<app-table
-				.searchValue=${this.searchParamsMap.get('search') || ''}
-				.filtersApplied=${this.searchParamsMap.size > 0}
+				.searchValue=${this.filterMap.get('search') || ''}
+				.filtersApplied=${this.filterMap.size > 0}
 				searchable
 				clearable
 				@app-table-clear=${this.onTableClear}

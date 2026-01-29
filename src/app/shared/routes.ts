@@ -28,6 +28,13 @@ export const routes: Route[] = [
 		enter: async () => {
 			await import('@app/pages/app-table.page')
 		},
+  },
+  {
+		path: '/test/:id',
+		render: () => html`<app-test-page></app-test-page>`,
+		enter: async () => {
+			await import('@app/pages/app-test.page')
+		},
 	},
 	{
 		path: '/form',

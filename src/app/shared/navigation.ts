@@ -1,6 +1,7 @@
 import { render } from 'lit'
 import { confirmDialog } from '@app/shared/dialog'
 import { loading } from '@app/shared/loader'
+import type { SearchParams } from '@app/types/search.type'
 
 /* Internal Router State */
 
@@ -42,6 +43,32 @@ export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges 
 
 export const getRouteParams = (): RouteParams => {
 	return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {}
+}
+
+export const getRouteSearch = () => {
+	return Object.fromEntries(new URLSearchParams(location.search))
+}
+
+export const getRouteSearchMap = () => {
+	const object = Object.fromEntries(new URLSearchParams(location.search))
+	return new Map(Object.entries(object))
+}
+
+export const addSearchToRoute = (params: SearchParams) => {
+	const search = new URLSearchParams()
+	Object.entries(params).forEach(([key, value]) => {
+		if (value != null && value !== '') {
+			search.set(key, String(value))
+		}
+	})
+	const query = search.toString()
+	if (query) {
+		navigation.navigate(`${location.pathname}?${query}`, { history: 'replace' })
+	}
+}
+
+export const clearRouteSearch = () => {
+	navigation.navigate(location.pathname, { history: 'replace' })
 }
 
 /* Internal Logic */

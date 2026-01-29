@@ -14,6 +14,17 @@ export const getProducts = async (search?: string, limit = 10) => {
 	return []
 }
 
+export const getProduct = async (id: string, loader = true) => {
+	try {
+		const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader })
+		const res = await req.json()
+		return res
+	} catch (error) {
+		console.error(error)
+	}
+	return null
+}
+
 export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse<any>> => {
 	try {
 		const query = searchParamsToQuery({
