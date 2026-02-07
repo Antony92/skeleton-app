@@ -15,6 +15,7 @@ export class AppFileUploadErrorEvent extends Event {
 		this.message = message
 	}
 }
+
 declare global {
 	interface GlobalEventHandlersEventMap {
 		'app-file-upload': AppFileUploadEvent
