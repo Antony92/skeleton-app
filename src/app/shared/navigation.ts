@@ -147,9 +147,12 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 	const params = route.pattern?.exec(url.href)?.pathname.groups || {}
 
 	// 1. Guard check
-	if (route.guard && !(await route.guard(url, params))) {
-		loading(false)
-		return
+	if (route.guard) {
+    const outcome = await route.guard(url, params)
+    if (!outcome) {
+      loading(false)
+      return
+		}
 	}
 
 	// 2. Enter hook
