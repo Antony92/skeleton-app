@@ -69,8 +69,6 @@ export const FormControl = <T extends Constructor<LitElement>>(superClass: T) =>
 		}
 
 		protected async updated(_changedProperties: PropertyValues) {
-			super.updated(_changedProperties)
-
 			await this.updateComplete
 
 			const { flags, message, anchor } = this.getValidity()
@@ -86,7 +84,7 @@ export const FormControl = <T extends Constructor<LitElement>>(superClass: T) =>
 				this.internals.states.add(valid ? 'user-valid' : 'user-invalid')
 			}
 
-			this.validated(this.validity, this.validationMessage)
+      this.validated(this.validity, this.validationMessage)
 		}
 
 		formAssociatedCallback(form: HTMLFormElement) {}

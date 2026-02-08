@@ -27,8 +27,7 @@ export class AppHeader extends SignalWatcher(LitElement) {
 	}
 
 	private $initials = computed(() => {
-		const user = getUser()
-		return user?.name
+		return this.user?.name
 			.match(/\b(\w)/g)
 			?.join('')
 			.toUpperCase()
@@ -48,7 +47,7 @@ export class AppHeader extends SignalWatcher(LitElement) {
 		return html`
 			<header>
 				<img class="logo" src="/images/logo.png" />
-				<h2 class="title">${this.appTitle} ${this.appVersion}</h2>
+				<h2 class="title" title=${this.appVersion}>${this.appTitle}</h2>
 				${when(this.user?.impersonated, () => html`Impersonate mode`)}
 				<div class="spacer"></div>
 				<app-theme-switcher></app-theme-switcher>

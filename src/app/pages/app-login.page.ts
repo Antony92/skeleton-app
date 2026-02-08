@@ -1,11 +1,10 @@
 import { html, LitElement, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
-import { getURLSearchParamsAsObject } from '@app/utils/url'
 import { when } from 'lit/directives/when.js'
 import { setPageTitle } from '@app/utils/html'
 import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
-import { navigate } from '@app/shared/navigation'
+import { getRouteSearch, navigate } from '@app/shared/navigation'
 import { setUser } from '@app/shared/auth'
 
 @customElement('app-login-page')
@@ -29,7 +28,7 @@ export class AppLoginPage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback()
 		setPageTitle('Login')
-		const { token, error } = getURLSearchParamsAsObject()
+		const { token, error } = getRouteSearch()
 		if (error) {
 			this.error = error
 			return

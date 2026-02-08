@@ -10,27 +10,25 @@ export class AppTooltip extends LitElement {
 		focusStyle,
 		css`
 			:host {
-				display: contents;
+				width: fit-content;
+				display: block;
 			}
 
-			slot {
-				display: contents;
-			}
-
-			::slotted(*) {
+			.anchor {
 				anchor-name: --anchor;
 			}
 
 			[popover] {
 				position-anchor: --anchor;
 				position-try: flip-block;
+				position-area: bottom center;
+				top: calc(anchor(bottom) + 5px);
+				left: anchor(center);
+				right: anchor(center);
+				bottom: 0px;
 				border: none;
-				position-area: right center;
-				top: anchor(center);
-				bottom: anchor(center);
-				right: anchor(right);
-				background-color: var(--gray-9);
-				color: var(--white);
+				background-color: var(--theme-background-inverse);
+				color: var(--theme-color-inverse);
 				border-radius: 4px;
 				padding: 5px;
 				margin: 0;
@@ -47,14 +45,16 @@ export class AppTooltip extends LitElement {
 
 			:host([position='top']) [popover] {
 				position-area: top center;
-				bottom: anchor(top);
+				top: 0px;
+				bottom: calc(anchor(top) + 5px);
 				left: anchor(center);
 				right: anchor(center);
 			}
 
 			:host([position='bottom']) [popover] {
 				position-area: bottom center;
-				top: anchor(bottom);
+				top: calc(anchor(bottom) + 5px);
+				bottom: 0px;
 				left: anchor(center);
 				right: anchor(center);
 			}
@@ -63,14 +63,16 @@ export class AppTooltip extends LitElement {
 				position-area: left center;
 				top: anchor(center);
 				bottom: anchor(center);
-				left: anchor(left);
+				right: calc(anchor(left) + 5px);
+				left: 0px;
 			}
 
 			:host([position='right']) [popover] {
 				position-area: right center;
 				top: anchor(center);
 				bottom: anchor(center);
-				right: anchor(right);
+				right: 0px;
+				left: calc(anchor(right) + 5px);
 			}
 		`,
 	]
@@ -99,18 +101,15 @@ export class AppTooltip extends LitElement {
 		return this.triggers[0]
 	}
 
-	protected firstUpdated() {
-		this.trigger.addEventListener('mouseover', () => {
-			if (this.timeout !== 0) {
-				return
-			}
-			const isOverflowing = this.trigger.scrollWidth > this.trigger.clientWidth
-			if (this.onOverflowOnly && !isOverflowing) {
-				return
-			}
+	connectedCallback(): void {
+		super.connectedCallback()
+		this.addEventListener('mouseover', () => {
+      if (this.timeout !== 0) return
+			const isOverflowing = this.trigger && this.trigger.scrollWidth > this.trigger.clientWidth
+			if (this.onOverflowOnly && !isOverflowing) return
 			this.timeout = setTimeout(() => this.popup.showPopover(), this.delay)
-		})
-		this.trigger.addEventListener('mouseleave', () => {
+    })
+    this.addEventListener('mouseleave', () => {
 			clearTimeout(this.timeout)
 			this.timeout = 0
 			this.popup.hidePopover()
@@ -119,8 +118,12 @@ export class AppTooltip extends LitElement {
 
 	render() {
 		return html`
-			<slot></slot>
-			<div class="tooltip" popover>${this.content}</div>
+			<div class="anchor">
+				<slot></slot>
+			</div>
+			<div class="tooltip" popover>
+				<slot name="content">${this.content}</slot>
+			</div>
 		`
 	}
 }
