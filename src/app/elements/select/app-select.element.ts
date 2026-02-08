@@ -1,15 +1,15 @@
 import { html, LitElement, css, type PropertyValues } from 'lit'
-import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
-import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { appSelectStyle } from '@app/elements/select/app-select.style'
 import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
 import { defaultStyle } from '@app/styles/default.style'
+import { FormControl } from '@app/mixins/form-control.mixin'
 
 @customElement('app-select')
-export class AppSelect extends LitElement implements FormControl {
+export class AppSelect extends FormControl(LitElement) {
 	static styles = [
 		defaultStyle,
 		appSelectStyle,
@@ -43,9 +43,6 @@ export class AppSelect extends LitElement implements FormControl {
 	@property({ type: Boolean })
 	accessor required = false
 
-	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
-
 	@property({ type: Boolean })
 	accessor autofocus = false
 
@@ -53,16 +50,7 @@ export class AppSelect extends LitElement implements FormControl {
 	accessor hidden = false
 
 	@property({ type: String })
-	accessor name = ''
-
-	@property({ type: String })
 	accessor label = ''
-
-	@property({ type: String })
-	accessor value = ''
-
-	@property({ type: String })
-	accessor defaultValue = ''
 
 	@property({ type: String })
 	accessor displayValue = ''
@@ -79,12 +67,6 @@ export class AppSelect extends LitElement implements FormControl {
 	@property({ type: Boolean })
 	accessor combobox = false
 
-	@state()
-	private accessor errorMessage = ''
-
-	@state()
-	accessor touched = false
-
 	@query('#input')
 	accessor input!: HTMLInputElement
 
@@ -99,19 +81,8 @@ export class AppSelect extends LitElement implements FormControl {
 
 	private attachedOptions = new WeakSet<AppSelectOption>()
 
-	static formAssociated = true
-	formController!: FormControlController
-
-	constructor() {
-		super()
-		this.formController = new FormControlController(this)
-	}
-
 	connectedCallback() {
 		super.connectedCallback()
-		this.addEventListener('invalid', async () => {
-			this.touched = true
-		})
 		this.addEventListener('keydown', (event) => {
 			if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key) || !this.open) {
 				return
@@ -167,8 +138,6 @@ export class AppSelect extends LitElement implements FormControl {
 		})
 	}
 
-	protected firstUpdated() {}
-
 	protected willUpdate(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has('value')) {
 			this.assignedOptions.forEach((option) => {
@@ -183,10 +152,6 @@ export class AppSelect extends LitElement implements FormControl {
 		if (!_changedProperties.has('displayValue') && _changedProperties.has('value')) {
 			this.displayValue = this.getDisplayValue()
 		}
-	}
-
-	protected updated() {
-		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
 	}
 
 	closeSelect() {
@@ -304,49 +269,17 @@ export class AppSelect extends LitElement implements FormControl {
 		}
 	}
 
-	formDisabledCallback(disabled: boolean) {
-		this.disabled = disabled
-		this.touched = false
-		this.errorMessage = ''
-	}
-
 	formResetCallback() {
-		this.value = this.defaultValue
+		super.formResetCallback()
 		this.displayValue = this.assignedOptions.find((option) => option.value === this.value)?.textContent || ''
-		this.touched = false
-		this.errorMessage = ''
 	}
 
 	focus(options?: FocusOptions) {
 		this.trigger.focus(options)
 	}
 
-	validated(validity: ValidityState, message: string) {
-		this.errorMessage = this.touched && !validity.valid ? message : ''
-	}
-
-	get form() {
-		return this.formController.form
-	}
-
-	get validity() {
-		return this.formController.validity
-	}
-
-	get validationMessage() {
-		return this.formController.validationMessage
-	}
-
-	get willValidate() {
-		return this.formController.willValidate
-	}
-
-	checkValidity() {
-		return this.formController.checkValidity()
-	}
-
-	reportValidity() {
-		return this.formController.reportValidity()
+	getValidity() {
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
 	}
 
 	render() {
@@ -395,7 +328,7 @@ export class AppSelect extends LitElement implements FormControl {
 				<div popover="manual" part="popover" ?open=${this.open}>
 					<slot @slotchange=${this.onOptionsAdded}></slot>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
 		`
 	}

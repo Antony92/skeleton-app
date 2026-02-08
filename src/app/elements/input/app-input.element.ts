@@ -1,18 +1,15 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, query, state } from 'lit/decorators.js'
+import { customElement, property, query } from 'lit/decorators.js'
 import { appInputStyle } from '@app/elements/input/app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
-import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 import { defaultStyle } from '@app/styles/default.style'
+import { FormControl } from '@app/mixins/form-control.mixin'
 
 @customElement('app-input')
-export class AppInput extends LitElement implements FormControl {
+export class AppInput extends FormControl(LitElement) {
 	static styles = [defaultStyle, appInputStyle, css``]
-
-	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
 
 	@property({ type: Boolean })
 	accessor autofocus = false
@@ -30,19 +27,10 @@ export class AppInput extends LitElement implements FormControl {
 	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
 	@property({ type: String })
-	accessor name = ''
-
-	@property({ type: String })
 	accessor label = ''
 
 	@property({ type: String })
 	accessor autocomplete: 'on' | 'off' = 'off'
-
-	@property({ type: String })
-	accessor value = ''
-
-	@property({ type: String })
-	accessor defaultValue = ''
 
 	@property({ type: String })
 	accessor placeholder = ''
@@ -65,33 +53,8 @@ export class AppInput extends LitElement implements FormControl {
 	@property({ type: String })
 	accessor pattern: string | undefined
 
-	@state()
-	private accessor errorMessage = ''
-
-	@state()
-	accessor touched = false
-
 	@query('input')
 	accessor input!: HTMLInputElement
-
-	static formAssociated = true
-	formController!: FormControlController
-
-	constructor() {
-		super()
-		this.formController = new FormControlController(this)
-	}
-
-	connectedCallback() {
-		super.connectedCallback()
-		this.addEventListener('invalid', async () => {
-			this.touched = true
-		})
-	}
-
-	protected updated() {
-		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
-	}
 
 	onInput() {
 		this.value = this.input.value
@@ -111,48 +74,12 @@ export class AppInput extends LitElement implements FormControl {
 		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
 	}
 
-	formDisabledCallback(disabled: boolean) {
-		this.disabled = disabled
-		this.touched = false
-		this.errorMessage = ''
-	}
-
-	formResetCallback() {
-		this.value = this.defaultValue
-		this.touched = false
-		this.errorMessage = ''
-	}
-
 	focus(options?: FocusOptions) {
 		this.input.focus(options)
 	}
 
-	validated(validity: ValidityState, message: string) {
-		this.errorMessage = this.touched && !validity.valid ? message : ''
-	}
-
-	get form() {
-		return this.formController.form
-	}
-
-	get validity() {
-		return this.formController.validity
-	}
-
-	get validationMessage() {
-		return this.formController.validationMessage
-	}
-
-	get willValidate() {
-		return this.formController.willValidate
-	}
-
-	checkValidity() {
-		return this.formController.checkValidity()
-	}
-
-	reportValidity() {
-		return this.formController.reportValidity()
+	getValidity() {
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
 	}
 
 	render() {
@@ -190,7 +117,7 @@ export class AppInput extends LitElement implements FormControl {
 						<slot name="suffix"></slot>
 					</span>
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
 		`
 	}

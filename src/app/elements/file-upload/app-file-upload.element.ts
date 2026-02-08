@@ -1,15 +1,15 @@
 import { html, LitElement, css } from 'lit'
-import { customElement, property, query, queryAssignedElements, state } from 'lit/decorators.js'
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
-import { type FormControl, FormControlController } from '@app/controllers/form-control.controller'
 import { when } from 'lit/directives/when.js'
 import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event'
 import { defaultStyle } from '@app/styles/default.style'
+import { FormControl } from '@app/mixins/form-control.mixin'
 
 @customElement('app-file-upload')
-export class AppFileUpload extends LitElement implements FormControl {
+export class AppFileUpload extends FormControl(LitElement) {
 	static styles = [defaultStyle, appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
@@ -19,16 +19,10 @@ export class AppFileUpload extends LitElement implements FormControl {
 	accessor required = false
 
 	@property({ type: String })
-	accessor name = ''
-
-	@property({ type: String })
 	accessor accept = ''
 
 	@property({ type: String })
 	accessor label = ''
-
-	@property({ type: String, attribute: false })
-	accessor value = ''
 
 	@property({ attribute: false })
 	accessor files: FileList | null = null
@@ -45,32 +39,11 @@ export class AppFileUpload extends LitElement implements FormControl {
 	@property({ type: String })
 	accessor fileURL = ''
 
-	@state()
-	private accessor errorMessage = ''
-
-	@state()
-	accessor touched = false
-
 	@query('input')
 	accessor input!: HTMLInputElement
 
 	@queryAssignedElements({ slot: 'trigger' })
 	accessor triggers!: HTMLElement[]
-
-	static formAssociated = true
-	formController!: FormControlController
-
-	constructor() {
-		super()
-		this.formController = new FormControlController(this)
-	}
-
-	connectedCallback() {
-		super.connectedCallback()
-		this.addEventListener('invalid', async () => {
-			this.touched = true
-		})
-	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
@@ -87,10 +60,6 @@ export class AppFileUpload extends LitElement implements FormControl {
 		)
 	}
 
-	protected updated() {
-		this.formController.setValidity(this.input.validity, this.input.validationMessage, this.input)
-	}
-
 	onChange() {
 		this.touched = true
 		this.files = this.input.files
@@ -100,19 +69,11 @@ export class AppFileUpload extends LitElement implements FormControl {
 		this.dispatchEvent(new Event('change', { bubbles: true }))
 	}
 
-	formDisabledCallback(disabled: boolean) {
-		this.disabled = disabled
-		this.touched = false
-		this.errorMessage = ''
-	}
-
 	formResetCallback() {
-		this.value = ''
+		super.formResetCallback()
 		this.files = null
 		this.fileName = ''
 		this.fileURL = ''
-		this.touched = false
-		this.errorMessage = ''
 		URL.revokeObjectURL(this.fileURL)
 		this.input.setCustomValidity('')
 	}
@@ -121,31 +82,36 @@ export class AppFileUpload extends LitElement implements FormControl {
 		this.input.focus(options)
 	}
 
+	getValidity() {
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
+	}
+
 	checkFileValidation() {
-    const file = this.files?.[0]
+		const file = this.files?.[0]
 		this.input.setCustomValidity('')
 
 		if (!file) {
 			return
 		}
 
-    const fileSizeInMB = file.size / (1024 ** 2)
+		const fileSizeInMB = file.size / 1024 ** 2
 
-		if (this.size && fileSizeInMB > this.size) {
-      this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`)
+    if (this.size && fileSizeInMB > this.size) {
+      console.log('tuka')
+			this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`)
 			return
 		}
 
 		this.fileURL = URL.createObjectURL(file)
 		this.fileName = file.name
 		this.dispatchEvent(new AppFileUploadEvent(file))
-  }
+	}
 
-  setCustomError(error: string) {
-    this.input.setCustomValidity(error)
-    this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage))
-    this.value = ''
-  }
+	setCustomError(error: string) {
+		this.input.setCustomValidity(error)
+		this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage))
+		this.value = ''
+	}
 
 	deleteFile() {
 		this.value = ''
@@ -153,34 +119,6 @@ export class AppFileUpload extends LitElement implements FormControl {
 		this.fileName = ''
 		this.fileURL = ''
 		this.input.setCustomValidity('')
-	}
-
-	validated(validity: ValidityState, message: string) {
-		this.errorMessage = this.touched && !validity.valid ? message : ''
-	}
-
-	get form() {
-		return this.formController.form
-	}
-
-	get validity() {
-		return this.formController.validity
-	}
-
-	get validationMessage() {
-		return this.formController.validationMessage
-	}
-
-	get willValidate() {
-		return this.formController.willValidate
-	}
-
-	checkValidity() {
-		return this.formController.checkValidity()
-	}
-
-	reportValidity() {
-		return this.formController.reportValidity()
 	}
 
 	render() {
@@ -210,7 +148,7 @@ export class AppFileUpload extends LitElement implements FormControl {
 						`,
 					)}
 				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.errorMessage}>${this.errorMessage}</small>
+				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
 		`
 	}

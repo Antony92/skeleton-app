@@ -33,7 +33,7 @@ export class AppRichTextEditor extends LitElement {
   accessor toolbar = 'header text list link clear'
 
   quill!: Quill
-  isTnternalChange = false
+  isInternalChange = false
 
 	protected firstUpdated() {
 		this.iframe.addEventListener('load', () => {
@@ -48,7 +48,7 @@ export class AppRichTextEditor extends LitElement {
 			this.quill.on('text-change', () => {
 				const text = this.quill.getText().trim()
         const html = this.quill.getSemanticHTML()
-				this.isTnternalChange = true
+				this.isInternalChange = true
         this.value = text ? html : ''
 				this.dispatchEvent(new AppRichTextEditorChangeEvent({ text, html }))
 			})
@@ -56,7 +56,7 @@ export class AppRichTextEditor extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues) {
-    if (_changedProperties.has('value') && !this.isTnternalChange && this.quill) {
+    if (_changedProperties.has('value') && !this.isInternalChange && this.quill) {
       this.quill.setContents(this.quill.clipboard.convert({ html: this.value }), 'silent')
     }
     if (_changedProperties.has('disabled') && this.disabled && this.quill) {
@@ -65,7 +65,7 @@ export class AppRichTextEditor extends LitElement {
     if (_changedProperties.has('disabled') && !this.disabled && this.quill && !this.quill.isEnabled()) {
       this.quill.enable()
     }
-    this.isTnternalChange = false
+    this.isInternalChange = false
   }
 
 	render() {

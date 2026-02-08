@@ -9,15 +9,15 @@ export interface FormControl {
 	value: string
 	disabled: boolean
 	touched: boolean
-	formAssociatedCallback?: (form: HTMLFormElement) => void
-	formDisabledCallback: (disabled: boolean) => void
-	formResetCallback: () => void
+	formAssociatedCallback?(form: HTMLFormElement): void
+	formDisabledCallback(disabled: boolean): void
+	formResetCallback(): void
 	form: HTMLFormElement | null
 	validity: ValidityState
 	willValidate: boolean
-	checkValidity: () => boolean
-	reportValidity: () => boolean
-	validated?: (validity: ValidityState, message: string) => void
+	checkValidity(): boolean
+	reportValidity(): boolean
+	validated?(validity: ValidityState, message: string): void
 }
 
 export class FormControlController implements ReactiveController {
@@ -44,7 +44,7 @@ export class FormControlController implements ReactiveController {
 		this.setValue(this.host.value)
 	}
 
-	hostDisconnected() {}
+  hostDisconnected() {}
 
 	async setValue(value: string | null) {
 		await this.host.updateComplete

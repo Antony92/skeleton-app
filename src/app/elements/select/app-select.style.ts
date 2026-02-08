@@ -13,7 +13,7 @@ export const appSelectStyle = css`
 				outline-color: var(--theme-invalid-color);
 				border-color: var(--theme-invalid-color);
 
-				&:hover {
+				&:hover:not(:has(input:disabled, input:focus-within, ~ [popover][open])) {
 					border-color: var(--theme-invalid-color);
 				}
 			}

@@ -74,7 +74,7 @@ export class AppFormPage extends LitElement {
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select>
 
-				<app-file-upload name="file" size="1" accept=".pdf">
+				<app-file-upload name="file" size="0.1" accept=".jpg">
 					<button slot="trigger">Upload</button>
 				</app-file-upload>
 
