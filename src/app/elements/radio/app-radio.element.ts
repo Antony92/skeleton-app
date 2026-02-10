@@ -12,12 +12,6 @@ export class AppRadio extends FormControl(LitElement) {
 	static styles = [defaultStyle, appRadioStyle, css``]
 
 	@property({ type: Boolean })
-	accessor autofocus = false
-
-	@property({ type: Boolean })
-	accessor hidden = false
-
-	@property({ type: Boolean })
 	accessor readonly = false
 
 	@property({ type: Boolean })
@@ -80,7 +74,6 @@ export class AppRadio extends FormControl(LitElement) {
 						.checked=${this.checked}
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
 						?readonly=${this.readonly}
 						?required=${this.required}
 						name=${ifDefined(this.name)}

@@ -43,12 +43,6 @@ export class AppSelect extends FormControl(LitElement) {
 	@property({ type: Boolean })
 	accessor required = false
 
-	@property({ type: Boolean })
-	accessor autofocus = false
-
-	@property({ type: Boolean })
-	accessor hidden = false
-
 	@property({ type: String })
 	accessor label = ''
 
@@ -65,7 +59,7 @@ export class AppSelect extends FormControl(LitElement) {
 	accessor multiple = false
 
 	@property({ type: Boolean })
-	accessor combobox = false
+	accessor searchable = false
 
 	@query('#input')
 	accessor input!: HTMLInputElement
@@ -141,15 +135,15 @@ export class AppSelect extends FormControl(LitElement) {
 	protected willUpdate(_changedProperties: PropertyValues): void {
 		if (_changedProperties.has('value')) {
 			this.assignedOptions.forEach((option) => {
-				const shouldBeSelected = this.value
+				const selected = this.value
 					.split(',')
 					.map((v) => v.trim())
 					.filter((v) => !!v)
 					.includes(option.value)
-				option.selected = shouldBeSelected
+				option.selected = selected
 			})
 		}
-		if (!_changedProperties.has('displayValue') && _changedProperties.has('value')) {
+		if (_changedProperties.has('value') && !_changedProperties.has('displayValue')) {
 			this.displayValue = this.getDisplayValue()
 		}
 	}
@@ -167,9 +161,7 @@ export class AppSelect extends FormControl(LitElement) {
 		this.open = true
 		await this.updateComplete
 		this.popup.showPopover()
-		if (!this.combobox) {
-			this.focusSelectedOption()
-		}
+		this.focusSelectedOption()
 		this.dispatchEvent(new Event('app-show', { cancelable: true }))
 		window.addEventListener('keyup', this.handleKeyup)
 		window.addEventListener('mousedown', this.handleMouseDown)
@@ -296,8 +288,7 @@ export class AppSelect extends FormControl(LitElement) {
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
 						autocomplete="off"
-						?hidden=${this.hidden}
-						?readonly=${!this.combobox}
+						readonly
 						?required=${this.required}
 						placeholder=${ifDefined(this.placeholder)}
 						.value=${live(this.displayValue)}

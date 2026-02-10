@@ -12,12 +12,6 @@ export class AppTextarea extends FormControl(LitElement) {
 	static styles = [defaultStyle, appTextareaStyle, css``]
 
 	@property({ type: Boolean })
-	accessor autofocus = false
-
-	@property({ type: Boolean })
-	accessor hidden = false
-
-	@property({ type: Boolean })
 	accessor readonly = false
 
 	@property({ type: Boolean })
@@ -83,7 +77,6 @@ export class AppTextarea extends FormControl(LitElement) {
 						part="textarea"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
 						?readonly=${this.readonly}
 						?required=${this.required}
 						autocomplete=${ifDefined(this.autocomplete)}

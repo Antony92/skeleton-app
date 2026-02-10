@@ -12,12 +12,6 @@ export class AppCheckbox extends FormControl(LitElement) {
 	static styles = [defaultStyle, appCheckStyle, css``]
 
 	@property({ type: Boolean })
-	accessor autofocus = false
-
-	@property({ type: Boolean })
-	accessor hidden = false
-
-	@property({ type: Boolean })
 	accessor readonly = false
 
 	@property({ type: Boolean })
@@ -79,7 +73,6 @@ export class AppCheckbox extends FormControl(LitElement) {
 						.checked=${live(this.checked)}
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
 						?readonly=${this.readonly}
 						?required=${this.required}
 						name=${ifDefined(this.name)}

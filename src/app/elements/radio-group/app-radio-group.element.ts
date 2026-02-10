@@ -12,9 +12,6 @@ export class AppRadioGroup extends FormControl(LitElement) {
 	static styles = [defaultStyle, appRadioGroupStyle, css``]
 
 	@property({ type: Boolean })
-	accessor hidden = false
-
-	@property({ type: Boolean })
 	accessor required = false
 
 	@property({ type: String })
@@ -60,7 +57,7 @@ export class AppRadioGroup extends FormControl(LitElement) {
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
-				<fieldset ?disabled=${this.disabled} ?hidden=${this.hidden} name=${ifDefined(this.name)}>
+				<fieldset ?disabled=${this.disabled} name=${ifDefined(this.name)}>
 					${when(this.label, () => html`<legend>${this.label}</legend>`)}
 					<slot></slot>
 				</fieldset>

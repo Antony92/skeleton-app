@@ -30,12 +30,6 @@ export class AppButton extends LitElement {
 	accessor disabled = false
 
 	@property({ type: Boolean })
-	accessor autofocus = false
-
-	@property({ type: Boolean })
-	accessor hidden = false
-
-	@property({ type: Boolean })
 	accessor outlined = false
 
 	@property({ type: Boolean })
@@ -62,7 +56,6 @@ export class AppButton extends LitElement {
 						href=${this.href}
 						download=${ifDefined(this.download)}
 						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
 					>
 						<slot></slot>
 					</a>
@@ -74,7 +67,6 @@ export class AppButton extends LitElement {
 						class="focus-visible"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
-						?hidden=${this.hidden}
 					>
 						<slot></slot>
 					</button>

@@ -10,7 +10,7 @@ export const appButtonStyle = css`
 		gap: 10px;
 		border: none;
 		border-radius: var(--radius-2);
-		padding: 0 15px;
+		padding: 0 10px;
 		box-shadow: var(--shadow-2);
 		white-space: nowrap;
 		height: 36px;
