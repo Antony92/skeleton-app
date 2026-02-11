@@ -51,10 +51,6 @@ export class AppDropdown extends LitElement {
 
 	private attachedItems = new WeakSet<AppDropdownItem>()
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown()))
 		this.popup.addEventListener('toggle', (event: Event) => {
