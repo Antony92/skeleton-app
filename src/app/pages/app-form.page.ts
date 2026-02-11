@@ -57,8 +57,26 @@ export class AppFormPage extends LitElement {
 		return html`
 			<h3>Form</h3>
 			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
-
+				<app-input required name="name" label="Name"></app-input>
+				<app-input required name="email" label="Email" type="email"></app-input>
+				<app-textarea required name="textarea" label="Textarea"></app-textarea>
 				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
+				<app-radio-group name="radio" required label="Select one radio" value="2">
+					<app-radio label="Radio 1" value="1"></app-radio>
+					<app-radio label="Radio 2" value="2"></app-radio>
+				</app-radio-group>
+
+				<app-select required name="select" label="Select">
+					<app-select-option value="option-1">Option 1</app-select-option>
+					<app-select-option value="option-2">Option 2</app-select-option>
+					<app-select-option value="option-3">Option 3</app-select-option>
+					<app-select-option value="option-4">Option 4</app-select-option>
+					<app-select-option value="option-5">Option 5</app-select-option>
+				</app-select>
+
+				<app-file-upload name="file" size="0.1" accept=".jpg">
+					<button slot="trigger">Upload</button>
+				</app-file-upload>
 
 				<div class="actions">
 					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
