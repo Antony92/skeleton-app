@@ -1,14 +1,14 @@
-import { html, LitElement, css } from 'lit'
+import { html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { appTextareaStyle } from '@app/elements/textarea/app-textarea.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { when } from 'lit/directives/when.js'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-textarea')
-export class AppTextarea extends FormControl(LitElement) {
+export class AppTextarea extends FormElement {
 	static styles = [defaultStyle, appTextareaStyle, css``]
 
 	@property({ type: Boolean })

@@ -1,4 +1,4 @@
-import { html, LitElement, css } from 'lit'
+import { html, css } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
@@ -6,10 +6,10 @@ import { live } from 'lit/directives/live.js'
 import { when } from 'lit/directives/when.js'
 import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-file-upload')
-export class AppFileUpload extends FormControl(LitElement) {
+export class AppFileUpload extends FormElement {
 	static styles = [defaultStyle, appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
@@ -97,7 +97,6 @@ export class AppFileUpload extends FormControl(LitElement) {
 		const fileSizeInMB = file.size / 1024 ** 2
 
     if (this.size && fileSizeInMB > this.size) {
-      console.log('tuka')
 			this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`)
 			return
 		}

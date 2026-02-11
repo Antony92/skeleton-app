@@ -1,4 +1,4 @@
-import { html, LitElement, css, type PropertyValues } from 'lit'
+import { html, css, type PropertyValues } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
@@ -6,10 +6,10 @@ import { live } from 'lit/directives/live.js'
 import { appSelectStyle } from '@app/elements/select/app-select.style'
 import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-select')
-export class AppSelect extends FormControl(LitElement) {
+export class AppSelect extends FormElement {
 	static styles = [
 		defaultStyle,
 		appSelectStyle,

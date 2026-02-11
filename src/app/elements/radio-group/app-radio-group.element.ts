@@ -1,14 +1,14 @@
-import { html, LitElement, css, type PropertyValues } from 'lit'
+import { html, css, type PropertyValues } from 'lit'
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { when } from 'lit/directives/when.js'
 import type { AppRadio } from '@app/elements/radio/app-radio.element'
 import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-radio-group')
-export class AppRadioGroup extends FormControl(LitElement) {
+export class AppRadioGroup extends FormElement {
 	static styles = [defaultStyle, appRadioGroupStyle, css``]
 
 	@property({ type: Boolean })

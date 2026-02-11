@@ -1,14 +1,14 @@
-import { html, LitElement, css } from 'lit'
+import { html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { appInputStyle } from '@app/elements/input/app-input.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { live } from 'lit/directives/live.js'
 import { when } from 'lit/directives/when.js'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-input')
-export class AppInput extends FormControl(LitElement) {
+export class AppInput extends FormElement {
 	static styles = [defaultStyle, appInputStyle, css``]
 
 	@property({ type: Boolean })
@@ -74,7 +74,7 @@ export class AppInput extends FormControl(LitElement) {
 
 	getValidity() {
 		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
-	}
+  }
 
 	render() {
 		return html`

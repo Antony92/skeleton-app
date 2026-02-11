@@ -1,14 +1,14 @@
-import { html, LitElement, css } from 'lit'
+import { html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
 import { ifDefined } from 'lit/directives/if-defined.js'
 import { when } from 'lit/directives/when.js'
 import { live } from 'lit/directives/live.js'
 import { defaultStyle } from '@app/styles/default.style'
-import { FormControl } from '@app/mixins/form-control.mixin'
+import { FormElement } from '@app/mixins/form.mixin'
 
 @customElement('app-checkbox')
-export class AppCheckbox extends FormControl(LitElement) {
+export class AppCheckbox extends FormElement {
 	static styles = [defaultStyle, appCheckStyle, css``]
 
 	@property({ type: Boolean })
