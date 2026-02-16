@@ -21,7 +21,7 @@ export class AppRoot extends LitElement {
 		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }))
 
 		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
-		serverEventSource.addEventListener('globalmessage', (event) => {
+		serverEventSource.addEventListener('global', (event) => {
 			const data = JSON.parse(event.data)
 			globalMessage(data.message, data.type)
 		})
