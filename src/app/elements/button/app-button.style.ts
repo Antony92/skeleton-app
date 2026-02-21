@@ -16,9 +16,9 @@ export const appButtonStyle = css`
 		height: 36px;
 		background-color: var(--background);
 		color: var(--color);
-		font-family: var(--font-system-ui);
-		font-size: 0.875rem;
-		font-weight: var(--font-weight-6);
+		font-family: var(--theme-font-family);
+		font-size: var(--theme-font-size-1);
+    font-weight: 600;
 		text-decoration: none;
 
 		&:disabled {

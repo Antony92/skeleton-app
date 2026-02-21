@@ -28,6 +28,7 @@ export const appTextareaStyle = css`
 
 		label {
 			width: fit-content;
+			font-size: 0.9rem;
 		}
 
 		small {
@@ -45,6 +46,7 @@ export const appTextareaStyle = css`
 			display: flex;
 			align-items: center;
 			width: 100%;
+			background: var(--theme-default-surface);
 
 			textarea {
 				width: 100%;
@@ -52,12 +54,12 @@ export const appTextareaStyle = css`
 				border: 1px solid var(--theme-default-color);
 				border-radius: var(--radius-2);
 				background: none;
-				font-family: var(--font-system-ui);
-				font-size: var(--font-size-1);
-				font-weight: var(--font-weight-4);
+				font-family: var(--theme-font-family);
+				font-size: var(--theme-font-size-1);
+				padding: 10px;
 
 				&::placeholder {
-					color: var(--theme-default-color);
+					color: var(--theme-muted-color);
 				}
 
 				&:focus-visible {

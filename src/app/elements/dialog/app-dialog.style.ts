@@ -11,7 +11,7 @@ export const appDialogStyle = css`
 		border: none;
 		box-shadow: var(--shadow-2);
 		border-radius: var(--radius-2);
-		background-color: var(--theme-default-layer);
+		background: var(--theme-default-surface);
 
 		&::backdrop {
 			background: rgb(0 0 0 / 0%);
@@ -49,7 +49,7 @@ export const appDialogStyle = css`
 				background: none;
 				cursor: pointer;
 				border: none;
-				font-size: var(--font-size-1);
+				font-size: var(--theme-font-size-1);
 			}
 		}
 

@@ -22,13 +22,12 @@ export class AppDropdownItem extends LitElement {
 				padding: 10px;
 				white-space: nowrap;
 				height: 36px;
-				font-size: inherit;
 				width: 100%;
-				color: light-dark(var(--gray-8), var(--gray-4));
 				background: none;
 				text-decoration: none;
-				font-family: var(--font-system-ui);
-				font-size: var(--font-size-1);
+				font-family: var(--theme-font-family);
+				font-size: var(--theme-font-size-1);
+				border-radius: var(--radius-2);
 
 				.prefix {
 					display: flex;
@@ -36,7 +35,7 @@ export class AppDropdownItem extends LitElement {
 				}
 
 				&:not(:disabled, :focus-visible):hover {
-					background: light-dark(var(--gray-4), var(--gray-8));
+					background: var(--theme-muted-background);
 				}
 
 				&:focus-visible {

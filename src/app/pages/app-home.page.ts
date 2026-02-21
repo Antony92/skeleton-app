@@ -1,6 +1,7 @@
 import { setPageTitle } from '@app/utils/html'
 import { html, LitElement, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
+import '@app/elements/tag/app-tag.element'
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -26,6 +27,6 @@ export class AppHomePage extends LitElement {
 	protected firstUpdated() {}
 
 	render() {
-		return html` <h3>Home</h3> `
+		return html` <h3>Home</h3> <app-tag>All</app-tag>`
 	}
 }

@@ -14,7 +14,7 @@ export class AppSelectOption extends LitElement {
 			}
 
 			button {
-				font-family: var(--font-system-ui);
+				font-family: var(--theme-font-family);
 				cursor: pointer;
 				display: flex;
 				align-items: center;
@@ -23,19 +23,17 @@ export class AppSelectOption extends LitElement {
 				padding: 10px 5px;
 				white-space: nowrap;
 				height: 36px;
-				font-size: inherit;
+				font-size: var(--theme-font-size-1);
 				width: 100%;
-				color: light-dark(var(--gray-8), var(--gray-4));
 				background: none;
 
 				&:not(:disabled, :focus-visible, :focus-within):hover {
-					background: light-dark(var(--gray-4), var(--gray-8));
+					background: var(--theme-muted-background);
 				}
 
 				&:focus-visible,
 				&:focus-within {
 					background: var(--theme-primary-background);
-					color: var(--theme-white-color);
 					outline: none;
 					border-radius: 0;
 				}
@@ -43,6 +41,10 @@ export class AppSelectOption extends LitElement {
 				&:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
+				}
+
+				&[selected] {
+					color: var(--theme-white-color);
 				}
 
 				svg {

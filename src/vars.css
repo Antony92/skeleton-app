@@ -2,38 +2,85 @@
 	color-scheme: light dark;
 
 	/* Theme */
-	--theme-color: light-dark(var(--gray-12), var(--gray-1));
-	--theme-color-inverse: light-dark(var(--gray-1), var(--gray-12));
-	--theme-background: light-dark(var(--gray-1), var(--gray-12));
-	--theme-background-inverse: light-dark(var(--gray-12), var(--gray-1));
+	--theme-color: light-dark(#1a1a2e, #e4e4e7);
+	--theme-color-inverse: light-dark(#e4e4e7, #1a1a2e);
+	--theme-background: light-dark(#f8f8fa, #0b0b0f);
+	--theme-background-inverse: light-dark(#0b0b0f, #f8f8fa);
 
-	/* Theme Elements */
-	--theme-header-background: light-dark(var(--gray-4), var(--gray-10));
-	--theme-sidebar-background: light-dark(var(--gray-3), var(--gray-9));
+	/* Theme Font */
+	--theme-font-family: 'Inter', -apple-system, sans-serif;
+	--theme-font-size: 1rem;
+	--theme-font-size-1: .8rem;
 
 	/* Theme Backgrounds */
-	--theme-default-background: light-dark(var(--stone-8), var(--stone-8));
-	--theme-primary-background: light-dark(var(--blue-8), var(--blue-8));
-	--theme-neutral-background: light-dark(var(--stone-8), var(--stone-8));
-	--theme-warning-background: light-dark(var(--yellow-8), var(--yellow-8));
-	--theme-success-background: light-dark(var(--green-8), var(--green-8));
-	--theme-error-background: light-dark(var(--red-8), var(--red-8));
+	--theme-default-background: light-dark(#808080, #808080);
+	--theme-muted-background: light-dark(#d8d8e0, #25252f);
+	--theme-primary-background: light-dark(#6d28d9, #7c3aed);
+	--theme-warning-background: light-dark(#ea580c, #fb923c);
+	--theme-success-background: light-dark(#059669, #34d399);
+	--theme-error-background: light-dark(#dc2626, #ef4444);
 
 	/* Theme Colors */
-	--theme-white-color: light-dark(var(--gray-1), var(--gray-1));
-	--theme-dark-color: light-dark(var(--gray-12), var(--gray-12));
-	--theme-invalid-color: light-dark(var(--red-7), var(--red-7));
-	--theme-default-color: light-dark(var(--stone-8), var(--stone-8));
-	--theme-primary-color: light-dark(var(--blue-8), var(--blue-8));
-	--theme-warning-color: light-dark(var(--yellow-8), var(--yellow-8));
-	--theme-success-color: light-dark(var(--green-8), var(--green-8));
-	--theme-error-color: light-dark(var(--red-8), var(--red-8));
+	--theme-white-color: light-dark(white, white);
+	--theme-black-color: light-dark(black, black);
+	--theme-muted-color: light-dark(#6b6b80, #6b6b76);
+	--theme-invalid-color: light-dark(#dc2626, #ef4444);
+	--theme-default-color: light-dark(#d8d8e0, #25252f);
+	--theme-primary-color: light-dark(#6d28d9, #6d28d9);
+	--theme-warning-color: light-dark(#ea580c, #fb923c);
+	--theme-success-color: light-dark(#059669, #34d399);
+	--theme-error-color: light-dark(#dc2626, #ef4444);
 
-	/* Theme Layers */
-	--theme-default-layer: light-dark(var(--gray-2), var(--gray-9));
-	--theme-inverse-layer: light-dark(var(--gray-9), var(--gray-2));
-	--theme-primary-layer: light-dark(var(--blue-8), var(--blue-8));
-	--theme-error-layer: light-dark(var(--red-8), var(--red-8));
-	--theme-warning-layer: light-dark(var(--yellow-8), var(--yellow-8));
-	--theme-success-layer: light-dark(var(--green-8), var(--green-8));
+	/* Theme Surface */
+	--theme-default-surface: light-dark(#ffffff, #14141a);
+	--theme-inverse-surface: light-dark(#14141a, #ffffff);
+	--theme-primary-surface: light-dark(#6d28d9, #6d28d9);
+	--theme-error-surface: light-dark(#dc2626, #ef4444);
+	--theme-warning-surface: light-dark(#ea580c, #fb923c);
+	--theme-success-surface: light-dark(#059669, #34d399);
+
+	/* Borders */
+	--radius-1: 6px;
+	--radius-2: 8px;
+	--radius-3: 10px;
+	--radius-round: 1e5px;
+
+	/* Z-Index */
+	--layer-1: 1;
+	--layer-2: 2;
+	--layer-3: 3;
+	--layer-4: 4;
+	--layer-5: 5;
+	--layer-important: 2147483647;
+
+	/* Shadows */
+	--shadow-color: 220 3% 15%;
+	--shadow-strength: 1%;
+	--shadow-1: 0 1px 2px -1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
+	--shadow-2: 0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 7px 14px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%));
+	--shadow-3: 0 -1px 3px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 1px 2px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 2px 5px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 4px 12px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 12px 15px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+	--shadow-4: 0 -2px 5px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 1px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 2px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 9px 9px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 16px 16px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%));
+	--shadow-5: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 2px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 10px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 20px 20px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 40px 40px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
+	--shadow-6: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+		0 3px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 7px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+		0 12px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
+		0 22px 18px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
+		0 41px 33px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%)),
+		0 100px 80px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
 }

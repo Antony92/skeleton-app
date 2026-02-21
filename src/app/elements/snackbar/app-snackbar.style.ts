@@ -54,13 +54,14 @@ export const appSnackbarStyle = css`
 		}
 
 		button {
-			font-family: var(--font-system-ui);
+			font-family: var(--theme-font-family);
+			font-size: var(--theme-font-size-1);
+			font-weight: 600;
 			margin-left: auto;
 			background: none;
 			cursor: pointer;
 			border: none;
 			color: var(--action);
-			font-weight: var(--font-weight-6);
 
 			&:hover {
 				color: color-mix(in oklab, var(--action), black 8%);

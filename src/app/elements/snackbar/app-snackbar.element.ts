@@ -15,7 +15,7 @@ export class AppSnackbar extends LitElement {
 		css`
 			:host {
 				display: none;
-				--background: var(--theme-inverse-layer);
+				--background: var(--theme-inverse-surface);
 				--color: var(--theme-color-inverse);
 				--action: var(--theme-primary-color);
 			}

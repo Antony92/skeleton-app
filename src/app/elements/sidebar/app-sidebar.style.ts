@@ -4,8 +4,7 @@ export const appSidebarStyle = css`
 	aside {
 		width: 80px;
 		height: 100%;
-		background-color: var(--theme-sidebar-background);
-		transition: background-color 300ms ease-in-out;
+		border-right: 1px solid var(--theme-default-color);
 
 		ul {
 			display: flex;
@@ -76,7 +75,7 @@ export const appSidebarStyle = css`
 
 					&:hover:not(.active) {
 						span:first-child {
-							background-color: light-dark(var(--gray-5), var(--gray-7));
+							background-color: var(--theme-muted-background);
 
 							.icon {
 								scale: 1.1;
@@ -91,6 +90,8 @@ export const appSidebarStyle = css`
 	@media only screen and (max-width: 900px) {
 		aside {
 			width: 100%;
+			border-top: 1px solid var(--theme-default-color);
+			border-right: none;
 
 			ul {
 				margin: 0;

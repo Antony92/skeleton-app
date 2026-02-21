@@ -9,7 +9,6 @@ export const appGlobalMessageStyle = css`
 		padding: 15px;
 		border: none;
 		border-radius: var(--radius-2);
-		font-weight: var(--font-weight-5);
 		color: var(--theme-white-color);
 
 		&:popover-open {
@@ -21,15 +20,15 @@ export const appGlobalMessageStyle = css`
 		}
 
 		&.info {
-			background-color: var(--theme-primary-layer);
+			background-color: var(--theme-primary-surface);
 		}
 
 		&.error {
-			background-color: var(--theme-error-layer);
+			background-color: var(--theme-error-surface);
 		}
 
 		&.warning {
-			background-color: var(--theme-warning-layer);
+			background-color: var(--theme-warning-surface);
 		}
 
 		.icon {
@@ -42,7 +41,7 @@ export const appGlobalMessageStyle = css`
 			cursor: pointer;
 			border: none;
 			color: var(--theme-white-color);
-			font-size: var(--font-size-1);
+			font-size: var(--theme-font-size-1);
 		}
 	}
 `

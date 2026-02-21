@@ -32,6 +32,7 @@ export const appSelectStyle = css`
 
 		label {
 			width: fit-content;
+			font-size: 0.9rem;
 		}
 
 		small {
@@ -59,6 +60,7 @@ export const appSelectStyle = css`
 			border-radius: var(--radius-2);
 			height: 36px;
 			position: relative;
+			background: var(--theme-default-surface);
 
 			input {
 				width: 100%;
@@ -68,12 +70,11 @@ export const appSelectStyle = css`
 				background: none;
 				padding: 0px 35px 0px 10px;
 				cursor: pointer;
-				font-family: var(--font-system-ui);
-				font-size: var(--font-size-1);
-				font-weight: var(--font-weight-4);
+				font-family: var(--theme-font-family);
+				font-size: var(--theme-font-size-1);
 
 				&::placeholder {
-					color: var(--theme-default-color);
+					color: var(--theme-muted-color);
 				}
 			}
 

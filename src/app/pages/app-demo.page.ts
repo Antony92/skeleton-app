@@ -71,7 +71,7 @@ export class AppDemoPage extends LitElement {
 				<app-button variant="success">Success</app-button>
 				<app-button variant="warning">Warning</app-button>
 				<app-button variant="error">Error</app-button>
-				<app-button variant="primary" appearance='outlined'>Outlined</app-button>
+				<app-button variant="primary" appearance="outlined">Outlined</app-button>
 				<app-button variant="primary" disabled>Disabled</app-button>
 				<app-button variant="primary">
 					<app-icon filled>skull</app-icon>
@@ -209,7 +209,11 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Badge</legend>
-				<app-badge variant="primary" pulse>Default</app-badge>
+				<app-badge variant="default">Default</app-badge>
+				<app-badge variant="primary">Primary</app-badge>
+				<app-badge variant="success">Success</app-badge>
+				<app-badge variant="warning">Warning</app-badge>
+				<app-badge variant="error" pulse>Error</app-badge>
 			</fieldset>
 
 			<fieldset>

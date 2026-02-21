@@ -32,6 +32,7 @@ export const appRadioGroupStyle = css`
 			legend {
 				padding: 0;
 				margin-bottom: 5px;
+				font-size: 0.9rem;
 			}
 		}
 

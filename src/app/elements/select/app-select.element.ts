@@ -25,8 +25,8 @@ export class AppSelect extends FormElement {
 				position-area: span-bottom;
 				left: anchor(left);
 				top: anchor(bottom);
-				border: 1px solid light-dark(var(--gray-4), var(--gray-8));
-				background-color: var(--theme-default-layer);
+				border: 1px solid var(--theme-default-color);
+				background: var(--theme-default-surface);
 				border-radius: var(--radius-2);
 				overflow: auto;
 				padding: 5px 0;

@@ -7,9 +7,7 @@ export const appHeaderStyle = css`
 		align-items: center;
 		height: 60px;
 		padding: 0 10px;
-		box-shadow: var(--shadow-1);
-		background-color: var(--theme-header-background);
-		transition: background-color 300ms ease-in-out;
+        border-bottom: 1px solid var(--theme-default-color);
 	}
 
 	.spacer {
