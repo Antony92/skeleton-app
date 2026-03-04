@@ -39,7 +39,7 @@ export const appDialogStyle = css`
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 15px;
+			padding: 20px;
 
 			h3 {
 				margin: 0;
@@ -58,14 +58,14 @@ export const appDialogStyle = css`
 			overscroll-behavior-y: contain;
 			display: grid;
 			max-block-size: 100%;
-			padding: 5px 15px;
+			padding: 5px 20px;
 		}
 
 		footer {
 			display: flex;
 			justify-content: flex-end;
 			gap: 10px;
-			padding: 15px;
+			padding: 20px;
 		}
 	}
 `

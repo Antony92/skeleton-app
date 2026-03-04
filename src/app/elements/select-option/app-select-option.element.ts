@@ -36,15 +36,16 @@ export class AppSelectOption extends LitElement {
 					background: var(--theme-primary-background);
 					outline: none;
 					border-radius: 0;
+					color: var(--theme-white-color);
+
+					&[selected] {
+						color: var(--theme-white-color);
+					}
 				}
 
 				&:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
-				}
-
-				&[selected] {
-					color: var(--theme-white-color);
 				}
 
 				svg {
