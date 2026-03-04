@@ -34,7 +34,7 @@ export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse
 			sortBy: params?.sort,
 			order: params?.order,
 		})
-		const req = await request(`${import.meta.env.VITE_API}/users${query}`)
+		const req = await request(`${import.meta.env.VITE_API}/users1${query}`)
 		const res = await req.json()
 		return {
 			total: res.total,
