@@ -40,19 +40,19 @@ export class AppPaginator extends LitElement {
 	]
 
 	@property({ type: Number })
-	accessor total = 0
+	total = 0
 
 	@property({ type: Number, attribute: 'page-index' })
-	accessor pageIndex = 0
+	pageIndex = 0
 
 	@property({ type: Number, attribute: 'page-size' })
-	accessor pageSize = 10
+	pageSize = 10
 
 	@property({ type: Array })
-	accessor pageSizeOptions = [10, 50, 100]
+	pageSizeOptions = [10, 50, 100]
 
 	@property({ type: String, attribute: 'save-page-size' })
-	accessor savePageSize = ''
+	savePageSize = ''
 
 	private previousPageIndex = 0
 

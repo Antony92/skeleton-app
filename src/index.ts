@@ -3,7 +3,7 @@ import { refreshTokenSilently } from '@app/shared/auth'
 import { applyDefaultTheme } from '@app/utils/theme'
 
 // Register service worker
-registerSW({ immediate: true })
+// registerSW({ immediate: true })
 
 // Set up theme
 applyDefaultTheme()

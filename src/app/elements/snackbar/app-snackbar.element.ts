@@ -27,22 +27,22 @@ export class AppSnackbar extends LitElement {
 	]
 
 	@query('[popover]')
-	accessor snackbar!: HTMLDivElement
+	snackbar!: HTMLDivElement
 
 	@property({ type: String })
-	accessor action = ''
+	action = ''
 
 	@property({ type: String, reflect: true })
-	accessor variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
+	variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default'
 
 	@property({ type: String, reflect: true})
-	accessor position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom'
+	position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom'
 
 	@property({ type: Number })
-	accessor duration = 3000
+	duration = 3000
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	open = false
 
 	private timeout = 0
 

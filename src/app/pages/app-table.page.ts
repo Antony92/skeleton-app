@@ -26,16 +26,16 @@ export class AppTablePage extends LitElement {
 	]
 
 	@state()
-	accessor users: PaginatedResponse<any> = {
+	users: PaginatedResponse<any> = {
 		data: [],
 		total: 0,
 	}
 
 	@state()
-	accessor loading = true
+	loading = true
 
 	@query('app-paginator')
-	accessor paginator!: AppPaginator
+	paginator!: AppPaginator
 
 	private filterMap = new Map()
 	private skip = 0

@@ -37,22 +37,22 @@ export interface FormControl {
 
 export abstract class FormElement extends LitElement implements FormControl {
 	@property({ type: String, reflect: true })
-	accessor name = ''
+	name = ''
 
 	@property({ type: String })
-	accessor value = ''
+	value = ''
 
 	@property({ type: String })
-	accessor defaultValue = ''
+	defaultValue = ''
 
 	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
+	disabled = false
 
 	@state()
-	accessor touched = false
+	touched = false
 
 	@state()
-	accessor message = ''
+	message = ''
 
 	internals = this.attachInternals()
 	static formAssociated = true
@@ -106,7 +106,7 @@ export abstract class FormElement extends LitElement implements FormControl {
 		this.validated(this.validity, this.validationMessage)
 	}
 
-	formAssociatedCallback(form: HTMLFormElement) {}
+  formAssociatedCallback(form: HTMLFormElement) {}
 
 	formDisabledCallback(disabled: boolean) {
 		this.disabled = disabled

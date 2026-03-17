@@ -13,37 +13,37 @@ export class AppFileUpload extends FormElement {
 	static styles = [defaultStyle, appFileUploadStyle, css``]
 
 	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
+	disabled = false
 
 	@property({ type: Boolean })
-	accessor required = false
+	required = false
 
 	@property({ type: String })
-	accessor accept = ''
+	accept = ''
 
 	@property({ type: String })
-	accessor label = ''
+	label = ''
 
 	@property({ attribute: false })
-	accessor files: FileList | null = null
+	files: FileList | null = null
 
 	@property({ type: String })
-	accessor placeholder = ''
+	placeholder = ''
 
 	@property({ type: Number })
-	accessor size: number | undefined
+	size: number | undefined
 
 	@property({ type: String })
-	accessor fileName = ''
+	fileName = ''
 
 	@property({ type: String })
-	accessor fileURL = ''
+	fileURL = ''
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	input!: HTMLInputElement
 
 	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[]
+	triggers!: HTMLElement[]
 
 	disconnectedCallback() {
 		super.disconnectedCallback()

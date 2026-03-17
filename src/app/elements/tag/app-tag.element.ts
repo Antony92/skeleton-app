@@ -10,13 +10,13 @@ export class AppTag extends LitElement {
 	static styles = [defaultStyle, focusStyle, appTagStyle, css``]
 
 	@property({ type: String })
-	accessor value = ''
+	value = ''
 
 	@property({ type: Boolean })
-	accessor active = false
+	active = false
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	disabled = false
 
 	render() {
 		return html`

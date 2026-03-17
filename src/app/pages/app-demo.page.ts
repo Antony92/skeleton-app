@@ -52,7 +52,7 @@ export class AppDemoPage extends LitElement {
 	]
 
 	@query('app-dialog')
-	accessor appDialog!: AppDialog
+	appDialog!: AppDialog
 
 	connectedCallback() {
 		super.connectedCallback()
@@ -154,7 +154,7 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Rich Text Editor</legend>
-				<app-rich-text-editor></app-rich-text-editor>
+				<app-rich-text-editor placeholder="Rich text"></app-rich-text-editor>
 			</fieldset>
 
 			<fieldset>

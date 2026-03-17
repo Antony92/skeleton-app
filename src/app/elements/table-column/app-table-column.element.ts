@@ -59,31 +59,31 @@ export class AppTableColumn extends LitElement {
 	]
 
 	@property({ type: String })
-	accessor label = ''
+	label = ''
 
 	@property({ type: Boolean })
-	accessor sortable = false
+	sortable = false
 
 	@property({ type: String })
-	accessor order: 'asc' | 'desc' | null = null
+	order: 'asc' | 'desc' | null = null
 
 	@property({ type: Boolean })
-	accessor filterable = false
+	filterable = false
 
 	@property({ type: String })
-	accessor field = ''
+	field = ''
 
 	@property({ type: String })
-	accessor value = ''
+	value = ''
 
 	@property({ type: String, reflect: true })
-	accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
+	type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
 
 	@property({ type: Array })
-	accessor list: { label: string; value: string | boolean | number }[] = []
+	list: { label: string; value: string | boolean | number }[] = []
 
 	@property({ type: Number })
-	accessor delay = 0
+	delay = 0
 
 	private debouncedSearch?: ReturnType<typeof debounce>
 

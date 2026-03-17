@@ -32,7 +32,7 @@ export class AppFormPage extends LitElement {
 	]
 
 	@query('form')
-	accessor form!: HTMLFormElement
+	form!: HTMLFormElement
 
 	connectedCallback() {
 		super.connectedCallback()

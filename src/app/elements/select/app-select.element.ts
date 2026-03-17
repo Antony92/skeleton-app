@@ -41,37 +41,37 @@ export class AppSelect extends FormElement {
 	]
 
 	@property({ type: Boolean })
-	accessor required = false
+	required = false
 
 	@property({ type: String })
-	accessor label = ''
+	label = ''
 
 	@property({ type: String })
-	accessor displayValue = ''
+	displayValue = ''
 
 	@property({ type: String })
-	accessor placeholder = ''
+	placeholder = ''
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	open = false
 
 	@property({ type: Boolean })
-	accessor multiple = false
+	multiple = false
 
 	@property({ type: Boolean })
-	accessor searchable = false
+	searchable = false
 
 	@query('#input')
-	accessor input!: HTMLInputElement
+	input!: HTMLInputElement
 
 	@query('#trigger')
-	accessor trigger!: HTMLInputElement
+	trigger!: HTMLInputElement
 
 	@query('[popover]')
-	accessor popup!: HTMLElement
+	popup!: HTMLElement
 
 	@queryAssignedElements({ selector: 'app-select-option' })
-	accessor assignedOptions!: AppSelectOption[]
+	assignedOptions!: AppSelectOption[]
 
 	private attachedOptions = new WeakSet<AppSelectOption>()
 

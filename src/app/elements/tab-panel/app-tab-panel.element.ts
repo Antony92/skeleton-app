@@ -19,10 +19,10 @@ export class AppTabPanel extends LitElement {
 	]
 
 	@property({ type: Boolean, reflect: true })
-	accessor active = false
+	active = false
 
 	@property({ type: String })
-	accessor name = ''
+	name = ''
 
 	render() {
 		return html`

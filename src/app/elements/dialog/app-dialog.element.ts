@@ -22,19 +22,19 @@ export class AppDialog extends LitElement {
 	]
 
 	@property({ type: String })
-	accessor header = ''
+	header = ''
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	open = false
 
 	@property({ type: Boolean })
-	accessor modal = false
+	modal = false
 
 	@query('dialog')
-	accessor dialog!: HTMLDialogElement
+	dialog!: HTMLDialogElement
 
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
-	accessor closeElements!: HTMLElement[]
+	closeElements!: HTMLElement[]
 
 	#returnValue: string | undefined = ''
 
