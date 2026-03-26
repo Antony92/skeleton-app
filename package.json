@@ -26,13 +26,13 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "~10.0.1",
-		"@typescript/lib-dom": "npm:@types/web@~0.0.336",
-		"@vitest/ui": "~4.1.0",
-		"eslint": "~10.0.3",
-		"typescript": "~5.9.3",
-		"typescript-eslint": "~8.57.1",
-		"vite": "~8.0.0",
+		"@typescript/lib-dom": "npm:@types/web@~0.0.344",
+		"@vitest/ui": "~4.1.2",
+		"eslint": "~10.1.0",
+		"typescript": "~6.0.2",
+		"typescript-eslint": "~8.57.2",
+		"vite": "~8.0.3",
 		"vite-plugin-pwa": "~1.2.0",
-		"vitest": "~4.1.0"
+		"vitest": "~4.1.2"
 	}
 }

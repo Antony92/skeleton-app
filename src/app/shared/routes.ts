@@ -45,7 +45,7 @@ export const routes: Route[] = [
 	},
 	{
 		path: '/admin',
-		guard: authGuard([Role.ADMIN]),
+		guards: [authGuard([Role.ADMIN])],
 		render: () => html`<app-admin-page></app-admin-page>`,
 		enter: async () => {
 			await import('@app/pages/admin/app-admin.page')
@@ -53,7 +53,7 @@ export const routes: Route[] = [
 	},
 	{
 		path: '/profile',
-		guard: authGuard(),
+		guards: [authGuard()],
 		render: () => html`<app-profile-page></app-profile-page>`,
 		enter: async () => {
 			await import('@app/pages/app-profile.page')

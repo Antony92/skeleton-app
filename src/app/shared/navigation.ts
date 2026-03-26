@@ -147,11 +147,13 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 	const params = route.pattern?.exec(url.href)?.pathname.groups || {}
 
 	// 1. Guard check
-	if (route.guard) {
-    const outcome = await route.guard(url, params)
-    if (!outcome) {
-      loading(false)
-      return
+	if (route.guards) {
+		for (const guard of route.guards) {
+			const outcome = await guard(url, params)
+			if (!outcome) {
+				loading(false)
+				break
+			}
 		}
 	}
 
@@ -179,7 +181,7 @@ export type Route = {
 	pattern?: URLPattern
 	render?: (url: URL, params: RouteParams) => unknown
 	enter?: (url: URL, params: RouteParams) => Promise<void> | void
-	guard?: (url: URL, params: RouteParams) => Promise<boolean> | boolean
+	guards?: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[]
 }
 
 export type NavigationOptions = {
