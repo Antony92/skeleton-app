@@ -152,7 +152,7 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 			const outcome = await guard(url, params)
 			if (!outcome) {
 				loading(false)
-				break
+				return
 			}
 		}
 	}
