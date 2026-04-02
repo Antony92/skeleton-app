@@ -9,22 +9,21 @@ import { html, render } from 'lit'
 export const globalMessage = async (message: string, level: 'info' | 'warning' | 'error' = 'info') => {
 	await import('@app/elements/global-message/app-global-message.element')
 
-	// Locate or create GlobalMessage
-	let globalMessage = document.querySelector<AppGlobalMessage>('app-global-message#global-message')
+	// Remove existing GlobalMessage
+	document.querySelector<AppGlobalMessage>('app-global-message#global-message')?.remove()
 
-	if (!globalMessage) {
-		globalMessage = document.createElement('app-global-message')
-		globalMessage.id = 'global-message'
-		globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove())
-		document.body.appendChild(globalMessage)
-	}
+	// Create GlobalMessage
+	const globalMessage = Object.assign(document.createElement('app-global-message'), { id: 'global-message', level })
+	globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove(), { once: true })
 
-	// Set up new state
+	// Set up state
 	const template = html`${message}`
-	Object.assign(globalMessage, { level })
 
-	// render
-	render(template, globalMessage)
+	// Render
+  render(template, globalMessage)
+
+  // Add to DOM
+	document.body.appendChild(globalMessage)
 
 	return globalMessage.show()
 }

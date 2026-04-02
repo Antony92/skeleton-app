@@ -32,32 +32,26 @@ export const notify = async (notification: NotifyOptions) => {
 
 	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
 
-	// Locate or create Snackbar
-	let snackbar = document.querySelector<AppSnackbar & { actionHandler?: (event: Event) => void }>('app-snackbar#snackbar')
+	// Remove existing Snackbar
+	document.querySelector<AppSnackbar>('app-snackbar#snackbar')?.remove()
 
-	if (!snackbar) {
-		snackbar = document.createElement('app-snackbar')
-		snackbar.id = 'snackbar'
-		snackbar.addEventListener('app-after-hide', () => snackbar?.remove())
-		document.body.appendChild(snackbar)
+	// Create Snackbar
+	const snackbar = Object.assign(document.createElement('app-snackbar'), { id: 'snackbar', variant, duration, action: action?.label })
+	snackbar.addEventListener('app-after-hide', () => snackbar?.remove(), { once: true })
+
+	if (action?.onAction) {
+		snackbar.addEventListener('app-snackbar-action', (e) => action.onAction?.(e))
 	}
 
-	// Cleanup previous action listener to prevent multiple triggers
-	if (snackbar.actionHandler) {
-		snackbar.removeEventListener('app-snackbar-action', snackbar.actionHandler)
-	}
-
-	// Set up new state
+	// Set up state
 	const iconName = typeof icon === 'string' ? icon : DEFAULT_ICON_MAP[variant]
 	const template = html` ${when(icon, () => html`<app-icon slot="icon" filled>${iconName}</app-icon>`)} ${message} `
 
-	const actionHandler = (event: Event) => action?.onAction?.(event)
-	snackbar.actionHandler = actionHandler
-	snackbar.addEventListener('app-snackbar-action', actionHandler)
-	Object.assign(snackbar, { variant, duration, action: action?.label, actionHandler })
+	// Render
+  render(template, snackbar)
 
-	// render
-	render(template, snackbar)
+  // Add to DOM
+	document.body.appendChild(snackbar)
 
 	// show
 	snackbar.show()
