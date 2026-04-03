@@ -42,10 +42,10 @@ export class AppDragDropPage extends LitElement {
 					}
 
 					span {
-						marging-left: auto;
+						margin-left: auto;
 						background: var(--theme-primary-background);
 						border-radius: var(--radius-2);
-						padding: 5px;
+						padding: 5px 10px;
 					}
 				}
 			}
