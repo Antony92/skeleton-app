@@ -10,11 +10,11 @@ export const globalMessage = async (message: string, level: 'info' | 'warning' |
 	await import('@app/elements/global-message/app-global-message.element')
 
 	// Hide existing GlobalMessage
-	await document.querySelector<AppGlobalMessage>('app-global-message#global-message')?.hide()
+	document.querySelector<AppGlobalMessage>('app-global-message#global-message')?.remove()
 
 	// Create GlobalMessage
 	const globalMessage = Object.assign(document.createElement('app-global-message'), { id: 'global-message', level })
-	globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove(), { once: true })
+	globalMessage.addEventListener('app-after-hide', () => globalMessage?.remove())
 
 	// Set up state
 	const template = html`${message}`

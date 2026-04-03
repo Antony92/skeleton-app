@@ -33,7 +33,7 @@ export const notify = async (notification: NotifyOptions) => {
 	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
 
 	// Hide existing Snackbar
-	await document.querySelector<AppSnackbar>('app-snackbar#snackbar')?.hide()
+	document.querySelector<AppSnackbar>('app-snackbar#snackbar')?.remove()
 
 	// Create Snackbar
 	const snackbar = Object.assign(document.createElement('app-snackbar'), { id: 'snackbar', variant, duration, action: action?.label })

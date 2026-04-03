@@ -21,6 +21,7 @@ import '@app/elements/tab-group/app-tab-group.element'
 import '@app/elements/tab-panel/app-tab-panel.element'
 import '@app/elements/tooltip/app-tooltip.element'
 import '@app/elements/file-upload/app-file-upload.element'
+import '@app/elements/tag/app-tag.element'
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element'
 import { confirmDialog, promptDialog } from '@app/shared/dialog'
 import { notify } from '@app/shared/notification'
@@ -214,6 +215,12 @@ export class AppDemoPage extends LitElement {
 				<app-badge variant="success">Success</app-badge>
 				<app-badge variant="warning">Warning</app-badge>
 				<app-badge variant="error" pulse>Error</app-badge>
+			</fieldset>
+
+			<fieldset>
+				<legend>Tag</legend>
+				<app-tag active>All</app-tag>
+				<app-tag>Only Some</app-tag>
 			</fieldset>
 
 			<fieldset>
