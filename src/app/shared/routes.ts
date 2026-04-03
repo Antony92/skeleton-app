@@ -42,7 +42,14 @@ export const routes: Route[] = [
 		enter: async () => {
 			await import('@app/pages/app-form.page')
 		},
-	},
+  },
+  {
+		path: '/drag-and-drop',
+		render: () => html`<app-drag-drop-page></app-drag-drop-page>`,
+		enter: async () => {
+			await import('@app/pages/app-drag-drop.page')
+		},
+   },
 	{
 		path: '/admin',
 		guards: [authGuard([Role.ADMIN])],
