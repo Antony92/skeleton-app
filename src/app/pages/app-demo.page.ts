@@ -219,8 +219,8 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Tag</legend>
-				<app-tag active>All</app-tag>
-				<app-tag>Only Some</app-tag>
+				<app-tag active value="all">All</app-tag>
+				<app-tag value="some">Only Some</app-tag>
 			</fieldset>
 
 			<fieldset>

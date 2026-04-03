@@ -12,7 +12,7 @@ export class AppTag extends LitElement {
 	@property({ type: String })
 	value = ''
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	active = false
 
 	@property({ type: Boolean })
