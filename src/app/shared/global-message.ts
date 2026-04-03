@@ -9,8 +9,8 @@ import { html, render } from 'lit'
 export const globalMessage = async (message: string, level: 'info' | 'warning' | 'error' = 'info') => {
 	await import('@app/elements/global-message/app-global-message.element')
 
-	// Remove existing GlobalMessage
-	document.querySelector<AppGlobalMessage>('app-global-message#global-message')?.remove()
+	// Hide existing GlobalMessage
+	await document.querySelector<AppGlobalMessage>('app-global-message#global-message')?.hide()
 
 	// Create GlobalMessage
 	const globalMessage = Object.assign(document.createElement('app-global-message'), { id: 'global-message', level })
