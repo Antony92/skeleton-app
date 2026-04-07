@@ -119,6 +119,14 @@ export class AppDragDropPage extends LitElement {
 			item.classList.remove('over')
 			item.removeAttribute('draggable')
 		})
+  }
+
+  handleMouseDown(event: MouseEvent) {
+		(event.target as HTMLElement).closest('.item')?.setAttribute('draggable', 'true')
+  }
+
+  handleMouseUp(event: MouseEvent) {
+    (event.target as HTMLElement).closest('.item')?.removeAttribute('draggable')
 	}
 
 	protected firstUpdated() {}
@@ -142,8 +150,8 @@ export class AppDragDropPage extends LitElement {
 						>
 							<app-icon
 								class="handle"
-								@mousedown=${(event: Event) => (event.target as HTMLElement).closest('.item')?.setAttribute('draggable', 'true')}
-								@mouseup=${(event: Event) => (event.target as HTMLElement).closest('.item')?.removeAttribute('draggable')}
+								@mousedown=${this.handleMouseDown}
+								@mouseup=${this.handleMouseUp}
 							>
 								drag_indicator
 							</app-icon>
