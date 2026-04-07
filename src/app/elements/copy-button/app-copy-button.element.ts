@@ -19,13 +19,13 @@ export class AppCopyButton extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@state()
-	copied = false
+	accessor copied = false
 
 	private timeout = 0
 

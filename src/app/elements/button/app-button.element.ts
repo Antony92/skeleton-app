@@ -21,28 +21,28 @@ export class AppButton extends LitElement {
 	]
 
 	@property({ type: String })
-	variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
+	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
 
 	@property({ type: String })
-	appearance: 'normal' | 'outlined' | 'plain' = 'normal'
+	accessor appearance: 'normal' | 'outlined' | 'plain' = 'normal'
 
 	@property({ type: Boolean })
-	disabled = false
+	accessor disabled = false
 
 	@property({ type: Boolean })
-	outlined = false
+	accessor outlined = false
 
 	@property({ type: Boolean })
-	text = false
+	accessor text = false
 
 	@property({ type: Boolean })
-	icon = false
+	accessor icon = false
 
 	@property({ type: String })
-	href = ''
+	accessor href = ''
 
 	@property({ type: String })
-	download: string | undefined
+	accessor download: string | undefined
 
 	render() {
 		return html`

@@ -12,43 +12,43 @@ export class AppInput extends FormElement {
 	static styles = [defaultStyle, appInputStyle, css``]
 
 	@property({ type: Boolean })
-	readonly = false
+	accessor readonly = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
+	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: String })
-	autocomplete: 'on' | 'off' = 'off'
+	accessor autocomplete: 'on' | 'off' = 'off'
 
 	@property({ type: String })
-	placeholder = ''
+	accessor placeholder = ''
 
 	@property()
-	max: number | string | undefined
+	accessor max: number | string | undefined
 
 	@property()
-	min: number | string | undefined
+	accessor min: number | string | undefined
 
 	@property({ type: Number })
-	step: number | undefined
+	accessor step: number | undefined
 
 	@property({ type: Number })
-	maxlength: number | undefined
+	accessor maxlength: number | undefined
 
 	@property({ type: Number })
-	minlength: number | undefined
+	accessor minlength: number | undefined
 
 	@property({ type: String })
-	pattern: string | undefined
+	accessor pattern: string | undefined
 
 	@query('input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	onInput() {
 		this.value = this.input.value

@@ -48,19 +48,19 @@ export class AppTable extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	searchable = false
+	accessor searchable = false
 
 	@property({ type: Boolean })
-	clearable = false
+	accessor clearable = false
 
 	@property({ type: String })
-	searchValue = ''
+	accessor searchValue = ''
 
 	@property({ type: Boolean })
-	filtersApplied = false
+	accessor filtersApplied = false
 
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
-	tables!: HTMLTableElement[]
+	accessor tables!: HTMLTableElement[]
 
   private filterMap = new Map()
   private debouncedSearch?: ReturnType<typeof debounce>

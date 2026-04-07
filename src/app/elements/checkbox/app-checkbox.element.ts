@@ -12,19 +12,19 @@ export class AppCheckbox extends FormElement {
 	static styles = [defaultStyle, appCheckStyle, css``]
 
 	@property({ type: Boolean })
-	readonly = false
+	accessor readonly = false
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ type: Boolean })
-	checked = false
+	accessor checked = false
 
 	@query('input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	onInput() {
 		this.checked = this.input.checked

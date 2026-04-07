@@ -37,22 +37,22 @@ export interface FormControl {
 
 export abstract class FormElement extends LitElement implements FormControl {
 	@property({ type: String, reflect: true })
-	name = ''
+	accessor name = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	defaultValue = ''
+	accessor defaultValue = ''
 
 	@property({ type: Boolean, reflect: true })
-	disabled = false
+	accessor disabled = false
 
 	@state()
-	touched = false
+	accessor touched = false
 
 	@state()
-	message = ''
+	accessor message = ''
 
 	internals = this.attachInternals()
 	static formAssociated = true

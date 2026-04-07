@@ -12,16 +12,16 @@ export class AppRadioGroup extends FormElement {
 	static styles = [defaultStyle, appRadioGroupStyle, css``]
 
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@query('fieldset')
-	fieldset!: HTMLFieldSetElement
+	accessor fieldset!: HTMLFieldSetElement
 
 	@queryAssignedElements()
-	radios!: AppRadio[]
+	accessor radios!: AppRadio[]
 
 	connectedCallback() {
 		super.connectedCallback()

@@ -61,7 +61,7 @@ export class AppLoader extends LitElement {
 	]
 
 	@property({ type: Boolean, reflect: true })
-	active = false
+	accessor active = false
 
 	render() {
 		return html`<div class="loader-line"></div>`

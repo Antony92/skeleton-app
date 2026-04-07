@@ -9,10 +9,10 @@ export class AppBadge extends LitElement {
 	static styles = [defaultStyle, appBadgeStyle, css``]
 
 	@property({ type: String })
-	variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
+	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
 
 	@property({ type: Boolean })
-	pulse = false
+	accessor pulse = false
 
 	render() {
 		return html`

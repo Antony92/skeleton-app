@@ -12,38 +12,35 @@ import { FormElement } from '@app/mixins/form.mixin'
 export class AppFileUpload extends FormElement {
 	static styles = [defaultStyle, appFileUploadStyle, css``]
 
-	@property({ type: Boolean, reflect: true })
-	disabled = false
-
 	@property({ type: Boolean })
-	required = false
+	accessor required = false
 
 	@property({ type: String })
-	accept = ''
+	accessor accept = ''
 
 	@property({ type: String })
-	label = ''
+	accessor label = ''
 
 	@property({ attribute: false })
-	files: FileList | null = null
+	accessor files: FileList | null = null
 
 	@property({ type: String })
-	placeholder = ''
+	accessor placeholder = ''
 
 	@property({ type: Number })
-	size: number | undefined
+	accessor size: number | undefined
 
 	@property({ type: String })
-	fileName = ''
+	accessor fileName = ''
 
 	@property({ type: String })
-	fileURL = ''
+	accessor fileURL = ''
 
 	@query('input')
-	input!: HTMLInputElement
+	accessor input!: HTMLInputElement
 
 	@queryAssignedElements({ slot: 'trigger' })
-	triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[]
 
 	disconnectedCallback() {
 		super.disconnectedCallback()

@@ -21,22 +21,22 @@ export class AppRichTextEditor extends LitElement {
 	]
 
 	@property({ type: Boolean })
-	disabled = false
+	accessor disabled = false
 
 	@query('iframe')
-	iframe!: HTMLIFrameElement
+	accessor iframe!: HTMLIFrameElement
 
 	@state()
-	srcdoc = ''
+	accessor srcdoc = ''
 
 	@property({ type: String })
-	placeholder = ''
+	accessor placeholder = ''
 
 	@property({ type: String })
-	value = ''
+	accessor value = ''
 
 	@property({ type: String })
-	toolbar = 'header text list link color clear'
+	accessor toolbar = 'header text list link color clear'
 
 	quill!: Quill
 	isInternalChange = false
