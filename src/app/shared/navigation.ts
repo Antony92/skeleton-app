@@ -37,7 +37,7 @@ export const destroyNavigation = () => {
 	navigation.removeEventListener('navigateerror', onNavigationError)
 }
 
-export const navigate = (url: string) => navigation.navigate(url)
+export const navigate = (url: string | URL, options?: NavigationNavigateOptions) => navigation.navigate(url, options)
 
 export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value)
 
