@@ -18,9 +18,6 @@ export class AppTextarea extends FormElement {
 	accessor required = false
 
 	@property({ type: String })
-	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
-
-	@property({ type: String })
 	accessor label = ''
 
 	@property({ type: String })
