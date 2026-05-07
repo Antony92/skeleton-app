@@ -2,10 +2,9 @@ import { html, LitElement, css } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 import { when } from 'lit/directives/when.js'
 import { setPageTitle } from '@app/utils/html'
-import { Role } from '@app/types/user.type'
 import { dummyLogin } from '@app/services/api.service'
 import { getRouteSearch, navigate } from '@app/shared/navigation'
-import { setUser } from '@app/shared/auth'
+import { getUser } from '@app/shared/auth'
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
@@ -28,25 +27,18 @@ export class AppLoginPage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback()
 		setPageTitle('Login')
-		const { token, error } = getRouteSearch()
-		if (error) {
+    const { error } = getRouteSearch()
+		const user = getUser()
+		if (!user && error) {
 			this.error = error
 			return
 		}
-		if (!token) {
+		if (!user) {
 			dummyLogin({ username: 'emilys', password: 'emilyspass' })
 			// login()
 			return
 		}
 		try {
-			const user = JSON.parse(atob(token.split('.')[1]))
-			setUser({
-				id: user.id,
-				username: user.email,
-				name: `${user.firstName} ${user.lastName}`,
-        roles: [Role.ADMIN],
-        accessToken: token
-			})
 			navigate(localStorage.getItem('requested-page') || '/')
 			localStorage.removeItem('requested-page')
 		} catch (error) {
