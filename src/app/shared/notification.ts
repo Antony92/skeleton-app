@@ -9,6 +9,7 @@ export interface NotifyOptions {
 	variant?: NotificationVariant
 	icon?: string | boolean
 	duration?: number
+	position?: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left'
 	action?: {
 		label: string
 		onAction?: (event: Event) => void
@@ -30,13 +31,13 @@ export const notify = async (notification: NotifyOptions) => {
 		import('@app/elements/button/app-button.element'),
 	])
 
-	const { message, variant = 'default', duration = 3000, icon = true, action } = notification
+	const { message, variant = 'default', duration = 3000, icon = true, action, position = 'bottom' } = notification
 
 	// Hide existing Snackbar
 	document.querySelector<AppSnackbar>('app-snackbar#snackbar')?.remove()
 
 	// Create Snackbar
-	const snackbar = Object.assign(document.createElement('app-snackbar'), { id: 'snackbar', variant, duration, action: action?.label })
+	const snackbar = Object.assign(document.createElement('app-snackbar'), { id: 'snackbar', variant, duration, position, action: action?.label })
 	snackbar.addEventListener('app-after-hide', () => snackbar?.remove(), { once: true })
 
 	if (action?.onAction) {
@@ -48,9 +49,9 @@ export const notify = async (notification: NotifyOptions) => {
 	const template = html` ${when(icon, () => html`<app-icon slot="icon" filled>${iconName}</app-icon>`)} ${message} `
 
 	// Render
-  render(template, snackbar)
+	render(template, snackbar)
 
-  // Add to DOM
+	// Add to DOM
 	document.body.appendChild(snackbar)
 
 	// show
