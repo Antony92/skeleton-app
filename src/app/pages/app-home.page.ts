@@ -1,7 +1,7 @@
-import { setPageTitle } from '@app/utils/html'
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
-import '@app/elements/rich-text-editor/app-rich-text-editor.element'
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import '@app/elements/rich-text-editor/app-rich-text-editor.element';
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -17,11 +17,11 @@ export class AppHomePage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 		`,
-	]
+	];
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Home')
+		super.connectedCallback();
+		setPageTitle('Home');
 	}
 
 	protected firstUpdated() {}
@@ -29,6 +29,6 @@ export class AppHomePage extends LitElement {
 	render() {
 		return html` <h3>Home</h3>
 
-			<app-rich-text-editor placeholder="aaaaa" value="test"></app-rich-text-editor>`
+			<app-rich-text-editor placeholder="aaaaa" value="test"></app-rich-text-editor>`;
 	}
 }

@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appHeaderStyle = css`
 	header {
@@ -36,4 +36,4 @@ export const appHeaderStyle = css`
 		font-size: 1.2rem;
 		border: none;
 	}
-`
+`;

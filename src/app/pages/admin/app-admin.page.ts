@@ -1,6 +1,6 @@
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
-import { setPageTitle } from '@app/utils/html'
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 @customElement('app-admin-page')
 export class AppAdminPage extends LitElement {
@@ -10,14 +10,14 @@ export class AppAdminPage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 		`,
-	]
+	];
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Admin')
+		super.connectedCallback();
+		setPageTitle('Admin');
 	}
 
 	render() {
-		return html` <h3>Admin</h3> `
+		return html` <h3>Admin</h3> `;
 	}
 }

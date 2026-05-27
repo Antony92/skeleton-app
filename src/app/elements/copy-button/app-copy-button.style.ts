@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appCopyButtonStyle = css`
 	button {
@@ -33,4 +33,4 @@ export const appCopyButtonStyle = css`
 		   color: var(--theme-success-color);
 		}
 	}
-`
+`;

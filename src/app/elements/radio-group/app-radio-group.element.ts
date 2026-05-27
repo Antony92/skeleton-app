@@ -1,57 +1,57 @@
-import { html, css, type PropertyValues } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { when } from 'lit/directives/when.js'
-import type { AppRadio } from '@app/elements/radio/app-radio.element'
-import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import type { AppRadio } from '@app/elements/radio/app-radio.element';
+import { appRadioGroupStyle } from '@app/elements/radio-group/app-radio-group.style';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, type PropertyValues } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-radio-group')
 export class AppRadioGroup extends FormElement {
-	static styles = [defaultStyle, appRadioGroupStyle, css``]
+	static styles = [defaultStyle, appRadioGroupStyle, css``];
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@query('fieldset')
-	accessor fieldset!: HTMLFieldSetElement
+	accessor fieldset!: HTMLFieldSetElement;
 
 	@queryAssignedElements()
-	accessor radios!: AppRadio[]
+	accessor radios!: AppRadio[];
 
 	connectedCallback() {
-		super.connectedCallback()
+		super.connectedCallback();
 		this.addEventListener('app-change', (event) => {
-			const radio = event.target as AppRadio
-			this.value = radio.value
-			this.touched = true
-		})
+			const radio = event.target as AppRadio;
+			this.value = radio.value;
+			this.touched = true;
+		});
 	}
 
 	protected updated(_changedProperties: PropertyValues): void {
-		super.updated(_changedProperties)
+		super.updated(_changedProperties);
 		this.radios.forEach((r) => {
-			r.checked = !!this.value && r.value === this.value
-			r.disabled = this.disabled
-		})
+			r.checked = !!this.value && r.value === this.value;
+			r.disabled = this.disabled;
+		});
 	}
 
 	getValidity() {
 		if (!this.value && this.required) {
-			return { flags: { valueMissing: true }, message: 'This field is required', anchor: this.fieldset }
+			return { flags: { valueMissing: true }, message: 'This field is required', anchor: this.fieldset };
 		}
-		return {}
-  }
+		return {};
+	}
 
 	focus(options?: FocusOptions) {
 		this.radios
 			.filter((r) => !r.checked)
 			.at(0)
-			?.focus(options)
+			?.focus(options);
 	}
 
 	render() {
@@ -63,12 +63,12 @@ export class AppRadioGroup extends FormElement {
 				</fieldset>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-radio-group': AppRadioGroup
+		'app-radio-group': AppRadioGroup;
 	}
 }

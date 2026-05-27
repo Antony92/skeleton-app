@@ -1,7 +1,7 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-dropdown-item')
 export class AppDropdownItem extends LitElement {
@@ -51,16 +51,16 @@ export class AppDropdownItem extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	accessor disabled = false;
 
 	@property({ type: String })
-	accessor value = ''
+	accessor value = '';
 
 	@property({ type: String })
-	accessor href = ''
+	accessor href = '';
 
 	render() {
 		return html`
@@ -83,12 +83,12 @@ export class AppDropdownItem extends LitElement {
 					</button>
 				`,
 			)}
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-dropdown-item': AppDropdownItem
+		'app-dropdown-item': AppDropdownItem;
 	}
 }

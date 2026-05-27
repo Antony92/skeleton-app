@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const formStyle = css`
 	form {
@@ -7,4 +7,4 @@ export const formStyle = css`
 		max-width: 300px;
 		gap: 15px;
 	}
-`
+`;

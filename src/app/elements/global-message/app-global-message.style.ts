@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appGlobalMessageStyle = css`
 	.global-message {
@@ -44,4 +44,4 @@ export const appGlobalMessageStyle = css`
 			font-size: var(--theme-font-size-1);
 		}
 	}
-`
+`;

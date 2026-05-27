@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const tableStyle = css`
 	table {
@@ -81,4 +81,4 @@ export const tableStyle = css`
 			}
 		}
 	}
-`
+`;

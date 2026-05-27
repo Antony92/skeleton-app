@@ -1,16 +1,16 @@
-import type { PaginateValue } from '@app/types/paginate.type'
+import type { PaginateValue } from '@app/types/paginate.type';
 
 export class AppPaginateEvent extends Event {
-	readonly value: PaginateValue
+	readonly value: PaginateValue;
 
 	constructor(value: PaginateValue) {
-		super('app-paginate', { bubbles: true, composed: true })
-		this.value = value
+		super('app-paginate', { bubbles: true, composed: true });
+		this.value = value;
 	}
 }
 
 declare global {
 	interface GlobalEventHandlersEventMap {
-		'app-paginate': AppPaginateEvent
+		'app-paginate': AppPaginateEvent;
 	}
 }

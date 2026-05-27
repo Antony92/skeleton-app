@@ -1,6 +1,6 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-icon')
 export class AppIcon extends LitElement {
@@ -27,18 +27,18 @@ export class AppIcon extends LitElement {
 				font-variation-settings: 'FILL' 1;
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor filled = false
+	accessor filled = false;
 
 	render() {
-		return html`<slot></slot>`
+		return html`<slot></slot>`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-icon': AppIcon
+		'app-icon': AppIcon;
 	}
 }

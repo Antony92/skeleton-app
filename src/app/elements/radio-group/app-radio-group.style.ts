@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appRadioGroupStyle = css`
 	:host(:state(user-invalid)) {
@@ -40,4 +40,4 @@ export const appRadioGroupStyle = css`
 			color: var(--theme-invalid-color);
 		}
 	}
-`
+`;

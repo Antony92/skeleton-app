@@ -1,8 +1,8 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import type { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element'
-import { AppSelectEvent } from '@app/events/select.event'
-import { defaultStyle } from '@app/styles/default.style'
+import type { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-item.element';
+import { AppSelectEvent } from '@app/events/select.event';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-dropdown')
 export class AppDropdown extends LitElement {
@@ -35,70 +35,74 @@ export class AppDropdown extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@query('[popover]')
-	accessor popup!: HTMLElement
+	accessor popup!: HTMLElement;
 
 	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[];
 
 	@queryAssignedElements({ selector: 'app-dropdown-item' })
-	accessor assignedItems!: AppDropdownItem[]
+	accessor assignedItems!: AppDropdownItem[];
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	accessor open = false;
 
-	private attachedItems = new WeakSet<AppDropdownItem>()
+	private attachedItems = new WeakSet<AppDropdownItem>();
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.toggleDropdown()))
+		this.triggers.forEach((trigger) => {
+			trigger.addEventListener('click', () => this.toggleDropdown());
+		});
 		this.popup.addEventListener('toggle', (event: Event) => {
-			const toggleEvent = event as ToggleEvent
+			const toggleEvent = event as ToggleEvent;
 			if (toggleEvent.newState === 'closed') {
-				this.closeDropdown()
+				this.closeDropdown();
 			}
-		})
+		});
 	}
 
 	closeDropdown() {
-		this.open = false
-		this.popup.hidePopover()
-		this.popup.removeAttribute('style')
-		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
+		this.open = false;
+		this.popup.hidePopover();
+		this.popup.removeAttribute('style');
+		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
 	}
 
 	async openDropdown() {
-		this.open = true
-		await this.updateComplete
-		this.popup.showPopover()
-		this.dispatchEvent(new Event('app-show', { cancelable: true }))
+		this.open = true;
+		await this.updateComplete;
+		this.popup.showPopover();
+		this.dispatchEvent(new Event('app-show', { cancelable: true }));
 	}
 
 	toggleDropdown() {
 		if (this.open) {
-			this.closeDropdown()
+			this.closeDropdown();
 		} else {
-			this.openDropdown()
+			this.openDropdown();
 		}
 	}
 
 	private attachItemListeners(item: AppDropdownItem) {
 		if (this.attachedItems.has(item)) {
-			return
+			return;
 		}
-		this.attachedItems.add(item)
+		this.attachedItems.add(item);
 		item.addEventListener('click', (event: Event) => {
 			if (event.defaultPrevented) {
-				return
+				return;
 			}
-			this.dispatchEvent(new AppSelectEvent(item.value))
-			this.closeDropdown()
-		})
+			this.dispatchEvent(new AppSelectEvent(item.value));
+			this.closeDropdown();
+		});
 	}
 
 	private onItemsAdded() {
-		this.assignedItems.forEach((item) => this.attachItemListeners(item))
+		this.assignedItems.forEach((item) => {
+			this.attachItemListeners(item);
+		});
 	}
 
 	render() {
@@ -109,12 +113,12 @@ export class AppDropdown extends LitElement {
 					<slot @slotchange=${this.onItemsAdded}></slot>
 				</div>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-dropdown': AppDropdown
+		'app-dropdown': AppDropdown;
 	}
 }

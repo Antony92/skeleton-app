@@ -1,10 +1,10 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
-import { setPageTitle } from '@app/utils/html'
-import { dummyLogin } from '@app/services/api.service'
-import { getRouteSearch, navigate } from '@app/shared/navigation'
-import { getUser } from '@app/shared/auth'
+import { dummyLogin } from '@app/services/api.service';
+import { getUser } from '@app/shared/auth';
+import { getRouteSearch, navigate } from '@app/shared/navigation';
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
@@ -19,31 +19,31 @@ export class AppLoginPage extends LitElement {
 				height: 100%;
 			}
 		`,
-	]
+	];
 
 	@state()
-	private error = ''
+	private error = '';
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Login')
-    const { error } = getRouteSearch()
-		const user = getUser()
+		super.connectedCallback();
+		setPageTitle('Login');
+		const { error } = getRouteSearch();
+		const user = getUser();
 		if (!user && error) {
-			this.error = error
-			return
+			this.error = error;
+			return;
 		}
 		if (!user) {
-			dummyLogin({ username: 'emilys', password: 'emilyspass' })
+			dummyLogin({ username: 'emilys', password: 'emilyspass' });
 			// login()
-			return
+			return;
 		}
 		try {
-			navigate(localStorage.getItem('requested-page') || '/')
-			localStorage.removeItem('requested-page')
+			navigate(localStorage.getItem('requested-page') || '/');
+			localStorage.removeItem('requested-page');
 		} catch (error) {
-			console.error(error)
-			this.error = 'Invalid token'
+			console.error(error);
+			this.error = 'Invalid token';
 		}
 	}
 
@@ -58,6 +58,6 @@ export class AppLoginPage extends LitElement {
 					`,
 				)}
 			</div>
-		`
+		`;
 	}
 }

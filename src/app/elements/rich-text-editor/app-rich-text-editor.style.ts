@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appRichTextEditorStyle = css`
 	:host(:state(user-invalid)) {
@@ -90,4 +90,4 @@ export const appRichTextEditorStyle = css`
 			}
 		}
 	}
-`
+`;

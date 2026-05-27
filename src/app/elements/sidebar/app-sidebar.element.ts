@@ -1,33 +1,33 @@
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
-import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style'
-import { whenUserRole } from '@app/directives/when-user-role.directive'
-import { classMap } from 'lit/directives/class-map.js'
-import { Role } from '@app/types/user.type'
-import '@app/elements/icon/app-icon.element'
-import { defaultStyle } from '@app/styles/default.style'
-import { SignalWatcher } from '@lit-labs/signals'
+import { whenUserRole } from '@app/directives/when-user-role.directive';
+import { appSidebarStyle } from '@app/elements/sidebar/app-sidebar.style';
+import { Role } from '@app/types/user.type';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import '@app/elements/icon/app-icon.element';
+import { defaultStyle } from '@app/styles/default.style';
+import { SignalWatcher } from '@lit-labs/signals';
 
 @customElement('app-sidebar')
 export class AppSidebar extends SignalWatcher(LitElement) {
-  static styles = [defaultStyle, appSidebarStyle, css``]
+	static styles = [defaultStyle, appSidebarStyle, css``];
 
 	connectedCallback() {
-		super.connectedCallback()
-		navigation.addEventListener('navigatesuccess', this.setActiveLink)
+		super.connectedCallback();
+		navigation.addEventListener('navigatesuccess', this.setActiveLink);
 	}
 
 	disconnectedCallback() {
-		super.disconnectedCallback()
-		navigation.removeEventListener('navigatesuccess', this.setActiveLink)
+		super.disconnectedCallback();
+		navigation.removeEventListener('navigatesuccess', this.setActiveLink);
 	}
 
 	setActiveLink = (event: Event) => {
-		const target = event.target as Navigation
-		const url = new URL(target.currentEntry?.url || '')
-    this.renderRoot.querySelector('a.active')?.classList.remove('active')
-		this.renderRoot.querySelector(`a[href^="/${url.pathname.split('/')[1]}"]`)?.classList.add('active')
-	}
+		const target = event.target as Navigation;
+		const url = new URL(target.currentEntry?.url || '');
+		this.renderRoot.querySelector('a.active')?.classList.remove('active');
+		this.renderRoot.querySelector(`a[href^="/${url.pathname.split('/')[1]}"]`)?.classList.add('active');
+	};
 
 	render() {
 		return html`
@@ -88,12 +88,12 @@ export class AppSidebar extends SignalWatcher(LitElement) {
 					)}
 				</ul>
 			</aside>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-sidebar': AppSidebar
+		'app-sidebar': AppSidebar;
 	}
 }

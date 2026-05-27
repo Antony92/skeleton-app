@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appBadgeStyle = css`
 	.badge {
@@ -50,4 +50,4 @@ export const appBadgeStyle = css`
 			box-shadow: 0 0 0 10px color-mix(in srgb, var(--background) 0%, transparent);
 		}
 	}
-`
+`;

@@ -1,12 +1,12 @@
-import { html, css, type PropertyValues } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
-import { appSelectStyle } from '@app/elements/select/app-select.style'
-import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appSelectStyle } from '@app/elements/select/app-select.style';
+import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, type PropertyValues } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-select')
 export class AppSelect extends FormElement {
@@ -38,98 +38,102 @@ export class AppSelect extends FormElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: String })
-	accessor displayValue = ''
+	accessor displayValue = '';
 
 	@property({ type: String })
-	accessor placeholder = ''
+	accessor placeholder = '';
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	accessor open = false;
 
 	@property({ type: Boolean })
-	accessor multiple = false
+	accessor multiple = false;
 
 	@property({ type: Boolean })
-	accessor searchable = false
+	accessor searchable = false;
 
 	@query('#input')
-	accessor input!: HTMLInputElement
+	accessor input!: HTMLInputElement;
 
 	@query('#trigger')
-	accessor trigger!: HTMLInputElement
+	accessor trigger!: HTMLInputElement;
 
 	@query('[popover]')
-	accessor popup!: HTMLElement
+	accessor popup!: HTMLElement;
 
 	@queryAssignedElements({ selector: 'app-select-option' })
-	accessor assignedOptions!: AppSelectOption[]
+	accessor assignedOptions!: AppSelectOption[];
 
-	private attachedOptions = new WeakSet<AppSelectOption>()
+	private attachedOptions = new WeakSet<AppSelectOption>();
 
 	connectedCallback() {
-		super.connectedCallback()
+		super.connectedCallback();
 		this.addEventListener('keydown', (event) => {
 			if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key) || !this.open) {
-				return
+				return;
 			}
 
-			event.preventDefault()
+			event.preventDefault();
 
-			const activeOptions = this.assignedOptions.filter((option) => !option.disabled)
+			const activeOptions = this.assignedOptions.filter((option) => !option.disabled);
 
-			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0)
+			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0);
 
-			let newIndex = Math.max(0, currentIndex)
+			let newIndex = Math.max(0, currentIndex);
 
 			if (event.key === 'ArrowDown') {
-				newIndex = currentIndex + 1 > activeOptions.length - 1 ? 0 : currentIndex + 1
+				newIndex = currentIndex + 1 > activeOptions.length - 1 ? 0 : currentIndex + 1;
 			} else if (event.key === 'ArrowUp') {
-				newIndex = currentIndex - 1 < 0 ? activeOptions.length - 1 : currentIndex - 1
+				newIndex = currentIndex - 1 < 0 ? activeOptions.length - 1 : currentIndex - 1;
 			} else if (event.key === 'Home') {
-				newIndex = 0
+				newIndex = 0;
 			} else if (event.key === 'End') {
-				newIndex = activeOptions.length - 1
+				newIndex = activeOptions.length - 1;
 			}
 
 			activeOptions.forEach((option, index) => {
 				if (newIndex === index) {
-					option.tabIndex = 0
-					option.focus()
+					option.tabIndex = 0;
+					option.focus();
 				} else {
-					option.tabIndex = -1
+					option.tabIndex = -1;
 				}
-			})
-		})
+			});
+		});
 	}
 
 	private attachOptionListeners(option: AppSelectOption) {
 		if (this.attachedOptions.has(option)) {
-			return
+			return;
 		}
-		this.attachedOptions.add(option)
+		this.attachedOptions.add(option);
 		option.addEventListener('click', () => {
 			if (this.multiple) {
-				option.selected = !option.selected
-				this.value = this.getMultiValue()
+				option.selected = !option.selected;
+				this.value = this.getMultiValue();
 			} else {
-				option.selected = true
-				this.value = option.value
-				this.assignedOptions.filter((opt) => opt.value !== this.value).forEach((opt) => (opt.selected = false))
-				this.closeSelect()
-				this.focus()
+				option.selected = true;
+				this.value = option.value;
+				this.assignedOptions
+					.filter((opt) => opt.value !== this.value)
+					.forEach((opt) => {
+						opt.selected = false;
+					});
+				this.closeSelect();
+				this.focus();
 			}
-			this.displayValue = this.getDisplayValue()
-			this.onChange()
-		})
+			this.displayValue = this.getDisplayValue();
+			this.onChange();
+		});
 	}
 
 	protected willUpdate(_changedProperties: PropertyValues): void {
@@ -139,88 +143,88 @@ export class AppSelect extends FormElement {
 					.split(',')
 					.map((v) => v.trim())
 					.filter((v) => !!v)
-					.includes(option.value)
-				option.selected = selected
-			})
+					.includes(option.value);
+				option.selected = selected;
+			});
 		}
 		if (_changedProperties.has('value') && !_changedProperties.has('displayValue')) {
-			this.displayValue = this.getDisplayValue()
+			this.displayValue = this.getDisplayValue();
 		}
 	}
 
 	closeSelect() {
-		window.removeEventListener('keyup', this.handleKeyup)
-		window.removeEventListener('mousedown', this.handleMouseDown)
-		this.open = false
-		this.popup.hidePopover()
-		this.onBlur()
-		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
+		window.removeEventListener('keyup', this.handleKeyup);
+		window.removeEventListener('mousedown', this.handleMouseDown);
+		this.open = false;
+		this.popup.hidePopover();
+		this.onBlur();
+		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
 	}
 
 	async openSelect() {
-		this.open = true
-		await this.updateComplete
-		this.popup.showPopover()
-		this.focusSelectedOption()
-		this.dispatchEvent(new Event('app-show', { cancelable: true }))
-		window.addEventListener('keyup', this.handleKeyup)
-		window.addEventListener('mousedown', this.handleMouseDown)
+		this.open = true;
+		await this.updateComplete;
+		this.popup.showPopover();
+		this.focusSelectedOption();
+		this.dispatchEvent(new Event('app-show', { cancelable: true }));
+		window.addEventListener('keyup', this.handleKeyup);
+		window.addEventListener('mousedown', this.handleMouseDown);
 	}
 
 	toggleSelect() {
 		if (this.open) {
-			this.closeSelect()
+			this.closeSelect();
 		} else {
-			this.openSelect()
+			this.openSelect();
 		}
 	}
 
 	private handleMouseDown = (event: MouseEvent) => {
-		const path = event.composedPath()
+		const path = event.composedPath();
 		if (!path.includes(this)) {
-			this.closeSelect()
+			this.closeSelect();
 		}
-	}
+	};
 
 	private handleKeyup = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
-			this.closeSelect()
-			this.focus()
+			this.closeSelect();
+			this.focus();
 		}
 		if (event.key === 'Tab') {
-			this.closeSelect()
+			this.closeSelect();
 		}
-	}
+	};
 
 	private focusSelectedOption() {
 		const options = this.assignedOptions
 			.filter((option) => !option.disabled)
 			.map((option) => {
-				option.tabIndex = option.selected ? 0 : -1
-				return option
-			})
-		const firstSelected = options.find((option) => option.selected)
-		firstSelected?.focus()
+				option.tabIndex = option.selected ? 0 : -1;
+				return option;
+			});
+		const firstSelected = options.find((option) => option.selected);
+		firstSelected?.focus();
 	}
 
 	private onOptionsAdded() {
 		this.assignedOptions.forEach((option) => {
-			this.attachOptionListeners(option)
+			this.attachOptionListeners(option);
 			const shouldBeSelected = this.value
 				.split(',')
 				.map((v) => v.trim())
 				.filter((v) => !!v)
-				.includes(option.value)
-			option.selected = shouldBeSelected
-		})
-		this.displayValue = this.getDisplayValue()
+				.includes(option.value);
+			option.selected = shouldBeSelected;
+		});
+		this.displayValue = this.getDisplayValue();
 	}
 
 	private getMultiValue() {
 		return this.assignedOptions
 			.filter((option) => option.selected)
 			.map((option) => option.value)
-			.join(',')
+			.join(',');
 	}
 
 	private getDisplayValue() {
@@ -233,45 +237,45 @@ export class AppSelect extends FormElement {
 			)
 			.map((option) => option.textContent?.trim())
 			.filter((v) => !!v)
-			.join(', ')
+			.join(', ');
 	}
 
 	onChange() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.touched = true;
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
+		this.touched = true;
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
 	}
 
 	onClick() {
-		this.toggleSelect()
+		this.toggleSelect();
 	}
 
 	async onKeydown(event: KeyboardEvent) {
 		if (!['Enter', 'Space'].includes(event.key)) {
-			return
+			return;
 		}
-		event.preventDefault()
+		event.preventDefault();
 		if (!this.open) {
-			this.openSelect()
+			this.openSelect();
 		}
 	}
 
 	formResetCallback() {
-		super.formResetCallback()
-		this.displayValue = this.assignedOptions.find((option) => option.value === this.value)?.textContent || ''
+		super.formResetCallback();
+		this.displayValue = this.assignedOptions.find((option) => option.value === this.value)?.textContent || '';
 	}
 
 	focus(options?: FocusOptions) {
-		this.trigger.focus(options)
+		this.trigger.focus(options);
 	}
 
 	getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
 	}
 
 	render() {
@@ -321,12 +325,12 @@ export class AppSelect extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-select': AppSelect
+		'app-select': AppSelect;
 	}
 }

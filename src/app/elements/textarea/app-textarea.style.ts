@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appTextareaStyle = css`
 	:host(:state(user-invalid)) {
@@ -80,4 +80,4 @@ export const appTextareaStyle = css`
 			}
 		}
 	}
-`
+`;

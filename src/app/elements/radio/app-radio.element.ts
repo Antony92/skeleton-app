@@ -1,67 +1,67 @@
-import { html, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { appRadioStyle } from '@app/elements/radio/app-radio.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
-import { when } from 'lit/directives/when.js'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appRadioStyle } from '@app/elements/radio/app-radio.style';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-radio')
 export class AppRadio extends FormElement {
-	static styles = [defaultStyle, appRadioStyle, css``]
+	static styles = [defaultStyle, appRadioStyle, css``];
 
 	@property({ type: Boolean })
-	accessor readonly = false
+	accessor readonly = false;
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: Boolean })
-	accessor checked = false
+	accessor checked = false;
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	accessor input!: HTMLInputElement;
 
-  connectedCallback(): void {
-    super.connectedCallback()
-    this.defaultValue = this.defaultValue || this.value
-  }
+	connectedCallback(): void {
+		super.connectedCallback();
+		this.defaultValue = this.defaultValue || this.value;
+	}
 
 	onInput() {
-		this.value = this.input.value
-		this.checked = this.input.checked
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
+		this.value = this.input.value;
+		this.checked = this.input.checked;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
 	}
 
 	onChange() {
-		this.value = this.input.value
-		this.checked = this.input.checked
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.value = this.input.value;
+		this.checked = this.input.checked;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
+		this.touched = true;
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
 	}
 
-  formResetCallback() {
-    super.formResetCallback()
-		this.checked = false
+	formResetCallback() {
+		super.formResetCallback();
+		this.checked = false;
 	}
 
 	focus(options?: FocusOptions) {
-		this.input.focus(options)
-  }
+		this.input.focus(options);
+	}
 
-  getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
+	getValidity() {
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
 	}
 
 	render() {
@@ -87,12 +87,12 @@ export class AppRadio extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-radio': AppRadio
+		'app-radio': AppRadio;
 	}
 }

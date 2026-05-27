@@ -1,17 +1,17 @@
-import { setPageTitle } from '@app/utils/html'
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 @customElement('app-not-found-page')
 export class AppNotFoundPage extends LitElement {
-	static styles = [css``]
+	static styles = [css``];
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('404')
+		super.connectedCallback();
+		setPageTitle('404');
 	}
 
 	render() {
-		return html`<h1>Page not found</h1>`
+		return html`<h1>Page not found</h1>`;
 	}
 }

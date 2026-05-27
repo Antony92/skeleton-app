@@ -1,13 +1,13 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, queryAssignedElements } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
-import { AppTableFilterEvent } from '@app/events/table.event'
-import '@app/elements/button/app-button.element'
-import '@app/elements/icon/app-icon.element'
-import '@app/elements/input/app-input.element'
-import type { AppInput } from '@app/elements/input/app-input.element'
-import { defaultStyle } from '@app/styles/default.style'
-import { debounce } from '@app/utils/html'
+import { AppTableFilterEvent } from '@app/events/table.event';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, queryAssignedElements } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
+import '@app/elements/button/app-button.element';
+import '@app/elements/icon/app-icon.element';
+import '@app/elements/input/app-input.element';
+import type { AppInput } from '@app/elements/input/app-input.element';
+import { defaultStyle } from '@app/styles/default.style';
+import { debounce } from '@app/utils/html';
 
 @customElement('app-table')
 export class AppTable extends LitElement {
@@ -45,89 +45,97 @@ export class AppTable extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor searchable = false
+	accessor searchable = false;
 
 	@property({ type: Boolean })
-	accessor clearable = false
+	accessor clearable = false;
 
 	@property({ type: String })
-	accessor searchValue = ''
+	accessor searchValue = '';
 
 	@property({ type: Boolean })
-	accessor filtersApplied = false
+	accessor filtersApplied = false;
 
 	@queryAssignedElements({ slot: 'table', selector: 'table' })
-	accessor tables!: HTMLTableElement[]
+	accessor tables!: HTMLTableElement[];
 
-  private filterMap = new Map()
-  private debouncedSearch?: ReturnType<typeof debounce>
+	private filterMap = new Map();
+	private debouncedSearch?: ReturnType<typeof debounce>;
 
 	connectedCallback() {
-		super.connectedCallback()
+		super.connectedCallback();
 		this.addEventListener('app-table-column-filter-value', (event) => {
-			const { field, value } = event.filter
+			const { field, value } = event.filter;
 			if (value) {
-				this.filterMap.set(field, value)
+				this.filterMap.set(field, value);
 			} else {
-				this.filterMap.delete(field)
+				this.filterMap.delete(field);
 			}
-			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchFilterEvent()
-		})
+			this.filtersApplied = this.hasFiltersApplied();
+			this.dispatchFilterEvent();
+		});
 		this.addEventListener('app-table-column-filter-order', (event) => {
-			const { field, order } = event.filter
-			this.columns.filter((column) => column !== event.target).forEach((column) => column.clearOrderFilter())
+			const { field, order } = event.filter;
+			this.columns
+				.filter((column) => column !== event.target)
+				.forEach((column) => {
+					column.clearOrderFilter();
+				});
 			if (order) {
-				this.filterMap.set('sort', field)
-				this.filterMap.set('order', order)
+				this.filterMap.set('sort', field);
+				this.filterMap.set('order', order);
 			} else {
-				this.filterMap.delete('sort')
-				this.filterMap.delete('order')
+				this.filterMap.delete('sort');
+				this.filterMap.delete('order');
 			}
-			this.filtersApplied = this.hasFiltersApplied()
-			this.dispatchFilterEvent()
-		})
+			this.filtersApplied = this.hasFiltersApplied();
+			this.dispatchFilterEvent();
+		});
 		if (this.searchValue) {
-			this.filterMap.set('search', this.searchValue)
+			this.filterMap.set('search', this.searchValue);
 		}
-  }
+	}
 
- 	private search(value: string) {
-    if (value) {
-			this.filterMap.set('search', value)
+	private search(value: string) {
+		if (value) {
+			this.filterMap.set('search', value);
 		} else {
-			this.filterMap.delete('search')
+			this.filterMap.delete('search');
 		}
-		this.filtersApplied = this.hasFiltersApplied()
+		this.filtersApplied = this.hasFiltersApplied();
 		if (!this.debouncedSearch) {
-			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), 300)
+			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), 300);
 		}
-		return this.debouncedSearch()
+		return this.debouncedSearch();
 	}
 
 	hasFiltersApplied() {
-		return this.filterMap.size > 0
+		return this.filterMap.size > 0;
 	}
 
 	dispatchFilterEvent() {
-		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap])))
+		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap])));
 	}
 
 	clearAllFilters() {
-		this.filtersApplied = false
-		this.filterMap.clear()
-		this.searchValue = ''
-		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
-		this.columns.forEach((column) => column.clearFilters())
-		this.dispatchEvent(new Event('app-table-clear'))
+		this.filtersApplied = false;
+		this.filterMap.clear();
+		this.searchValue = '';
+		this.renderRoot.querySelectorAll('app-input').forEach((input) => {
+			input.value = '';
+		});
+		this.columns.forEach((column) => {
+			column.clearFilters();
+		});
+		this.dispatchEvent(new Event('app-table-clear'));
 	}
 
 	get columns() {
-		const table = this.tables[0]
-		return Array.from(table?.querySelectorAll('app-table-column') || [])
+		const table = this.tables[0];
+		return Array.from(table?.querySelectorAll('app-table-column') || []);
 	}
 
 	render() {
@@ -169,12 +177,12 @@ export class AppTable extends LitElement {
 				<slot name="table"></slot>
 			</div>
 			<slot name="paginator"></slot>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-table': AppTable
+		'app-table': AppTable;
 	}
 }

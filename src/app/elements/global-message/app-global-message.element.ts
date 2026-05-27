@@ -1,9 +1,9 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { choose } from 'lit/directives/choose.js'
-import { focusStyle } from '@app/styles/focus.style'
-import { appGlobalMessageStyle } from '@app/elements/global-message/app-global-message.style'
-import { defaultStyle } from '@app/styles/default.style'
+import { appGlobalMessageStyle } from '@app/elements/global-message/app-global-message.style';
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { choose } from 'lit/directives/choose.js';
 
 @customElement('app-global-message')
 export class AppGlobalMessage extends LitElement {
@@ -20,33 +20,33 @@ export class AppGlobalMessage extends LitElement {
 				display: block;
 			}
 		`,
-	]
+	];
 
 	@property({ type: String })
-	accessor level: 'info' | 'warning' | 'error' = 'info'
+	accessor level: 'info' | 'warning' | 'error' = 'info';
 
 	@query('.global-message')
-	accessor globalMessage!: HTMLDivElement
+	accessor globalMessage!: HTMLDivElement;
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	accessor open = false;
 
 	async show() {
-		this.dispatchEvent(new Event('app-show'))
-		this.open = true
-		await this.updateComplete
-		this.globalMessage.showPopover()
-		await this.animation()
-		this.dispatchEvent(new Event('app-after-show'))
+		this.dispatchEvent(new Event('app-show'));
+		this.open = true;
+		await this.updateComplete;
+		this.globalMessage.showPopover();
+		await this.animation();
+		this.dispatchEvent(new Event('app-after-show'));
 	}
 
 	async hide() {
-		this.dispatchEvent(new Event('app-hide'))
-		await this.updateComplete
-		await this.animation(true)
-		this.globalMessage.hidePopover()
-		this.open = false
-		this.dispatchEvent(new Event('app-after-hide'))
+		this.dispatchEvent(new Event('app-hide'));
+		await this.updateComplete;
+		await this.animation(true);
+		this.globalMessage.hidePopover();
+		this.open = false;
+		this.dispatchEvent(new Event('app-after-hide'));
 	}
 
 	async animation(reverse = false) {
@@ -60,8 +60,8 @@ export class AppGlobalMessage extends LitElement {
 				duration: 200,
 				fill: 'both',
 			},
-		)
-		return animation.finished
+		);
+		return animation.finished;
 	}
 
 	render() {
@@ -79,12 +79,12 @@ export class AppGlobalMessage extends LitElement {
 				<slot></slot>
 				<button class="focus-visible" @click=${this.hide}>✕</button>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-global-message': AppGlobalMessage
+		'app-global-message': AppGlobalMessage;
 	}
 }

@@ -1,46 +1,46 @@
-import '@app/elements/button/app-button.element'
-import '@app/elements/dropdown/app-dropdown.element'
-import '@app/elements/dropdown-item/app-dropdown-item.element'
-import '@app/elements/theme-switcher/app-theme-switcher.element'
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
-import { appHeaderStyle } from '@app/elements/header/app-header.style'
-import { when } from 'lit/directives/when.js'
-import { navigate } from '@app/shared/navigation'
-import { defaultStyle } from '@app/styles/default.style'
-import { computed, SignalWatcher } from '@lit-labs/signals'
-import { getUser, login, logout } from '@app/shared/auth'
+import '@app/elements/button/app-button.element';
+import '@app/elements/dropdown/app-dropdown.element';
+import '@app/elements/dropdown-item/app-dropdown-item.element';
+import '@app/elements/theme-switcher/app-theme-switcher.element';
+import { appHeaderStyle } from '@app/elements/header/app-header.style';
+import { getUser, login, logout } from '@app/shared/auth';
+import { navigate } from '@app/shared/navigation';
+import { defaultStyle } from '@app/styles/default.style';
+import { computed, SignalWatcher } from '@lit-labs/signals';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-header')
 export class AppHeader extends SignalWatcher(LitElement) {
-	static styles = [defaultStyle, appHeaderStyle, css``]
+	static styles = [defaultStyle, appHeaderStyle, css``];
 
-  private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App'
-	private appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0-alpha'
+	private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App';
+	private appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0-alpha';
 
 	private get user() {
-		return getUser()
+		return getUser();
 	}
 
 	private get initials() {
-		return this.$initials.get()
+		return this.$initials.get();
 	}
 
 	private $initials = computed(() => {
 		return this.user?.name
 			.match(/\b(\w)/g)
 			?.join('')
-			.toUpperCase()
-	})
+			.toUpperCase();
+	});
 
 	async signIn() {
-		localStorage.removeItem('requested-page')
-		login()
+		localStorage.removeItem('requested-page');
+		login();
 	}
 
 	async signOut() {
-		navigate('/')
-		await logout()
+		navigate('/');
+		await logout();
 	}
 
 	render() {
@@ -69,12 +69,12 @@ export class AppHeader extends SignalWatcher(LitElement) {
 					() => html`<app-button variant="primary" @click=${() => this.signIn()}>Sign in</app-button>`,
 				)}
 			</header>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-header': AppHeader
+		'app-header': AppHeader;
 	}
 }

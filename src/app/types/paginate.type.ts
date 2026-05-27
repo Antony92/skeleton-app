@@ -1,6 +1,6 @@
 export type PaginateValue = {
-    pageSize: number
-    pageIndex: number
-    previousPageIndex: number
-    total: number
-}
+	pageSize: number;
+	pageIndex: number;
+	previousPageIndex: number;
+	total: number;
+};

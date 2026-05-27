@@ -1,67 +1,67 @@
-import { html, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { appTextareaStyle } from '@app/elements/textarea/app-textarea.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
-import { when } from 'lit/directives/when.js'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appTextareaStyle } from '@app/elements/textarea/app-textarea.style';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-textarea')
 export class AppTextarea extends FormElement {
-	static styles = [defaultStyle, appTextareaStyle, css``]
+	static styles = [defaultStyle, appTextareaStyle, css``];
 
 	@property({ type: Boolean })
-	accessor readonly = false
+	accessor readonly = false;
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: String })
-	accessor autocomplete: 'on' | 'off' = 'off'
+	accessor autocomplete: 'on' | 'off' = 'off';
 
 	@property({ type: String })
-	accessor placeholder = ''
+	accessor placeholder = '';
 
 	@property({ type: Number })
-	accessor rows = 4
+	accessor rows = 4;
 
 	@property({ type: Number })
-	accessor maxlength: number | undefined
+	accessor maxlength: number | undefined;
 
 	@property({ type: Number })
-	accessor minlength: number | undefined
+	accessor minlength: number | undefined;
 
 	@query('textarea')
-	accessor textarea!: HTMLTextAreaElement
+	accessor textarea!: HTMLTextAreaElement;
 
 	onInput() {
-		this.value = this.textarea.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
+		this.value = this.textarea.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
 	}
 
 	onChange() {
-		this.value = this.textarea.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.value = this.textarea.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
+		this.touched = true;
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
 	}
 
 	focus(options?: FocusOptions) {
-		this.textarea.focus(options)
+		this.textarea.focus(options);
 	}
 
 	getValidity() {
-		return { flags: this.textarea.validity, message: this.textarea.validationMessage, anchor: this.textarea }
+		return { flags: this.textarea.validity, message: this.textarea.validationMessage, anchor: this.textarea };
 	}
 
 	render() {
@@ -91,12 +91,12 @@ export class AppTextarea extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-textarea': AppTextarea
+		'app-textarea': AppTextarea;
 	}
 }

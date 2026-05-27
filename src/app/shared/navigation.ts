@@ -1,7 +1,7 @@
-import { render } from 'lit'
-import { confirmDialog } from '@app/shared/dialog'
-import { loading } from '@app/shared/loader'
-import type { SearchParams } from '@app/types/search.type'
+import { confirmDialog } from '@app/shared/dialog';
+import { loading } from '@app/shared/loader';
+import type { SearchParams } from '@app/types/search.type';
+import { render } from 'lit';
 
 /* Internal Router State */
 
@@ -9,7 +9,7 @@ const state: State = {
 	hasUnsavedChanges: false,
 	currentRoute: null,
 	options: null,
-}
+};
 
 /* Public API */
 
@@ -18,179 +18,180 @@ export const initializeNavigation = (options: NavigationOptions) => {
 	options.routes = options.routes.map((route) => ({
 		...route,
 		pattern: route.pattern ?? new URLPattern({ pathname: route.path }),
-	}))
+	}));
 
-	state.options = options
+	state.options = options;
 
 	// 2. Setup listeners
-	navigation.addEventListener('navigate', onNavigation)
-	navigation.addEventListener('navigatesuccess', onNavigationSuccess)
-	navigation.addEventListener('navigateerror', onNavigationError)
+	navigation.addEventListener('navigate', onNavigation);
+	navigation.addEventListener('navigatesuccess', onNavigationSuccess);
+	navigation.addEventListener('navigateerror', onNavigationError);
 
 	// 3. Handle first load
-	handleInitialLoad()
-}
+	handleInitialLoad();
+};
 
 export const destroyNavigation = () => {
-	navigation.removeEventListener('navigate', onNavigation)
-	navigation.removeEventListener('navigatesuccess', onNavigationSuccess)
-	navigation.removeEventListener('navigateerror', onNavigationError)
-}
+	navigation.removeEventListener('navigate', onNavigation);
+	navigation.removeEventListener('navigatesuccess', onNavigationSuccess);
+	navigation.removeEventListener('navigateerror', onNavigationError);
+};
 
-export const navigate = (url: string | URL, options?: NavigationNavigateOptions) => navigation.navigate(url, options)
+export const navigate = (url: string | URL, options?: NavigationNavigateOptions) => navigation.navigate(url, options);
 
-export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value)
+export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value);
 
 export const getRouteParams = (): RouteParams => {
-	return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {}
-}
+	return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {};
+};
 
 export const getRouteSearch = () => {
-	return Object.fromEntries(new URLSearchParams(location.search))
-}
+	return Object.fromEntries(new URLSearchParams(location.search));
+};
 
 export const getRouteSearchMap = () => {
-	const object = Object.fromEntries(new URLSearchParams(location.search))
-	return new Map(Object.entries(object))
-}
+	const object = Object.fromEntries(new URLSearchParams(location.search));
+	return new Map(Object.entries(object));
+};
 
 export const addSearchToRoute = (params: SearchParams) => {
-	const search = new URLSearchParams()
+	const search = new URLSearchParams();
 	Object.entries(params).forEach(([key, value]) => {
 		if (value != null && value !== '') {
-			search.set(key, String(value))
+			search.set(key, String(value));
 		}
-	})
-	const query = search.size > 0 ? `?${search.toString()}` : ``
-	navigation.navigate(`${location.pathname}${query}`, { history: 'replace' })
-}
+	});
+	const query = search.size > 0 ? `?${search.toString()}` : ``;
+	navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
+};
 
 export const clearRouteSearch = () => {
-	navigation.navigate(location.pathname, { history: 'replace' })
-}
+	navigation.navigate(location.pathname, { history: 'replace' });
+};
 
 /* Internal Logic */
 
 const findRoute = (url: string) => {
-	return state.options?.routes.find((r) => r.pattern?.test(url))
-}
+	return state.options?.routes.find((r) => r.pattern?.test(url));
+};
 
 const handleInitialLoad = async () => {
-	if (!state.options) return
+	if (!state.options) return;
 
-	const url = new URL(location.href)
-	const route = findRoute(url.href)
+	const url = new URL(location.href);
+	const route = findRoute(url.href);
 
-	if (!route) return
+	if (!route) return;
 	if (route.redirect) {
-		navigate(route.redirect)
-		return
+		navigate(route.redirect);
+		return;
 	}
 
-	state.currentRoute = route
-	await interceptHandler(url, route, state.options.outlet)
-}
+	state.currentRoute = route;
+	await interceptHandler(url, route, state.options.outlet);
+};
 
 const onNavigation = async (event: NavigateEvent) => {
-	if (shouldNotIntercept(event) || !state.options) return
-	const url = new URL(event.destination.url)
-	const currentEntry = navigation.currentEntry
+	const options = state.options;
+	if (shouldNotIntercept(event) || !options) return;
+	const url = new URL(event.destination.url);
+	const currentEntry = navigation.currentEntry;
 
 	// Avoid redundant navigation
 	if (event.destination.url === currentEntry?.url) {
-		event.preventDefault()
-		return
+		event.preventDefault();
+		return;
 	}
 
-	const route = findRoute(url.href)
-	if (!route) return
+	const route = findRoute(url.href);
+	if (!route) return;
 
 	// Handle Redirects
 	if (route.redirect) {
-		event.preventDefault()
-		navigate(route.redirect)
-		return
+		event.preventDefault();
+		navigate(route.redirect);
+		return;
 	}
 
 	// Handle Unsaved Changes
 	if (state.hasUnsavedChanges) {
-		event.preventDefault()
+		event.preventDefault();
 		const confirm = await confirmDialog({
 			header: 'Unsaved Changes',
 			message: 'You have unsaved changes. Are you sure you want to leave?',
-		})
+		});
 		if (confirm) {
-			state.hasUnsavedChanges = false
-			navigate(url.href)
+			state.hasUnsavedChanges = false;
+			navigate(url.href);
 		}
-		return
+		return;
 	}
 
-	state.currentRoute = route
-	loading(true)
+	state.currentRoute = route;
+	loading(true);
 
 	event.intercept({
-		handler: () => interceptHandler(url, route, state.options!.outlet),
+		handler: () => interceptHandler(url, route, options.outlet),
 		focusReset: 'manual',
-	})
-}
+	});
+};
 
 const onNavigationSuccess = () => {
-	loading(false)
-}
+	loading(false);
+};
 
 const onNavigationError = () => {
-	loading(false)
-}
+	loading(false);
+};
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {
-	const params = route.pattern?.exec(url.href)?.pathname.groups || {}
+	const params = route.pattern?.exec(url.href)?.pathname.groups || {};
 
 	// 1. Guard check
 	if (route.guards) {
 		for (const guard of route.guards) {
-			const outcome = await guard(url, params)
+			const outcome = await guard(url, params);
 			if (!outcome) {
-				loading(false)
-				return
+				loading(false);
+				return;
 			}
 		}
 	}
 
 	// 2. Enter hook
-	if (route.enter) await route.enter(url, params)
+	if (route.enter) await route.enter(url, params);
 
 	// 3. Render
 	if (route.render) {
-		render(route.render(url, params), outlet)
+		render(route.render(url, params), outlet);
 	}
-}
+};
 
 const shouldNotIntercept = (event: NavigateEvent) => {
-	return event.navigationType === 'reload' || !event.canIntercept || event.hashChange || event.downloadRequest || !!event.formData
-}
+	return event.navigationType === 'reload' || !event.canIntercept || event.hashChange || event.downloadRequest || !!event.formData;
+};
 
 /* Types */
 
-export type RouteParams = Record<string, string | undefined>
+export type RouteParams = Record<string, string | undefined>;
 
 export type Route = {
-	name?: string
-	path: string
-	redirect?: string
-	pattern?: URLPattern
-	render?: (url: URL, params: RouteParams) => unknown
-	enter?: (url: URL, params: RouteParams) => Promise<void> | void
-	guards?: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[]
-}
+	name?: string;
+	path: string;
+	redirect?: string;
+	pattern?: URLPattern;
+	render?: (url: URL, params: RouteParams) => unknown;
+	enter?: (url: URL, params: RouteParams) => Promise<void> | void;
+	guards?: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[];
+};
 
 export type NavigationOptions = {
-	outlet: HTMLElement
-	routes: Route[]
-}
+	outlet: HTMLElement;
+	routes: Route[];
+};
 
 type State = {
-	hasUnsavedChanges: boolean
-	currentRoute: Route | null
-	options: NavigationOptions | null
-}
+	hasUnsavedChanges: boolean;
+	currentRoute: Route | null;
+	options: NavigationOptions | null;
+};

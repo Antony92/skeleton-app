@@ -1,7 +1,7 @@
-import { html } from 'lit/static-html.js'
-import type { Route } from '@app/shared/navigation'
-import { authGuard } from '@app/shared/guard'
-import { Role } from '@app/types/user.type'
+import { authGuard } from '@app/shared/guard';
+import type { Route } from '@app/shared/navigation';
+import { Role } from '@app/types/user.type';
+import { html } from 'lit/static-html.js';
 
 export const routes: Route[] = [
 	{
@@ -12,50 +12,50 @@ export const routes: Route[] = [
 		path: '/home',
 		render: () => html`<app-home-page></app-home-page>`,
 		enter: async () => {
-			await import('@app/pages/app-home.page')
+			await import('@app/pages/app-home.page');
 		},
 	},
 	{
 		path: '/demo',
 		render: () => html`<app-demo-page></app-demo-page>`,
 		enter: async () => {
-			await import('@app/pages/app-demo.page')
+			await import('@app/pages/app-demo.page');
 		},
 	},
 	{
 		path: '/table',
 		render: () => html`<app-table-page></app-table-page>`,
 		enter: async () => {
-			await import('@app/pages/app-table.page')
+			await import('@app/pages/app-table.page');
 		},
-  },
-  {
+	},
+	{
 		path: '/test/:id',
 		render: () => html`<app-test-page></app-test-page>`,
 		enter: async () => {
-			await import('@app/pages/app-test.page')
+			await import('@app/pages/app-test.page');
 		},
 	},
 	{
 		path: '/form',
 		render: () => html`<app-form-page></app-form-page>`,
 		enter: async () => {
-			await import('@app/pages/app-form.page')
+			await import('@app/pages/app-form.page');
 		},
-  },
-  {
+	},
+	{
 		path: '/drag-and-drop',
 		render: () => html`<app-drag-drop-page></app-drag-drop-page>`,
 		enter: async () => {
-			await import('@app/pages/app-drag-drop.page')
+			await import('@app/pages/app-drag-drop.page');
 		},
-   },
+	},
 	{
 		path: '/admin',
 		guards: [authGuard([Role.ADMIN])],
 		render: () => html`<app-admin-page></app-admin-page>`,
 		enter: async () => {
-			await import('@app/pages/admin/app-admin.page')
+			await import('@app/pages/admin/app-admin.page');
 		},
 	},
 	{
@@ -63,21 +63,21 @@ export const routes: Route[] = [
 		guards: [authGuard()],
 		render: () => html`<app-profile-page></app-profile-page>`,
 		enter: async () => {
-			await import('@app/pages/app-profile.page')
+			await import('@app/pages/app-profile.page');
 		},
 	},
 	{
 		path: '/login',
 		render: () => html`<app-login-page></app-login-page>`,
 		enter: async () => {
-			await import('@app/pages/app-login.page')
+			await import('@app/pages/app-login.page');
 		},
 	},
 	{
 		path: '(.*)',
 		render: () => html`<app-not-found-page></app-not-found-page>`,
 		enter: async () => {
-			await import('@app/pages/app-not-found.page')
+			await import('@app/pages/app-not-found.page');
 		},
 	},
-]
+];

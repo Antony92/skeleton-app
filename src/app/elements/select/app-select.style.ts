@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appSelectStyle = css`
 	:host(:state(user-invalid)) {
@@ -130,4 +130,4 @@ export const appSelectStyle = css`
 			}
 		}
 	}
-`
+`;

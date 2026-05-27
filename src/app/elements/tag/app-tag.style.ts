@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appTagStyle = css`
 	button {
@@ -27,4 +27,4 @@ export const appTagStyle = css`
 			color: var(--theme-color);
 		}
 	}
-`
+`;

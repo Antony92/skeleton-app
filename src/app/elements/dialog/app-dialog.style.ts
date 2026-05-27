@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appDialogStyle = css`
 	dialog {
@@ -68,4 +68,4 @@ export const appDialogStyle = css`
 			padding: 20px;
 		}
 	}
-`
+`;

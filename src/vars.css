@@ -8,9 +8,9 @@
 	--theme-background-inverse: light-dark(#0b0b0f, #f8f8fa);
 
 	/* Theme Font */
-	--theme-font-family: 'Inter', -apple-system, sans-serif;
+	--theme-font-family: "Inter", -apple-system, sans-serif;
 	--theme-font-size: 1rem;
-	--theme-font-size-1: .8rem;
+	--theme-font-size-1: 0.8rem;
 
 	/* Theme Backgrounds */
 	--theme-default-background: light-dark(#808080, #808080);
@@ -57,26 +57,31 @@
 	--shadow-color: 220 3% 15%;
 	--shadow-strength: 1%;
 	--shadow-1: 0 1px 2px -1px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 9%));
-	--shadow-2: 0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
+	--shadow-2:
+		0 3px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 7px 14px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%));
-	--shadow-3: 0 -1px 3px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-3:
+		0 -1px 3px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 1px 2px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 2px 5px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 4px 12px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 12px 15px -5px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
-	--shadow-4: 0 -2px 5px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-4:
+		0 -2px 5px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 1px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 2px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 9px 9px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 16px 16px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 6%));
-	--shadow-5: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-5:
+		0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 2px 1px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 5px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 10px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),
 		0 20px 20px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 5%)),
 		0 40px 40px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 7%));
-	--shadow-6: 0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
+	--shadow-6:
+		0 -1px 2px 0 hsl(var(--shadow-color) / calc(var(--shadow-strength) + 2%)),
 		0 3px 2px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 7px 5px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 3%)),
 		0 12px 10px -2px hsl(var(--shadow-color) / calc(var(--shadow-strength) + 4%)),

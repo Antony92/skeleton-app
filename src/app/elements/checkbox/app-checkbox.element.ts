@@ -1,66 +1,66 @@
-import { html, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { when } from 'lit/directives/when.js'
-import { live } from 'lit/directives/live.js'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appCheckStyle } from '@app/elements/checkbox/app-checkbox.style';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-checkbox')
 export class AppCheckbox extends FormElement {
-	static styles = [defaultStyle, appCheckStyle, css``]
+	static styles = [defaultStyle, appCheckStyle, css``];
 
 	@property({ type: Boolean })
-	accessor readonly = false
+	accessor readonly = false;
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: Boolean })
-	accessor checked = false
+	accessor checked = false;
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	accessor input!: HTMLInputElement;
 
 	onInput() {
-		this.checked = this.input.checked
-		this.value = this.input.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
+		this.checked = this.input.checked;
+		this.value = this.input.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
 	}
 
 	onChange() {
-		this.checked = this.input.checked
-		this.value = this.input.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.checked = this.input.checked;
+		this.value = this.input.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
-  }
+		this.touched = true;
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
+	}
 
-  getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
-  }
+	getValidity() {
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
+	}
 
-  getFormValue() {
-    return this.checked ? this.value || 'on' : null
-  }
+	getFormValue() {
+		return this.checked ? this.value || 'on' : null;
+	}
 
-  formResetCallback() {
-    super.formResetCallback()
-		this.checked = false
+	formResetCallback() {
+		super.formResetCallback();
+		this.checked = false;
 	}
 
 	focus(options?: FocusOptions) {
-		this.input.focus(options)
+		this.input.focus(options);
 	}
 
 	render() {
@@ -86,12 +86,12 @@ export class AppCheckbox extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-checkbox': AppCheckbox
+		'app-checkbox': AppCheckbox;
 	}
 }

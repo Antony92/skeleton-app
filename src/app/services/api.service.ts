@@ -1,29 +1,29 @@
-import { request } from '@app/http/request'
-import { searchParamsToQuery } from '@app/utils/url'
-import type { SearchParams } from '@app/types/search.type'
-import type { PaginatedResponse } from '@app/types/response.type'
+import { request } from '@app/http/request';
+import type { PaginatedResponse } from '@app/types/response.type';
+import type { SearchParams } from '@app/types/search.type';
+import { searchParamsToQuery } from '@app/utils/url';
 
 export const getProducts = async (search?: string, limit = 10) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToQuery({ q: search, limit })}`)
-		const res = await req.json()
-		return res?.products || []
+		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToQuery({ q: search, limit })}`);
+		const res = await req.json();
+		return res?.products || [];
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
-	return []
-}
+	return [];
+};
 
 export const getProduct = async (id: string, loader = true) => {
 	try {
-    const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader })
-		const res = await req.json()
-		return res
+		const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader });
+		const res = await req.json();
+		return res;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
-	return null
-}
+	return null;
+};
 
 export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse<any>> => {
 	try {
@@ -33,21 +33,21 @@ export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse
 			limit: params?.limit || 10,
 			sortBy: params?.sort,
 			order: params?.order,
-		})
-		const req = await request(`${import.meta.env.VITE_API}/users${query}`)
-		const res = await req.json()
+		});
+		const req = await request(`${import.meta.env.VITE_API}/users${query}`);
+		const res = await req.json();
 		return {
 			total: res.total,
 			data: res.users,
-		}
+		};
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 	return {
 		total: 0,
 		data: [],
-	}
-}
+	};
+};
 
 export const dummyLogin = async (user: { username: string; password: string }) => {
 	try {
@@ -56,13 +56,13 @@ export const dummyLogin = async (user: { username: string; password: string }) =
 			auth: true,
 			json: true,
 			body: JSON.stringify(user),
-		})
-		const res = await req.json()
-		location.href = `${location.origin}/login?token=${res.accessToken}`
-		location.reload()
+		});
+		const res = await req.json();
+		location.href = `${location.origin}/login?token=${res.accessToken}`;
+		location.reload();
 	} catch (error) {
-		console.error(error)
-		location.href = `${location.origin}/login?error=Something went wrong!`
-		location.reload()
+		console.error(error);
+		location.href = `${location.origin}/login?error=Something went wrong!`;
+		location.reload();
 	}
-}
+};

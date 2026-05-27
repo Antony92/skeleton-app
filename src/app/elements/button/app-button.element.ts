@@ -1,15 +1,15 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import { appButtonStyle } from '@app/elements/button/app-button.style'
-import { focusStyle } from '@app/styles/focus.style'
-import { when } from 'lit/directives/when.js'
-import { defaultStyle } from '@app/styles/default.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
+import { appButtonStyle } from '@app/elements/button/app-button.style';
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-button')
 export class AppButton extends LitElement {
 	static styles = [
-    defaultStyle,
+		defaultStyle,
 		appButtonStyle,
 		focusStyle,
 		css`
@@ -18,31 +18,31 @@ export class AppButton extends LitElement {
 				--color: var(--theme-white-color);
 			}
 		`,
-	]
+	];
 
 	@property({ type: String })
-	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default'
+	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: String })
-	accessor appearance: 'normal' | 'outlined' | 'plain' = 'normal'
+	accessor appearance: 'normal' | 'outlined' | 'plain' = 'normal';
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	accessor disabled = false;
 
 	@property({ type: Boolean })
-	accessor outlined = false
+	accessor outlined = false;
 
 	@property({ type: Boolean })
-	accessor text = false
+	accessor text = false;
 
 	@property({ type: Boolean })
-	accessor icon = false
+	accessor icon = false;
 
 	@property({ type: String })
-	accessor href = ''
+	accessor href = '';
 
 	@property({ type: String })
-	accessor download: string | undefined
+	accessor download: string | undefined;
 
 	render() {
 		return html`
@@ -72,12 +72,12 @@ export class AppButton extends LitElement {
 					</button>
 				`,
 			)}
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-button': AppButton
+		'app-button': AppButton;
 	}
 }

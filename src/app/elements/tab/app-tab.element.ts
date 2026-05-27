@@ -1,8 +1,8 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { focusStyle } from '@app/styles/focus.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import { classMap } from 'lit/directives/class-map.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-tab')
 export class AppTab extends LitElement {
@@ -44,28 +44,28 @@ export class AppTab extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean, reflect: true })
-	accessor disabled = false
+	accessor disabled = false;
 
 	@property({ type: Boolean, reflect: true })
-	accessor active = false
+	accessor active = false;
 
 	@property({ type: String })
-	accessor panel = ''
+	accessor panel = '';
 
 	render() {
 		return html`
-			<button part="tab" ?disabled=${this.disabled} class="${classMap({ active: this.active, ['focus-visible']: true })}">
+			<button part="tab" ?disabled=${this.disabled} class="${classMap({ active: this.active, 'focus-visible': true })}">
 				<slot></slot>
 			</button>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-tab': AppTab
+		'app-tab': AppTab;
 	}
 }

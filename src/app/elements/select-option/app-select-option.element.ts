@@ -1,7 +1,7 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { classMap } from 'lit/directives/class-map.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-select-option')
 export class AppSelectOption extends LitElement {
@@ -60,22 +60,22 @@ export class AppSelectOption extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	accessor disabled = false;
 
 	@property({ type: String })
-	accessor value = ''
+	accessor value = '';
 
 	@property({ type: Boolean, reflect: true })
-	accessor selected = false
+	accessor selected = false;
 
 	@query('button')
-	accessor option!: HTMLButtonElement
+	accessor option!: HTMLButtonElement;
 
 	focus(options?: FocusOptions) {
-		this.option?.focus(options)
+		this.option?.focus(options);
 	}
 
 	render() {
@@ -93,12 +93,12 @@ export class AppSelectOption extends LitElement {
 				</svg>
 				<slot></slot>
 			</button>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-select-option': AppSelectOption
+		'app-select-option': AppSelectOption;
 	}
 }

@@ -1,120 +1,120 @@
-import { html, css } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
-import { when } from 'lit/directives/when.js'
-import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.style';
+import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-file-upload')
 export class AppFileUpload extends FormElement {
-	static styles = [defaultStyle, appFileUploadStyle, css``]
+	static styles = [defaultStyle, appFileUploadStyle, css``];
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor accept = ''
+	accessor accept = '';
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ attribute: false })
-	accessor files: FileList | null = null
+	accessor files: FileList | null = null;
 
 	@property({ type: String })
-	accessor placeholder = ''
+	accessor placeholder = '';
 
 	@property({ type: Number })
-	accessor size: number | undefined
+	accessor size: number | undefined;
 
 	@property({ type: String })
-	accessor fileName = ''
+	accessor fileName = '';
 
 	@property({ type: String })
-	accessor fileURL = ''
+	accessor fileURL = '';
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	accessor input!: HTMLInputElement;
 
 	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[];
 
 	disconnectedCallback() {
-		super.disconnectedCallback()
-		URL.revokeObjectURL(this.fileURL)
+		super.disconnectedCallback();
+		URL.revokeObjectURL(this.fileURL);
 	}
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) =>
+		this.triggers.forEach((trigger) => {
 			trigger.addEventListener('click', () => {
 				if (!this.disabled) {
-					this.input.click()
+					this.input.click();
 				}
-			}),
-		)
+			});
+		});
 	}
 
 	onChange() {
-		this.touched = true
-		this.files = this.input.files
-		this.value = this.input.value
-		this.checkFileValidation()
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.touched = true;
+		this.files = this.input.files;
+		this.value = this.input.value;
+		this.checkFileValidation();
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	formResetCallback() {
-		super.formResetCallback()
-		this.files = null
-		this.fileName = ''
-		this.fileURL = ''
-		URL.revokeObjectURL(this.fileURL)
-		this.input.setCustomValidity('')
+		super.formResetCallback();
+		this.files = null;
+		this.fileName = '';
+		this.fileURL = '';
+		URL.revokeObjectURL(this.fileURL);
+		this.input.setCustomValidity('');
 	}
 
 	focus(options?: FocusOptions) {
-		this.input.focus(options)
+		this.input.focus(options);
 	}
 
 	getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
 	}
 
 	checkFileValidation() {
-		const file = this.files?.[0]
-		this.input.setCustomValidity('')
+		const file = this.files?.[0];
+		this.input.setCustomValidity('');
 
 		if (!file) {
-			return
+			return;
 		}
 
-		const fileSizeInMB = file.size / 1024 ** 2
+		const fileSizeInMB = file.size / 1024 ** 2;
 
-    if (this.size && fileSizeInMB > this.size) {
-			this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`)
-			return
+		if (this.size && fileSizeInMB > this.size) {
+			this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`);
+			return;
 		}
 
-		this.fileURL = URL.createObjectURL(file)
-		this.fileName = file.name
-		this.dispatchEvent(new AppFileUploadEvent(file))
+		this.fileURL = URL.createObjectURL(file);
+		this.fileName = file.name;
+		this.dispatchEvent(new AppFileUploadEvent(file));
 	}
 
 	setCustomError(error: string) {
-		this.input.setCustomValidity(error)
-		this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage))
-		this.value = ''
+		this.input.setCustomValidity(error);
+		this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage));
+		this.value = '';
 	}
 
 	deleteFile() {
-		this.value = ''
-		this.files = null
-		this.fileName = ''
-		this.fileURL = ''
-		this.input.setCustomValidity('')
+		this.value = '';
+		this.files = null;
+		this.fileName = '';
+		this.fileURL = '';
+		this.input.setCustomValidity('');
 	}
 
 	render() {
@@ -146,12 +146,12 @@ export class AppFileUpload extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-file-upload': AppFileUpload
+		'app-file-upload': AppFileUpload;
 	}
 }

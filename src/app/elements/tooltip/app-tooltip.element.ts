@@ -1,7 +1,7 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { focusStyle } from '@app/styles/focus.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-tooltip')
 export class AppTooltip extends LitElement {
@@ -75,45 +75,45 @@ export class AppTooltip extends LitElement {
 				left: calc(anchor(right) + 5px);
 			}
 		`,
-	]
+	];
 
 	@property({ type: String })
-	accessor content = ''
+	accessor content = '';
 
 	@property({ type: Number })
-	accessor delay = 100
+	accessor delay = 100;
 
 	@property({ type: Boolean, attribute: 'on-overflow-only' })
-	accessor onOverflowOnly = false
+	accessor onOverflowOnly = false;
 
 	@property({ type: String })
-	accessor position: 'top' | 'left' | 'right' | 'bottom' = 'bottom'
+	accessor position: 'top' | 'left' | 'right' | 'bottom' = 'bottom';
 
 	@query('[popover]')
-	accessor popup!: HTMLElement
+	accessor popup!: HTMLElement;
 
 	@queryAssignedElements()
-	accessor triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[];
 
-	private timeout = 0
+	private timeout = 0;
 
 	get trigger() {
-		return this.triggers[0]
+		return this.triggers[0];
 	}
 
 	connectedCallback(): void {
-		super.connectedCallback()
+		super.connectedCallback();
 		this.addEventListener('mouseover', () => {
-      if (this.timeout !== 0) return
-			const isOverflowing = this.trigger && this.trigger.scrollWidth > this.trigger.clientWidth
-			if (this.onOverflowOnly && !isOverflowing) return
-			this.timeout = setTimeout(() => this.popup.showPopover(), this.delay)
-    })
-    this.addEventListener('mouseleave', () => {
-			clearTimeout(this.timeout)
-			this.timeout = 0
-			this.popup.hidePopover()
-		})
+			if (this.timeout !== 0) return;
+			const isOverflowing = this.trigger && this.trigger.scrollWidth > this.trigger.clientWidth;
+			if (this.onOverflowOnly && !isOverflowing) return;
+			this.timeout = setTimeout(() => this.popup.showPopover(), this.delay);
+		});
+		this.addEventListener('mouseleave', () => {
+			clearTimeout(this.timeout);
+			this.timeout = 0;
+			this.popup.hidePopover();
+		});
 	}
 
 	render() {
@@ -124,12 +124,12 @@ export class AppTooltip extends LitElement {
 			<div class="tooltip" popover>
 				<slot name="content">${this.content}</slot>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-tooltip': AppTooltip
+		'app-tooltip': AppTooltip;
 	}
 }

@@ -1,6 +1,6 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { defaultStyle } from '@app/styles/default.style'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-popup')
 export class AppPopup extends LitElement {
@@ -37,46 +37,48 @@ export class AppPopup extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@query('[popover]')
-	accessor popup!: HTMLElement
+	accessor popup!: HTMLElement;
 
 	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[]
+	accessor triggers!: HTMLElement[];
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	accessor open = false;
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => trigger.addEventListener('click', () => this.togglePopup()))
+		this.triggers.forEach((trigger) => {
+			trigger.addEventListener('click', () => this.togglePopup());
+		});
 		this.popup.addEventListener('toggle', (event: Event) => {
-			const toggleEvent = event as ToggleEvent
+			const toggleEvent = event as ToggleEvent;
 			if (toggleEvent.newState === 'closed') {
-				this.closePopup()
+				this.closePopup();
 			}
-		})
+		});
 	}
 
 	closePopup() {
-		this.open = false
-		this.popup.hidePopover()
-		this.popup.removeAttribute('style')
-		this.dispatchEvent(new Event('app-hide', { cancelable: true }))
+		this.open = false;
+		this.popup.hidePopover();
+		this.popup.removeAttribute('style');
+		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
 	}
 
 	async openPopup() {
-		this.open = true
-		await this.updateComplete
-		this.popup.showPopover()
-		this.dispatchEvent(new Event('app-show', { cancelable: true }))
+		this.open = true;
+		await this.updateComplete;
+		this.popup.showPopover();
+		this.dispatchEvent(new Event('app-show', { cancelable: true }));
 	}
 
 	togglePopup() {
 		if (this.open) {
-			this.closePopup()
+			this.closePopup();
 		} else {
-			this.openPopup()
+			this.openPopup();
 		}
 	}
 
@@ -88,12 +90,12 @@ export class AppPopup extends LitElement {
 					<slot></slot>
 				</div>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-popup': AppPopup
+		'app-popup': AppPopup;
 	}
 }

@@ -1,80 +1,80 @@
-import { html, css } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
-import { appInputStyle } from '@app/elements/input/app-input.style'
-import { ifDefined } from 'lit/directives/if-defined.js'
-import { live } from 'lit/directives/live.js'
-import { when } from 'lit/directives/when.js'
-import { defaultStyle } from '@app/styles/default.style'
-import { FormElement } from '@app/mixins/form.mixin'
+import { appInputStyle } from '@app/elements/input/app-input.style';
+import { FormElement } from '@app/mixins/form.mixin';
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { live } from 'lit/directives/live.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-input')
 export class AppInput extends FormElement {
-	static styles = [defaultStyle, appInputStyle, css``]
+	static styles = [defaultStyle, appInputStyle, css``];
 
 	@property({ type: Boolean })
-	accessor readonly = false
+	accessor readonly = false;
 
 	@property({ type: Boolean })
-	accessor required = false
+	accessor required = false;
 
 	@property({ type: String })
-	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
+	accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text';
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: String })
-	accessor autocomplete: 'on' | 'off' = 'off'
+	accessor autocomplete: 'on' | 'off' = 'off';
 
 	@property({ type: String })
-	accessor placeholder = ''
+	accessor placeholder = '';
 
 	@property()
-	accessor max: number | string | undefined
+	accessor max: number | string | undefined;
 
 	@property()
-	accessor min: number | string | undefined
+	accessor min: number | string | undefined;
 
 	@property({ type: Number })
-	accessor step: number | undefined
+	accessor step: number | undefined;
 
 	@property({ type: Number })
-	accessor maxlength: number | undefined
+	accessor maxlength: number | undefined;
 
 	@property({ type: Number })
-	accessor minlength: number | undefined
+	accessor minlength: number | undefined;
 
 	@property({ type: String })
-	accessor pattern: string | undefined
+	accessor pattern: string | undefined;
 
 	@query('input')
-	accessor input!: HTMLInputElement
+	accessor input!: HTMLInputElement;
 
 	onInput() {
-		this.value = this.input.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }))
+		this.value = this.input.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
 	}
 
 	onChange() {
-		this.value = this.input.value
-		this.touched = true
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }))
-		this.dispatchEvent(new Event('change', { bubbles: true }))
+		this.value = this.input.value;
+		this.touched = true;
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	onBlur() {
-		this.touched = true
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }))
+		this.touched = true;
+		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
 	}
 
 	focus(options?: FocusOptions) {
-		this.input.focus(options)
+		this.input.focus(options);
 	}
 
 	getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input }
-  }
+		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
+	}
 
 	render() {
 		return html`
@@ -112,12 +112,12 @@ export class AppInput extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-input': AppInput
+		'app-input': AppInput;
 	}
 }

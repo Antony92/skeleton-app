@@ -1,6 +1,6 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-tab-panel')
 export class AppTabPanel extends LitElement {
@@ -16,25 +16,25 @@ export class AppTabPanel extends LitElement {
 				width: 100%;
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean, reflect: true })
-	accessor active = false
+	accessor active = false;
 
 	@property({ type: String })
-	accessor name = ''
+	accessor name = '';
 
 	render() {
 		return html`
 			<div part="panel">
 				<slot></slot>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-tab-panel': AppTabPanel
+		'app-tab-panel': AppTabPanel;
 	}
 }

@@ -1,16 +1,16 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
-import { classMap } from 'lit/directives/class-map.js'
-import { when } from 'lit/directives/when.js'
-import { AppTableColumnFilterValueEvent, AppTableColumnFilterOrderEvent } from '@app/events/table.event'
-import '@app/elements/icon/app-icon.element'
-import '@app/elements/select/app-select.element'
-import '@app/elements/select-option/app-select-option.element'
-import '@app/elements/input/app-input.element'
-import { defaultStyle } from '@app/styles/default.style'
-import type { AppInput } from '@app/elements/input/app-input.element'
-import type { AppSelect } from '@app/elements/select/app-select.element'
-import { debounce } from '@app/utils/html'
+import { AppTableColumnFilterOrderEvent, AppTableColumnFilterValueEvent } from '@app/events/table.event';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
+import '@app/elements/icon/app-icon.element';
+import '@app/elements/select/app-select.element';
+import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/input/app-input.element';
+import type { AppInput } from '@app/elements/input/app-input.element';
+import type { AppSelect } from '@app/elements/select/app-select.element';
+import { defaultStyle } from '@app/styles/default.style';
+import { debounce } from '@app/utils/html';
 
 @customElement('app-table-column')
 export class AppTableColumn extends LitElement {
@@ -56,84 +56,88 @@ export class AppTableColumn extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: String })
-	accessor label = ''
+	accessor label = '';
 
 	@property({ type: Boolean })
-	accessor sortable = false
+	accessor sortable = false;
 
 	@property({ type: String })
-	accessor order: 'asc' | 'desc' | null = null
+	accessor order: 'asc' | 'desc' | null = null;
 
 	@property({ type: Boolean })
-	accessor filterable = false
+	accessor filterable = false;
 
 	@property({ type: String })
-	accessor field = ''
+	accessor field = '';
 
 	@property({ type: String })
-	accessor value = ''
+	accessor value = '';
 
 	@property({ type: String, reflect: true })
-	accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text'
+	accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text';
 
 	@property({ type: Array })
-	accessor list: { label: string; value: string | boolean | number }[] = []
+	accessor list: { label: string; value: string | boolean | number }[] = [];
 
 	@property({ type: Number })
-	accessor delay = 0
+	accessor delay = 0;
 
-	private debouncedSearch?: ReturnType<typeof debounce>
+	private debouncedSearch?: ReturnType<typeof debounce>;
 
 	dispatchFilterValueEvent() {
-		this.dispatchEvent(new AppTableColumnFilterValueEvent({ field: this.field, value: this.value }))
+		this.dispatchEvent(new AppTableColumnFilterValueEvent({ field: this.field, value: this.value }));
 	}
 
 	dispatchFilterOrderEvent() {
-		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }))
+		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }));
 	}
 
 	private search(value: string) {
-		this.value = value
+		this.value = value;
 		if (!this.debouncedSearch) {
-			this.debouncedSearch = debounce(() => this.dispatchFilterValueEvent(), this.delay)
+			this.debouncedSearch = debounce(() => this.dispatchFilterValueEvent(), this.delay);
 		}
-		return this.debouncedSearch()
+		return this.debouncedSearch();
 	}
 
 	private filterColumnValue(event: Event) {
-		const input = event.target as AppInput | AppSelect
-		this.value = input.value
-		this.dispatchFilterValueEvent()
+		const input = event.target as AppInput | AppSelect;
+		this.value = input.value;
+		this.dispatchFilterValueEvent();
 	}
 
 	private filterColumnOrder() {
-		if (!this.sortable) return
+		if (!this.sortable) return;
 
 		if (!this.order) {
-			this.order = 'asc'
+			this.order = 'asc';
 		} else if (this.order === 'asc') {
-			this.order = 'desc'
+			this.order = 'desc';
 		} else if (this.order === 'desc') {
-			this.order = null
+			this.order = null;
 		}
-		this.dispatchFilterOrderEvent()
+		this.dispatchFilterOrderEvent();
 	}
 
 	clearFilters() {
-		this.clearOrderFilter()
-		this.clearValueFilter()
+		this.clearOrderFilter();
+		this.clearValueFilter();
 	}
 
 	clearOrderFilter() {
-		this.order = null
+		this.order = null;
 	}
 
 	clearValueFilter() {
-		this.renderRoot.querySelectorAll('app-input').forEach((input) => (input.value = ''))
-		this.renderRoot.querySelectorAll('app-select').forEach((select) => (select.value = ''))
+		this.renderRoot.querySelectorAll('app-input').forEach((input) => {
+			input.value = '';
+		});
+		this.renderRoot.querySelectorAll('app-select').forEach((select) => {
+			select.value = '';
+		});
 	}
 
 	render() {
@@ -200,12 +204,12 @@ export class AppTableColumn extends LitElement {
 					</app-select>
 				`,
 			)}
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-table-column': AppTableColumn
+		'app-table-column': AppTableColumn;
 	}
 }

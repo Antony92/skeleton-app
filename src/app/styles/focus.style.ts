@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const focusStyle = css`
 	.focus-visible {
@@ -12,4 +12,4 @@ export const focusStyle = css`
 			outline: 2px solid var(--theme-color);
 		}
 	}
-`
+`;

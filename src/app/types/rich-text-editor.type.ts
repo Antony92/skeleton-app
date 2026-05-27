@@ -1,4 +1,4 @@
 export type RichTextEditorValue = {
-	text: string
-	html: string
-}
+	text: string;
+	html: string;
+};

@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appButtonStyle = css`
 	button,
@@ -96,4 +96,4 @@ export const appButtonStyle = css`
 			font-size: 20px;
 		}
 	}
-`
+`;

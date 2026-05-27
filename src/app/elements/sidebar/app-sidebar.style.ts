@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appSidebarStyle = css`
 	aside {
@@ -111,4 +111,4 @@ export const appSidebarStyle = css`
 			}
 		}
 	}
-`
+`;

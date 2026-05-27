@@ -1,13 +1,13 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js'
-import { appDialogStyle } from '@app/elements/dialog/app-dialog.style'
-import { focusStyle } from '@app/styles/focus.style'
-import { defaultStyle } from '@app/styles/default.style'
+import { appDialogStyle } from '@app/elements/dialog/app-dialog.style';
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-  static styles = [
-    defaultStyle,
+	static styles = [
+		defaultStyle,
 		appDialogStyle,
 		focusStyle,
 		css`
@@ -19,75 +19,75 @@ export class AppDialog extends LitElement {
 				display: block;
 			}
 		`,
-	]
+	];
 
 	@property({ type: String })
-	accessor header = ''
+	accessor header = '';
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false
+	accessor open = false;
 
 	@property({ type: Boolean })
-	accessor modal = false
+	accessor modal = false;
 
 	@query('dialog')
-	accessor dialog!: HTMLDialogElement
+	accessor dialog!: HTMLDialogElement;
 
 	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
-	accessor closeElements!: HTMLElement[]
+	accessor closeElements!: HTMLElement[];
 
-	#returnValue: string | undefined = ''
+	#returnValue: string | undefined = '';
 
 	get returnValue() {
-		return this.#returnValue
+		return this.#returnValue;
 	}
 
 	protected firstUpdated() {
 		this.dialog.addEventListener('click', ({ target: element }) => {
 			if (element instanceof HTMLDialogElement === false) {
-				return
+				return;
 			}
 			if (this.modal) {
-				this.pulseAnimation()
+				this.pulseAnimation();
 			} else {
-				this.hide()
+				this.hide();
 			}
-		})
+		});
 
 		this.dialog.addEventListener('cancel', (event) => {
-			event.preventDefault()
-			this.hide()
-		})
+			event.preventDefault();
+			this.hide();
+		});
 
-		this.closeElements.forEach((element) =>
+		this.closeElements.forEach((element) => {
 			element.addEventListener('click', () => {
-				const value = element.getAttribute('app-dialog-close') || ''
-				this.hide(value)
-			})
-		)
+				const value = element.getAttribute('app-dialog-close') || '';
+				this.hide(value);
+			});
+		});
 	}
 
 	async show() {
 		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
-			return
+			return;
 		}
-		this.open = true
-		await this.updateComplete
-		this.dialog.showModal()
-		await this.openAnimation()
-		this.dispatchEvent(new Event('app-after-show'))
+		this.open = true;
+		await this.updateComplete;
+		this.dialog.showModal();
+		await this.openAnimation();
+		this.dispatchEvent(new Event('app-after-show'));
 	}
 
 	async hide(value?: string) {
-		this.#returnValue = value
+		this.#returnValue = value;
 		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
-			return
+			return;
 		}
-		await this.updateComplete
-		await this.openAnimation(true)
-		this.dialog.close(value)
-		this.open = false
-		this.dispatchEvent(new Event('app-after-hide'))
+		await this.updateComplete;
+		await this.openAnimation(true);
+		this.dialog.close(value);
+		this.open = false;
+		this.dispatchEvent(new Event('app-after-hide'));
 	}
 
 	openAnimation(reverse = false) {
@@ -100,17 +100,17 @@ export class AppDialog extends LitElement {
 				direction: reverse ? 'reverse' : 'normal',
 				duration: 200,
 				fill: 'both',
-			}
-		)
-		return animation.finished
+			},
+		);
+		return animation.finished;
 	}
 
 	pulseAnimation() {
 		const animation = this.dialog.animate([{ scale: 1 }, { scale: 1.02 }, { scale: 1 }], {
 			duration: 250,
 			fill: 'both',
-		})
-		return animation.finished
+		});
+		return animation.finished;
 	}
 
 	render() {
@@ -129,12 +129,12 @@ export class AppDialog extends LitElement {
 					</footer>
 				</div>
 			</dialog>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-dialog': AppDialog
+		'app-dialog': AppDialog;
 	}
 }

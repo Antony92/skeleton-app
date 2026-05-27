@@ -1,32 +1,32 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, query } from 'lit/decorators.js'
-import { globalMessage } from '@app/shared/global-message'
-import '@app/elements/dialog/app-dialog.element'
-import '@app/elements/button/app-button.element'
-import '@app/elements/icon/app-icon.element'
-import '@app/elements/paginator/app-paginator.element'
-import '@app/elements/input/app-input.element'
-import '@app/elements/badge/app-badge.element'
-import '@app/elements/checkbox/app-checkbox.element'
-import '@app/elements/rich-text-editor/app-rich-text-editor.element'
-import '@app/elements/radio/app-radio.element'
-import '@app/elements/radio-group/app-radio-group.element'
-import '@app/elements/textarea/app-textarea.element'
-import '@app/elements/dropdown/app-dropdown.element'
-import '@app/elements/dropdown-item/app-dropdown-item.element'
-import '@app/elements/select/app-select.element'
-import '@app/elements/select-option/app-select-option.element'
-import '@app/elements/tab/app-tab.element'
-import '@app/elements/tab-group/app-tab-group.element'
-import '@app/elements/tab-panel/app-tab-panel.element'
-import '@app/elements/tooltip/app-tooltip.element'
-import '@app/elements/file-upload/app-file-upload.element'
-import '@app/elements/tag/app-tag.element'
-import type { AppDialog } from '@app/elements/dialog/app-dialog.element'
-import { confirmDialog, promptDialog } from '@app/shared/dialog'
-import { notify } from '@app/shared/notification'
-import { loading } from '@app/shared/loader'
-import { setPageTitle } from '@app/utils/html'
+import { globalMessage } from '@app/shared/global-message';
+import { css, html, LitElement } from 'lit';
+import { customElement, query } from 'lit/decorators.js';
+import '@app/elements/dialog/app-dialog.element';
+import '@app/elements/button/app-button.element';
+import '@app/elements/icon/app-icon.element';
+import '@app/elements/paginator/app-paginator.element';
+import '@app/elements/input/app-input.element';
+import '@app/elements/badge/app-badge.element';
+import '@app/elements/checkbox/app-checkbox.element';
+import '@app/elements/rich-text-editor/app-rich-text-editor.element';
+import '@app/elements/radio/app-radio.element';
+import '@app/elements/radio-group/app-radio-group.element';
+import '@app/elements/textarea/app-textarea.element';
+import '@app/elements/dropdown/app-dropdown.element';
+import '@app/elements/dropdown-item/app-dropdown-item.element';
+import '@app/elements/select/app-select.element';
+import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/tab/app-tab.element';
+import '@app/elements/tab-group/app-tab-group.element';
+import '@app/elements/tab-panel/app-tab-panel.element';
+import '@app/elements/tooltip/app-tooltip.element';
+import '@app/elements/file-upload/app-file-upload.element';
+import '@app/elements/tag/app-tag.element';
+import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
+import { confirmDialog, promptDialog } from '@app/shared/dialog';
+import { loading } from '@app/shared/loader';
+import { notify } from '@app/shared/notification';
+import { setPageTitle } from '@app/utils/html';
 
 @customElement('app-demo-page')
 export class AppDemoPage extends LitElement {
@@ -50,14 +50,14 @@ export class AppDemoPage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 		`,
-	]
+	];
 
 	@query('app-dialog')
-	appDialog!: AppDialog
+	appDialog!: AppDialog;
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Demo')
+		super.connectedCallback();
+		setPageTitle('Demo');
 	}
 
 	protected async firstUpdated() {}
@@ -248,8 +248,8 @@ export class AppDemoPage extends LitElement {
 				<app-button
 					variant="primary"
 					@click=${() => {
-						loading(true)
-						setTimeout(() => loading(false), 3000)
+						loading(true);
+						setTimeout(() => loading(false), 3000);
 					}}
 				>
 					Long task
@@ -289,6 +289,6 @@ export class AppDemoPage extends LitElement {
 				galley of type and scrambled it to make a type specimen book.
 				<app-button slot="footer" variant="primary" autofocus app-dialog-close>Close</app-button>
 			</app-dialog>
-		`
+		`;
 	}
 }

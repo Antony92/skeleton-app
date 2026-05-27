@@ -1,21 +1,21 @@
-import { request } from '@app/http/request'
+import { request } from '@app/http/request';
 
 export const getServerEvents = async () => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/server-events`, { auth: true })
-		const res = await req.json()
+		const req = await request(`${import.meta.env.VITE_API}/server-events`, { auth: true });
+		const res = await req.json();
 		return {
 			data: res.data as [],
 			total: res.total as number,
-		}
+		};
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 	return {
 		total: 0,
-		data: [] as any[],
-	}
-}
+		data: [],
+	};
+};
 
 export const createServerEvent = async (event: { type: 'info' | 'warning' | 'error'; message: string }) => {
 	try {
@@ -24,16 +24,16 @@ export const createServerEvent = async (event: { type: 'info' | 'warning' | 'err
 			auth: true,
 			json: true,
 			body: JSON.stringify(event),
-		})
-		const res = await req.json()
-		return res
+		});
+		const res = await req.json();
+		return res;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 	return {
 		data: null,
-	}
-}
+	};
+};
 
 export const updateServerEvent = async (event: { id: string; type?: 'info' | 'warning' | 'error'; message?: string }) => {
 	try {
@@ -42,29 +42,29 @@ export const updateServerEvent = async (event: { id: string; type?: 'info' | 'wa
 			auth: true,
 			json: true,
 			body: JSON.stringify(event),
-		})
-		const res = await req.json()
-		return res
+		});
+		const res = await req.json();
+		return res;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 	return {
 		data: null,
-	}
-}
+	};
+};
 
 export const deleteServerEvent = async (id: string) => {
 	try {
 		const req = await request(`${import.meta.env.VITE_API}/server-event/${id}`, {
 			method: 'DELETE',
 			auth: true,
-		})
-		const res = await req.json()
-		return res
+		});
+		const res = await req.json();
+		return res;
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 	return {
 		data: null,
-	}
-}
+	};
+};

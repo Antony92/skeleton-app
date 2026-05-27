@@ -1,18 +1,18 @@
-import { getUsers } from '@app/services/api.service'
-import { tableStyle } from '@app/styles/table.style'
-import type { PaginatedResponse } from '@app/types/response.type'
-import { setPageTitle } from '@app/utils/html'
-import { html, LitElement, css } from 'lit'
-import { customElement, query, state } from 'lit/decorators.js'
-import '@app/elements/table/app-table.element'
-import '@app/elements/table-column/app-table-column.element'
-import '@app/elements/paginator/app-paginator.element'
-import type { TableColumn } from '@app/types/table.type'
-import { when } from 'lit/directives/when.js'
-import { AppPaginator } from '@app/elements/paginator/app-paginator.element'
-import { AppPaginateEvent } from '@app/events/pagination.event'
-import { AppTableFilterEvent } from '@app/events/table.event'
-import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation'
+import { getUsers } from '@app/services/api.service';
+import { tableStyle } from '@app/styles/table.style';
+import type { PaginatedResponse } from '@app/types/response.type';
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement, query, state } from 'lit/decorators.js';
+import '@app/elements/table/app-table.element';
+import '@app/elements/table-column/app-table-column.element';
+import '@app/elements/paginator/app-paginator.element';
+import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
+import type { AppPaginateEvent } from '@app/events/pagination.event';
+import type { AppTableFilterEvent } from '@app/events/table.event';
+import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation';
+import type { TableColumn } from '@app/types/table.type';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -23,24 +23,24 @@ export class AppTablePage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 		`,
-	]
+	];
 
 	@state()
 	users: PaginatedResponse<any> = {
 		data: [],
 		total: 0,
-	}
+	};
 
 	@state()
-	loading = true
+	loading = true;
 
 	@query('app-paginator')
-	paginator!: AppPaginator
+	paginator!: AppPaginator;
 
-	private filterMap = new Map()
-	private skip = 0
-	private limit = 10
-	private storageLimitName = 'table-limit'
+	private filterMap = new Map();
+	private skip = 0;
+	private limit = 10;
+	private storageLimitName = 'table-limit';
 
 	@state()
 	columns: TableColumn[] = [
@@ -60,67 +60,69 @@ export class AppTablePage extends LitElement {
 				{ label: 'Moderator', value: 'moderator' },
 			],
 		},
-	]
+	];
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Table')
-		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit
-		this.filterMap = getRouteSearchMap()
+		super.connectedCallback();
+		setPageTitle('Table');
+		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
+		this.filterMap = getRouteSearchMap();
 		this.columns.forEach((column) => {
-			column.value = this.filterMap.get(column.field)
+			column.value = this.filterMap.get(column.field);
 			if (column.field === this.filterMap.get('sort')) {
-				column.order = this.filterMap.get('order')
+				column.order = this.filterMap.get('order');
 			}
-		})
-		this.loadUsers()
+		});
+		this.loadUsers();
 	}
 
 	protected firstUpdated() {}
 
 	async loadUsers() {
-		this.loading = true
-		const filters = Object.fromEntries(this.filterMap)
-		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...filters })
-		this.loading = false
+		this.loading = true;
+		const filters = Object.fromEntries(this.filterMap);
+		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...filters });
+		this.loading = false;
 	}
 
 	onPaginate(event: AppPaginateEvent) {
-		const { pageSize, pageIndex } = event.value
-		this.limit = pageSize
-		this.skip = pageSize * pageIndex
-		this.loadUsers()
+		const { pageSize, pageIndex } = event.value;
+		this.limit = pageSize;
+		this.skip = pageSize * pageIndex;
+		this.loadUsers();
 	}
 
 	async onTableFilter(event: AppTableFilterEvent) {
-		this.filterMap = event.filters
-		addSearchToRoute(Object.fromEntries(this.filterMap))
-		this.skip = 0
-		await this.loadUsers()
-		this.paginator.reset()
+		this.filterMap = event.filters;
+		addSearchToRoute(Object.fromEntries(this.filterMap));
+		this.skip = 0;
+		await this.loadUsers();
+		this.paginator.reset();
 	}
 
 	async onTableClear() {
-		this.filterMap.clear()
-		clearRouteSearch()
-		this.skip = 0
+		this.filterMap.clear();
+		clearRouteSearch();
+		this.skip = 0;
 		this.columns.forEach((column) => {
-			column.value = ''
-			column.order = null
-		})
-		await this.loadUsers()
-		this.paginator.reset()
+			column.value = '';
+			column.order = null;
+		});
+		await this.loadUsers();
+		this.paginator.reset();
 	}
 
 	toggleSelection(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked
-		this.users.data.forEach((user) => (user.selected = checked))
-		this.requestUpdate()
+		const checked = (event.target as HTMLInputElement).checked;
+		this.users.data.forEach((user) => {
+			user.selected = checked;
+		});
+		this.requestUpdate();
 	}
 
 	toggleSelected(user: any) {
-		user.selected = !user.selected
-		this.requestUpdate()
+		user.selected = !user.selected;
+		this.requestUpdate();
 	}
 
 	render() {
@@ -213,6 +215,6 @@ export class AppTablePage extends LitElement {
 				>
 				</app-paginator>
 			</app-table>
-		`
+		`;
 	}
 }

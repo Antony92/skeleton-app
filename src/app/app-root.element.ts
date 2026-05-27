@@ -1,45 +1,44 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, query } from 'lit/decorators.js'
-import '@app/elements/header/app-header.element'
-import '@app/elements/sidebar/app-sidebar.element'
-import { mainStyle } from '@app/styles/main.style'
-import { notify } from '@app/shared/notification'
-import { globalMessage } from '@app/shared/global-message'
-import { destroyNavigation, initializeNavigation } from '@app/shared/navigation'
-import { routes } from '@app/shared/routes'
+import { css, html, LitElement } from 'lit';
+import { customElement, query } from 'lit/decorators.js';
+import '@app/elements/header/app-header.element';
+import '@app/elements/sidebar/app-sidebar.element';
+import { globalMessage } from '@app/shared/global-message';
+import { destroyNavigation, initializeNavigation } from '@app/shared/navigation';
+import { notify } from '@app/shared/notification';
+import { routes } from '@app/shared/routes';
+import { mainStyle } from '@app/styles/main.style';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
-	static styles = [mainStyle, css``]
+	static styles = [mainStyle, css``];
 
 	@query('#outlet')
-	accessor outlet!: HTMLElement
+	accessor outlet!: HTMLElement;
 
 	connectedCallback() {
-		super.connectedCallback()
-		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 0 }))
-		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }))
+		super.connectedCallback();
+		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 0 }));
+		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }));
 
-		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`)
+		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`);
 		serverEventSource.addEventListener('global', (event) => {
-			const data = JSON.parse(event.data)
-			globalMessage(data.message, data.type)
-		})
+			const data = JSON.parse(event.data);
+			globalMessage(data.message, data.type);
+		});
 		serverEventSource.addEventListener('error', () => {
-			serverEventSource.close()
+			serverEventSource.close();
 			// notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
-		})
-  }
+		});
+	}
 
-  disconnectedCallback() {
-    super.disconnectedCallback()
-    destroyNavigation()
-  }
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		destroyNavigation();
+	}
 
 	protected async firstUpdated() {
-		initializeNavigation({ routes, outlet: this.outlet })
-  }
-
+		initializeNavigation({ routes, outlet: this.outlet });
+	}
 
 	render() {
 		return html`
@@ -48,12 +47,12 @@ export class AppRoot extends LitElement {
 				<app-sidebar class="sidebar"></app-sidebar>
 				<main id="outlet" class="main"></main>
 			</div>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-root': AppRoot
+		'app-root': AppRoot;
 	}
 }

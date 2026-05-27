@@ -1,6 +1,6 @@
-import { defaultStyle } from '@app/styles/default.style'
-import { html, LitElement, css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { defaultStyle } from '@app/styles/default.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-loader')
 export class AppLoader extends LitElement {
@@ -58,18 +58,18 @@ export class AppLoader extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean, reflect: true })
-	accessor active = false
+	accessor active = false;
 
 	render() {
-		return html`<div class="loader-line"></div>`
+		return html`<div class="loader-line"></div>`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-loader': AppLoader
+		'app-loader': AppLoader;
 	}
 }

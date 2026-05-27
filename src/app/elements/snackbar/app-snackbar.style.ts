@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const appSnackbarStyle = css`
 	[popover] {
@@ -96,4 +96,4 @@ export const appSnackbarStyle = css`
 	slot[name='icon'] {
 		font-size: 1.2rem;
 	}
-`
+`;

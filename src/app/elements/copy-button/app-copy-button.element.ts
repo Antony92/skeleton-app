@@ -1,9 +1,9 @@
-import { html, LitElement, css } from 'lit'
-import { customElement, property, state } from 'lit/decorators.js'
-import { focusStyle } from '@app/styles/focus.style'
-import { defaultStyle } from '@app/styles/default.style'
-import { appCopyButtonStyle } from '@app/elements/copy-button/app-copy-button.style'
-import '@app/elements/icon/app-icon.element'
+import { appCopyButtonStyle } from '@app/elements/copy-button/app-copy-button.style';
+import { defaultStyle } from '@app/styles/default.style';
+import { focusStyle } from '@app/styles/focus.style';
+import { css, html, LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import '@app/elements/icon/app-icon.element';
 
 @customElement('app-copy-button')
 export class AppCopyButton extends LitElement {
@@ -16,25 +16,25 @@ export class AppCopyButton extends LitElement {
 				--color: var(--theme-primary-color);
 			}
 		`,
-	]
+	];
 
 	@property({ type: Boolean })
-	accessor disabled = false
+	accessor disabled = false;
 
 	@property({ type: String })
-	accessor value = ''
+	accessor value = '';
 
 	@state()
-	accessor copied = false
+	accessor copied = false;
 
-	private timeout = 0
+	private timeout = 0;
 
 	async copy() {
-		if (this.copied) return
-		clearTimeout(this.timeout)
-		await navigator.clipboard.writeText(this.value)
-		this.copied = true
-		setTimeout(() => (this.copied = false), 1000)
+		if (this.copied) return;
+		clearTimeout(this.timeout);
+		await navigator.clipboard.writeText(this.value);
+		this.copied = true;
+		setTimeout(() => (this.copied = false), 1000);
 	}
 
 	render() {
@@ -51,12 +51,12 @@ export class AppCopyButton extends LitElement {
 					</slot>
 				</div>
 			</button>
-		`
+		`;
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-copy-button': AppCopyButton
+		'app-copy-button': AppCopyButton;
 	}
 }

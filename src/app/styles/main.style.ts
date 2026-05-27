@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css } from 'lit';
 
 export const mainStyle = css`
 	.layout {
@@ -35,4 +35,4 @@ export const mainStyle = css`
 				'sidebar';
 		}
 	}
-`
+`;

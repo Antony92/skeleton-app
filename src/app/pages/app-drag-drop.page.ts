@@ -1,7 +1,7 @@
-import { setPageTitle } from '@app/utils/html'
-import { html, LitElement, css } from 'lit'
-import { customElement } from 'lit/decorators.js'
-import { repeat } from 'lit/directives/repeat.js'
+import { setPageTitle } from '@app/utils/html';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 @customElement('app-drag-drop-page')
 export class AppDragDropPage extends LitElement {
@@ -50,83 +50,83 @@ export class AppDragDropPage extends LitElement {
 				}
 			}
 		`,
-	]
+	];
 
-	draggedItemIndex = 0
+	draggedItemIndex = 0;
 
 	items = [
 		{ id: crypto.randomUUID(), title: 'Item 1' },
 		{ id: crypto.randomUUID(), title: 'Item 2' },
 		{ id: crypto.randomUUID(), title: 'Item 3' },
 		{ id: crypto.randomUUID(), title: 'Item 4' },
-	]
+	];
 
 	connectedCallback() {
-		super.connectedCallback()
-		setPageTitle('Drag & Drop Demo')
+		super.connectedCallback();
+		setPageTitle('Drag & Drop Demo');
 	}
 
 	handleDragStart(event: DragEvent, draggedItemIndex: number) {
 		if (!event.dataTransfer) {
-			return
+			return;
 		}
-		const target = event.target as HTMLElement
-		target.classList.add('dragged')
+		const target = event.target as HTMLElement;
+		target.classList.add('dragged');
 
-		this.draggedItemIndex = draggedItemIndex
+		this.draggedItemIndex = draggedItemIndex;
 
-		event.dataTransfer.effectAllowed = 'move'
-		event.dataTransfer.setData('text/html', draggedItemIndex.toString())
+		event.dataTransfer.effectAllowed = 'move';
+		event.dataTransfer.setData('text/html', draggedItemIndex.toString());
 	}
 
 	handleDragOver(event: DragEvent) {
-		event.preventDefault()
+		event.preventDefault();
 		if (!event.dataTransfer) {
-			return
+			return;
 		}
-		event.dataTransfer.dropEffect = 'move'
+		event.dataTransfer.dropEffect = 'move';
 	}
 
 	handleDragEnter(event: DragEvent) {
-		event.stopPropagation()
-		const target = event.target as HTMLElement
-		target.closest('.item')?.classList.add('over')
+		event.stopPropagation();
+		const target = event.target as HTMLElement;
+		target.closest('.item')?.classList.add('over');
 	}
 
 	handleDragLeave(event: DragEvent) {
-		event.stopPropagation()
-		const target = event.target as HTMLElement
-		target.closest('.item')?.classList.remove('over')
+		event.stopPropagation();
+		const target = event.target as HTMLElement;
+		target.closest('.item')?.classList.remove('over');
 	}
 
 	handleDrop(event: DragEvent) {
-		event.stopPropagation()
+		event.stopPropagation();
 
-		const target = event.target as HTMLElement
-		const dropIndex = Number(target.dataset.index)
+		const target = event.target as HTMLElement;
+		const dropIndex = Number(target.dataset.index);
 
-		const draggedItem = this.items.splice(this.draggedItemIndex, 1).at(0)
+		const draggedItem = this.items.splice(this.draggedItemIndex, 1).at(0);
 		if (draggedItem) {
-			this.items.splice(dropIndex, 0, draggedItem)
-			this.requestUpdate()
+			this.items.splice(dropIndex, 0, draggedItem);
+			this.requestUpdate();
 		}
 	}
 
 	handleDragEnd(event: DragEvent) {
-		const target = event.target as HTMLElement
-		target.classList.remove('dragged')
+		const target = event.target as HTMLElement;
+		target.classList.remove('dragged');
 		this.renderRoot.querySelectorAll('.item').forEach((item) => {
-			item.classList.remove('over')
-			item.removeAttribute('draggable')
-		})
-  }
+			item.classList.remove('over');
+			item.removeAttribute('draggable');
+		});
+	}
 
-  handleMouseDown(event: MouseEvent) {
-		(event.target as HTMLElement).closest('.item')?.setAttribute('draggable', 'true')
-  }
+	handleMouseDown(event: MouseEvent) {
+		(event.target as HTMLElement).closest('.item')?.setAttribute('draggable', 'true');
+	}
 
-  handleMouseUp(event: MouseEvent) {
-    (event.target as HTMLElement).closest('.item')?.removeAttribute('draggable')
+	handleMouseUp(event: MouseEvent) {
+		(event.target as HTMLElement).closest('.item')?.removeAttribute('draggable');
 	}
 
 	protected firstUpdated() {}
@@ -161,6 +161,6 @@ export class AppDragDropPage extends LitElement {
 					`,
 				)}
 			</div>
-		`
+		`;
 	}
 }
