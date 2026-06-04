@@ -136,9 +136,9 @@ const onNavigation = async (event: NavigateEvent) => {
 		return;
 	}
 
-  state.currentRoute = route;
+	state.currentRoute = route;
 
-  // init animation if any
+	// init animation if any
 
 	event.intercept({
 		handler: () => interceptHandler(url, route, options.outlet),
@@ -147,11 +147,11 @@ const onNavigation = async (event: NavigateEvent) => {
 };
 
 const onNavigationSuccess = () => {
-  // TODO remove animation
+	// TODO remove animation
 };
 
 const onNavigationError = () => {
-  // TODO remove animation
+	// TODO remove animation
 };
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {

@@ -1,5 +1,4 @@
-import { login } from '@app/shared/auth';
-import { getUser } from '@app/shared/auth';
+import { getUser, login } from '@app/shared/auth';
 import { getRouteSearch, navigate } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
