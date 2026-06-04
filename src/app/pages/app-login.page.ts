@@ -1,4 +1,4 @@
-import { dummyLogin } from '@app/services/api.service';
+import { login } from '@app/shared/auth';
 import { getUser } from '@app/shared/auth';
 import { getRouteSearch, navigate } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
@@ -29,21 +29,13 @@ export class AppLoginPage extends LitElement {
 		setPageTitle('Login');
 		const { error } = getRouteSearch();
 		const user = getUser();
-		if (!user && error) {
-			this.error = error;
-			return;
-		}
-		if (!user) {
-			dummyLogin({ username: 'emilys', password: 'emilyspass' });
-			// login()
-			return;
-		}
-		try {
+		if (user) {
 			navigate(localStorage.getItem('requested-page') || '/');
 			localStorage.removeItem('requested-page');
-		} catch (error) {
-			console.error(error);
-			this.error = 'Invalid token';
+		} else if (error) {
+			this.error = error;
+		} else {
+			login();
 		}
 	}
 

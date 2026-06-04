@@ -1,6 +1,9 @@
 import { request } from '@app/http/request';
+import { setUser } from '@app/shared/auth';
+import { navigate } from '@app/shared/navigation';
 import type { PaginatedResponse } from '@app/types/response.type';
 import type { SearchParams } from '@app/types/search.type';
+import { Role } from '@app/types/user.type';
 import { searchParamsToQuery } from '@app/utils/url';
 
 export const getProducts = async (search?: string, limit = 10) => {
@@ -56,13 +59,19 @@ export const dummyLogin = async (user: { username: string; password: string }) =
 			auth: true,
 			json: true,
 			body: JSON.stringify(user),
+			credentials: 'include',
 		});
 		const res = await req.json();
-		location.href = `${location.origin}/login?token=${res.accessToken}`;
-		location.reload();
+		setUser({
+			id: res.id,
+			username: res.email,
+			name: `${res.firstName} ${res.lastName}`,
+			roles: [Role.ADMIN],
+			accessToken: res.accessToken,
+		});
+		navigate(localStorage.getItem('requested-page') || '/');
+		localStorage.removeItem('requested-page');
 	} catch (error) {
 		console.error(error);
-		location.href = `${location.origin}/login?error=Something went wrong!`;
-		location.reload();
 	}
 };

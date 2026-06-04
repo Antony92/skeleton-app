@@ -65,8 +65,17 @@ export const addSearchToRoute = (params: SearchParams) => {
 	navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
 };
 
-export const clearRouteSearch = () => {
-	navigation.navigate(location.pathname, { history: 'replace' });
+export const clearRouteSearch = (params?: SearchParams) => {
+	let path = location.pathname;
+	if (params) {
+		const search = new URLSearchParams(location.search);
+		Object.entries(params).forEach(([key]) => {
+			search.delete(key);
+		});
+		const query = search.size > 0 ? `?${search.toString()}` : ``;
+		path += query;
+	}
+	navigation.navigate(path, { history: 'replace' });
 };
 
 /* Internal Logic */
@@ -127,8 +136,9 @@ const onNavigation = async (event: NavigateEvent) => {
 		return;
 	}
 
-	state.currentRoute = route;
-	loading(true);
+  state.currentRoute = route;
+
+  // init animation if any
 
 	event.intercept({
 		handler: () => interceptHandler(url, route, options.outlet),
@@ -137,11 +147,11 @@ const onNavigation = async (event: NavigateEvent) => {
 };
 
 const onNavigationSuccess = () => {
-	loading(false);
+  // TODO remove animation
 };
 
 const onNavigationError = () => {
-	loading(false);
+  // TODO remove animation
 };
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {

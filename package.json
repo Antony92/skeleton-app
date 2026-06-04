@@ -9,7 +9,7 @@
 		"build": "tsc && vite build",
 		"build-staging": "tsc && vite build --mode staging",
 		"build-production": "tsc && vite build --mode production",
-		"lint": "npx eslint .",
+		"lint": "npx @biomejs/biome lint",
 		"preview": "vite preview",
 		"test:ui": "vitest --ui",
 		"test:run": "vitest run"

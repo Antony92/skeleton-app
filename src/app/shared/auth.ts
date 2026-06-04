@@ -1,4 +1,5 @@
 import { request } from '@app/http/request';
+import { dummyLogin } from '@app/services/api.service';
 import type { User } from '@app/types/user.type';
 import { signal } from '@lit-labs/signals';
 
@@ -16,8 +17,8 @@ export const hasUserRole = (roles: string[]) => {
 };
 
 export const login = () => {
-	// location.href = `${import.meta.env.VITE_API}/auth/login/microsoft`
-	location.href = `${location.origin}/login`;
+	// location.href = `${import.meta.env.VITE_API}/login`
+	dummyLogin({ username: 'emilys', password: 'emilyspass' });
 };
 
 export const logout = async () => {
@@ -37,13 +38,9 @@ export const refreshTokenSilently = async () => {
 	}
 	try {
 		const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' });
-		if (!req.ok) {
-			return false;
-		}
 		if (!req.ok) return false;
-		const { accessToken } = await req.json();
-		const { user } = JSON.parse(atob(accessToken.split('.')[1]));
-		setUser({ ...user, accessToken });
+		const user = await req.json();
+		setUser(user);
 		return true;
 	} catch (error) {
 		console.error('Token refresh failed: ', error);
@@ -61,9 +58,8 @@ export const impersonate = async (username: string) => {
 			body: JSON.stringify({ username }),
 		});
 		if (!req.ok) return false;
-		const { accessToken } = await req.json();
-		const { user } = JSON.parse(atob(accessToken.split('.')[1]));
-		setUser({ ...user, accessToken });
+		const user = await req.json();
+		setUser(user);
 		return true;
 	} catch (error) {
 		console.error('Impersonation failed: ', error);
