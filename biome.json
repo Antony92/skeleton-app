@@ -1,11 +1,13 @@
 {
-	"formatter": {
-		"indentStyle": "tab",
-		"lineWidth": 150
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "single"
-		}
-	}
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 150
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
 }

@@ -34,8 +34,7 @@ export class AppTooltip extends LitElement {
 				margin: 0;
 				font-size: 12px;
 				font-weight: 500;
-				overflow-wrap: break-word;
-				white-space: normal;
+				white-space: nowrap;
 
 				&:popover-open {
 					display: flex;

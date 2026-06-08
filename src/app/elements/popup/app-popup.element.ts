@@ -27,8 +27,7 @@ export class AppPopup extends LitElement {
 				overflow: auto;
 				padding: 5px;
 				margin: 0;
-				overflow-wrap: break-word;
-				white-space: normal;
+				white-space: nowrap;
 				box-shadow: var(--shadow-4);
 
 				&:popover-open {
@@ -48,6 +47,12 @@ export class AppPopup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	accessor open = false;
 
+	@property({ type: String })
+  accessor behaviour: 'auto' | 'manual' = 'manual';
+
+ 	@queryAssignedElements({ selector: '[app-popup-close]' })
+	accessor closeElements!: HTMLElement[];
+
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) => {
 			trigger.addEventListener('click', () => this.togglePopup());
@@ -57,6 +62,11 @@ export class AppPopup extends LitElement {
 			if (toggleEvent.newState === 'closed') {
 				this.closePopup();
 			}
+    });
+		this.closeElements.forEach((element) => {
+			element.addEventListener('click', () => {
+				this.closePopup();
+			});
 		});
 	}
 
@@ -86,7 +96,7 @@ export class AppPopup extends LitElement {
 		return html`
 			<div class="container">
 				<slot name="trigger"></slot>
-				<div part="popover" popover>
+				<div part="popover" popover=${this.behaviour}>
 					<slot></slot>
 				</div>
 			</div>
