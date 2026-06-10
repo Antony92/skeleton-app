@@ -1,5 +1,4 @@
 import { confirmDialog } from '@app/shared/dialog';
-import { loading } from '@app/shared/loader';
 import type { SearchParams } from '@app/types/search.type';
 import { render } from 'lit';
 
@@ -159,12 +158,12 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 
 	// 1. Guard check
 	if (route.guards) {
-		for (const guard of route.guards) {
-			const outcome = await guard(url, params);
-			if (!outcome) {
-				loading(false);
-				return;
-			}
+		const guards = route.guards.map((guard) => guard(url, params));
+		const outcomes = await Promise.all(guards);
+		const passed = outcomes.every((outcome) => !!outcome);
+    if (!passed) {
+      // TODO remove animation
+			return;
 		}
 	}
 
