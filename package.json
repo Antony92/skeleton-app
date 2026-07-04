@@ -23,6 +23,7 @@
 		"@lit/context": "~1.1.6",
 		"@lit/task": "~1.0.3",
 		"@tiptap/core": "~3.27.1",
+		"@tiptap/extension-text-style": "~3.27.1",
 		"@tiptap/extensions": "~3.27.1",
 		"@tiptap/pm": "~3.27.1",
 		"@tiptap/starter-kit": "~3.27.1",

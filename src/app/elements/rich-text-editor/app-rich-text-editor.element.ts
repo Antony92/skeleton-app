@@ -3,6 +3,7 @@ import { AppRichTextEditorChangeEvent } from '@app/events/rich-text-editor.event
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
 import { Editor } from '@tiptap/core';
+import { Color, TextStyle } from '@tiptap/extension-text-style';
 import { Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
 import { css, html, type PropertyValues } from 'lit';
@@ -39,14 +40,21 @@ export class AppRichTextEditor extends FormElement {
 	protected firstUpdated() {
 		this.editor = new Editor({
 			element: this.renderRoot.querySelector('#editor'),
-			extensions: [StarterKit, Placeholder.configure({ placeholder: this.placeholder })],
+			extensions: [StarterKit, Placeholder.configure({ placeholder: this.placeholder }), TextStyle, Color],
 			onUpdate: () => {
 				this.isInternalChange = true;
 				const html = this.editor?.getHTML() ?? '';
 				const text = this.editor?.getText() ?? '';
-				console.log(html, text);
 				this.value = html;
 				this.dispatchEvent(new AppRichTextEditorChangeEvent({ html, text }));
+			},
+			onSelectionUpdate: () => {
+				if (this.toolbar.includes('color')) {
+					this.updateColorToggle();
+				}
+				if (this.toolbar.includes('header')) {
+					this.updateHeadingToggle();
+				}
 			},
 		});
 	}
@@ -141,14 +149,64 @@ export class AppRichTextEditor extends FormElement {
 		}
 	}
 
+	setColor(event: Event) {
+		const input = event.target as HTMLInputElement;
+		this.editor?.chain().focus().setColor(input.value).run();
+	}
+
+	setHeading(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		if (select.value === '0') {
+			this.editor?.chain().focus().setParagraph().run();
+		} else {
+			const value = Number(select.value) as 1 | 2 | 3 | 4 | 5 | 6;
+			this.toggleHeadingLevel(value);
+		}
+	}
+
+	updateColorToggle() {
+		// clear color on next mark
+		// if (this.editor?.state.selection.empty) {
+		// 	this.editor.commands.unsetMark('textStyle');
+		// }
+		// set toggle color based on selection color
+		const color = this.editor?.getAttributes('textStyle').color;
+		const colorInput = this.renderRoot.querySelector<HTMLInputElement>('input[type="color"]');
+		if (color && colorInput) {
+			colorInput.value = color;
+		}
+	}
+
+	updateHeadingToggle() {
+		const options = this.renderRoot.querySelectorAll<HTMLOptionElement>('select option');
+		const level = String(this.editor?.getAttributes('heading').level || '0');
+		options.forEach((option) => {
+			option.selected = option.value === level;
+		});
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
 				${when(this.label, () => html`<label for="textarea" part="label">${this.label}</label>`)}
 				<div class="editor-wrapper" part="editor-wrapper">
 					<div class="toolbar" part="toolbar">
+					  <select @change=${this.setHeading}>
+							<option value="0">Normal</option>
+							<option value="1">Heading 1</option>
+							<option value="2">Heading 2</option>
+							<option value="3">Heading 3</option>
+							<option value="4">Heading 4</option>
+							<option value="5">Heading 5</option>
+							<option value="6">Heading 6</option>
+						</select>
 					  <button @click=${() => this.toggleBold()}>Bold</button>
+						<button @click=${() => this.toggleItalic()}>Italic</button>
+						<button @click=${() => this.toggleUnderline()}>Underline</button>
+						<button @click=${() => this.toggleBulletList()}>Bullet List</button>
+						<button @click=${() => this.toggleOrderedList()}>Ordered List</button>
 						<button @click=${() => this.toggleLink()}>Link</button>
+						<input type="color" @change=${this.setColor}/>
 						<button @click=${() => this.undo()} ?disabled=${!this.editor?.can().undo()}>Undo</button>
 						<button @click=${() => this.redo()} ?disabled=${!this.editor?.can().redo()}>Redo</button>
 						<button @click=${() => this.clearSelection()}>Clear Selected</button>
