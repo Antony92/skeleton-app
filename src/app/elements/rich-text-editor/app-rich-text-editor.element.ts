@@ -165,11 +165,6 @@ export class AppRichTextEditor extends FormElement {
 	}
 
 	updateColorToggle() {
-		// clear color on next mark
-		// if (this.editor?.state.selection.empty) {
-		// 	this.editor.commands.unsetMark('textStyle');
-		// }
-		// set toggle color based on selection color
 		const color = this.editor?.getAttributes('textStyle').color;
 		const colorInput = this.renderRoot.querySelector<HTMLInputElement>('input[type="color"]');
 		if (color && colorInput) {
