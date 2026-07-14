@@ -7,14 +7,32 @@ import { Color, TextStyle } from '@tiptap/extension-text-style';
 import { Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
 import { css, html, type PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends FormElement {
-	static styles = [defaultStyle, appRichTextEditorStyle, css``];
+	static styles = [
+		defaultStyle,
+		appRichTextEditorStyle,
+		css`
+        .custom-link {
+          anchor-name: --anchor;
+        }
+
+        .link-popup {
+          position-anchor: --anchor;
+          width: fit-content;
+          min-width: anchor-size(--anchor);
+          position-try: flip-block;
+          position-area: span-right;
+          left: anchor(left);
+          top: anchor(bottom);
+        }
+    `,
+	];
 
 	@property({ type: Boolean })
 	accessor disabled = false;
@@ -34,13 +52,31 @@ export class AppRichTextEditor extends FormElement {
 	@query('textarea')
 	accessor textarea!: HTMLTextAreaElement;
 
+	@query('.link-popup')
+	accessor linkPopup!: HTMLDivElement;
+
+	@state()
+	private accessor selectedLink = '';
+
 	editor: Editor | null = null;
 	isInternalChange = false;
 
 	protected firstUpdated() {
 		this.editor = new Editor({
 			element: this.renderRoot.querySelector('#editor'),
-			extensions: [StarterKit, Placeholder.configure({ placeholder: this.placeholder }), TextStyle, Color],
+			extensions: [
+				StarterKit.configure({
+					link: {
+						openOnClick: false,
+						HTMLAttributes: {
+							class: 'custom-link',
+						},
+					},
+				}),
+				Placeholder.configure({ placeholder: this.placeholder }),
+				TextStyle,
+				Color,
+			],
 			onUpdate: () => {
 				this.isInternalChange = true;
 				const html = this.editor?.getHTML() ?? '';
@@ -55,6 +91,16 @@ export class AppRichTextEditor extends FormElement {
 				if (this.toolbar.includes('header')) {
 					this.updateHeadingToggle();
 				}
+			},
+			editorProps: {
+				handleClick: (_view, _pos, event) => {
+					const target = event.target;
+					if (target instanceof HTMLAnchorElement) {
+						const { href } = target as HTMLAnchorElement;
+						this.selectedLink = href;
+						this.linkPopup.showPopover();
+					}
+				},
 			},
 		});
 	}
@@ -180,6 +226,16 @@ export class AppRichTextEditor extends FormElement {
 		});
 	}
 
+	saveLink() {
+		this.editor?.chain().focus().setLink({ href: this.selectedLink }).run();
+		this.linkPopup.hidePopover();
+	}
+
+	deleteLink() {
+		this.editor?.chain().focus().unsetLink().run();
+		this.linkPopup.hidePopover();
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
@@ -219,6 +275,13 @@ export class AppRichTextEditor extends FormElement {
 					</textarea>
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
+			</div>
+
+			<div popover class="link-popup">
+			  <input type="url" .value=${this.selectedLink}/>
+				<a href=${this.selectedLink} target="_blank">Preview</a>
+				<button @click=${this.saveLink}>Save</button>
+				<button @click=${this.deleteLink}>Delete</button>
 			</div>
 		`;
 	}
