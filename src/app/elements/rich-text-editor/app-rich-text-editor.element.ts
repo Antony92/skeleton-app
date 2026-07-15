@@ -8,9 +8,11 @@ import { Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
 import { css, html, type PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { when } from 'lit/directives/when.js';
+import '@app/elements/icon/app-icon.element';
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends FormElement {
@@ -91,6 +93,7 @@ export class AppRichTextEditor extends FormElement {
 				if (this.toolbar.includes('header')) {
 					this.updateHeadingToggle();
 				}
+				this.requestUpdate();
 			},
 			editorProps: {
 				handleClick: (_view, _pos, event) => {
@@ -98,7 +101,7 @@ export class AppRichTextEditor extends FormElement {
 					if (target instanceof HTMLAnchorElement) {
 						this.selectedLink = target;
 						this.linkPopup.showPopover();
-          }
+					}
 				},
 			},
 		});
@@ -183,6 +186,7 @@ export class AppRichTextEditor extends FormElement {
 	}
 
 	toggleLink() {
+		if (this.editor?.state.selection.empty) return;
 		if (this.editor?.isActive('link')) {
 			this.editor?.chain().focus().unsetLink().run();
 		} else {
@@ -225,10 +229,10 @@ export class AppRichTextEditor extends FormElement {
 		});
 	}
 
-  saveLink() {
-    if (!this.selectedLink) return
-    this.selectedLink.href = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink.href
-    this.requestUpdate()
+	saveLink() {
+		if (!this.selectedLink) return;
+		this.selectedLink.href = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink.href;
+		this.requestUpdate();
 		this.linkPopup.hidePopover();
 	}
 
@@ -252,17 +256,32 @@ export class AppRichTextEditor extends FormElement {
 							<option value="5">Heading 5</option>
 							<option value="6">Heading 6</option>
 						</select>
-					  <button @click=${() => this.toggleBold()}>Bold</button>
-						<button @click=${() => this.toggleItalic()}>Italic</button>
-						<button @click=${() => this.toggleUnderline()}>Underline</button>
-						<button @click=${() => this.toggleBulletList()}>Bullet List</button>
-						<button @click=${() => this.toggleOrderedList()}>Ordered List</button>
-						<button @click=${() => this.toggleLink()}>Link</button>
-						<input type="color" @change=${this.setColor}/>
-						<button @click=${() => this.undo()} ?disabled=${!this.editor?.can().undo()}>Undo</button>
-						<button @click=${() => this.redo()} ?disabled=${!this.editor?.can().redo()}>Redo</button>
-						<button @click=${() => this.clearSelection()}>Clear Selected</button>
-						<button @click=${() => this.clearAll()}>Clear All</button>
+				  <button @click=${() => this.toggleBold()} class=${classMap({ active: !!this.editor?.isActive('bold') })}>
+            <app-icon>format_bold</app-icon>
+          </button>
+          <button @click=${() => this.toggleItalic()} class=${classMap({ active: !!this.editor?.isActive('italic') })}>
+            <app-icon>format_italic</app-icon>
+          </button>
+          <button @click=${() => this.toggleUnderline()} class=${classMap({ active: !!this.editor?.isActive('underline') })}>
+            <app-icon>format_underlined</app-icon>
+          </button>
+          <span class="separator"></span>
+          <button @click=${() => this.toggleOrderedList()} class=${classMap({ active: !!this.editor?.isActive('orderedList') })}>
+            <app-icon>format_list_numbered</app-icon>
+          </button>
+          <button @click=${() => this.toggleBulletList()} class=${classMap({ active: !!this.editor?.isActive('bulletList') })}>
+            <app-icon>format_list_bulleted</app-icon>
+          </button>
+          <span class="separator"></span>
+          <button @click=${() => this.toggleLink()} class=${classMap({ active: !!this.editor?.isActive('link') })}><app-icon>link</app-icon></button>
+          <span class="separator"></span>
+          <input type="color" @change=${this.setColor} />
+          <span class="separator"></span>
+          <button @click=${() => this.undo()} ?disabled=${!this.editor?.can().undo()}><app-icon>undo</app-icon></button>
+          <button @click=${() => this.redo()} ?disabled=${!this.editor?.can().redo()}><app-icon>redo</app-icon></button>
+          <span class="separator"></span>
+          <button @click=${() => this.clearSelection()}><app-icon>format_clear</app-icon></button>
+          <button @click=${() => this.clearAll()}><app-icon>delete_forever</app-icon></button>
 					</div>
 					<div id="editor" class="editor" part="editor"></div>
 					<textarea
