@@ -58,7 +58,7 @@ export class AppRichTextEditor extends FormElement {
 	accessor linkPopup!: HTMLDivElement;
 
 	@state()
-	private accessor selectedLink: HTMLAnchorElement | null = null;
+	private accessor selectedLink = '';
 
 	editor: Editor | null = null;
 	isInternalChange = false;
@@ -99,7 +99,7 @@ export class AppRichTextEditor extends FormElement {
 				handleClick: (_view, _pos, event) => {
 					const target = event.target;
 					if (target instanceof HTMLAnchorElement) {
-						this.selectedLink = target;
+						this.selectedLink = target.href;
 						this.linkPopup.showPopover();
 					}
 				},
@@ -230,9 +230,8 @@ export class AppRichTextEditor extends FormElement {
 	}
 
 	saveLink() {
-		if (!this.selectedLink) return;
-		this.selectedLink.href = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink.href;
-		this.requestUpdate();
+    this.selectedLink = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink;
+		this.editor?.chain().focus().extendMarkRange('link').updateAttributes('link', { href: this.selectedLink }).run()
 		this.linkPopup.hidePopover();
 	}
 
@@ -298,8 +297,8 @@ export class AppRichTextEditor extends FormElement {
 			</div>
 
 			<div popover class="link-popup">
-			  <input type="url" .value=${this.selectedLink?.href || ''}/>
-				<a href=${this.selectedLink?.href || '#'} target="_blank">Preview</a>
+			  <input type="url" .value=${this.selectedLink || ''}/>
+				<a href=${this.selectedLink || '#'} target="_blank">Preview</a>
 				<button @click=${this.saveLink}>Save</button>
 				<button @click=${this.deleteLink}>Delete</button>
 			</div>
