@@ -66,9 +66,6 @@ export const appRichTextEditorStyle = css`
 					  cursor: not-allowed;
 					}
 
-
-
-
 					&:hover:not([disabled]), &.active:not([disabled]) {
 					  app-icon {
 					    color: var(--theme-primary-color);
