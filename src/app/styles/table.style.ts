@@ -6,6 +6,29 @@ export const tableStyle = css`
 		border-collapse: collapse;
 		position: relative;
 
+		&.hoverable {
+      tbody {
+        tr {
+
+          &.active {
+            background: var(--theme-primary-color);
+
+            td[sticky], td[stickyend] {
+              background: var(--theme-primary-color);
+            }
+          }
+
+          &:hover:not(.active) {
+            background: var(--theme-default-color);
+
+            td[sticky], td[stickyend] {
+              background: var(--theme-default-color);
+            }
+          }
+        }
+      }
+    }
+
 		thead {
 			th {
 				white-space: nowrap;
@@ -21,14 +44,14 @@ export const tableStyle = css`
 					position: sticky;
 					left: var(--sticky-start, -1px);
 					z-index: 1;
-					background-color: var(--theme-background);
+					background: var(--theme-background);
 				}
 
 				&[stickyend] {
 					position: sticky;
 					right: var(--sticky-end, -1px);
 					z-index: 1;
-					background-color: var(--theme-background);
+					background: var(--theme-background);
 				}
 			}
 		}
@@ -61,7 +84,7 @@ export const tableStyle = css`
 					position: sticky;
 					left: var(--sticky-start, -1px);
 					z-index: 1;
-					background-color: var(--theme-background);
+					background: var(--theme-background);
 
 					&:has(sl-dropdown[open]) {
 						z-index: 2;
@@ -72,7 +95,7 @@ export const tableStyle = css`
 					position: sticky;
 					right: var(--sticky-end, -1px);
 					z-index: 1;
-					background-color: var(--theme-background);
+					background: var(--theme-background);
 
 					&:has(sl-dropdown[open]) {
 						z-index: 2;

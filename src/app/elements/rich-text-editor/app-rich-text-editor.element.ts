@@ -13,6 +13,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { when } from 'lit/directives/when.js';
 import '@app/elements/icon/app-icon.element';
+import '@app/elements/button/app-button.element';
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends FormElement {
@@ -32,6 +33,31 @@ export class AppRichTextEditor extends FormElement {
           position-area: span-right;
           left: anchor(left);
           top: anchor(bottom);
+      		border: 1px solid var(--theme-default-color);
+          background: var(--theme-default-surface);
+          border-radius: var(--radius-2);
+          overflow: auto;
+          padding: 5px;
+          margin: 0;
+          white-space: nowrap;
+          box-shadow: var(--shadow-4);
+
+          &:popover-open {
+    				display: flex;
+            align-items: center;
+          }
+
+          app-icon {
+            font-size: 20px;
+          }
+
+          input {
+            border: none;
+            padding: 10px;
+            margin-left: 5px;
+            height: 30px;
+            border-radius: var(--radius-2);
+          }
         }
     `,
 	];
@@ -186,7 +212,9 @@ export class AppRichTextEditor extends FormElement {
 	}
 
 	toggleLink() {
-		if (this.editor?.state.selection.empty) return;
+		if (this.editor?.state.selection.empty && !this.editor?.isActive('link')) {
+			return;
+		}
 		if (this.editor?.isActive('link')) {
 			this.editor?.chain().focus().unsetLink().run();
 		} else {
@@ -230,8 +258,8 @@ export class AppRichTextEditor extends FormElement {
 	}
 
 	saveLink() {
-    this.selectedLink = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink;
-		this.editor?.chain().focus().extendMarkRange('link').updateAttributes('link', { href: this.selectedLink }).run()
+		this.selectedLink = this.linkPopup.querySelector<HTMLInputElement>('input')?.value || this.selectedLink;
+		this.editor?.chain().focus().extendMarkRange('link').updateAttributes('link', { href: this.selectedLink }).run();
 		this.linkPopup.hidePopover();
 	}
 
@@ -298,9 +326,15 @@ export class AppRichTextEditor extends FormElement {
 
 			<div popover class="link-popup">
 			  <input type="url" .value=${this.selectedLink || ''}/>
-				<a href=${this.selectedLink || '#'} target="_blank">Preview</a>
-				<button @click=${this.saveLink}>Save</button>
-				<button @click=${this.deleteLink}>Delete</button>
+				<app-button href=${this.selectedLink || '#'} target="_blank" title="Preview" appearance="plain">
+				  <app-icon>open_in_new</app-icon>
+				</app-button>
+				<app-button @click=${this.saveLink} title="Save" appearance="plain">
+				  <app-icon>save</app-icon>
+				</app-button>
+				<app-button @click=${this.deleteLink} title="Delete" appearance="plain" variant="error">
+				  <app-icon>delete</app-icon>
+				</app-button>
 			</div>
 		`;
 	}

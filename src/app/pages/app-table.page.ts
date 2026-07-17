@@ -136,7 +136,7 @@ export class AppTablePage extends LitElement {
 				@app-table-clear=${this.onTableClear}
 				@app-table-filter=${this.onTableFilter}
 			>
-				<table slot="table">
+				<table slot="table" class="hoverable">
 					<thead>
 						<tr>
 							<th action sticky>

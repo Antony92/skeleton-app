@@ -49,8 +49,38 @@ export const appRichTextEditorStyle = css`
 
 			.toolbar {
 				display: flex;
-				gap: 5px;
+				align-items: center;
+				gap: 10px;
 				border-bottom: 1px solid var(--theme-default-color);
+				padding: 5px 10px;
+
+				button {
+				  border: none;
+					background: none;
+					display: flex;
+					cursor: pointer;
+					padding: 0;
+					margin: 0;
+
+					&[disabled] {
+					  cursor: not-allowed;
+					}
+
+
+
+
+					&:hover:not([disabled]), &.active:not([disabled]) {
+					  app-icon {
+					    color: var(--theme-primary-color);
+						}
+					}
+				}
+
+				.separator {
+				  width: 1px;
+				  height: 20px;
+					background: var(--theme-default-color);
+				}
 			}
 
 			.editor {
@@ -76,11 +106,11 @@ export const appRichTextEditorStyle = css`
 			}
 
 			&:has(.tiptap:focus-visible) {
-				outline: 2px solid var(--theme-color);
+				/*outline: 2px solid var(--theme-color);*/
 			}
 
 			&:hover:not(:disabled, :focus-within) {
-				border-color: var(--theme-primary-color);
+				/*border-color: var(--theme-primary-color);*/
 			}
 
 			&:has(textarea:disabled) {
