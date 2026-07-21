@@ -256,7 +256,7 @@ export class AppSelect extends FormElement {
 	}
 
 	async onKeydown(event: KeyboardEvent) {
-		if (!['Enter', 'Space'].includes(event.key)) {
+		if (!['Enter', 'Space'].includes(event.code)) {
 			return;
 		}
 		event.preventDefault();
