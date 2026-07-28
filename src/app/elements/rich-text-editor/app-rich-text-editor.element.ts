@@ -3,6 +3,7 @@ import { AppRichTextEditorChangeEvent } from '@app/events/rich-text-editor.event
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
 import { Editor } from '@tiptap/core';
+import { Link } from '@tiptap/extension-link';
 import { Color, TextStyle } from '@tiptap/extension-text-style';
 import { Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
@@ -94,11 +95,15 @@ export class AppRichTextEditor extends FormElement {
 			element: this.renderRoot.querySelector('#editor'),
 			extensions: [
 				StarterKit.configure({
-					link: {
-						openOnClick: false,
-						HTMLAttributes: {
-							class: 'custom-link',
-						},
+					link: false,
+				}),
+				ExitableLink.configure({
+					openOnClick: false,
+					HTMLAttributes: {
+						class: 'custom-link',
+						target: '_blank',
+						tabindex: '0',
+						rel: 'noopener noreferrer nofollow',
 					},
 				}),
 				Placeholder.configure({ placeholder: this.placeholder }),
@@ -345,3 +350,8 @@ declare global {
 		'app-rich-text-editor': AppRichTextEditor;
 	}
 }
+
+const ExitableLink = Link.extend({
+	inclusive: false,
+	exitable: true,
+});
