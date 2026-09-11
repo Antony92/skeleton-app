@@ -14,12 +14,12 @@ export class AppSidebar extends SignalWatcher(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		navigation.addEventListener('navigatesuccess', this.setActiveLink);
+		navigation.addEventListener('currententrychange', this.setActiveLink);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		navigation.removeEventListener('navigatesuccess', this.setActiveLink);
+		navigation.removeEventListener('currententrychange', this.setActiveLink);
 	}
 
 	setActiveLink = (event: Event) => {
