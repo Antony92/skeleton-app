@@ -99,6 +99,7 @@ export class AppRichTextEditor extends FormElement {
 				}),
 				ExitableLink.configure({
 					openOnClick: false,
+					enableClickSelection: true,
 					HTMLAttributes: {
 						class: 'custom-link',
 						target: '_blank',
@@ -126,15 +127,13 @@ export class AppRichTextEditor extends FormElement {
 				}
 				this.requestUpdate();
 			},
-			editorProps: {
-				handleClick: (_view, _pos, event) => {
-					const target = event.target;
-					if (target instanceof HTMLAnchorElement) {
-						this.selectedLink = target.href;
-						this.linkPopup.showPopover();
-					}
-				},
-			},
+		});
+
+		this.renderRoot.querySelector('#editor')?.addEventListener('click', (event) => {
+			if (event.target instanceof HTMLAnchorElement) {
+				this.selectedLink = event.target.href;
+				this.linkPopup.showPopover();
+			}
 		});
 	}
 

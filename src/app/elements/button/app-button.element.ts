@@ -33,9 +33,9 @@ export class AppButton extends LitElement {
 	accessor outlined = false;
 
 	@property({ type: String })
-  accessor href = '';
+	accessor href = '';
 
-  @property({ type: String })
+	@property({ type: String })
 	accessor target = '';
 
 	@property({ type: String })

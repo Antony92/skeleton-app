@@ -38,7 +38,14 @@ export const createUser = async (user: { name: string; username: string; roles?:
 	};
 };
 
-export const updateUser = async (user: { id: string; name?: string; username?: string; roles?: string[]; active?: boolean; blocked?: boolean }) => {
+export const updateUser = async (user: {
+	id: string;
+	name?: string;
+	username?: string;
+	roles?: string[];
+	active?: boolean;
+	blocked?: boolean;
+}) => {
 	try {
 		const req = await request(`${import.meta.env.VITE_API}/user/${user.id}`, {
 			method: 'PATCH',

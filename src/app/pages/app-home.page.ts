@@ -1,7 +1,6 @@
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import '@app/elements/rich-text-editor/app-rich-text-editor.element';
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
@@ -27,8 +26,6 @@ export class AppHomePage extends LitElement {
 	protected firstUpdated() {}
 
 	render() {
-		return html` <h3>Home</h3>
-
-			<app-rich-text-editor placeholder="aaaaa" value="test"></app-rich-text-editor>`;
+		return html` <h3>Home</h3>`;
 	}
 }

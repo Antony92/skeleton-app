@@ -48,9 +48,9 @@ export class AppPopup extends LitElement {
 	accessor open = false;
 
 	@property({ type: String })
-  accessor behaviour: 'auto' | 'manual' = 'manual';
+	accessor behaviour: 'auto' | 'manual' = 'manual';
 
- 	@queryAssignedElements({ selector: '[app-popup-close]' })
+	@queryAssignedElements({ selector: '[app-popup-close]' })
 	accessor closeElements!: HTMLElement[];
 
 	protected firstUpdated() {
@@ -62,7 +62,7 @@ export class AppPopup extends LitElement {
 			if (toggleEvent.newState === 'closed') {
 				this.closePopup();
 			}
-    });
+		});
 		this.closeElements.forEach((element) => {
 			element.addEventListener('click', () => {
 				this.closePopup();

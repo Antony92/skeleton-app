@@ -37,7 +37,13 @@ export const notify = async (notification: NotifyOptions) => {
 	document.querySelector<AppSnackbar>('app-snackbar#snackbar')?.remove();
 
 	// Create Snackbar
-	const snackbar = Object.assign(document.createElement('app-snackbar'), { id: 'snackbar', variant, duration, position, action: action?.label });
+	const snackbar = Object.assign(document.createElement('app-snackbar'), {
+		id: 'snackbar',
+		variant,
+		duration,
+		position,
+		action: action?.label,
+	});
 	snackbar.addEventListener('app-after-hide', () => snackbar?.remove(), { once: true });
 
 	if (action?.onAction) {

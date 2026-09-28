@@ -67,10 +67,16 @@ export class AppTablePage extends LitElement {
 		setPageTitle('Table');
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
 		this.filterMap = getRouteSearchMap();
-		this.columns.forEach((column) => {
-			column.value = this.filterMap.get(column.field);
-			if (column.field === this.filterMap.get('sort')) {
-				column.order = this.filterMap.get('order');
+		this.filterMap.forEach((value, key) => {
+			const column = this.columns.find((column) => column.field === key);
+			if (column) {
+				column.value = value;
+			}
+			if (key === 'sort') {
+				const sortColumn = this.columns.find((column) => column.field === value);
+				if (sortColumn) {
+					sortColumn.order = this.filterMap.get('order');
+				}
 			}
 		});
 		this.loadUsers();

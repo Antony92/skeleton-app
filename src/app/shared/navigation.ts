@@ -161,8 +161,8 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
 		const guards = route.guards.map((guard) => guard(url, params));
 		const outcomes = await Promise.all(guards);
 		const passed = outcomes.every((outcome) => !!outcome);
-    if (!passed) {
-      // TODO remove animation
+		if (!passed) {
+			// TODO remove animation
 			return;
 		}
 	}
