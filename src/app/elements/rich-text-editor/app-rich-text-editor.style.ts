@@ -78,6 +78,13 @@ export const appRichTextEditorStyle = css`
 				  height: 20px;
 					background: var(--theme-default-color);
 				}
+
+				input[type="color"] {
+					width: 25px;
+					border: none;
+					background: none;
+					padding: 0;
+				}
 			}
 
 			.editor {
