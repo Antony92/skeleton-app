@@ -25,7 +25,7 @@ import '@app/elements/tag/app-tag.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
-import { confirmDialog, promptDialog } from '@app/shared/dialog';
+import { confirmDialog, promptDialog } from '@app/shared/dialogs';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
 import { setPageTitle } from '@app/utils/html';

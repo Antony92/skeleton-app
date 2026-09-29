@@ -1,4 +1,4 @@
-import { authGuard } from '@app/shared/guard';
+import { authGuard } from '@app/shared/guards';
 import type { Route } from '@app/shared/navigation';
 import { Role } from '@app/types/user.type';
 import { html } from 'lit/static-html.js';

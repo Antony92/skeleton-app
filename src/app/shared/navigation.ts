@@ -1,4 +1,4 @@
-import { confirmDialog } from '@app/shared/dialog';
+import { confirmDialog } from '@app/shared/dialogs';
 import type { SearchParams } from '@app/types/search.type';
 import { render } from 'lit';
 
