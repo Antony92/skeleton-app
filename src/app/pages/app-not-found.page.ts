@@ -4,7 +4,13 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('app-not-found-page')
 export class AppNotFoundPage extends LitElement {
-	static styles = [css``];
+	static styles = [
+		css`
+		  h1 {
+				text-align: center;
+			}
+		`,
+	];
 
 	connectedCallback() {
 		super.connectedCallback();

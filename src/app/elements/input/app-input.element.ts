@@ -1,7 +1,7 @@
 import { appInputStyle } from '@app/elements/input/app-input.style';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
@@ -25,6 +25,9 @@ export class AppInput extends FormElement {
 
 	@property({ type: String })
 	accessor autocomplete: 'on' | 'off' = 'off';
+
+	@property({ type: Array })
+	accessor suggestions: string[] = [];
 
 	@property({ type: String })
 	accessor placeholder = '';
@@ -105,6 +108,7 @@ export class AppInput extends FormElement {
 						@change=${this.onChange}
 						@blur=${this.onBlur}
 						.value=${live(this.value)}
+						list=${this.suggestions.length > 0 ? 'suggestions' : nothing}
 					/>
 					<span class="suffix" part="suffix">
 						<slot name="suffix"></slot>
@@ -112,6 +116,10 @@ export class AppInput extends FormElement {
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
 			</div>
+
+			<datalist id="suggestions">
+				${this.suggestions.map((suggestion) => html`<option value=${suggestion}></option>`)}
+			</datalist>
 		`;
 	}
 }

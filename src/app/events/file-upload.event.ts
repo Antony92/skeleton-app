@@ -1,7 +1,7 @@
 export class AppFileUploadEvent extends Event {
-	readonly value: File;
+	readonly value: FileList;
 
-	constructor(value: File) {
+	constructor(value: FileList) {
 		super('app-file-upload', { bubbles: true, composed: true });
 		this.value = value;
 	}

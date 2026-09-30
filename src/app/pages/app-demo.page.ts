@@ -261,7 +261,8 @@ export class AppDemoPage extends LitElement {
 			<fieldset>
 				<legend>File upload</legend>
 				<app-file-upload size="1" label="Upload">
-					<button slot="trigger">Trigger</button>
+					<app-button variant="primary" slot="trigger">Upload</app-button>
+					Upload files here
 				</app-file-upload>
 			</fieldset>
 

@@ -8,7 +8,7 @@ export const appTagStyle = css`
 		background: transparent;
 		color: var(--theme-muted-color);
 		cursor: pointer;
-		transition: all 0.2s;
+		transition: color 0.2s ease, border-color 0.2s ease;
 		font-weight: 600;
 		font-size: 0.75rem;
 

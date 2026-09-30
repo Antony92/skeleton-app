@@ -47,6 +47,24 @@ export const appFileUploadStyle = css`
 			gap: 10px;
 			border-radius: var(--radius-2);
 
+			ul {
+				padding: 0;
+				margin: 0;
+				list-style: none;
+
+				li {
+					display: flex;
+					align-items: center;
+
+					button {
+						background: none;
+						border: none;
+						color: var(--theme-error-color);
+						cursor: pointer;
+					}
+				}
+			}
+
 			&:has(input:disabled) {
 				opacity: 0.5;
 				cursor: not-allowed;

@@ -24,28 +24,23 @@ export class AppFileUpload extends FormElement {
 	@property({ attribute: false })
 	accessor files: FileList | null = null;
 
+	@property({ type: Array })
+	accessor filesList: Array<{ file?: File; name: string; url: string }> = [];
+
 	@property({ type: String })
 	accessor placeholder = '';
 
+	@property({ type: Boolean })
+	accessor multiple = false;
+
 	@property({ type: Number })
 	accessor size: number | undefined;
-
-	@property({ type: String })
-	accessor fileName = '';
-
-	@property({ type: String })
-	accessor fileURL = '';
 
 	@query('input')
 	accessor input!: HTMLInputElement;
 
 	@queryAssignedElements({ slot: 'trigger' })
 	accessor triggers!: HTMLElement[];
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		URL.revokeObjectURL(this.fileURL);
-	}
 
 	protected firstUpdated() {
 		this.triggers.forEach((trigger) => {
@@ -57,11 +52,22 @@ export class AppFileUpload extends FormElement {
 		});
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.filesList.forEach((file) => {
+			URL.revokeObjectURL(file.url);
+		});
+	}
+
 	onChange() {
 		this.touched = true;
 		this.files = this.input.files;
 		this.value = this.input.value;
-		this.checkFileValidation();
+		const validity = this.checkFilesValidity();
+		if (validity && this.files) {
+			this.filesList = Array.from(this.files).map((file) => ({ file, name: file.name, url: URL.createObjectURL(file) }));
+			this.dispatchEvent(new AppFileUploadEvent(this.files));
+		}
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 		this.dispatchEvent(new Event('change', { bubbles: true }));
 	}
@@ -69,9 +75,7 @@ export class AppFileUpload extends FormElement {
 	formResetCallback() {
 		super.formResetCallback();
 		this.files = null;
-		this.fileName = '';
-		this.fileURL = '';
-		URL.revokeObjectURL(this.fileURL);
+		this.filesList = [];
 		this.input.setCustomValidity('');
 	}
 
@@ -83,24 +87,19 @@ export class AppFileUpload extends FormElement {
 		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
 	}
 
-	checkFileValidation() {
-		const file = this.files?.[0];
+	checkFilesValidity() {
+		if (!this.files) {
+			return;
+		}
 		this.input.setCustomValidity('');
-
-		if (!file) {
-			return;
+		for (const file of this.files) {
+			const fileSizeInMB = file.size / 1024 ** 2;
+			if (this.size && fileSizeInMB > this.size) {
+				this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`);
+				return false;
+			}
 		}
-
-		const fileSizeInMB = file.size / 1024 ** 2;
-
-		if (this.size && fileSizeInMB > this.size) {
-			this.setCustomError(`File size too large. Maximum allowed is ${this.size} MB.`);
-			return;
-		}
-
-		this.fileURL = URL.createObjectURL(file);
-		this.fileName = file.name;
-		this.dispatchEvent(new AppFileUploadEvent(file));
+		return true;
 	}
 
 	setCustomError(error: string) {
@@ -109,12 +108,14 @@ export class AppFileUpload extends FormElement {
 		this.value = '';
 	}
 
-	deleteFile() {
-		this.value = '';
-		this.files = null;
-		this.fileName = '';
-		this.fileURL = '';
-		this.input.setCustomValidity('');
+	deleteFile(index: number) {
+		const [deleted] = this.filesList.splice(index, 1);
+		URL.revokeObjectURL(deleted.url);
+		if (this.filesList.length === 0) {
+			this.value = '';
+			this.input.setCustomValidity('');
+		}
+		this.requestUpdate();
 	}
 
 	render() {
@@ -128,6 +129,7 @@ export class AppFileUpload extends FormElement {
 						hidden
 						?disabled=${this.disabled}
 						?required=${this.required}
+						?multiple=${this.multiple}
 						name=${ifDefined(this.name)}
 						@change=${this.onChange}
 						.value=${live(this.value)}
@@ -135,13 +137,20 @@ export class AppFileUpload extends FormElement {
 						type="file"
 					/>
 					${when(
-						this.fileURL,
+						this.filesList.length > 0,
 						() => html`
-							<div>
-								<a download=${this.fileName} href=${this.fileURL}>${this.fileName}</a>
-								<button @click=${this.deleteFile}>X</button>
-							</div>
+						<ul>
+							${this.filesList.map(
+								(file, index) => html`
+    				    <li>
+    				      <a download=${file.name} href=${file.url}>${file.name}</a>
+    				      <button @click=${() => this.deleteFile(index)} title="Remove file">✖</button>
+    				    </li>
+							`,
+							)}
+						</ul>
 						`,
+						() => html`<slot></slot>`,
 					)}
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
