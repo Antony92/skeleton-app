@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import '@app/elements/input/app-input.element';
+import '@app/elements/autocomplete/app-autocomplete.element';
 import '@app/elements/checkbox/app-checkbox.element';
 import '@app/elements/radio/app-radio.element';
 import '@app/elements/radio-group/app-radio-group.element';
@@ -9,6 +10,8 @@ import '@app/elements/button/app-button.element';
 import '@app/elements/select/app-select.element';
 import '@app/elements/select-option/app-select-option.element';
 import '@app/elements/file-upload/app-file-upload.element';
+import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
+import { getProducts } from '@app/services/api.service';
 import { pageHasUnsavedChanges } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { formStyle } from '@app/styles/form.style';
@@ -66,13 +69,25 @@ export class AppFormPage extends LitElement {
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
 
-				<app-select required name="select" label="Select">
+				<app-select required name="select" label="Select" placeholder="Select an option">
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
 					<app-select-option value="option-3">Option 3</app-select-option>
 					<app-select-option value="option-4">Option 4</app-select-option>
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select>
+
+				<app-autocomplete
+				  name="phone"
+					label="Search"
+					placeholder="Search..."
+					@app-search=${async (e: Event) => {
+						const target = e.target as AppAutocomplete;
+						const products = await getProducts(target.searchValue);
+						target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
+					}}>
+					<app-icon slot="prefix" filled>search</app-icon>
+				</app-autocomplete>
 
 				<app-file-upload name="file" size="0.1">
 					<app-button variant="primary" slot="trigger">Upload</app-button>

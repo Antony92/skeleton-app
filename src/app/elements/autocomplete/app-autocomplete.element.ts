@@ -36,17 +36,18 @@ export class AppAutocomplete extends FormElement {
 	@property({ type: String })
 	accessor searchValue = '';
 
-	@query('input')
-	accessor input!: HTMLInputElement;
+	@query('#input')
+  accessor input!: HTMLInputElement;
+
+  @query('#hidden-input')
+  accessor hiddenInput!: HTMLInputElement;
 
 	private debouncedSearch?: ReturnType<typeof debounce>;
 
-	onInput(event: InputEvent) {
-		const target = event.target as HTMLInputElement;
-		this.searchValue = target.value;
-		this.touched = true;
+	onInput() {
+		this.searchValue = this.input.value;
 		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
-		const result = this.results.find((r) => r.label === target.value);
+		const result = this.results.find((r) => r.label === this.input.value);
 		if (result) {
 			this.value = result.value;
 		} else {
@@ -60,9 +61,8 @@ export class AppAutocomplete extends FormElement {
 		}
 	}
 
-	onChange(event: Event) {
-		const target = event.target as HTMLInputElement;
-		const result = this.results.find((r) => r.label === target.value);
+	onChange() {
+		const result = this.results.find((r) => r.label === this.input.value);
 		this.value = result?.value || '';
 		this.touched = true;
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
@@ -82,7 +82,12 @@ export class AppAutocomplete extends FormElement {
 	}
 
 	getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
+		return { flags: this.hiddenInput.validity, message: this.hiddenInput.validationMessage, anchor: this.input };
+  }
+
+ 	formResetCallback() {
+		super.formResetCallback();
+		this.searchValue = '';
 	}
 
 	render() {
@@ -94,6 +99,7 @@ export class AppAutocomplete extends FormElement {
 						<slot name="prefix"></slot>
 					</span>
 					<input
+					  id="input"
 						part="input"
 						?disabled=${this.disabled}
 						?autofocus=${this.autofocus}
@@ -108,9 +114,8 @@ export class AppAutocomplete extends FormElement {
 						list="results"
 					/>
 					<input
-						id="input"
+						id="hidden-input"
 						?disabled=${this.disabled}
-						?autofocus=${this.autofocus}
 						?readonly=${this.readonly}
 						?required=${this.required}
 						name=${ifDefined(this.name)}
