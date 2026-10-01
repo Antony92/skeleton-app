@@ -21,6 +21,9 @@ export class AppAutocomplete extends FormElement {
 	@property({ type: String })
 	accessor label = '';
 
+	@property({ type: Number })
+	accessor debounceTime = 300;
+
 	@property({ type: String })
 	accessor autocomplete: 'on' | 'off' = 'off';
 
@@ -48,7 +51,10 @@ export class AppAutocomplete extends FormElement {
 			this.value = result.value;
 		} else {
 			if (!this.debouncedSearch) {
-				this.debouncedSearch = debounce(() => this.dispatchEvent(new Event('app-search', { bubbles: true, composed: true })), 300);
+				this.debouncedSearch = debounce(
+					() => this.dispatchEvent(new Event('app-search', { bubbles: true, composed: true })),
+					this.debounceTime,
+				);
 			}
 			return this.debouncedSearch();
 		}
