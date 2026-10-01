@@ -6,9 +6,9 @@ import type { SearchParams } from '@app/types/search.type';
 import { Role } from '@app/types/user.type';
 import { searchParamsToQuery } from '@app/utils/url';
 
-export const getProducts = async (search?: string, limit = 10) => {
+export const getProducts = async (search?: string) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/products${searchParamsToQuery({ q: search, limit })}`);
+		const req = await request(`${import.meta.env.VITE_API}/products/search${searchParamsToQuery({ q: search })}`);
 		const res = await req.json();
 		return res?.products || [];
 	} catch (error) {

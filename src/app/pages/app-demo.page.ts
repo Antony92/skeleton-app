@@ -16,6 +16,7 @@ import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
 import '@app/elements/select/app-select.element';
 import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/autocomplete/app-autocomplete.element';
 import '@app/elements/tab/app-tab.element';
 import '@app/elements/tab-group/app-tab-group.element';
 import '@app/elements/tab-panel/app-tab-panel.element';
@@ -24,7 +25,9 @@ import '@app/elements/file-upload/app-file-upload.element';
 import '@app/elements/tag/app-tag.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
+import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
+import { getProducts } from '@app/services/api.service';
 import { confirmDialog, promptDialog } from '@app/shared/dialogs';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
@@ -135,6 +138,19 @@ export class AppDemoPage extends LitElement {
 					<app-select-option value="option-4">Option 4</app-select-option>
 					<app-select-option value="option-5">Option 5</app-select-option>
 				</app-select>
+			</fieldset>
+
+			<fieldset>
+				<legend>Autocomplete</legend>
+				<app-autocomplete
+					placeholder="Search..."
+					@app-search=${async (e: Event) => {
+						const target = e.target as AppAutocomplete;
+						const products = await getProducts(target.searchValue);
+						target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
+					}}>
+					<app-icon slot="prefix" filled>search</app-icon>
+				</app-autocomplete>
 			</fieldset>
 
 			<fieldset>
