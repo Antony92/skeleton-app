@@ -34,7 +34,7 @@ export class AppAutocomplete extends FormElement {
 	accessor placeholder = '';
 
 	@property({ type: String })
-	accessor searchValue = '';
+	accessor search = '';
 
 	@query('#input')
   accessor input!: HTMLInputElement;
@@ -45,7 +45,7 @@ export class AppAutocomplete extends FormElement {
 	private debouncedSearch?: ReturnType<typeof debounce>;
 
 	onInput() {
-		this.searchValue = this.input.value;
+		this.search = this.input.value;
 		this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
 		const result = this.results.find((r) => r.label === this.input.value);
 		if (result) {
@@ -71,7 +71,7 @@ export class AppAutocomplete extends FormElement {
 
 	onBlur() {
 		if (!this.value) {
-			this.searchValue = '';
+			this.search = '';
 		}
 		this.touched = true;
 		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
@@ -87,7 +87,7 @@ export class AppAutocomplete extends FormElement {
 
  	formResetCallback() {
 		super.formResetCallback();
-		this.searchValue = '';
+		this.search = '';
 	}
 
 	render() {
@@ -110,7 +110,7 @@ export class AppAutocomplete extends FormElement {
 						@input=${this.onInput}
 						@change=${this.onChange}
 						@blur=${this.onBlur}
-						.value=${live(this.searchValue)}
+						.value=${live(this.search)}
 						list="results"
 					/>
 					<input
