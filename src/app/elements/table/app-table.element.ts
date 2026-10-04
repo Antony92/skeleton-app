@@ -31,7 +31,11 @@ export class AppTable extends LitElement {
 				margin-bottom: 10px;
 
 				app-input {
-					width: 300px;
+					width: 100%;
+
+					@media (min-width: 768px) {
+						max-width: 350px;
+					}
 				}
 
 				.actions {

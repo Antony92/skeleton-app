@@ -49,6 +49,7 @@ export const appRichTextEditorStyle = css`
 
 			.toolbar {
 				display: flex;
+				flex-wrap: wrap;
 				align-items: center;
 				gap: 10px;
 				border-bottom: 1px solid var(--theme-default-color);

@@ -4,7 +4,11 @@ export const formStyle = css`
 	form {
 		display: flex;
 		flex-direction: column;
-		max-width: 300px;
+		width: 100%;
 		gap: 15px;
+
+		@media (min-width: 768px) {
+			max-width: 350px;
+		}
 	}
 `;

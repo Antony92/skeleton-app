@@ -49,6 +49,14 @@ export class AppDemoPage extends LitElement {
 				flex-wrap: wrap;
 				gap: 10px;
 				border-radius: var(--radius-2);
+
+				app-input, app-autocomplete, app-textarea, app-select {
+					width: 100%;
+
+					@media (min-width: 768px) {
+						max-width: 350px;
+					}
+				}
 			}
 
 			h3 {

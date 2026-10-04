@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const mainStyle = css`
 	.layout {
-		height: 100vh;
+		height: 100dvh;
 		display: grid;
 		grid-template-columns: auto 1fr;
 		grid-template-rows: auto 1fr;

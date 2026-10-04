@@ -10,7 +10,7 @@ export class AppLoader extends LitElement {
 			:host {
 				position: fixed;
 				width: 100vw;
-				height: 100vh;
+				height: 100dvh;
 				top: 0;
 				left: 0;
 				right: 0;
