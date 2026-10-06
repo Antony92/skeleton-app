@@ -20,6 +20,10 @@ export const appButtonStyle = css`
 		font-size: var(--theme-font-size-1);
     font-weight: 600;
 		text-decoration: none;
+		transition-property: background-color, color;
+    transition-duration: var(--transition-fast);
+    transition-timing-function: var(--transition-easing);
+    transform-origin: center center;
 
 		&:disabled {
 			opacity: 0.5;
@@ -95,5 +99,46 @@ export const appButtonStyle = css`
 		::slotted(app-icon) {
 			font-size: 20px;
 		}
+	}
+
+	:host([loading]) {
+		button {
+			position: relative;
+
+			&:disabled {
+				opacity: 1;
+				cursor: wait;
+			}
+		}
+
+		slot {
+			visibility: hidden;
+		}
+	}
+
+	.loader {
+    --color-1: var(--theme-white-color);
+    --color-2: var(--theme-black-color);
+    --size: 0.025rem;
+    width: calc(48 * var(--size));
+    height: calc(48 * var(--size));
+    border: calc(5 * var(--size)) solid var(--color-1);
+    border-bottom-color: var(--color-2);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    transform: translate(-50%, -50%);
+	}
+
+	@keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
 	}
 `;

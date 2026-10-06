@@ -58,13 +58,6 @@ export class AppDialog extends LitElement {
 			event.preventDefault();
 			this.hide();
 		});
-
-		this.closeElements.forEach((element) => {
-			element.addEventListener('click', () => {
-				const value = element.getAttribute('app-dialog-close') || '';
-				this.hide(value);
-			});
-		});
 	}
 
 	async show() {
@@ -113,6 +106,15 @@ export class AppDialog extends LitElement {
 		return animation.finished;
 	}
 
+	onFooterSlotChange() {
+		this.closeElements.forEach((element) => {
+			element.addEventListener('click', () => {
+				const value = element.getAttribute('app-dialog-close') || '';
+				this.hide(value);
+			});
+		});
+	}
+
 	render() {
 		return html`
 			<dialog>
@@ -125,7 +127,7 @@ export class AppDialog extends LitElement {
 						<slot></slot>
 					</article>
 					<footer>
-						<slot name="footer"></slot>
+						<slot name="footer" @slotchange=${this.onFooterSlotChange}></slot>
 					</footer>
 				</div>
 			</dialog>

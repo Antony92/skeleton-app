@@ -87,6 +87,7 @@ export class AppDemoPage extends LitElement {
 				<app-button variant="error">Error</app-button>
 				<app-button variant="primary" appearance="outlined">Outlined</app-button>
 				<app-button variant="primary" disabled>Disabled</app-button>
+				<app-button variant="primary" loading>Loading</app-button>
 				<app-button variant="primary">
 					<app-icon filled>skull</app-icon>
 					Left icon
@@ -302,7 +303,6 @@ export class AppDemoPage extends LitElement {
 				<app-popup>
 				  <app-button slot="trigger" variant="primary">Open</app-button>
 					<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
-					<br/>
 					<app-button variant="error" app-popup-close>Close</app-button>
 				</app-popup>
 			</fieldset>

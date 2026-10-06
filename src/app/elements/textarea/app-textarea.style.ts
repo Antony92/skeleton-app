@@ -50,6 +50,7 @@ export const appTextareaStyle = css`
 
 			textarea {
 				width: 100%;
+				min-height: 80px;
 				resize: vertical;
 				border: 1px solid var(--theme-default-color);
 				border-radius: var(--radius-2);

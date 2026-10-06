@@ -42,16 +42,6 @@ export class AppFileUpload extends FormElement {
 	@queryAssignedElements({ slot: 'trigger' })
 	accessor triggers!: HTMLElement[];
 
-	protected firstUpdated() {
-		this.triggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => {
-				if (!this.disabled) {
-					this.input.click();
-				}
-			});
-		});
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.filesList.forEach((file) => {
@@ -118,12 +108,22 @@ export class AppFileUpload extends FormElement {
 		this.requestUpdate();
 	}
 
+	onTriggerAdded() {
+		this.triggers.forEach((trigger) => {
+			trigger.addEventListener('click', () => {
+				if (!this.disabled) {
+					this.input.click();
+				}
+			});
+		});
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
 				${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
 				<div class="file-upload-wrapper" part="file-upload-wrapper">
-					<slot name="trigger"></slot>
+					<slot name="trigger" @slotchange=${this.onTriggerAdded}></slot>
 					<input
 						id="input"
 						hidden

@@ -48,6 +48,10 @@ export const appInputStyle = css`
 			width: 100%;
 			border-radius: var(--radius-2);
 			height: 36px;
+			transition-property: border-color, outline;
+			transition-duration: var(--transition-fast);
+			transition-timing-function: var(--transition-easing);
+			transform-origin: center center;
 
 			input {
 				width: 100%;

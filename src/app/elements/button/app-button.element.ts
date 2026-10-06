@@ -32,6 +32,9 @@ export class AppButton extends LitElement {
 	@property({ type: Boolean })
 	accessor outlined = false;
 
+	@property({ type: Boolean })
+	accessor loading = false;
+
 	@property({ type: String })
 	accessor href = '';
 
@@ -55,7 +58,7 @@ export class AppButton extends LitElement {
 						download=${ifDefined(this.download)}
 						?autofocus=${this.autofocus}
 					>
-						<slot></slot>
+					  <slot></slot>
 					</a>
 				`,
 				() => html`
@@ -63,9 +66,10 @@ export class AppButton extends LitElement {
 						part="button"
 						role="button"
 						class="focus-visible"
-						?disabled=${this.disabled}
+						?disabled=${this.disabled || this.loading}
 						?autofocus=${this.autofocus}
 					>
+						${when(this.loading, () => html`<div class="loader"></div`)}
 						<slot></slot>
 					</button>
 				`,

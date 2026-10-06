@@ -46,6 +46,10 @@ export const appFileUploadStyle = css`
 			padding: 10px;
 			gap: 10px;
 			border-radius: var(--radius-2);
+			transition-property: border-color, outline;
+			transition-duration: var(--transition-fast);
+			transition-timing-function: var(--transition-easing);
+			transform-origin: center center;
 
 			ul {
 				padding: 0;

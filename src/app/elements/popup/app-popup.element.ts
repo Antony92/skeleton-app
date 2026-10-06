@@ -54,19 +54,11 @@ export class AppPopup extends LitElement {
 	accessor closeElements!: HTMLElement[];
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => this.togglePopup());
-		});
 		this.popup.addEventListener('toggle', (event: Event) => {
 			const toggleEvent = event as ToggleEvent;
 			if (toggleEvent.newState === 'closed') {
 				this.closePopup();
 			}
-		});
-		this.closeElements.forEach((element) => {
-			element.addEventListener('click', () => {
-				this.closePopup();
-			});
 		});
 	}
 
@@ -92,12 +84,26 @@ export class AppPopup extends LitElement {
 		}
 	}
 
+	onTriggersAdded() {
+		this.triggers.forEach((trigger) => {
+			trigger.addEventListener('click', () => this.togglePopup());
+		});
+	}
+
+	onSlotChange() {
+		this.closeElements.forEach((element) => {
+			element.addEventListener('click', () => {
+				this.closePopup();
+			});
+		});
+	}
+
 	render() {
 		return html`
 			<div class="container">
-				<slot name="trigger"></slot>
+				<slot name="trigger" @slotchange=${this.onTriggersAdded}></slot>
 				<div part="popover" popover=${this.behaviour}>
-					<slot></slot>
+					<slot @slotchange=${this.onSlotChange}></slot>
 				</div>
 			</div>
 		`;
