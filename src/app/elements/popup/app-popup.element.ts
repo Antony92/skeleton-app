@@ -62,18 +62,22 @@ export class AppPopup extends LitElement {
 		});
 	}
 
-	closePopup() {
+  closePopup() {
+    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+			return;
+		}
 		this.open = false;
 		this.popup.hidePopover();
 		this.popup.removeAttribute('style');
-		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
 	}
 
-	async openPopup() {
+  async openPopup() {
+    if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
+			return;
+		}
 		this.open = true;
 		await this.updateComplete;
 		this.popup.showPopover();
-		this.dispatchEvent(new Event('app-show', { cancelable: true }));
 	}
 
 	togglePopup() {
