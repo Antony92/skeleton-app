@@ -110,8 +110,8 @@ export class AppSelect extends FormElement {
 				}
 			});
 		});
-    this.addEventListener('app-option-click', (event) => {
-      event.stopPropagation();
+		this.addEventListener('app-option-click', (event) => {
+			event.stopPropagation();
 			const option = event.target as AppSelectOption;
 			if (this.multiple) {
 				option.selected = !option.selected;

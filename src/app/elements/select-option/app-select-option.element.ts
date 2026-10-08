@@ -80,7 +80,7 @@ export class AppSelectOption extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-    this.addEventListener('click', (event) => {
+		this.addEventListener('click', (event) => {
 			if (event.defaultPrevented) return;
 			this.dispatchEvent(new Event('app-option-click', { bubbles: true, composed: true }));
 		});
