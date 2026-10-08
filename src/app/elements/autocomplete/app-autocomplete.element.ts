@@ -37,10 +37,10 @@ export class AppAutocomplete extends FormElement {
 	accessor search = '';
 
 	@query('#input')
-  accessor input!: HTMLInputElement;
+	accessor input!: HTMLInputElement;
 
-  @query('#hidden-input')
-  accessor hiddenInput!: HTMLInputElement;
+	@query('#hidden-input')
+	accessor hiddenInput!: HTMLInputElement;
 
 	private debouncedSearch?: ReturnType<typeof debounce>;
 
@@ -83,9 +83,9 @@ export class AppAutocomplete extends FormElement {
 
 	getValidity() {
 		return { flags: this.hiddenInput.validity, message: this.hiddenInput.validationMessage, anchor: this.input };
-  }
+	}
 
- 	formResetCallback() {
+	formResetCallback() {
 		super.formResetCallback();
 		this.search = '';
 	}

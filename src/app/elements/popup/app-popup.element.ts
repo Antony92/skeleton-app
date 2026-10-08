@@ -62,8 +62,8 @@ export class AppPopup extends LitElement {
 		});
 	}
 
-  closePopup() {
-    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+	closePopup() {
+		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
 			return;
 		}
 		this.open = false;
@@ -71,8 +71,8 @@ export class AppPopup extends LitElement {
 		this.popup.removeAttribute('style');
 	}
 
-  async openPopup() {
-    if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
+	async openPopup() {
+		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
 			return;
 		}
 		this.open = true;

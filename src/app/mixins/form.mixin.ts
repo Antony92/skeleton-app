@@ -23,6 +23,7 @@ export interface FormControl {
 	get willValidate(): boolean;
 	checkValidity(): boolean;
 	reportValidity(): boolean;
+	setCustomValidity(message: string): void;
 
 	// default form internal calls
 	formAssociatedCallback(form: HTMLFormElement): void;
@@ -53,6 +54,8 @@ export abstract class FormElement extends LitElement implements FormControl {
 
 	@state()
 	accessor message = '';
+
+	#customValidityMessage = '';
 
 	internals = this.attachInternals();
 	static formAssociated = true;
@@ -92,8 +95,13 @@ export abstract class FormElement extends LitElement implements FormControl {
 
 		await this.updateComplete;
 
-		const { flags, message, anchor } = this.getValidity();
-		this.internals.setValidity(flags, message, anchor);
+		if (this.#customValidityMessage) {
+			this.internals.setValidity({ customError: true }, this.#customValidityMessage, this);
+			this.#customValidityMessage = '';
+		} else {
+			const { flags, message, anchor } = this.getValidity();
+			this.internals.setValidity(flags, message, anchor);
+		}
 		this.internals.setFormValue(this.getFormValue());
 		this.internals.states.clear();
 
@@ -149,5 +157,9 @@ export abstract class FormElement extends LitElement implements FormControl {
 
 	reportValidity() {
 		return this.internals.reportValidity();
+	}
+
+	setCustomValidity(message: string) {
+		this.#customValidityMessage = message;
 	}
 }

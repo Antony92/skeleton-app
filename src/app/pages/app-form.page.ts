@@ -83,7 +83,7 @@ export class AppFormPage extends LitElement {
 					placeholder="Search..."
 					@app-search=${async (e: Event) => {
 						const target = e.target as AppAutocomplete;
-						const products = await getProducts(target.searchValue);
+						const products = await getProducts(target.search);
 						target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
 					}}>
 					<app-icon slot="prefix" filled>search</app-icon>
