@@ -72,7 +72,7 @@ export const appSelectStyle = css`
 				border: none;
 				outline: none;
 				background: none;
-				padding: 0px 35px 0px 10px;
+				padding: 0px 10px;
 				cursor: pointer;
 				font-family: var(--theme-font-family);
 				font-size: var(--theme-font-size-1);
@@ -99,14 +99,25 @@ export const appSelectStyle = css`
 				font-size: 20px;
 			}
 
+			.clear {
+				cursor: pointer;
+				background: none;
+				border: none;
+				font-size: 20px;
+				padding: 1px 5px 0px 0px;
+				color: color-mix(in srgb, currentColor 100%, transparent);
+
+				&:hover {
+					color: color-mix(in srgb, currentColor 90%, transparent);
+				}
+			}
+
 			.caret {
-				position: absolute;
-				right: 0;
 				pointer-events: none;
 				display: flex;
 				align-items: center;
 				cursor: pointer;
-				padding-right: 10px;
+				padding: 0 10px;
 				transition: 250ms rotate ease;
 				transform-box: fill-box;
 			}

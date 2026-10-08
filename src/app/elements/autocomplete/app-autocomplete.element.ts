@@ -36,6 +36,9 @@ export class AppAutocomplete extends FormElement {
 	@property({ type: String })
 	accessor search = '';
 
+	@property({ type: Boolean })
+	accessor clearable = false;
+
 	@query('#input')
 	accessor input!: HTMLInputElement;
 
@@ -90,6 +93,11 @@ export class AppAutocomplete extends FormElement {
 		this.search = '';
 	}
 
+	clear() {
+		this.value = '';
+		this.focus();
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
@@ -122,6 +130,7 @@ export class AppAutocomplete extends FormElement {
 						.value=${live(this.value)}
 						hidden
 					/>
+					${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
 					<span class="suffix" part="suffix">
 						<slot name="suffix"></slot>
 					</span>

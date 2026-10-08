@@ -13,7 +13,7 @@ export const appBadgeStyle = css`
 		background: var(--background);
 
 		&.default {
-			--background: color-mix(in srgb, var(--theme-default-background) 30%, transparent);
+			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
 			--color: var(--theme-muted-color);
 		}
 

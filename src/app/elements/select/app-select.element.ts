@@ -61,6 +61,9 @@ export class AppSelect extends FormElement {
 	@property({ type: Boolean })
 	accessor searchable = false;
 
+	@property({ type: Boolean })
+	accessor clearable = false;
+
 	@query('#input')
 	accessor input!: HTMLInputElement;
 
@@ -278,6 +281,11 @@ export class AppSelect extends FormElement {
 		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
 	}
 
+	clear() {
+		this.value = '';
+		this.focus();
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
@@ -308,6 +316,7 @@ export class AppSelect extends FormElement {
 						?disabled=${this.disabled}
 						@change=${this.onChange}
 					/>
+					${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
 					<span class="suffix" part="suffix">
 						<slot name="suffix"></slot>
 					</span>

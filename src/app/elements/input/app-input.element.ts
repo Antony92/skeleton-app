@@ -50,6 +50,9 @@ export class AppInput extends FormElement {
 	@property({ type: String })
 	accessor pattern: string | undefined;
 
+	@property({ type: Boolean })
+	accessor clearable = false;
+
 	@query('input')
 	accessor input!: HTMLInputElement;
 
@@ -77,6 +80,11 @@ export class AppInput extends FormElement {
 
 	getValidity() {
 		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
+	}
+
+	clear() {
+		this.value = '';
+		this.focus();
 	}
 
 	render() {
@@ -110,6 +118,7 @@ export class AppInput extends FormElement {
 						.value=${live(this.value)}
 						list=${this.suggestions.length > 0 ? 'suggestions' : nothing}
 					/>
+					${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
 					<span class="suffix" part="suffix">
 						<slot name="suffix"></slot>
 					</span>
