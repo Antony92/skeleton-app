@@ -18,9 +18,13 @@ export class AppTag extends LitElement {
 	@property({ type: Boolean })
 	accessor disabled = false;
 
-	onClick() {
-		this.active = !this.active;
-		this.dispatchEvent(new Event('app-tag-click', { bubbles: true, composed: true }));
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('click', (e) => {
+			if (e.defaultPrevented) return;
+			this.active = !this.active;
+			this.dispatchEvent(new Event('app-tag-click', { bubbles: true, composed: true }));
+		});
 	}
 
 	render() {
@@ -29,7 +33,6 @@ export class AppTag extends LitElement {
 				part="tag"
 				?disabled=${this.disabled}
 				class="${classMap({ 'focus-visible': true, active: this.active })}"
-				@click=${this.onClick}
 			>
 				<slot></slot>
 			</button>

@@ -47,14 +47,18 @@ export class AppDropdown extends LitElement {
 	accessor assignedItems!: AppDropdownItem[];
 
 	@property({ type: Boolean, reflect: true })
-	accessor open = false;
+  accessor open = false;
 
-	private attachedItems = new WeakSet<AppDropdownItem>();
+  connectedCallback() {
+		super.connectedCallback();
+    this.addEventListener('app-dropdown-item-click', (event: Event) => {
+      const item = event.target as AppDropdownItem;
+  		this.dispatchEvent(new AppSelectEvent(item.value));
+  		this.closeDropdown();
+		});
+	}
 
 	protected firstUpdated() {
-		this.triggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => this.toggleDropdown());
-		});
 		this.popup.addEventListener('toggle', (event: Event) => {
 			const toggleEvent = event as ToggleEvent;
 			if (toggleEvent.newState === 'closed') {
@@ -85,32 +89,18 @@ export class AppDropdown extends LitElement {
 		}
 	}
 
-	private attachItemListeners(item: AppDropdownItem) {
-		if (this.attachedItems.has(item)) {
-			return;
-		}
-		this.attachedItems.add(item);
-		item.addEventListener('click', (event: Event) => {
-			if (event.defaultPrevented) {
-				return;
-			}
-			this.dispatchEvent(new AppSelectEvent(item.value));
-			this.closeDropdown();
-		});
-	}
-
-	private onItemsAdded() {
-		this.assignedItems.forEach((item) => {
-			this.attachItemListeners(item);
+  onTriggersAdded() {
+		this.triggers.forEach((trigger) => {
+			trigger.addEventListener('click', () => this.toggleDropdown());
 		});
 	}
 
 	render() {
 		return html`
 			<div class="container">
-				<slot name="trigger"></slot>
+				<slot name="trigger" @slotchange=${this.onTriggersAdded}></slot>
 				<div part="popover" popover>
-					<slot @slotchange=${this.onItemsAdded}></slot>
+					<slot></slot>
 				</div>
 			</div>
 		`;

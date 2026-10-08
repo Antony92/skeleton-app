@@ -55,9 +55,13 @@ export class AppTab extends LitElement {
 	@property({ type: String })
 	accessor panel = '';
 
-	onClick() {
-		this.active = !this.active;
-		this.dispatchEvent(new Event('app-tab-click', { bubbles: true, composed: true }));
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('click', (e) => {
+			if (e.defaultPrevented) return;
+			this.active = !this.active;
+			this.dispatchEvent(new Event('app-tab-click', { bubbles: true, composed: true }));
+		});
 	}
 
 	render() {
@@ -66,7 +70,6 @@ export class AppTab extends LitElement {
 			  part="tab"
 				?disabled=${this.disabled}
 				class="${classMap({ active: this.active, 'focus-visible': true })}"
-				@click=${this.onClick}
 			>
 				<slot></slot>
 			</button>
