@@ -33,7 +33,7 @@ export class AppTabGroup extends LitElement {
 	@queryAssignedElements()
 	accessor panels!: AppTabPanel[];
 
-	#activeTab = ''
+	#activeTab = '';
 
 	get activeTab() {
 		return this.#activeTab;
