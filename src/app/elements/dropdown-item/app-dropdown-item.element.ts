@@ -64,8 +64,9 @@ export class AppDropdownItem extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('click', (e) => {
-			if (e.defaultPrevented) return;
+		this.addEventListener('click', (event) => {
+			event.stopPropagation();
+			if (event.defaultPrevented) return;
 			this.dispatchEvent(new Event('app-dropdown-item-click', { bubbles: true, composed: true }));
 		});
 	}

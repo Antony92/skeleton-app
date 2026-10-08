@@ -41,7 +41,8 @@ export class AppTabGroup extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('app-tab-click', (event) => {
+    this.addEventListener('app-tab-click', (event) => {
+      event.stopPropagation();
 			const tab = event.target as AppTab;
 			const index = this.tabs.indexOf(tab);
 			this.setActiveTab(index);

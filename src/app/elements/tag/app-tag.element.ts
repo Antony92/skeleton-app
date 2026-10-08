@@ -20,8 +20,9 @@ export class AppTag extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('click', (e) => {
-			if (e.defaultPrevented) return;
+    this.addEventListener('click', (event) => {
+      event.stopPropagation();
+			if (event.defaultPrevented) return;
 			this.active = !this.active;
 			this.dispatchEvent(new Event('app-tag-click', { bubbles: true, composed: true }));
 		});
