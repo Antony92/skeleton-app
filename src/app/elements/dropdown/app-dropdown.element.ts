@@ -52,6 +52,7 @@ export class AppDropdown extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('app-dropdown-item-click', (event: Event) => {
+			event.stopPropagation();
 			const item = event.target as AppDropdownItem;
 			this.dispatchEvent(new AppSelectEvent(item.value));
 			this.closeDropdown();

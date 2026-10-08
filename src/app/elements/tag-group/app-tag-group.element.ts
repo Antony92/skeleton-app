@@ -31,6 +31,7 @@ export class AppTagGroup extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('app-tag-click', (event) => {
+			event.stopPropagation();
 			const tag = event.target as AppTag;
 			if (this.multiple) {
 				this.value = this.tags
