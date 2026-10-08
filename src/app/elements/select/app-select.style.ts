@@ -61,7 +61,7 @@ export const appSelectStyle = css`
 			height: 36px;
 			position: relative;
 			background: var(--theme-default-surface);
-			transition-property: border-color, outline;
+			transition-property: border-color;
 			transition-duration: var(--transition-fast);
 			transition-timing-function: var(--transition-easing);
 			transform-origin: center center;

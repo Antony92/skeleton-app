@@ -95,8 +95,8 @@ export class AppFormPage extends LitElement {
 				</app-file-upload>
 
 				<div class="actions">
-					<app-button variant="primary" @click=${() => this.form.requestSubmit()}>Submit</app-button>
-					<app-button @click=${() => this.form.reset()}>Reset</app-button>
+					<app-button variant="primary" type="submit">Submit</app-button>
+					<app-button type="reset">Reset</app-button>
 				</div>
 			</form>
 		`;

@@ -65,8 +65,9 @@ export class AppTablePage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		setPageTitle('Table');
-		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
 		this.filterMap = getRouteSearchMap();
+		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
+		this.skip = Number(this.filterMap.get('skip')) || this.skip;
 		this.filterMap.forEach((value, key) => {
 			const column = this.columns.find((column) => column.field === key);
 			if (column) {
@@ -95,6 +96,7 @@ export class AppTablePage extends LitElement {
 		const { pageSize, pageIndex } = event.value;
 		this.limit = pageSize;
 		this.skip = pageSize * pageIndex;
+		addSearchToRoute({ skip: this.skip });
 		this.loadUsers();
 	}
 
@@ -216,6 +218,7 @@ export class AppTablePage extends LitElement {
 					save-page-size=${this.storageLimitName}
 					@app-paginate=${this.onPaginate}
 					.pageSize=${this.limit}
+					.pageIndex=${this.skip / this.limit}
 					.pageSizeOptions=${[10, 50, 100]}
 					.total=${this.users.total}
 				>

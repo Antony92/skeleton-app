@@ -58,6 +58,10 @@ export const appTextareaStyle = css`
 				font-family: var(--theme-font-family);
 				font-size: var(--theme-font-size-1);
 				padding: 10px;
+				transition-property: border-color;
+				transition-duration: var(--transition-fast);
+				transition-timing-function: var(--transition-easing);
+				transform-origin: center center;
 
 				&::placeholder {
 					color: var(--theme-muted-color);

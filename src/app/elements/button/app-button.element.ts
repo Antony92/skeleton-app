@@ -26,6 +26,9 @@ export class AppButton extends LitElement {
 	@property({ type: String })
 	accessor appearance: 'normal' | 'outlined' | 'plain' = 'normal';
 
+	@property({ type: String })
+	accessor type: 'button' | 'submit' | 'reset' = 'button';
+
 	@property({ type: Boolean })
 	accessor disabled = false;
 
@@ -43,6 +46,22 @@ export class AppButton extends LitElement {
 
 	@property({ type: String })
 	accessor download: string | undefined;
+
+	static formAssociated = true;
+	internals = this.attachInternals();
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('click', (e) => {
+			if (e.defaultPrevented) return;
+			if (this.type === 'submit') {
+				this.internals.form?.requestSubmit();
+			}
+			if (this.type === 'reset') {
+				this.internals.form?.reset();
+			}
+		});
+	}
 
 	render() {
 		return html`
