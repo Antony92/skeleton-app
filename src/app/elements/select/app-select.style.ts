@@ -104,20 +104,22 @@ export const appSelectStyle = css`
 				background: none;
 				border: none;
 				font-size: 20px;
-				padding: 1px 5px 0px 0px;
-				color: color-mix(in srgb, currentColor 100%, transparent);
+				padding: 1px 35px 0px 0px;
+				color: color-mix(in srgb, currentColor 90%, transparent);
 
 				&:hover {
-					color: color-mix(in srgb, currentColor 90%, transparent);
+					color: color-mix(in srgb, currentColor 80%, transparent);
 				}
 			}
 
 			.caret {
+				position: absolute;
+				right: 0;
 				pointer-events: none;
 				display: flex;
 				align-items: center;
 				cursor: pointer;
-				padding: 0 10px;
+				padding-right: 10px;
 				transition: 250ms rotate ease;
 				transform-box: fill-box;
 			}

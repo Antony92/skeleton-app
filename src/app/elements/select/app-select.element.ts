@@ -76,8 +76,6 @@ export class AppSelect extends FormElement {
 	@queryAssignedElements({ selector: 'app-select-option' })
 	accessor assignedOptions!: AppSelectOption[];
 
-	private attachedOptions = new WeakSet<AppSelectOption>();
-
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('keydown', (event) => {
@@ -112,19 +110,12 @@ export class AppSelect extends FormElement {
 				}
 			});
 		});
-	}
-
-	private attachOptionListeners(option: AppSelectOption) {
-		if (this.attachedOptions.has(option)) {
-			return;
-		}
-		this.attachedOptions.add(option);
-		option.addEventListener('click', () => {
+		this.addEventListener('app-option-click', (event) => {
+			const option = event.target as AppSelectOption;
 			if (this.multiple) {
 				option.selected = !option.selected;
 				this.value = this.getMultiValue();
 			} else {
-				option.selected = true;
 				this.value = option.value;
 				this.assignedOptions
 					.filter((opt) => opt.value !== this.value)
@@ -212,7 +203,6 @@ export class AppSelect extends FormElement {
 
 	private onOptionsAdded() {
 		this.assignedOptions.forEach((option) => {
-			this.attachOptionListeners(option);
 			const shouldBeSelected = this.value
 				.split(',')
 				.map((v) => v.trim())
@@ -252,10 +242,6 @@ export class AppSelect extends FormElement {
 	onBlur() {
 		this.touched = true;
 		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
-	}
-
-	onClick() {
-		this.toggleSelect();
 	}
 
 	async onKeydown(event: KeyboardEvent) {
@@ -304,7 +290,7 @@ export class AppSelect extends FormElement {
 						?required=${this.required}
 						placeholder=${ifDefined(this.placeholder)}
 						.value=${live(this.displayValue)}
-						@click=${this.onClick}
+						@click=${this.toggleSelect}
 						@keydown=${this.onKeydown}
 					/>
 					<input
@@ -314,7 +300,6 @@ export class AppSelect extends FormElement {
 						name=${ifDefined(this.name)}
 						?required=${this.required}
 						?disabled=${this.disabled}
-						@change=${this.onChange}
 					/>
 					${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
 					<span class="suffix" part="suffix">

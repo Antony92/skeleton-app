@@ -78,9 +78,13 @@ export class AppSelectOption extends LitElement {
 		this.option?.focus(options);
 	}
 
+	onClick() {
+		this.dispatchEvent(new Event('app-option-click', { bubbles: true, composed: true }));
+	}
+
 	render() {
 		return html`
-			<button part="option" ?disabled=${this.disabled} .value=${this.value} ?selected=${this.selected}>
+			<button part="option" ?disabled=${this.disabled} .value=${this.value} @click=${this.onClick}>
 				<svg part="checked-icon svg" viewBox="0 0 16 16" class=${classMap({ visible: this.selected })}>
 					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
 						<g stroke="currentColor">
