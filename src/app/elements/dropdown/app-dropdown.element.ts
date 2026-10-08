@@ -47,14 +47,14 @@ export class AppDropdown extends LitElement {
 	accessor assignedItems!: AppDropdownItem[];
 
 	@property({ type: Boolean, reflect: true })
-  accessor open = false;
+	accessor open = false;
 
-  connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback();
-    this.addEventListener('app-dropdown-item-click', (event: Event) => {
-      const item = event.target as AppDropdownItem;
-  		this.dispatchEvent(new AppSelectEvent(item.value));
-  		this.closeDropdown();
+		this.addEventListener('app-dropdown-item-click', (event: Event) => {
+			const item = event.target as AppDropdownItem;
+			this.dispatchEvent(new AppSelectEvent(item.value));
+			this.closeDropdown();
 		});
 	}
 
@@ -89,7 +89,7 @@ export class AppDropdown extends LitElement {
 		}
 	}
 
-  onTriggersAdded() {
+	onTriggersAdded() {
 		this.triggers.forEach((trigger) => {
 			trigger.addEventListener('click', () => this.toggleDropdown());
 		});
