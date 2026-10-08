@@ -18,13 +18,18 @@ export class AppTag extends LitElement {
 	@property({ type: Boolean })
 	accessor disabled = false;
 
+	onClick() {
+		this.active = !this.active;
+		this.dispatchEvent(new Event('app-tag-click', { bubbles: true, composed: true }));
+	}
+
 	render() {
 		return html`
 			<button
 				part="tag"
 				?disabled=${this.disabled}
 				class="${classMap({ 'focus-visible': true, active: this.active })}"
-				@click=${() => (this.active = !this.active)}
+				@click=${this.onClick}
 			>
 				<slot></slot>
 			</button>

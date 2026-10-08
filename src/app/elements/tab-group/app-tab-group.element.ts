@@ -1,6 +1,5 @@
 import type { AppTab } from '@app/elements/tab/app-tab.element';
 import type { AppTabPanel } from '@app/elements/tab-panel/app-tab-panel.element';
-import { AppTabChangeEvent } from '@app/events/tab.event';
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, queryAssignedElements } from 'lit/decorators.js';
@@ -34,11 +33,38 @@ export class AppTabGroup extends LitElement {
 	@queryAssignedElements()
 	accessor panels!: AppTabPanel[];
 
-	private attachedTabs = new WeakSet<AppTab>();
+	#activeTab = ''
+
+	get activeTab() {
+		return this.#activeTab;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('app-tab-click', (event) => {
+			const tab = event.target as AppTab;
+			const index = this.tabs.indexOf(tab);
+			this.setActiveTab(index);
+			this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		});
+	}
 
 	protected firstUpdated() {
-		const index = this.tabs.findIndex((tab) => !tab.disabled && tab.active);
+		const index = this.tabs.findIndex((tab) => tab.active);
 		this.setActiveTab(index === -1 ? 0 : index);
+	}
+
+	setActiveTab(index = 0) {
+		const tab = this.tabs.at(index);
+		this.#activeTab = tab?.panel ?? '';
+		this.tabs
+			.filter((t) => t !== tab)
+			.forEach((t) => {
+				t.active = false;
+			});
+		this.panels.forEach((p) => {
+			p.active = p.name === tab?.panel;
+		});
 	}
 
 	private tabObserver = new MutationObserver((mutations) => {
@@ -51,46 +77,10 @@ export class AppTabGroup extends LitElement {
 		});
 	});
 
-	setActiveTab(index = 0) {
-		const tab = this.tabs.filter((tab) => !tab.disabled).at(index);
-		if (tab && !tab.active) {
-			tab.active = true;
-		}
-		const panel = this.panels.find((panel) => panel.name === tab?.panel);
-		if (panel) {
-			panel.active = true;
-		}
-		this.tabs
-			.filter((_, i) => index !== i)
-			.forEach((t) => {
-				t.active = false;
-			});
-		this.panels
-			.filter((p) => p.name !== panel?.name)
-			.forEach((p) => {
-				p.active = false;
-			});
-	}
-
 	private onTabsAdded() {
 		this.tabObserver.disconnect();
 		this.tabs.forEach((tab) => {
-			this.attachTabListeners(tab);
 			this.tabObserver.observe(tab, { attributes: true, attributeFilter: ['active'] });
-		});
-	}
-
-	private attachTabListeners(tab: AppTab) {
-		if (this.attachedTabs.has(tab)) {
-			return;
-		}
-		this.attachedTabs.add(tab);
-		tab.addEventListener('click', (event) => {
-			if (event.defaultPrevented) {
-				return;
-			}
-			tab.active = true;
-			this.dispatchEvent(new AppTabChangeEvent(tab.panel));
 		});
 	}
 

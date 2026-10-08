@@ -22,6 +22,7 @@ import '@app/elements/tab-group/app-tab-group.element';
 import '@app/elements/tab-panel/app-tab-panel.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/file-upload/app-file-upload.element';
+import '@app/elements/tag-group/app-tag-group.element';
 import '@app/elements/tag/app-tag.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
@@ -246,8 +247,10 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Tag</legend>
-				<app-tag active value="all">All</app-tag>
-				<app-tag value="some">Only Some</app-tag>
+				<app-tag-group>
+					<app-tag active value="all">All</app-tag>
+					<app-tag value="some">Only Some</app-tag>
+				</app-tag-group>
 			</fieldset>
 
 			<fieldset>
@@ -258,7 +261,7 @@ export class AppDemoPage extends LitElement {
 			<fieldset>
 				<legend>Tabs</legend>
 				<app-tab-group>
-					<app-tab slot="tab" panel="general">General</app-tab>
+					<app-tab slot="tab" panel="general" active>General</app-tab>
 					<app-tab slot="tab" panel="custom">Custom</app-tab>
 					<app-tab slot="tab" panel="advanced">Advanced</app-tab>
 					<app-tab slot="tab" panel="disabled" disabled>Disabled</app-tab>

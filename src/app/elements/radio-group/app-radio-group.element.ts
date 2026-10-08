@@ -32,7 +32,7 @@ export class AppRadioGroup extends FormElement {
 		});
 	}
 
-	protected updated(_changedProperties: PropertyValues): void {
+	protected updated(_changedProperties: PropertyValues) {
 		super.updated(_changedProperties);
 		this.radios.forEach((r) => {
 			r.checked = !!this.value && r.value === this.value;
