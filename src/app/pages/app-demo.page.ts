@@ -105,11 +105,12 @@ export class AppDemoPage extends LitElement {
 
 			<fieldset>
 				<legend>Input</legend>
-				<app-input label="Input label" placeholder="Type something" @app-input=${(event: Event) => console.log(event.target)}></app-input>
+				<app-input label="Input label" placeholder="Type something"></app-input>
 				<app-input label="With prefix and suffix" placeholder="Type something">
 					<app-icon slot="prefix" filled>search</app-icon>
 					<app-icon slot="suffix" filled>attach_money</app-icon>
 				</app-input>
+				<app-input label="Clearable" placeholder="Type something" clearable></app-input>
 			</fieldset>
 
 			<fieldset>
