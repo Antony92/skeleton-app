@@ -77,7 +77,9 @@ export class AppSelect extends FormElement {
 	accessor assignedOptions!: AppSelectOption[];
 
 	connectedCallback() {
-		super.connectedCallback();
+    super.connectedCallback();
+    window.addEventListener('keyup', this.handleKeyup);
+		window.addEventListener('mousedown', this.handleMouseDown);
 		this.addEventListener('keydown', (event) => {
 			if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key) || !this.open) {
 				return;
@@ -129,6 +131,12 @@ export class AppSelect extends FormElement {
 			this.displayValue = this.getDisplayValue();
 			this.onChange();
 		});
+  }
+
+ 	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('keyup', this.handleKeyup);
+		window.removeEventListener('mousedown', this.handleMouseDown);
 	}
 
 	protected willUpdate(_changedProperties: PropertyValues): void {
@@ -148,8 +156,6 @@ export class AppSelect extends FormElement {
 	}
 
 	closeSelect() {
-		window.removeEventListener('keyup', this.handleKeyup);
-		window.removeEventListener('mousedown', this.handleMouseDown);
 		this.open = false;
 		this.popup.hidePopover();
 		this.onBlur();
@@ -162,8 +168,6 @@ export class AppSelect extends FormElement {
 		this.popup.showPopover();
 		this.focusSelectedOption();
 		this.dispatchEvent(new Event('app-show', { cancelable: true }));
-		window.addEventListener('keyup', this.handleKeyup);
-		window.addEventListener('mousedown', this.handleMouseDown);
 	}
 
 	toggleSelect() {
@@ -182,11 +186,11 @@ export class AppSelect extends FormElement {
 	};
 
 	private handleKeyup = (event: KeyboardEvent) => {
-		if (event.key === 'Escape') {
+		if (event.key === 'Escape' && this.open) {
 			this.closeSelect();
 			this.focus();
 		}
-		if (event.key === 'Tab') {
+		if (event.key === 'Tab' && this.open) {
 			this.closeSelect();
 		}
 	};
