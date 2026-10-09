@@ -77,8 +77,8 @@ export class AppSelect extends FormElement {
 	accessor assignedOptions!: AppSelectOption[];
 
 	connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener('keyup', this.handleKeyup);
+		super.connectedCallback();
+		window.addEventListener('keyup', this.handleKeyup);
 		window.addEventListener('mousedown', this.handleMouseDown);
 		this.addEventListener('keydown', (event) => {
 			if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key) || !this.open) {
@@ -119,6 +119,7 @@ export class AppSelect extends FormElement {
 				option.selected = !option.selected;
 				this.value = this.getMultiValue();
 			} else {
+				option.selected = true;
 				this.value = option.value;
 				this.assignedOptions
 					.filter((opt) => opt.value !== this.value)
@@ -131,9 +132,9 @@ export class AppSelect extends FormElement {
 			this.displayValue = this.getDisplayValue();
 			this.onChange();
 		});
-  }
+	}
 
- 	disconnectedCallback() {
+	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('keyup', this.handleKeyup);
 		window.removeEventListener('mousedown', this.handleMouseDown);
