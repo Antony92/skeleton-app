@@ -201,7 +201,7 @@ export class AppSelect extends FormElement {
 
 	private handleMouseDown = (event: MouseEvent) => {
 		const path = event.composedPath();
-		if (!path.includes(this)) {
+		if (!path.includes(this) && this.open) {
 			this.closeSelect();
 		}
 	};
