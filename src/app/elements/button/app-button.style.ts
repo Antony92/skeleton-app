@@ -25,6 +25,10 @@ export const appButtonStyle = css`
     transition-timing-function: var(--transition-easing);
     transform-origin: center center;
 
+    &.small {
+      height: auto;
+    }
+
 		&:disabled {
 			opacity: 0.5;
 			box-shadow: none;

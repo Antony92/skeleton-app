@@ -3,6 +3,7 @@ import { defaultStyle } from '@app/styles/default.style';
 import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 
@@ -28,6 +29,9 @@ export class AppButton extends LitElement {
 
 	@property({ type: String })
 	accessor type: 'button' | 'submit' | 'reset' = 'button';
+
+	@property({ type: String })
+	accessor size: 'small' | 'normal' = 'normal';
 
 	@property({ type: Boolean })
 	accessor disabled = false;
@@ -71,7 +75,10 @@ export class AppButton extends LitElement {
 					<a
 						part="button"
 						role="button"
-						class="focus-visible"
+						class=${classMap({
+							small: this.size === 'small',
+							'focus-visible': true,
+						})}
 						href=${this.href}
 						target=${this.target}
 						download=${ifDefined(this.download)}
@@ -84,7 +91,10 @@ export class AppButton extends LitElement {
 					<button
 						part="button"
 						role="button"
-						class="focus-visible"
+						class=${classMap({
+							small: this.size === 'small',
+							'focus-visible': true,
+						})}
 						?disabled=${this.disabled || this.loading}
 						?autofocus=${this.autofocus}
 					>

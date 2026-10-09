@@ -25,10 +25,6 @@ export class AppTablePage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 
-			td app-button::part(button) {
-				height: auto;
-			}
-
 			th[sticky]:nth-child(2), td[sticky]:nth-child(2) {
 				--sticky-start: 35px;
 			}
@@ -196,7 +192,7 @@ export class AppTablePage extends LitElement {
 									</td>
 									<td sticky>
    									<app-dropdown>
-  										<app-button slot="trigger" variant="primary" appearance="plain">
+  										<app-button slot="trigger" variant="primary" appearance="plain" size="small">
      						        <app-icon filled>more_horiz</app-icon>
   										</app-button>
   										<app-dropdown-item href="/test/${user.id}">

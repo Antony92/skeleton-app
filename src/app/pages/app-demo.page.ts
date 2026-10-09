@@ -325,8 +325,8 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
+				<h4>Loading</h4>
 				<div class="container">
-					<h4>Loading</h4>
 					<app-button
 						variant="primary"
 						@click=${() => {
@@ -340,8 +340,8 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
+				<h4>File upload</h4>
 				<div class="container">
-					<h4>File upload</h4>
 					<app-file-upload size="1" label="Upload">
 						<app-button variant="primary" slot="trigger">Upload</app-button>
 						Upload files here
@@ -350,8 +350,8 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
+				<h4>Tooltip</h4>
 				<div class="container">
-					<h4>Tooltip</h4>
 					<app-tooltip content="Button help text">
 						<app-button variant="primary">Hover</app-button>
 					</app-tooltip>
@@ -359,8 +359,8 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
+				<h4>Popup</h4>
 				<div class="container">
-					<h4>Popup</h4>
 					<app-popup>
 						<app-button slot="trigger" variant="primary">Open</app-button>
 						<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
