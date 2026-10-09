@@ -64,8 +64,14 @@ export class AppSelect extends FormElement {
 	@property({ type: Boolean })
 	accessor clearable = false;
 
+	@property({ type: Number })
+	accessor debounceTime = 100;
+
 	@query('#input')
 	accessor input!: HTMLInputElement;
+
+	@query('#search')
+	accessor search!: HTMLInputElement;
 
 	@query('#trigger')
 	accessor trigger!: HTMLInputElement;
@@ -81,35 +87,39 @@ export class AppSelect extends FormElement {
 		window.addEventListener('keyup', this.handleKeyup);
 		window.addEventListener('mousedown', this.handleMouseDown);
 		this.addEventListener('keydown', (event) => {
-			if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key) || !this.open) {
-				return;
-			}
+			const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
+			if (!keys.includes(event.key) || !this.open) return;
 
 			event.preventDefault();
 
 			const activeOptions = this.assignedOptions.filter((option) => !option.disabled);
+			const len = activeOptions.length;
+			if (len === 0) return;
 
 			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0);
+			let newIndex = 0;
 
-			let newIndex = Math.max(0, currentIndex);
-
-			if (event.key === 'ArrowDown') {
-				newIndex = currentIndex + 1 > activeOptions.length - 1 ? 0 : currentIndex + 1;
-			} else if (event.key === 'ArrowUp') {
-				newIndex = currentIndex - 1 < 0 ? activeOptions.length - 1 : currentIndex - 1;
-			} else if (event.key === 'Home') {
-				newIndex = 0;
-			} else if (event.key === 'End') {
-				newIndex = activeOptions.length - 1;
+			switch (event.key) {
+				case 'ArrowDown':
+					// If nothing is selected yet, start at 0. Otherwise, move down with wrap-around.
+					newIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % len;
+					break;
+				case 'ArrowUp':
+					// If nothing is selected yet, start at the end. Otherwise, move up with wrap-around.
+					newIndex = currentIndex === -1 ? len - 1 : (currentIndex - 1 + len) % len;
+					break;
+				case 'Home':
+					newIndex = 0;
+					break;
+				case 'End':
+					newIndex = len - 1;
+					break;
 			}
 
 			activeOptions.forEach((option, index) => {
-				if (newIndex === index) {
-					option.tabIndex = 0;
-					option.focus();
-				} else {
-					option.tabIndex = -1;
-				}
+				const isMatch = index === newIndex;
+				option.tabIndex = isMatch ? 0 : -1;
+				if (isMatch) option.focus();
 			});
 		});
 		this.addEventListener('app-option-click', (event) => {
@@ -158,6 +168,12 @@ export class AppSelect extends FormElement {
 
 	closeSelect() {
 		this.open = false;
+		if (this.search && this.searchable) {
+			this.search.value = '';
+			this.assignedOptions.forEach((option) => {
+				option.searchHidden = false;
+			});
+		}
 		this.popup.hidePopover();
 		this.onBlur();
 		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
@@ -167,7 +183,11 @@ export class AppSelect extends FormElement {
 		this.open = true;
 		await this.updateComplete;
 		this.popup.showPopover();
-		this.focusSelectedOption();
+		if (this.searchable) {
+			this.search?.focus();
+		} else {
+			this.focusSelectedOption();
+		}
 		this.dispatchEvent(new Event('app-show', { cancelable: true }));
 	}
 
@@ -278,6 +298,24 @@ export class AppSelect extends FormElement {
 		this.focus();
 	}
 
+	onSearch() {
+		const searchValue = this.search.value;
+		this.assignedOptions.forEach((option) => {
+			const text = option.textContent?.toLowerCase() || '';
+			const matches = text.includes(searchValue);
+			option.searchHidden = !!searchValue && !matches;
+		});
+		this.requestUpdate();
+	}
+
+	get hasOptions() {
+		return this.assignedOptions.length > 0;
+	}
+
+	get hasSearchResults() {
+		return this.assignedOptions.some((o) => !o.searchHidden);
+	}
+
 	render() {
 		return html`
 			<div class="form-control" part="form-control">
@@ -321,6 +359,14 @@ export class AppSelect extends FormElement {
 					</span>
 				</div>
 				<div popover="manual" part="popover" ?open=${this.open}>
+					${when(
+						this.searchable,
+						() => html`
+						<input autocomplete="off" type="search" id="search" placeholder="Search..." @input=${this.onSearch}/>
+					`,
+					)}
+					${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
+					${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
 					<slot @slotchange=${this.onOptionsAdded}></slot>
 				</div>
 				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>

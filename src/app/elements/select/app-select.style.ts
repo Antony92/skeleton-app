@@ -35,8 +35,13 @@ export const appSelectStyle = css`
 			font-size: 0.9rem;
 		}
 
-		small {
+		small.invalid {
 			color: var(--theme-invalid-color);
+		}
+
+		small.no-results {
+			color: var(--theme-muted-color);
+			padding: 10px 25px 5px 25px;
 		}
 
 		&:has(input[required]) {
@@ -145,6 +150,17 @@ export const appSelectStyle = css`
 			.caret {
 				rotate: -180deg;
 			}
+		}
+
+		input[type="search"] {
+		  background: none;
+		  border: none;
+		  border-bottom: 1px solid var(--theme-default-color);
+		  outline: none;
+		  padding: 0 25px;
+		  height: 30px;
+		  position: relative;
+		  top: -5px;
 		}
 	}
 `;

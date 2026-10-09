@@ -13,6 +13,10 @@ export class AppSelectOption extends LitElement {
 				width: auto;
 			}
 
+			:host([search-hidden]) {
+				display: none;
+			}
+
 			button {
 				font-family: var(--theme-font-family);
 				cursor: pointer;
@@ -70,6 +74,9 @@ export class AppSelectOption extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	accessor selected = false;
+
+	@property({ type: Boolean, attribute: 'search-hidden', reflect: true })
+	accessor searchHidden = false;
 
 	@query('button')
 	accessor option!: HTMLButtonElement;
