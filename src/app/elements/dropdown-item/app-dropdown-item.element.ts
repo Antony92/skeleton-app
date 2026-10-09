@@ -28,6 +28,7 @@ export class AppDropdownItem extends LitElement {
 				font-family: var(--theme-font-family);
 				font-size: var(--theme-font-size-1);
 				border-radius: var(--radius-2);
+				color: var(--theme-color);
 
 				.prefix {
 					display: flex;

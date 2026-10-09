@@ -9,15 +9,24 @@ export class AppTabGroup extends LitElement {
 	static styles = [
 		defaultStyle,
 		css`
+		  :host {
+				width: 100%;
+		  }
+
 			.container {
 				display: flex;
 				flex-direction: column;
 				gap: 10px;
 
-				.tabs {
+				.nav {
 					display: flex;
-					gap: 5px;
-					border-bottom: solid 2px var(--gray-4);
+					overflow-x: auto;
+
+					.tabs {
+						display: flex;
+						gap: 5px;
+						border-bottom: solid 2px var(--theme-muted-color);
+					}
 				}
 
 				.panels {
@@ -88,9 +97,11 @@ export class AppTabGroup extends LitElement {
 	render() {
 		return html`
 			<div class="container">
-				<div class="tabs">
-					<slot name="tab" @slotchange=${this.onTabsAdded}></slot>
-				</div>
+ 			  <div class="nav">
+				  <div class="tabs">
+   					<slot name="tab" @slotchange=${this.onTabsAdded}></slot>
+				  </div>
+ 			  </div>
 				<div class="panels">
 					<slot></slot>
 				</div>

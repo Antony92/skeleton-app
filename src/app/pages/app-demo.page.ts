@@ -44,23 +44,33 @@ export class AppDemoPage extends LitElement {
 				gap: 20px;
 			}
 
-			fieldset {
-				display: flex;
-				align-items: center;
-				flex-wrap: wrap;
-				gap: 10px;
-				border-radius: var(--radius-2);
+			.demo {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-radius: var(--radius-2);
+        border: 1px solid var(--theme-muted-color);
+        padding: 10px;
 
-				app-input, app-autocomplete, app-textarea, app-select {
+				.container {
+					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
+					gap: 10px;
 					width: 100%;
 
-					@media (min-width: 768px) {
-						max-width: 350px;
+					app-input, app-autocomplete, app-textarea, app-select {
+						width: 100%;
+
+						@media (min-width: 768px) {
+							max-width: 350px;
+						}
 					}
 				}
 			}
 
-			h3 {
+			h3, h4 {
 				margin: 0 0 10px 0;
 			}
 		`,
@@ -79,245 +89,285 @@ export class AppDemoPage extends LitElement {
 	render() {
 		return html`
 			<h3>Demo</h3>
-			<fieldset>
-				<legend>Buttons</legend>
-				<app-button variant="default">Default</app-button>
-				<app-button variant="primary">Primary</app-button>
-				<app-button variant="success">Success</app-button>
-				<app-button variant="warning">Warning</app-button>
-				<app-button variant="error">Error</app-button>
-				<app-button variant="primary" appearance="outlined">Outlined</app-button>
-				<app-button variant="primary" disabled>Disabled</app-button>
-				<app-button variant="primary" loading>Loading</app-button>
-				<app-button variant="primary">
-					<app-icon filled>skull</app-icon>
-					Left icon
-				</app-button>
-				<app-button variant="primary">
-					Right icon
-					<app-icon filled>skull</app-icon>
-				</app-button>
-				<app-button variant="primary" appearance="plain">
-					<app-icon filled>skull</app-icon>
-				</app-button>
-				<app-button variant="primary" appearance="plain" href="#" target="_blank">Link</app-button>
-			</fieldset>
-
-			<fieldset>
-				<legend>Input</legend>
-				<app-input label="Input label" placeholder="Type something"></app-input>
-				<app-input label="With prefix and suffix" placeholder="Type something">
-					<app-icon slot="prefix" filled>search</app-icon>
-					<app-icon slot="suffix" filled>attach_money</app-icon>
-				</app-input>
-				<app-input label="Clearable" placeholder="Type something" clearable></app-input>
-			</fieldset>
-
-			<fieldset>
-				<legend>Textarea</legend>
-				<app-textarea label="Textarea" placeholder="Type something"></app-textarea>
-			</fieldset>
-
-			<fieldset>
-				<legend>Checkbox</legend>
-				<app-checkbox label="Check me!"></app-checkbox>
-			</fieldset>
-
-			<fieldset>
-				<legend>Radio Group</legend>
-				<app-radio-group label="Select one radio" value="1">
-					<app-radio label="Radio 1" value="1"></app-radio>
-					<app-radio label="Radio 2" value="2"></app-radio>
-				</app-radio-group>
-			</fieldset>
-
-			<fieldset>
-				<legend>Select</legend>
-
-				<app-select label="Select single" placeholder="Select">
-					<app-select-option value="option-1">Option 1</app-select-option>
-					<app-select-option value="option-2">Option 2</app-select-option>
-					<app-select-option value="option-3">Option 3</app-select-option>
-					<app-select-option value="option-4">Option 4</app-select-option>
-					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select>
-
-				<app-select label="Select multiple" multiple placeholder="Select multiple">
-					<app-select-option value="option-1">Option 1</app-select-option>
-					<app-select-option value="option-2">Option 2</app-select-option>
-					<app-select-option value="option-3">Option 3</app-select-option>
-					<app-select-option value="option-4">Option 4</app-select-option>
-					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select>
-
-				<app-select label="Select with search" placeholder="Select" searchable>
-					<app-select-option value="option-1">Option 1</app-select-option>
-					<app-select-option value="option-2">Option 2</app-select-option>
-					<app-select-option value="option-3">Option 3</app-select-option>
-					<app-select-option value="option-4">Option 4</app-select-option>
-					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select>
-			</fieldset>
-
-			<fieldset>
-				<legend>Autocomplete</legend>
-				<app-autocomplete
-					placeholder="Search..."
-					@app-search=${async (e: Event) => {
-						const target = e.target as AppAutocomplete;
-						const products = await getProducts(target.search);
-						target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
-					}}>
-					<app-icon slot="prefix" filled>search</app-icon>
-				</app-autocomplete>
-			</fieldset>
-
-			<fieldset>
-				<legend>Dropdown</legend>
-				<app-dropdown>
-					<app-button slot="trigger" variant="primary">
-						Dropdown
-						<app-icon filled>arrow_drop_down</app-icon>
+			<div class="demo">
+				<h4>Buttons</h4>
+				<div class="container">
+					<app-button variant="default">Default</app-button>
+					<app-button variant="primary">Primary</app-button>
+					<app-button variant="success">Success</app-button>
+					<app-button variant="warning">Warning</app-button>
+					<app-button variant="error">Error</app-button>
+					<app-button variant="primary" appearance="outlined">Outlined</app-button>
+					<app-button variant="primary" disabled>Disabled</app-button>
+					<app-button variant="primary" loading>Loading</app-button>
+					<app-button variant="primary">
+						<app-icon filled>skull</app-icon>
+						Left icon
 					</app-button>
-					<app-dropdown-item value="1">
-						<app-icon slot="prefix">save</app-icon>
-						Save
-					</app-dropdown-item>
-					<app-dropdown-item disabled>
-						<app-icon slot="prefix">delete</app-icon>
-						Delete
-					</app-dropdown-item>
-				</app-dropdown>
-			</fieldset>
+					<app-button variant="primary">
+						Right icon
+						<app-icon filled>skull</app-icon>
+					</app-button>
+					<app-button variant="primary" appearance="plain">
+						<app-icon filled>skull</app-icon>
+					</app-button>
+					<app-button variant="primary" appearance="plain" href="#" target="_blank">Link</app-button>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Rich Text Editor</legend>
-				<app-rich-text-editor placeholder="Rich text"></app-rich-text-editor>
-			</fieldset>
+			<div class="demo">
+				<h4>Input</h4>
+				<div class="container">
+					<app-input label="Input label" placeholder="Type something"></app-input>
+					<app-input label="With prefix and suffix" placeholder="Type something">
+						<app-icon slot="prefix" filled>search</app-icon>
+						<app-icon slot="suffix" filled>attach_money</app-icon>
+					</app-input>
+					<app-input label="Clearable" placeholder="Type something" clearable></app-input>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Global messages</legend>
-				<app-button variant="primary" @click=${() => globalMessage('This is info', 'info')}>Info</app-button>
-				<app-button variant="warning" @click=${() => globalMessage('This is warning', 'warning')}>Warning</app-button>
-				<app-button variant="error" @click=${() => globalMessage('This is error', 'error')}>Error</app-button>
-			</fieldset>
+			<div class="demo">
+				<h4>Textarea</h4>
+				<div class="container">
+					<app-textarea label="Textarea" placeholder="Type something"></app-textarea>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Dialog</legend>
-				<app-button variant="primary" @click=${() => this.appDialog.show()}>Open template dialog</app-button>
-				<app-button
-					variant="primary"
-					@click=${() =>
-						confirmDialog({
-							header: 'Confirm dialog',
-							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
-						})}
-				>
-					Open confirm dialog
-				</app-button>
-				<app-button
-					variant="primary"
-					@click=${() =>
-						promptDialog({
-							header: 'Confirm dialog',
-							message: `Type 'skeleton' to confirm operation`,
-							promt: 'skeleton',
-						})}
-				>
-					Open confirm dialog with input
-				</app-button>
-			</fieldset>
+			<div class="demo">
+				<h4>Checkbox</h4>
+				<div class="container">
+					<app-checkbox label="Check me!"></app-checkbox>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Snackbar</legend>
-				<app-button
-					variant="primary"
-					@click=${() =>
-						notify({
-							message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
-							action: {
-								label: 'Undo',
-								onAction: (event) => console.log(event),
-							},
-						})}
-				>
-					Open snackbar
-				</app-button>
-			</fieldset>
+			<div class="demo">
+				<h4>Radio Group</h4>
+				<div class="container">
+					<app-radio-group label="Select one radio" value="1">
+						<app-radio label="Radio 1" value="1"></app-radio>
+						<app-radio label="Radio 2" value="2"></app-radio>
+					</app-radio-group>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Badge</legend>
-				<app-badge variant="default">Default</app-badge>
-				<app-badge variant="primary">Primary</app-badge>
-				<app-badge variant="success">Success</app-badge>
-				<app-badge variant="warning">Warning</app-badge>
-				<app-badge variant="error" pulse>Error</app-badge>
-			</fieldset>
+			<div class="demo">
+				<h4>Select</h4>
 
-			<fieldset>
-				<legend>Tag</legend>
-				<app-tag-group>
-					<app-tag active value="all">All</app-tag>
-					<app-tag value="some">Only Some</app-tag>
-				</app-tag-group>
-			</fieldset>
+				<div class="container">
+					<app-select label="Select single" placeholder="Select">
+						<app-select-option value="option-1">Option 1</app-select-option>
+						<app-select-option value="option-2">Option 2</app-select-option>
+						<app-select-option value="option-3">Option 3</app-select-option>
+						<app-select-option value="option-4">Option 4</app-select-option>
+						<app-select-option value="option-5">Option 5</app-select-option>
+					</app-select>
 
-			<fieldset>
-				<legend>Paginator</legend>
-				<app-paginator total="100"></app-paginator>
-			</fieldset>
+					<app-select label="Select multiple" multiple placeholder="Select multiple">
+						<app-select-option value="option-1">Option 1</app-select-option>
+						<app-select-option value="option-2">Option 2</app-select-option>
+						<app-select-option value="option-3">Option 3</app-select-option>
+						<app-select-option value="option-4">Option 4</app-select-option>
+						<app-select-option value="option-5">Option 5</app-select-option>
+					</app-select>
 
-			<fieldset>
-				<legend>Tabs</legend>
-				<app-tab-group>
-					<app-tab slot="tab" panel="general" active>General</app-tab>
-					<app-tab slot="tab" panel="custom">Custom</app-tab>
-					<app-tab slot="tab" panel="advanced">Advanced</app-tab>
-					<app-tab slot="tab" panel="disabled" disabled>Disabled</app-tab>
+					<app-select label="Select with search" placeholder="Select" searchable>
+						<app-select-option value="option-1">Option 1</app-select-option>
+						<app-select-option value="option-2">Option 2</app-select-option>
+						<app-select-option value="option-3">Option 3</app-select-option>
+						<app-select-option value="option-4">Option 4</app-select-option>
+						<app-select-option value="option-5">Option 5</app-select-option>
+					</app-select>
+				</div>
+			</div>
 
-					<app-tab-panel name="general">This is the general tab panel.</app-tab-panel>
-					<app-tab-panel name="custom">This is the custom tab panel.</app-tab-panel>
-					<app-tab-panel name="advanced">This is the advanced tab panel.</app-tab-panel>
-					<app-tab-panel name="disabled">This is a disabled tab panel.</app-tab-panel>
-				</app-tab-group>
-			</fieldset>
+			<div class="demo">
+				<h4>Autocomplete</h4>
+				<div class="container">
+					<app-autocomplete
+						placeholder="Search..."
+						@app-search=${async (e: Event) => {
+							const target = e.target as AppAutocomplete;
+							const products = await getProducts(target.search);
+							target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
+						}}>
+						<app-icon slot="prefix" filled>search</app-icon>
+					</app-autocomplete>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Loading</legend>
-				<app-button
-					variant="primary"
-					@click=${() => {
-						loading(true);
-						setTimeout(() => loading(false), 3000);
-					}}
-				>
-					Long task
-				</app-button>
-			</fieldset>
+			<div class="demo">
+				<h4>Dropdown</h4>
+				<div class="container">
+					<app-dropdown>
+						<app-button slot="trigger" variant="primary">
+							Dropdown
+							<app-icon filled>arrow_drop_down</app-icon>
+						</app-button>
+						<app-dropdown-item value="1">
+							<app-icon slot="prefix">save</app-icon>
+							Save
+						</app-dropdown-item>
+						<app-dropdown-item disabled>
+							<app-icon slot="prefix">delete</app-icon>
+							Delete
+						</app-dropdown-item>
+					</app-dropdown>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>File upload</legend>
-				<app-file-upload size="1" label="Upload">
-					<app-button variant="primary" slot="trigger">Upload</app-button>
-					Upload files here
-				</app-file-upload>
-			</fieldset>
+			<div class="demo">
+				<h4>Rich Text Editor</h4>
+				<div class="container">
+					<app-rich-text-editor placeholder="Rich text"></app-rich-text-editor>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Tooltip</legend>
-				<app-tooltip content="Button help text">
-				  <app-button variant="primary">Hover</app-button>
-				</app-tooltip>
-			</fieldset>
+			<div class="demo">
+				<h4>Global messages</h4>
+				<div class="container">
+					<app-button variant="primary" @click=${() => globalMessage('This is info', 'info')}>Info</app-button>
+					<app-button variant="warning" @click=${() => globalMessage('This is warning', 'warning')}>Warning</app-button>
+					<app-button variant="error" @click=${() => globalMessage('This is error', 'error')}>Error</app-button>
+				</div>
+			</div>
 
-			<fieldset>
-				<legend>Popup</legend>
-				<app-popup>
-				  <app-button slot="trigger" variant="primary">Open</app-button>
-					<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
-					<app-button appearance="plain" variant="primary" app-popup-close>Close</app-button>
-				</app-popup>
-			</fieldset>
+			<div class="demo">
+				<h4>Dialog</h4>
+				<div class="container">
+					<app-button variant="primary" @click=${() => this.appDialog.show()}>Open template dialog</app-button>
+					<app-button
+						variant="primary"
+						@click=${() =>
+							confirmDialog({
+								header: 'Confirm dialog',
+								message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+							})}
+					>
+						Open confirm dialog
+					</app-button>
+					<app-button
+						variant="primary"
+						@click=${() =>
+							promptDialog({
+								header: 'Confirm dialog',
+								message: `Type 'skeleton' to confirm operation`,
+								promt: 'skeleton',
+							})}
+					>
+						Open confirm dialog with input
+					</app-button>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Snackbar</h4>
+				<div class="container">
+					<app-button
+						variant="primary"
+						@click=${() =>
+							notify({
+								message: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+								action: {
+									label: 'Undo',
+									onAction: (event) => console.log(event),
+								},
+							})}
+					>
+						Open snackbar
+					</app-button>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Badge</h4>
+				<div class="container">
+					<app-badge variant="default">Default</app-badge>
+					<app-badge variant="primary">Primary</app-badge>
+					<app-badge variant="success">Success</app-badge>
+					<app-badge variant="warning">Warning</app-badge>
+					<app-badge variant="error" pulse>Error</app-badge>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Tag</h4>
+				<div class="container">
+					<app-tag-group>
+						<app-tag active value="all">All</app-tag>
+						<app-tag value="some">Only Some</app-tag>
+					</app-tag-group>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Paginator</h4>
+				<div class="container">
+					<app-paginator total="100"></app-paginator>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Tabs</h4>
+				<div class="container">
+					<app-tab-group>
+						<app-tab slot="tab" panel="general" active>General</app-tab>
+						<app-tab slot="tab" panel="custom">Custom</app-tab>
+						<app-tab slot="tab" panel="advanced">Advanced</app-tab>
+						<app-tab slot="tab" panel="disabled" disabled>Disabled</app-tab>
+
+						<app-tab-panel name="general">This is the general tab panel.</app-tab-panel>
+						<app-tab-panel name="custom">This is the custom tab panel.</app-tab-panel>
+						<app-tab-panel name="advanced">This is the advanced tab panel.</app-tab-panel>
+						<app-tab-panel name="disabled">This is a disabled tab panel.</app-tab-panel>
+					</app-tab-group>
+				</div>
+			</div>
+
+			<div class="demo">
+				<div class="container">
+					<h4>Loading</h4>
+					<app-button
+						variant="primary"
+						@click=${() => {
+							loading(true);
+							setTimeout(() => loading(false), 3000);
+						}}
+					>
+						Long task
+					</app-button>
+				</div>
+			</div>
+
+			<div class="demo">
+				<div class="container">
+					<h4>File upload</h4>
+					<app-file-upload size="1" label="Upload">
+						<app-button variant="primary" slot="trigger">Upload</app-button>
+						Upload files here
+					</app-file-upload>
+				</div>
+			</div>
+
+			<div class="demo">
+				<div class="container">
+					<h4>Tooltip</h4>
+					<app-tooltip content="Button help text">
+						<app-button variant="primary">Hover</app-button>
+					</app-tooltip>
+				</div>
+			</div>
+
+			<div class="demo">
+				<div class="container">
+					<h4>Popup</h4>
+					<app-popup>
+						<app-button slot="trigger" variant="primary">Open</app-button>
+						<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
+						<app-button appearance="plain" variant="primary" app-popup-close>Close</app-button>
+					</app-popup>
+				</div>
+			</div>
 
 			<app-dialog header="Template dialog">
 				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text

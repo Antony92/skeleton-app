@@ -7,6 +7,8 @@ import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/table/app-table.element';
 import '@app/elements/table-column/app-table-column.element';
 import '@app/elements/paginator/app-paginator.element';
+import '@app/elements/dropdown/app-dropdown.element';
+import '@app/elements/dropdown-item/app-dropdown-item.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
 import type { AppTableFilterEvent } from '@app/events/table.event';
@@ -21,6 +23,14 @@ export class AppTablePage extends LitElement {
 		css`
 			h3 {
 				margin: 0 0 10px 0;
+			}
+
+			td app-button::part(button) {
+				height: auto;
+			}
+
+			th[sticky]:nth-child(2), td[sticky]:nth-child(2) {
+				--sticky-start: 35px;
 			}
 		`,
 	];
@@ -155,6 +165,7 @@ export class AppTablePage extends LitElement {
 									.indeterminate=${this.users.data.some((user) => user.selected) && this.users.data.some((user) => !user.selected)}
 								/>
 							</th>
+							<th action sticky>Actions</th>
 							${this.columns.map(
 								(column) => html`
 									<th>
@@ -182,6 +193,21 @@ export class AppTablePage extends LitElement {
 								<tr>
 									<td sticky>
 										<input type="checkbox" .checked=${user.selected} @change=${() => this.toggleSelected(user)} />
+									</td>
+									<td sticky>
+   									<app-dropdown>
+  										<app-button slot="trigger" variant="primary" appearance="plain">
+     						        <app-icon filled>more_horiz</app-icon>
+  										</app-button>
+  										<app-dropdown-item href="/test/${user.id}">
+     										<app-icon slot="prefix">edit_square</app-icon>
+     										Edit
+  										</app-dropdown-item>
+  										<app-dropdown-item disabled>
+     										<app-icon slot="prefix">delete</app-icon>
+     										Delete
+  										</app-dropdown-item>
+   									</app-dropdown>
 									</td>
 									<td>
 										<a href="/test/${user.id}">${user.id} </a>
