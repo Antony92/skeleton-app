@@ -42,7 +42,6 @@ export class AppDropdownItem extends LitElement {
 					background: var(--theme-primary-background);
 					color: var(--theme-white-color);
 					outline: none;
-					border-radius: 0;
 				}
 
 				&:disabled {
