@@ -59,7 +59,7 @@ export class AppTab extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('click', (e) => {
 			if (e.defaultPrevented) return;
-			this.active = !this.active;
+			this.active = true;
 			this.dispatchEvent(new Event('app-tab-click', { bubbles: true, composed: true }));
 		});
 	}
