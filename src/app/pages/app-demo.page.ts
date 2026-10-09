@@ -315,7 +315,7 @@ export class AppDemoPage extends LitElement {
 				<app-popup>
 				  <app-button slot="trigger" variant="primary">Open</app-button>
 					<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
-					<app-button variant="error" app-popup-close>Close</app-button>
+					<app-button appearance="plain" variant="primary" app-popup-close>Close</app-button>
 				</app-popup>
 			</fieldset>
 

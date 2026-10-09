@@ -67,6 +67,7 @@ export class AppDialog extends LitElement {
 		this.open = true;
 		await this.updateComplete;
 		this.dialog.showModal();
+		this.querySelector<HTMLElement>('[autofocus]')?.focus();
 		await this.openAnimation();
 		this.dispatchEvent(new Event('app-after-show'));
 	}
