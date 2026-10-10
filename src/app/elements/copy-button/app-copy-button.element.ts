@@ -4,6 +4,7 @@ import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import '@app/elements/icon/app-icon.element';
+import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-copy-button')
 export class AppCopyButton extends LitElement {
@@ -24,6 +25,9 @@ export class AppCopyButton extends LitElement {
 	@property({ type: String })
 	accessor value = '';
 
+	@property({ type: String })
+	accessor size: 'small' | 'normal' = 'normal';
+
 	@state()
 	accessor copied = false;
 
@@ -39,7 +43,17 @@ export class AppCopyButton extends LitElement {
 
 	render() {
 		return html`
-			<button part="button" role="button" class="focus-visible" ?disabled=${this.disabled} ?autofocus=${this.autofocus} @click=${this.copy}>
+			<button
+				part="button"
+				role="button"
+				class=${classMap({
+					small: this.size === 'small',
+					'focus-visible': true,
+				})}
+				?disabled=${this.disabled}
+				?autofocus=${this.autofocus}
+				@click=${this.copy}
+			>
 				<div class="copy" ?hidden=${this.copied}>
 					<slot name="copy-icon">
 						<app-icon>content_copy</app-icon>
