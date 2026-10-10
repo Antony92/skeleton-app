@@ -85,6 +85,8 @@ export class AppInput extends FormElement {
 	clear() {
 		this.value = '';
 		this.focus();
+		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+		this.dispatchEvent(new Event('change', { bubbles: true }));
 		this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
 	}
 

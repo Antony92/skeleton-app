@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { customElement, query } from 'lit/decorators.js';
+import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/input/app-input.element';
 import '@app/elements/autocomplete/app-autocomplete.element';
 import '@app/elements/checkbox/app-checkbox.element';
@@ -35,7 +35,17 @@ export class AppFormPage extends LitElement {
 	];
 
 	@query('form')
-	form!: HTMLFormElement;
+	accessor form!: HTMLFormElement;
+
+	@state()
+	accessor dummyData = {
+		name: '',
+		email: '',
+		textarea: '',
+		checkbox: false,
+		radio: '',
+		select: '',
+	};
 
 	connectedCallback() {
 		super.connectedCallback();
@@ -56,20 +66,42 @@ export class AppFormPage extends LitElement {
 		console.log(data);
 	}
 
+	async preload(clear = false) {
+		if (clear) {
+			this.dummyData = {
+				name: '',
+				email: '',
+				textarea: '',
+				checkbox: false,
+				radio: '',
+				select: '',
+			};
+		} else {
+			this.dummyData = {
+				name: 'Test',
+				email: 'test@example.com',
+				textarea: 'test text',
+				checkbox: true,
+				radio: '2',
+				select: 'option-3',
+			};
+		}
+	}
+
 	render() {
 		return html`
 			<h3>Form</h3>
 			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
-				<app-input required name="name" label="Name"></app-input>
-				<app-input required name="email" label="Email" type="email"></app-input>
-				<app-textarea required name="textarea" label="Textarea"></app-textarea>
-				<app-checkbox required name="checkbox" label="Are you sure?"></app-checkbox>
-				<app-radio-group name="radio" required label="Select one radio" value="2">
+				<app-input required name="name" label="Name" .value=${this.dummyData.name}></app-input>
+				<app-input required name="email" label="Email" type="email" .value=${this.dummyData.email}></app-input>
+				<app-textarea required name="textarea" label="Textarea" .value=${this.dummyData.textarea}></app-textarea>
+				<app-checkbox required name="checkbox" label="Are you sure?" .checked=${this.dummyData.checkbox}></app-checkbox>
+				<app-radio-group name="radio" required label="Select one radio" .value=${this.dummyData.radio}>
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
 
-				<app-select required name="select" label="Select" placeholder="Select an option">
+				<app-select required name="select" label="Select" placeholder="Select an option" clearable .value=${this.dummyData.select}>
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
 					<app-select-option value="option-3">Option 3</app-select-option>
@@ -97,6 +129,8 @@ export class AppFormPage extends LitElement {
 				<div class="actions">
 					<app-button variant="primary" type="submit">Submit</app-button>
 					<app-button type="reset">Reset</app-button>
+					<app-button @click=${() => this.preload(true)}>Clear</app-button>
+					<app-button @click=${() => this.preload()}>Preload</app-button>
 				</div>
 			</form>
 		`;

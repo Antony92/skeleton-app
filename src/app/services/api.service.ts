@@ -17,9 +17,9 @@ export const getProducts = async (search?: string) => {
 	return [];
 };
 
-export const getProduct = async (id: string, loader = true) => {
+export const getUser = async (id: string, loader = true) => {
 	try {
-		const req = await request(`${import.meta.env.VITE_API}/product/${id}`, { loader });
+		const req = await request(`${import.meta.env.VITE_API}/users/${id}`, { auth: true, loader });
 		const res = await req.json();
 		return res;
 	} catch (error) {

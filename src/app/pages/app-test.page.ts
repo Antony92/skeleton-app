@@ -1,4 +1,4 @@
-import { getProduct } from '@app/services/api.service';
+import { getUser } from '@app/services/api.service';
 import { getRouteParams } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
 import { Task } from '@lit/task';
@@ -16,26 +16,26 @@ export class AppTestPage extends LitElement {
 	];
 
 	@property()
-	pageId = '';
+	userId = '';
 
 	connectedCallback() {
 		super.connectedCallback();
 		setPageTitle(`Test page`);
 		const { id } = getRouteParams();
-		this.pageId = id || '';
+		this.userId = id || '';
 	}
 
-	private getProductTask = new Task(this, {
-		task: async ([pageId]) => getProduct(pageId),
-		args: () => [this.pageId],
+	private getUserTask = new Task(this, {
+		task: async ([userId]) => getUser(userId),
+		args: () => [this.userId],
 	});
 
 	render() {
-		return this.getProductTask.render({
-			pending: () => html`<p>Loading product...</p>`,
-			complete: (product) => html`
-				<h3>${product.title}</h3>
-				<p>${product.price}</p>
+		return this.getUserTask.render({
+			pending: () => html`<p>Loading user...</p>`,
+			complete: (user) => html`
+				<h3>${user.firstName} ${user.lastName}</h3>
+				<p>${user.email}</p>
 			`,
 			error: (e) => html`<p>Error: ${e}</p>`,
 		});
