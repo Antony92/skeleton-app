@@ -25,7 +25,7 @@ export class AppTabGroup extends LitElement {
 					.tabs {
 						display: flex;
 						gap: 5px;
-						border-bottom: solid 2px var(--theme-muted-color);
+						border-bottom: solid 2px color-mix(in srgb, var(--theme-muted-color) 40%, transparent);
 					}
 				}
 
