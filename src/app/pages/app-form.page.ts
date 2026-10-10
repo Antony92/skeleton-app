@@ -65,19 +65,15 @@ export class AppFormPage extends LitElement {
 		console.log(data);
 	}
 
-	async preload(clear = false) {
-		if (clear) {
-			this.formData = null;
-		} else {
-			this.formData = {
-				name: 'Test',
-				email: 'test@example.com',
-				textarea: 'test text',
-				checkbox: true,
-				radio: '2',
-				select: 'option-3',
-			};
-		}
+	async preload() {
+		this.formData = {
+			name: 'Test',
+			email: 'test@example.com',
+			textarea: 'test text',
+			checkbox: true,
+			radio: '2',
+			select: 'option-3',
+		};
 	}
 
 	render() {
@@ -120,7 +116,7 @@ export class AppFormPage extends LitElement {
 
 				<div class="actions">
 					<app-button variant="primary" type="submit">Submit</app-button>
-					<app-button type="reset" @click=${() => this.preload(true)}>Reset</app-button>
+					<app-button type="reset" @click=${() => this.formData = null}>Reset</app-button>
 					<app-button @click=${() => this.preload()}>Preload</app-button>
 				</div>
 			</form>
