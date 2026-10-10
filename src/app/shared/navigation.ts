@@ -53,8 +53,8 @@ export const getRouteSearchMap = () => {
 	return new Map(Object.entries(object));
 };
 
-export const addSearchToRoute = (params: SearchParams) => {
-	const search = new URLSearchParams(location.search);
+export const addSearchToRoute = (params: SearchParams, clear = true) => {
+	const search = new URLSearchParams(clear ? '' : location.search);
 	Object.entries(params).forEach(([key, value]) => {
 		if (value != null && value !== '') {
 			search.set(key, String(value));

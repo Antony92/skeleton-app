@@ -27,7 +27,7 @@ export const appSelectStyle = css`
 	:host([clearable]) {
 		.form-control {
 			.select-wrapper {
-				input {
+				input:not(:placeholder-shown) {
 					padding: 0 10px;
 				}
 			}

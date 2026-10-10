@@ -96,6 +96,7 @@ export class AppAutocomplete extends FormElement {
 	clear() {
 		this.value = '';
 		this.focus();
+		this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
 	}
 
 	render() {

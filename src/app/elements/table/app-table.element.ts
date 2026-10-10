@@ -103,17 +103,24 @@ export class AppTable extends LitElement {
 		}
 	}
 
-	private search(value: string) {
+	search(value: string) {
 		if (value) {
 			this.filterMap.set('search', value);
 		} else {
 			this.filterMap.delete('search');
 		}
+		this.searchValue = value;
 		this.filtersApplied = this.hasFiltersApplied();
 		if (!this.debouncedSearch) {
 			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), 300);
 		}
 		return this.debouncedSearch();
+	}
+
+	clearSearch() {
+		this.searchValue = '';
+		this.filterMap.delete('search');
+		this.dispatchFilterEvent();
 	}
 
 	hasFiltersApplied() {
@@ -151,8 +158,10 @@ export class AppTable extends LitElement {
 						<app-input
 							autocomplete="off"
 							.value=${this.searchValue}
+							clearable
 							placeholder="Search"
 							@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+							@app-clear=${this.clearSearch}
 						>
 							<app-icon slot="prefix" filled>search</app-icon>
 						</app-input>

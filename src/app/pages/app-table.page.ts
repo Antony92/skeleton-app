@@ -94,7 +94,7 @@ export class AppTablePage extends LitElement {
 	async loadUsers() {
 		this.loading = true;
 		const filters = Object.fromEntries(this.filterMap);
-		this.users = await getUsers({ skip: this.skip, limit: this.limit, ...filters });
+		this.users = await getUsers({ ...filters, skip: this.skip, limit: this.limit });
 		this.loading = false;
 	}
 
@@ -102,7 +102,7 @@ export class AppTablePage extends LitElement {
 		const { pageSize, pageIndex } = event.value;
 		this.limit = pageSize;
 		this.skip = pageSize * pageIndex;
-		addSearchToRoute({ skip: this.skip });
+		addSearchToRoute({ skip: this.skip }, false);
 		this.loadUsers();
 	}
 

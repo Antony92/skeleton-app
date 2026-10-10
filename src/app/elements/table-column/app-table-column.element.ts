@@ -95,8 +95,9 @@ export class AppTableColumn extends LitElement {
 		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }));
 	}
 
-	private search(value: string) {
-		this.value = value;
+	private search(event: Event) {
+		const input = event.target as AppInput;
+		this.value = input.value;
 		if (!this.debouncedSearch) {
 			this.debouncedSearch = debounce(() => this.dispatchFilterValueEvent(), this.delay);
 		}
@@ -152,9 +153,11 @@ export class AppTableColumn extends LitElement {
 				this.filterable && this.type === 'text',
 				() => html`
 					<app-input
+						clearable
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+						@app-input=${this.search}
+						@app-clear=${this.filterColumnValue}
 					>
 					</app-input>
 				`,
@@ -164,9 +167,11 @@ export class AppTableColumn extends LitElement {
 				() => html`
 					<app-input
 						type="number"
+						clearable
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+						@app-input=${this.search}
+						@app-clear=${this.filterColumnValue}
 					>
 					</app-input>
 				`,
@@ -176,9 +181,11 @@ export class AppTableColumn extends LitElement {
 				() => html`
 					<app-input
 						type="date"
+						clearable
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						.value=${this.value}
-						@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+						@app-input=${this.search}
+						@app-clear=${this.filterColumnValue}
 					>
 					</app-input>
 				`,
@@ -186,7 +193,13 @@ export class AppTableColumn extends LitElement {
 			${when(
 				this.filterable && this.type === 'select',
 				() => html`
-					<app-select placeholder="Filter by ${this.label?.toLowerCase()}" @app-change=${this.filterColumnValue} .value=${this.value}>
+					<app-select
+						clearable
+						placeholder="Filter by ${this.label?.toLowerCase()}"
+						@app-change=${this.filterColumnValue}
+						@app-clear=${this.filterColumnValue}
+						.value=${this.value}
+					>
 						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
 					</app-select>
 				`,
@@ -196,8 +209,10 @@ export class AppTableColumn extends LitElement {
 				() => html`
 					<app-select
 						multiple
+						clearable
 						placeholder="Filter by ${this.label?.toLowerCase()}"
 						@app-change=${this.filterColumnValue}
+						@app-clear=${this.filterColumnValue}
 						.value=${this.value}
 					>
 						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
