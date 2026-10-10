@@ -71,7 +71,7 @@ export class AppSelect extends FormElement {
 	accessor input!: HTMLInputElement;
 
 	@query('#search')
-	accessor search!: HTMLInputElement;
+	accessor searchInput!: HTMLInputElement;
 
 	@query('#trigger')
 	accessor trigger!: HTMLInputElement;
@@ -168,8 +168,8 @@ export class AppSelect extends FormElement {
 
 	closeSelect() {
 		this.open = false;
-		if (this.search && this.searchable) {
-			this.search.value = '';
+		if (this.searchInput && this.searchable) {
+			this.searchInput.value = '';
 			this.assignedOptions.forEach((option) => {
 				option.searchHidden = false;
 			});
@@ -184,7 +184,7 @@ export class AppSelect extends FormElement {
 		await this.updateComplete;
 		this.popup.showPopover();
 		if (this.searchable) {
-			this.search?.focus();
+			this.searchInput?.focus();
 		} else {
 			this.focusSelectedOption();
 		}
@@ -303,11 +303,11 @@ export class AppSelect extends FormElement {
 	}
 
 	onSearch() {
-		const searchValue = this.search.value;
+		const search = this.searchInput.value;
 		this.assignedOptions.forEach((option) => {
 			const text = option.textContent?.toLowerCase() || '';
-			const matches = text.includes(searchValue);
-			option.searchHidden = !!searchValue && !matches;
+			const matches = text.includes(search);
+			option.searchHidden = !!search && !matches;
 		});
 		this.requestUpdate();
 	}
