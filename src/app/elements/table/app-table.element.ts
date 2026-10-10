@@ -72,6 +72,7 @@ export class AppTable extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('app-table-column-filter-value', (event) => {
+			event.stopPropagation();
 			const { field, value } = event.filter;
 			if (value) {
 				this.filterMap.set(field, value);
@@ -79,9 +80,10 @@ export class AppTable extends LitElement {
 				this.filterMap.delete(field);
 			}
 			this.filtersApplied = this.hasFiltersApplied();
-			this.dispatchFilterEvent();
+			this.dispatchFilterEvent('filter');
 		});
 		this.addEventListener('app-table-column-filter-order', (event) => {
+			event.stopPropagation();
 			const { field, order } = event.filter;
 			this.columns
 				.filter((column) => column !== event.target)
@@ -96,7 +98,7 @@ export class AppTable extends LitElement {
 				this.filterMap.delete('order');
 			}
 			this.filtersApplied = this.hasFiltersApplied();
-			this.dispatchFilterEvent();
+			this.dispatchFilterEvent('order');
 		});
 		if (this.searchValue) {
 			this.filterMap.set('search', this.searchValue);
@@ -127,8 +129,8 @@ export class AppTable extends LitElement {
 		return this.filterMap.size > 0;
 	}
 
-	dispatchFilterEvent() {
-		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap])));
+	dispatchFilterEvent(type: 'filter' | 'order' = 'filter') {
+		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap]), type));
 	}
 
 	clearAllFilters() {

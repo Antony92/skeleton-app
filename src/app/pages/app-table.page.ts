@@ -98,20 +98,29 @@ export class AppTablePage extends LitElement {
 		this.loading = false;
 	}
 
+	async syncRouteAndReload() {
+		this.filterMap.set('skip', this.skip);
+		const filters = Object.fromEntries(this.filterMap);
+		addSearchToRoute(filters);
+		await this.loadUsers();
+	}
+
 	onPaginate(event: AppPaginateEvent) {
 		const { pageSize, pageIndex } = event.value;
 		this.limit = pageSize;
 		this.skip = pageSize * pageIndex;
-		addSearchToRoute({ skip: this.skip }, false);
-		this.loadUsers();
+		this.syncRouteAndReload();
 	}
 
 	async onTableFilter(event: AppTableFilterEvent) {
 		this.filterMap = event.filters;
-		addSearchToRoute(Object.fromEntries(this.filterMap));
-		this.skip = 0;
-		await this.loadUsers();
-		this.paginator.reset();
+		if (event.filterType === 'filter') {
+			this.skip = 0;
+		}
+		await this.syncRouteAndReload();
+		if (this.skip === 0) {
+			this.paginator.reset();
+		}
 	}
 
 	async onTableClear() {
