@@ -122,6 +122,7 @@ export abstract class FormElement extends LitElement implements FormControl {
 	formResetCallback() {
 		this.value = this.defaultValue;
 		this.touched = false;
+		this.#customError = '';
 	}
 
 	getFormValue() {
