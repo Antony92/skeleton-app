@@ -35,6 +35,7 @@ export const appSidebarStyle = css`
 					text-decoration: none;
 					cursor: pointer;
 					color: var(--theme-color);
+					transform-origin: center center;
 
 					span:first-child {
 						display: flex;
