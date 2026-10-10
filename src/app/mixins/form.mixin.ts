@@ -55,8 +55,7 @@ export abstract class FormElement extends LitElement implements FormControl {
 	@state()
 	accessor message = '';
 
-	#customValidityMessage = '';
-
+	#customError = '';
 	internals = this.attachInternals();
 	static formAssociated = true;
 
@@ -86,18 +85,16 @@ export abstract class FormElement extends LitElement implements FormControl {
 
 	protected updated(_changedProperties: PropertyValues): void {
 		super.updated(_changedProperties);
-		this.handleValidation(_changedProperties);
+		const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
+		if (shouldValidate) {
+			this.validate();
+		}
 	}
 
-	async handleValidation(_changedProperties: PropertyValues) {
-		const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
-		if (!shouldValidate) return;
-
+	async validate() {
 		await this.updateComplete;
-
-		if (this.#customValidityMessage) {
-			this.internals.setValidity({ customError: true }, this.#customValidityMessage, this);
-			this.#customValidityMessage = '';
+		if (this.#customError) {
+			this.internals.setValidity({ customError: true }, this.#customError, this);
 		} else {
 			const { flags, message, anchor } = this.getValidity();
 			this.internals.setValidity(flags, message, anchor);
@@ -160,6 +157,7 @@ export abstract class FormElement extends LitElement implements FormControl {
 	}
 
 	setCustomValidity(message: string) {
-		this.#customValidityMessage = message;
+		this.#customError = message;
+		this.validate();
 	}
 }

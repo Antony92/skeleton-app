@@ -116,7 +116,7 @@ export class AppFormPage extends LitElement {
 
 				<div class="actions">
 					<app-button variant="primary" type="submit">Submit</app-button>
-					<app-button type="reset" @click=${() => this.formData = null}>Reset</app-button>
+					<app-button type="reset" @click=${() => (this.formData = null)}>Reset</app-button>
 					<app-button @click=${() => this.preload()}>Preload</app-button>
 				</div>
 			</form>
