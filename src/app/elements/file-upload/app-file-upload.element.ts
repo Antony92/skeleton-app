@@ -50,13 +50,16 @@ export class AppFileUpload extends FormElement {
 	}
 
 	onChange() {
+		this.input.setCustomValidity('');
 		this.touched = true;
 		this.files = this.input.files;
 		this.value = this.input.value;
-		const validity = this.checkFilesValidity();
-		if (validity && this.files) {
+		if (this.files) {
 			this.filesList = Array.from(this.files).map((file) => ({ file, name: file.name, url: URL.createObjectURL(file) }));
-			this.dispatchEvent(new AppFileUploadEvent(this.files));
+			const validity = this.checkFilesValidity();
+			if (validity) {
+				this.dispatchEvent(new AppFileUploadEvent(this.files));
+			}
 		}
 		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 		this.dispatchEvent(new Event('change', { bubbles: true }));
@@ -66,7 +69,6 @@ export class AppFileUpload extends FormElement {
 		super.formResetCallback();
 		this.files = null;
 		this.filesList = [];
-		this.input.setCustomValidity('');
 	}
 
 	focus(options?: FocusOptions) {
@@ -81,7 +83,6 @@ export class AppFileUpload extends FormElement {
 		if (!this.files) {
 			return;
 		}
-		this.input.setCustomValidity('');
 		for (const file of this.files) {
 			const fileSizeInMB = file.size / 1024 ** 2;
 			if (this.size && fileSizeInMB > this.size) {
@@ -93,7 +94,7 @@ export class AppFileUpload extends FormElement {
 	}
 
 	setCustomError(error: string) {
-		this.input.setCustomValidity(error);
+		this.setCustomValidity(error);
 		this.dispatchEvent(new AppFileUploadErrorEvent(this.input.validationMessage));
 		this.value = '';
 	}
@@ -103,7 +104,7 @@ export class AppFileUpload extends FormElement {
 		URL.revokeObjectURL(deleted.url);
 		if (this.filesList.length === 0) {
 			this.value = '';
-			this.input.setCustomValidity('');
+			this.setCustomValidity('');
 		}
 		this.requestUpdate();
 	}
@@ -144,7 +145,7 @@ export class AppFileUpload extends FormElement {
 								(file, index) => html`
     				    <li>
     				      <a download=${file.name} href=${file.url}>${file.name}</a>
-    				      <button @click=${() => this.deleteFile(index)} title="Remove file">✖</button>
+    				      <button @click=${() => this.deleteFile(index)} title="Remove file">✕</button>
     				    </li>
 							`,
 							)}

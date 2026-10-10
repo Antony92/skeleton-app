@@ -65,6 +65,7 @@ export const appFileUploadStyle = css`
 						border: none;
 						color: var(--theme-error-color);
 						cursor: pointer;
+						font-size: 1rem;
 					}
 				}
 			}
