@@ -24,6 +24,16 @@ export const appSelectStyle = css`
 		}
 	}
 
+	:host([clearable]) {
+		.form-control {
+			.select-wrapper {
+				input {
+					padding: 0 10px;
+				}
+			}
+		}
+	}
+
 	.form-control {
 		display: flex;
 		flex-direction: column;
@@ -77,7 +87,7 @@ export const appSelectStyle = css`
 				border: none;
 				outline: none;
 				background: none;
-				padding: 0px 10px;
+				padding: 0px 35px 0 10px;
 				cursor: pointer;
 				font-family: var(--theme-font-family);
 				font-size: var(--theme-font-size-1);
@@ -88,19 +98,13 @@ export const appSelectStyle = css`
 			}
 
 			.caret,
-			.prefix,
-			.suffix {
+			.prefix {
 				display: flex;
 				align-items: center;
 			}
 
 			.prefix ::slotted(*) {
 				padding-left: 10px;
-				font-size: 20px;
-			}
-
-			.suffix ::slotted(*) {
-				padding-right: 10px;
 				font-size: 20px;
 			}
 
