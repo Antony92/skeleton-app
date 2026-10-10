@@ -1,7 +1,7 @@
 import { getUsers } from '@app/services/api.service';
 import { tableStyle } from '@app/styles/table.style';
 import type { PaginatedResponse } from '@app/types/response.type';
-import { setPageTitle } from '@app/utils/html';
+import { serializeForm, setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/table/app-table.element';
@@ -9,16 +9,24 @@ import '@app/elements/table-column/app-table-column.element';
 import '@app/elements/paginator/app-paginator.element';
 import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
+import '@app/elements/dialog/app-dialog.element';
+import '@app/elements/input/app-input.element';
+import '@app/elements/button/app-button.element';
+import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
 import type { AppTableFilterEvent } from '@app/events/table.event';
+import { confirmDialog } from '@app/shared/dialogs';
 import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation';
+import { notify } from '@app/shared/notification';
+import { formStyle } from '@app/styles/form.style';
 import type { TableColumn } from '@app/types/table.type';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
 	static styles = [
+		formStyle,
 		tableStyle,
 		css`
 			h3 {
@@ -38,10 +46,19 @@ export class AppTablePage extends LitElement {
 	};
 
 	@state()
+	selectedUser: any = null;
+
+	@state()
 	loading = true;
 
 	@query('app-paginator')
 	paginator!: AppPaginator;
+
+	@query('#edit-user-dialog')
+	editUserDialog!: AppDialog;
+
+	@query('#edit-user-dialog form')
+	editUserForm!: HTMLFormElement;
 
 	private filterMap = new Map();
 	private skip = 0;
@@ -88,8 +105,6 @@ export class AppTablePage extends LitElement {
 		});
 		this.loadUsers();
 	}
-
-	protected firstUpdated() {}
 
 	async loadUsers() {
 		this.loading = true;
@@ -148,6 +163,35 @@ export class AppTablePage extends LitElement {
 		this.requestUpdate();
 	}
 
+	async saveUser(event: Event) {
+		event.preventDefault();
+		if (!this.editUserForm.checkValidity()) {
+			this.editUserForm.querySelector<HTMLElement>('*:state(invalid)')?.focus();
+			return;
+		}
+		const data = serializeForm(this.editUserForm);
+		const index = this.users.data.indexOf(this.selectedUser);
+		this.users.data.splice(index, 1, { ...this.selectedUser, ...data });
+		this.editUserDialog.hide();
+		this.requestUpdate();
+		notify({ message: 'User updated', variant: 'success' });
+	}
+
+	async editUser(user: any) {
+		this.selectedUser = user;
+		this.editUserDialog.show();
+	}
+
+	async deleteUser(user: any) {
+		const confirmed = await confirmDialog({ message: `Are you sure you want to delete user ${user.firstName} ${user.lastName}?` });
+		if (confirmed) {
+			const index = this.users.data.indexOf(user);
+			this.users.data.splice(index, 1);
+			this.requestUpdate();
+			notify({ variant: 'success', message: `User ${user.firstName} ${user.lastName} has been deleted.` });
+		}
+	}
+
 	render() {
 		return html`
 			<h3>Table</h3>
@@ -204,11 +248,11 @@ export class AppTablePage extends LitElement {
   										<app-button slot="trigger" variant="primary" appearance="plain" size="small">
      						        <app-icon filled>more_horiz</app-icon>
   										</app-button>
-  										<app-dropdown-item href="/test/${user.id}">
+  										<app-dropdown-item @click=${() => this.editUser(user)}>
      										<app-icon slot="prefix">edit_square</app-icon>
      										Edit
   										</app-dropdown-item>
-  										<app-dropdown-item disabled>
+  										<app-dropdown-item @click=${() => this.deleteUser(user)} variant="error">
      										<app-icon slot="prefix">delete</app-icon>
      										Delete
   										</app-dropdown-item>
@@ -230,7 +274,7 @@ export class AppTablePage extends LitElement {
 							this.users.data.length === 0 && this.loading,
 							() => html`
 								<tr>
-									<td colspan=${this.columns.length}>Loading...</td>
+									<td colspan=${this.columns.length + 2}>Loading...</td>
 								</tr>
 							`,
 						)}
@@ -238,7 +282,7 @@ export class AppTablePage extends LitElement {
 							this.users.data.length === 0 && !this.loading,
 							() => html`
 								<tr>
-									<td colspan=${this.columns.length}>No results found</td>
+									<td colspan=${this.columns.length + 2}>No results found</td>
 								</tr>
 							`,
 						)}
@@ -255,6 +299,16 @@ export class AppTablePage extends LitElement {
 				>
 				</app-paginator>
 			</app-table>
+
+			<app-dialog id="edit-user-dialog" header="Edit User" modal @app-after-hide=${() => (this.selectedUser = null)}>
+				<form @submit=${this.saveUser} novalidate>
+					<app-input label="Username" name="username" required .value=${this.selectedUser?.username || ''}></app-input>
+					<app-input label="First Name" name="firstName" required .value=${this.selectedUser?.firstName || ''}></app-input>
+					<app-input label="Last Name" name="lastName" required .value=${this.selectedUser?.lastName || ''}></app-input>
+				</form>
+				<app-button slot="footer" variant="primary" appearance="plain" app-dialog-close>Cancel</app-button>
+				<app-button slot="footer" variant="primary" autofocus @click=${() => this.editUserForm.requestSubmit()}>Update</app-button>
+			</app-dialog>
 		`;
 	}
 }

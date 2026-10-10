@@ -30,6 +30,9 @@ export class AppDialog extends LitElement {
 	@property({ type: Boolean })
 	accessor modal = false;
 
+	@property({ type: Boolean })
+	accessor fullscreen = false;
+
 	@query('dialog')
 	accessor dialog!: HTMLDialogElement;
 

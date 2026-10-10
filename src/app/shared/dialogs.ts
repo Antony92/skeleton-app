@@ -53,7 +53,7 @@ export const dialog = async (options: { header: string; message: string; modal?:
  * @param options
  * @returns Promise
  */
-export const confirmDialog = async (options: { header: string; message: string }) => {
+export const confirmDialog = async (options: { header?: string; message: string }) => {
 	await Promise.all([import('@app/elements/dialog/app-dialog.element'), import('@app/elements/button/app-button.element')]);
 
 	const { promise, resolve, reject } = Promise.withResolvers<boolean>();
@@ -64,7 +64,7 @@ export const confirmDialog = async (options: { header: string; message: string }
 		return;
 	}
 
-	const { header, message } = options;
+	const { header = 'Confirm', message } = options;
 
 	const template = html`
 		${message}
@@ -101,7 +101,7 @@ export const confirmDialog = async (options: { header: string; message: string }
  * @param options
  * @returns Promise
  */
-export const promptDialog = async (options: { header: string; message: string; promt: string }) => {
+export const promptDialog = async (options: { header?: string; message: string; promt: string }) => {
 	await Promise.all([
 		import('@app/elements/dialog/app-dialog.element'),
 		import('@app/elements/button/app-button.element'),
@@ -116,7 +116,7 @@ export const promptDialog = async (options: { header: string; message: string; p
 		return;
 	}
 
-	const { header, message, promt } = options;
+	const { header = 'Confirm', message, promt } = options;
 
 	const template = html`
 		${message}

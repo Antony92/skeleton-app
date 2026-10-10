@@ -12,6 +12,26 @@ export class AppDropdownItem extends LitElement {
 				font-size: 20px;
 			}
 
+			:host {
+				color: var(--theme-color);
+			}
+
+			:host([variant='primary']) {
+				color: var(--theme-primary-color);
+			}
+
+			:host([variant='success']) {
+				color: var(--theme-success-color);
+			}
+
+			:host([variant='warning']) {
+				color: var(--theme-warning-color);
+			}
+
+			:host([variant='error']) {
+				color: var(--theme-error-color);
+			}
+
 			button,
 			a {
 				cursor: pointer;
@@ -28,7 +48,7 @@ export class AppDropdownItem extends LitElement {
 				font-family: var(--theme-font-family);
 				font-size: var(--theme-font-size-1);
 				border-radius: var(--radius-2);
-				color: var(--theme-color);
+				color: inherit;
 
 				.prefix {
 					display: flex;
@@ -61,6 +81,9 @@ export class AppDropdownItem extends LitElement {
 
 	@property({ type: String })
 	accessor href = '';
+
+	@property({ type: String })
+	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	connectedCallback() {
 		super.connectedCallback();

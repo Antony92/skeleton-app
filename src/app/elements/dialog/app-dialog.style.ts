@@ -1,12 +1,27 @@
 import { css } from 'lit';
 
 export const appDialogStyle = css`
+  :host([fullscreen]) {
+		dialog {
+			inline-size: 100vw;
+			max-block-size: 100dvh;
+			block-size: 100dvh;
+			max-inline-size: 100vw;
+			border-radius: 0;
+
+			.container {
+				max-block-size: 100dvh;
+				block-size: 100dvh;
+			}
+		}
+	}
+
 	dialog {
 		inset: 0;
 		padding: 0;
 		outline: 0;
 		inline-size: min(90vw, 60ch);
-		max-block-size: min(80vh, 100%);
+		max-block-size: min(80dvh, 100%);
 		overflow: hidden;
 		border: none;
 		box-shadow: var(--shadow-2);
@@ -32,7 +47,7 @@ export const appDialogStyle = css`
 		.container {
 			display: grid;
 			grid-template-rows: auto 1fr auto;
-			max-block-size: 70vh;
+			max-block-size: 70dvh;
 		}
 
 		header {
