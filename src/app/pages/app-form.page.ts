@@ -38,7 +38,7 @@ export class AppFormPage extends LitElement {
 	accessor form!: HTMLFormElement;
 
 	@state()
-	accessor dummyData = {
+	accessor formData = {
 		name: '',
 		email: '',
 		textarea: '',
@@ -68,7 +68,7 @@ export class AppFormPage extends LitElement {
 
 	async preload(clear = false) {
 		if (clear) {
-			this.dummyData = {
+			this.formData = {
 				name: '',
 				email: '',
 				textarea: '',
@@ -77,7 +77,7 @@ export class AppFormPage extends LitElement {
 				select: '',
 			};
 		} else {
-			this.dummyData = {
+			this.formData = {
 				name: 'Test',
 				email: 'test@example.com',
 				textarea: 'test text',
@@ -92,16 +92,16 @@ export class AppFormPage extends LitElement {
 		return html`
 			<h3>Form</h3>
 			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
-				<app-input required name="name" label="Name" .value=${this.dummyData.name}></app-input>
-				<app-input required name="email" label="Email" type="email" .value=${this.dummyData.email}></app-input>
-				<app-textarea required name="textarea" label="Textarea" .value=${this.dummyData.textarea}></app-textarea>
-				<app-checkbox required name="checkbox" label="Are you sure?" .checked=${this.dummyData.checkbox}></app-checkbox>
-				<app-radio-group name="radio" required label="Select one radio" .value=${this.dummyData.radio}>
+				<app-input required name="name" label="Name" .value=${this.formData.name}></app-input>
+				<app-input required name="email" label="Email" type="email" .value=${this.formData.email}></app-input>
+				<app-textarea required name="textarea" label="Textarea" .value=${this.formData.textarea}></app-textarea>
+				<app-checkbox required name="checkbox" label="Are you sure?" .checked=${this.formData.checkbox}></app-checkbox>
+				<app-radio-group name="radio" required label="Select one radio" .value=${this.formData.radio}>
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
 
-				<app-select required name="select" label="Select" placeholder="Select an option" clearable .value=${this.dummyData.select}>
+				<app-select required name="select" label="Select" placeholder="Select an option" clearable .value=${this.formData.select}>
 					<app-select-option value="option-1">Option 1</app-select-option>
 					<app-select-option value="option-2">Option 2</app-select-option>
 					<app-select-option value="option-3">Option 3</app-select-option>
@@ -128,8 +128,7 @@ export class AppFormPage extends LitElement {
 
 				<div class="actions">
 					<app-button variant="primary" type="submit">Submit</app-button>
-					<app-button type="reset">Reset</app-button>
-					<app-button @click=${() => this.preload(true)}>Clear</app-button>
+					<app-button type="reset" @click=${() => this.preload(true)}>Reset</app-button>
 					<app-button @click=${() => this.preload()}>Preload</app-button>
 				</div>
 			</form>
