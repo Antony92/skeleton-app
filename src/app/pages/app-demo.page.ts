@@ -26,6 +26,7 @@ import '@app/elements/tag-group/app-tag-group.element';
 import '@app/elements/tag/app-tag.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
+import '@app/elements/details/app-details.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import { getProducts } from '@app/services/api.service';
@@ -366,6 +367,29 @@ export class AppDemoPage extends LitElement {
 						<div>This is custom <strong>message</strong> that allows any <i>formatting</i></div>
 						<app-button appearance="plain" variant="primary" app-popup-close>Close</app-button>
 					</app-popup>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>details</h4>
+				<div class="container">
+					<app-details summary="Section 1" name="section">
+   					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+   					ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is
+   					simply dummy text of the printing and typesetting industry.
+					</app-details>
+					<br/>
+					<app-details summary="Section 2" name="section">
+   					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+   					ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is
+   					simply dummy text of the printing and typesetting industry.
+					</app-details>
+					<br/>
+					<app-details summary="Section 3" name="section">
+   					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+   					ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is
+   					simply dummy text of the printing and typesetting industry.
+					</app-details>
 				</div>
 			</div>
 

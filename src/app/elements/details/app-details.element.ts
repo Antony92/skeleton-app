@@ -9,6 +9,10 @@ export class AppDetails extends LitElement {
 		defaultStyle,
 		focusStyle,
 		css`
+		  :host {
+				width: 100%;
+		  }
+
 			details {
 				border-radius: var(--radius-2);
 				border: 1px solid var(--theme-muted-color);
