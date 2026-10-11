@@ -8,15 +8,20 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-tag')
 export class AppTag extends LitElement {
-  static styles = [defaultStyle, focusStyle, appTagStyle, css`
+	static styles = [
+		defaultStyle,
+		focusStyle,
+		appTagStyle,
+		css`
 		:host {
 		  --border: var(--theme-default-background);
 			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
 			--color: var(--theme-color);
 		}
-	`];
+	`,
+	];
 
-  @property({ type: String })
+	@property({ type: String })
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: Boolean })
@@ -30,7 +35,7 @@ export class AppTag extends LitElement {
 
 	render() {
 		return html`
-			<div part="tag" class=${classMap({ 'removable': this.removable })}>
+			<div part="tag" class=${classMap({ removable: this.removable })}>
 				<slot></slot>
 				${when(this.removable, () => html`<button class="remove" @click=${this.onRemove}>✕</button>`)}
 			</div>
