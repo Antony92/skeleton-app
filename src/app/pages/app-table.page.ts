@@ -129,13 +129,9 @@ export class AppTablePage extends LitElement {
 
 	async onTableFilter(event: AppTableFilterEvent) {
 		this.filterMap = event.filters;
-		if (event.filterType === 'filter') {
-			this.skip = 0;
-		}
+		this.skip = 0;
 		await this.syncRouteAndReload();
-		if (this.skip === 0) {
-			this.paginator.reset();
-		}
+		this.paginator.reset();
 	}
 
 	async onTableClear() {

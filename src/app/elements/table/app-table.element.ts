@@ -80,7 +80,7 @@ export class AppTable extends LitElement {
 				this.filterMap.delete(field);
 			}
 			this.filtersApplied = this.hasFiltersApplied();
-			this.dispatchFilterEvent('filter');
+			this.dispatchFilterEvent();
 		});
 		this.addEventListener('app-table-column-filter-order', (event) => {
 			event.stopPropagation();
@@ -98,7 +98,7 @@ export class AppTable extends LitElement {
 				this.filterMap.delete('order');
 			}
 			this.filtersApplied = this.hasFiltersApplied();
-			this.dispatchFilterEvent('order');
+			this.dispatchFilterEvent();
 		});
 		if (this.searchValue) {
 			this.filterMap.set('search', this.searchValue);
@@ -129,8 +129,8 @@ export class AppTable extends LitElement {
 		return this.filterMap.size > 0;
 	}
 
-	dispatchFilterEvent(type: 'filter' | 'order' = 'filter') {
-		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap]), type));
+	dispatchFilterEvent() {
+		this.dispatchEvent(new AppTableFilterEvent(new Map([...this.filterMap])));
 	}
 
 	clearAllFilters() {

@@ -20,12 +20,10 @@ export class AppTableColumnFilterOrderEvent extends Event {
 
 export class AppTableFilterEvent extends Event {
 	readonly filters: Map<string, string>;
-	readonly filterType: 'filter' | 'order';
 
-	constructor(filters: Map<string, string>, filterType: 'filter' | 'order' = 'filter') {
+	constructor(filters: Map<string, string>) {
 		super('app-table-filter', { bubbles: true, composed: true });
 		this.filters = filters;
-		this.filterType = filterType;
 	}
 }
 
