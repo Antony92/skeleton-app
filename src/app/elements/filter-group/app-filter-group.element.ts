@@ -1,10 +1,10 @@
-import type { AppTag } from '@app/elements/tag/app-tag.element';
+import type { AppFilter } from '@app/elements/filter/app-filter.element';
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, queryAssignedElements } from 'lit/decorators.js';
 
-@customElement('app-tag-group')
-export class AppTagGroup extends LitElement {
+@customElement('app-filter-group')
+export class AppFilterGroup extends LitElement {
 	static styles = [
 		defaultStyle,
 		css`
@@ -26,20 +26,20 @@ export class AppTagGroup extends LitElement {
 	accessor multiple = false;
 
 	@queryAssignedElements()
-	accessor tags!: AppTag[];
+	accessor filters!: AppFilter[];
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('app-tag-click', (event) => {
+		this.addEventListener('app-filter-click', (event) => {
 			event.stopPropagation();
-			const tag = event.target as AppTag;
+			const filter = event.target as AppFilter;
 			if (this.multiple) {
-				this.value = this.tags
+				this.value = this.filters
 					.filter((t) => t.active)
 					.map((t) => t.value)
 					.join(', ');
 			} else {
-				this.value = tag.active ? tag.value : '';
+				this.value = filter.active ? filter.value : '';
 			}
 			this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 		});
@@ -47,13 +47,13 @@ export class AppTagGroup extends LitElement {
 
 	protected updated(_changedProperties: PropertyValues) {
 		super.updated(_changedProperties);
-		this.tags.forEach((tag) => {
+		this.filters.forEach((filter) => {
 			if (this.multiple) {
-				tag.active = this.value.includes(tag.value);
+				filter.active = this.value.includes(filter.value);
 			} else {
-				tag.active = !!this.value && tag.value === this.value;
+				filter.active = !!this.value && filter.value === this.value;
 			}
-			tag.disabled = this.disabled;
+			filter.disabled = this.disabled;
 		});
 	}
 
@@ -64,6 +64,6 @@ export class AppTagGroup extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-tag-group': AppTagGroup;
+		'app-filter-group': AppFilterGroup;
 	}
 }

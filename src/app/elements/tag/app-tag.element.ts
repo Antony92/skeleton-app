@@ -4,38 +4,36 @@ import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-tag')
 export class AppTag extends LitElement {
-	static styles = [defaultStyle, focusStyle, appTagStyle, css``];
+  static styles = [defaultStyle, focusStyle, appTagStyle, css`
+		:host {
+		  --border: var(--theme-default-background);
+			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
+			--color: var(--theme-color);
+		}
+	`];
 
-	@property({ type: String })
-	accessor value = '';
-
-	@property({ type: Boolean, reflect: true })
-	accessor active = false;
+  @property({ type: String })
+	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: Boolean })
-	accessor disabled = false;
+	accessor removable = false;
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', (event) => {
-			if (event.defaultPrevented) return;
-			this.active = !this.active;
-			this.dispatchEvent(new Event('app-tag-click', { bubbles: true, composed: true }));
-		});
+	onRemove() {
+		if (!this.dispatchEvent(new Event('app-remove', { cancelable: true }))) {
+			return;
+		}
 	}
 
 	render() {
 		return html`
-			<button
-				part="tag"
-				?disabled=${this.disabled}
-				class="${classMap({ 'focus-visible': true, active: this.active })}"
-			>
+			<div part="tag" class=${classMap({ 'removable': this.removable })}>
 				<slot></slot>
-			</button>
+				${when(this.removable, () => html`<button class="remove" @click=${this.onRemove}>✕</button>`)}
+			</div>
 		`;
 	}
 }

@@ -22,11 +22,12 @@ import '@app/elements/tab-group/app-tab-group.element';
 import '@app/elements/tab-panel/app-tab-panel.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/file-upload/app-file-upload.element';
-import '@app/elements/tag-group/app-tag-group.element';
-import '@app/elements/tag/app-tag.element';
+import '@app/elements/filter-group/app-filter-group.element';
+import '@app/elements/filter/app-filter.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
 import '@app/elements/details/app-details.element';
+import '@app/elements/tag/app-tag.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import { getProducts } from '@app/services/api.service';
@@ -292,12 +293,23 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
-				<h4>Tag</h4>
+				<h4>Tags</h4>
 				<div class="container">
-					<app-tag-group>
-						<app-tag active value="all">All</app-tag>
-						<app-tag value="some">Only Some</app-tag>
-					</app-tag-group>
+				  <app-tag variant="default" removable>Default</app-tag>
+					<app-tag variant="primary">Primary</app-tag>
+					<app-tag variant="success">Success</app-tag>
+					<app-tag variant="warning">Warning</app-tag>
+					<app-tag variant="error">Error</app-tag>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Filters</h4>
+				<div class="container">
+					<app-filter-group>
+						<app-filter active value="all">All</app-filter>
+						<app-filter value="some">Only Some</app-filter>
+					</app-filter-group>
 				</div>
 			</div>
 
