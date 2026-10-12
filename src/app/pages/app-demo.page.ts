@@ -405,7 +405,7 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
-				<h4>details</h4>
+				<h4>Details</h4>
 				<div class="container">
 					<app-details summary="Section 1" name="section">
    					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
