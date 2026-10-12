@@ -47,7 +47,7 @@ export class AppDropdown extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('click', (event: Event) => {
 			const target = event.target as HTMLElement;
-			if (target.assignedSlot?.name === 'trigger') {
+			if (target.assignedSlot?.name === 'trigger' || target.closest('[slot="trigger"]')) {
 				this.toggleDropdown();
 			} else if (target.tagName === 'APP-DROPDOWN-ITEM') {
 				this.dispatchEvent(new AppSelectEvent((target as AppDropdownItem).value));

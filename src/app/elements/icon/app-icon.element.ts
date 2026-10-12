@@ -8,7 +8,7 @@ export class AppIcon extends LitElement {
 		defaultStyle,
 		css`
 			:host {
-				font-family: "Material Symbols Rounded";
+				font-family: "Material Symbols Rounded", sans-serif;
 				font-weight: normal;
 				font-style: normal;
 				font-size: 24px;
