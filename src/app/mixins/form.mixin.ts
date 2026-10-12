@@ -59,21 +59,6 @@ export abstract class FormElement extends LitElement implements FormControl {
 	internals = this.attachInternals();
 	static formAssociated = true;
 
-	validationTriggers = [
-		'value',
-		'name',
-		'disabled',
-		'touched',
-		'required',
-		'min',
-		'max',
-		'maxlength',
-		'minlength',
-		'type',
-		'pattern',
-		'checked',
-	];
-
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('invalid', async () => {
@@ -82,6 +67,10 @@ export abstract class FormElement extends LitElement implements FormControl {
 	}
 
 	abstract getValidity(): Validity;
+
+	protected get validationTriggers() {
+		return ['value', 'name', 'disabled', 'touched', 'required', 'min', 'max', 'maxlength', 'minlength', 'type', 'pattern', 'checked'];
+	}
 
 	protected updated(_changedProperties: PropertyValues): void {
 		super.updated(_changedProperties);

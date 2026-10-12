@@ -26,7 +26,7 @@ export class AppRadio extends FormElement {
 	@query('input')
 	accessor input!: HTMLInputElement;
 
-	connectedCallback(): void {
+	connectedCallback() {
 		super.connectedCallback();
 		this.defaultValue = this.defaultValue || this.value;
 	}

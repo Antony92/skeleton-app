@@ -3,6 +3,7 @@ import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/input/app-input.element';
 import '@app/elements/autocomplete/app-autocomplete.element';
 import '@app/elements/checkbox/app-checkbox.element';
+import '@app/elements/checkbox-group/app-checkbox-group.element';
 import '@app/elements/radio/app-radio.element';
 import '@app/elements/radio-group/app-radio-group.element';
 import '@app/elements/textarea/app-textarea.element';
@@ -73,6 +74,7 @@ export class AppFormPage extends LitElement {
 			checkbox: true,
 			radio: '2',
 			select: 'option-3',
+			checkboxes: '1,2',
 		};
 	}
 
@@ -84,10 +86,18 @@ export class AppFormPage extends LitElement {
 				<app-input required name="email" label="Email" type="email" .value=${this.formData?.email || ''}></app-input>
 				<app-textarea required name="textarea" label="Textarea" .value=${this.formData?.textarea || ''}></app-textarea>
 				<app-checkbox required name="checkbox" label="Are you sure?" .checked=${this.formData?.checkbox ?? false}></app-checkbox>
+
 				<app-radio-group name="radio" required label="Select one radio" .value=${this.formData?.radio || ''}>
 					<app-radio label="Radio 1" value="1"></app-radio>
 					<app-radio label="Radio 2" value="2"></app-radio>
 				</app-radio-group>
+
+				<app-checkbox-group name="checkboxes" required label="Select multiple checkboxes" .value=${this.formData?.checkboxes || ''}>
+					<app-checkbox label="Checkbox 1" value="1"></app-checkbox>
+					<app-checkbox label="Checkbox 2" value="2"></app-checkbox>
+					<app-checkbox label="Checkbox 3" value="3"></app-checkbox>
+					<app-checkbox label="Checkbox 4" value="4"></app-checkbox>
+				</app-checkbox-group>
 
 				<app-select required name="select" label="Select" placeholder="Select an option" clearable .value=${this.formData?.select || ''}>
 					<app-select-option value="option-1">Option 1</app-select-option>
