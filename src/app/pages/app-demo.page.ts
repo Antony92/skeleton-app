@@ -28,6 +28,7 @@ import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
 import '@app/elements/details/app-details.element';
 import '@app/elements/tag/app-tag.element';
+import '@app/elements/switch/app-switch.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import { getProducts } from '@app/services/api.service';
@@ -144,6 +145,13 @@ export class AppDemoPage extends LitElement {
 				<h4>Checkbox</h4>
 				<div class="container">
 					<app-checkbox label="Check me!"></app-checkbox>
+				</div>
+			</div>
+
+			<div class="demo">
+				<h4>Switch</h4>
+				<div class="container">
+					<app-switch label="Switch me!"></app-switch>
 				</div>
 			</div>
 
