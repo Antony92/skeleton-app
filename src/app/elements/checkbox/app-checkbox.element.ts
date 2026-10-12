@@ -21,15 +21,15 @@ export class AppCheckbox extends FormElement {
 	accessor label = '';
 
 	@property({ type: Boolean })
-  accessor checked = false;
+	accessor checked = false;
 
 	@query('input')
-  accessor input!: HTMLInputElement;
+	accessor input!: HTMLInputElement;
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.defaultValue = this.defaultValue || this.value;
-  }
+	connectedCallback() {
+		super.connectedCallback();
+		this.defaultValue = this.defaultValue || this.value;
+	}
 
 	onInput() {
 		this.checked = this.input.checked;
