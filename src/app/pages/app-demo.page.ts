@@ -185,6 +185,16 @@ export class AppDemoPage extends LitElement {
 						<app-select-option value="option-5">Option 5</app-select-option>
 					</app-select>
 
+					<app-select label="Select with groups" placeholder="Select">
+					  <small>Group 1</small>
+						<app-select-option value="option-1">Option 1</app-select-option>
+						<app-select-option value="option-2">Option 2</app-select-option>
+						<app-select-option value="option-3">Option 3</app-select-option>
+						<small>Group 2</small>
+						<app-select-option value="option-4">Option 4</app-select-option>
+						<app-select-option value="option-5">Option 5</app-select-option>
+					</app-select>
+
 					<app-select label="Select with search" placeholder="Select" searchable>
 						<app-select-option value="option-1">Option 1</app-select-option>
 						<app-select-option value="option-2">Option 2</app-select-option>

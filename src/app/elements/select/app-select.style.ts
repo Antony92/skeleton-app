@@ -34,6 +34,11 @@ export const appSelectStyle = css`
 		}
 	}
 
+	::slotted(small) {
+		color: var(--theme-muted-color);
+		padding: 5px 10px;
+	}
+
 	.form-control {
 		display: flex;
 		flex-direction: column;
