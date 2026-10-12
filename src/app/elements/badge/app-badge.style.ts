@@ -12,29 +12,39 @@ export const appBadgeStyle = css`
 		color: var(--color);
 		background: var(--background);
 
+		&.outlined {
+			border: 1px solid var(--border);
+		}
+
 		&.default {
 			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
 			--color: var(--theme-muted-color);
+			--border: var(--theme-muted-color);
+
 		}
 
 		&.primary {
 			--background: color-mix(in srgb, var(--theme-primary-background) 20%, transparent);
 			--color: var(--theme-primary-color);
+			--border: var(--theme-primary-color);
 		}
 
 		&.success {
 			--background: color-mix(in srgb, var(--theme-success-background) 20%, transparent);
 			--color: var(--theme-success-color);
+			--border: var(--theme-success-color);
 		}
 
 		&.warning {
 			--background: color-mix(in srgb, var(--theme-warning-background) 20%, transparent);
 			--color: var(--theme-warning-color);
+			--border: var(--theme-warning-color);
 		}
 
 		&.error {
 			--background: color-mix(in srgb, var(--theme-error-background) 20%, transparent);
 			--color: var(--theme-error-color);
+			--border: var(--theme-error-color);
 		}
 
 		&.pulse {

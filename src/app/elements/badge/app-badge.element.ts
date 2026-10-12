@@ -12,11 +12,14 @@ export class AppBadge extends LitElement {
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: Boolean })
-	accessor pulse = false;
+  accessor pulse = false;
+
+  @property({ type: Boolean })
+	accessor outlined = false;
 
 	render() {
 		return html`
-			<div part="badge" class="${classMap({ badge: true, pulse: this.pulse, [this.variant]: true })}">
+			<div part="badge" class="${classMap({ badge: true, pulse: this.pulse, outlined: this.outlined, [this.variant]: true })}">
 				<slot></slot>
 			</div>
 		`;
