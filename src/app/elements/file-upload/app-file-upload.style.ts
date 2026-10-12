@@ -51,25 +51,6 @@ export const appFileUploadStyle = css`
 			transition-timing-function: var(--transition-easing);
 			transform-origin: center center;
 
-			ul {
-				padding: 0;
-				margin: 0;
-				list-style: none;
-
-				li {
-					display: flex;
-					align-items: center;
-
-					button {
-						background: none;
-						border: none;
-						color: var(--theme-error-color);
-						cursor: pointer;
-						font-size: 1rem;
-					}
-				}
-			}
-
 			&:has(input:disabled) {
 				opacity: 0.5;
 				cursor: not-allowed;
@@ -81,6 +62,64 @@ export const appFileUploadStyle = css`
 
 			&:hover:not(:has(input:disabled, input:focus-within)) {
 				border-color: var(--theme-primary-color);
+			}
+		}
+	}
+
+	ul {
+		padding: 0;
+		margin: 10px 0 0 0;
+		list-style: none;
+
+		li {
+			display: flex;
+			align-items: center;
+			padding: 10px;
+			border-radius: var(--radius-2);
+			border: 1px solid var(--theme-default-color);
+			gap: 10px;
+
+			&:not(:last-of-type) {
+				margin-bottom: 10px;
+			}
+
+			.preview {
+				width: 50px;
+				height: 50px;
+				border-radius: var(--radius-1);
+				background: var(--theme-default-color);
+				overflow: hidden;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 0.65rem;
+				font-weight: 600;
+				text-align: center;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
+			.details {
+				display: flex;
+				flex-direction: column;
+				gap: 5px;
+
+				small {
+					color: var(--theme-muted-color);
+				}
+			}
+
+			button {
+				background: none;
+				border: none;
+				color: var(--theme-muted-color);
+				cursor: pointer;
+				font-size: 1rem;
+				margin-left: auto;
 			}
 		}
 	}

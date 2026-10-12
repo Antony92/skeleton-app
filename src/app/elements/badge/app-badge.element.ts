@@ -12,9 +12,9 @@ export class AppBadge extends LitElement {
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: Boolean })
-  accessor pulse = false;
+	accessor pulse = false;
 
-  @property({ type: Boolean })
+	@property({ type: Boolean })
 	accessor outlined = false;
 
 	render() {

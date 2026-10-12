@@ -18,21 +18,13 @@ export class AppFilter extends LitElement {
 	@property({ type: Boolean })
 	accessor disabled = false;
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', (event) => {
-			if (event.defaultPrevented) return;
-			this.active = !this.active;
-			this.dispatchEvent(new Event('app-filter-click', { bubbles: true, composed: true }));
-		});
-	}
-
 	render() {
 		return html`
 			<button
 				part="filter"
 				?disabled=${this.disabled}
 				class="${classMap({ 'focus-visible': true, active: this.active })}"
+				@click=${() => (this.active = !this.active)}
 			>
 				<slot></slot>
 			</button>

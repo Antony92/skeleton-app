@@ -122,25 +122,28 @@ export class AppSelect extends FormElement {
 				if (isMatch) option.focus();
 			});
 		});
-		this.addEventListener('app-option-click', (event) => {
-			event.stopPropagation();
-			const option = event.target as AppSelectOption;
-			if (this.multiple) {
-				option.selected = !option.selected;
-				this.value = this.getMultiValue();
-			} else {
-				option.selected = true;
-				this.value = option.value;
-				this.assignedOptions
-					.filter((opt) => opt.value !== this.value)
-					.forEach((opt) => {
-						opt.selected = false;
-					});
-				this.closeSelect();
-				this.focus();
+		this.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (target.tagName === 'APP-SELECT-OPTION') {
+				event.stopPropagation();
+				const option = target as AppSelectOption;
+				if (this.multiple) {
+					option.selected = !option.selected;
+					this.value = this.getMultiValue();
+				} else {
+					option.selected = true;
+					this.value = option.value;
+					this.assignedOptions
+						.filter((opt) => opt.value !== this.value)
+						.forEach((opt) => {
+							opt.selected = false;
+						});
+					this.closeSelect();
+					this.focus();
+				}
+				this.displayValue = this.getDisplayValue();
+				this.onChange();
 			}
-			this.displayValue = this.getDisplayValue();
-			this.onChange();
 		});
 	}
 

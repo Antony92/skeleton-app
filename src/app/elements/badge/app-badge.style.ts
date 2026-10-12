@@ -20,7 +20,6 @@ export const appBadgeStyle = css`
 			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
 			--color: var(--theme-muted-color);
 			--border: var(--theme-muted-color);
-
 		}
 
 		&.primary {

@@ -1,6 +1,6 @@
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement } from 'lit';
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('app-popup')
 export class AppPopup extends LitElement {
@@ -43,17 +43,23 @@ export class AppPopup extends LitElement {
 	@query('[popover]')
 	accessor popup!: HTMLElement;
 
-	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[];
-
 	@property({ type: Boolean, reflect: true })
 	accessor open = false;
 
 	@property({ type: String })
 	accessor behaviour: 'auto' | 'manual' = 'manual';
 
-	@queryAssignedElements({ selector: '[app-popup-close]' })
-	accessor closeElements!: HTMLElement[];
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (target.assignedSlot?.name === 'trigger') {
+				this.togglePopup();
+			} else if (target.hasAttribute('app-popup-close')) {
+				this.closePopup();
+			}
+		});
+	}
 
 	protected firstUpdated() {
 		this.popup.addEventListener('toggle', (event: Event) => {
@@ -90,26 +96,12 @@ export class AppPopup extends LitElement {
 		}
 	}
 
-	onTriggersAdded() {
-		this.triggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => this.togglePopup());
-		});
-	}
-
-	onSlotChange() {
-		this.closeElements.forEach((element) => {
-			element.addEventListener('click', () => {
-				this.closePopup();
-			});
-		});
-	}
-
 	render() {
 		return html`
 			<div class="container">
-				<slot name="trigger" @slotchange=${this.onTriggersAdded}></slot>
+				<slot name="trigger"></slot>
 				<div part="popover" popover=${this.behaviour}>
-					<slot @slotchange=${this.onSlotChange}></slot>
+					<slot></slot>
 				</div>
 			</div>
 		`;

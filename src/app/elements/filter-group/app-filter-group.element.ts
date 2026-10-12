@@ -30,18 +30,21 @@ export class AppFilterGroup extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('app-filter-click', (event) => {
-			event.stopPropagation();
-			const filter = event.target as AppFilter;
-			if (this.multiple) {
-				this.value = this.filters
-					.filter((t) => t.active)
-					.map((t) => t.value)
-					.join(', ');
-			} else {
-				this.value = filter.active ? filter.value : '';
+		this.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (target.tagName === 'APP-FILTER') {
+				event.stopPropagation();
+				const filter = target as AppFilter;
+				if (this.multiple) {
+					this.value = this.filters
+						.filter((t) => t.active)
+						.map((t) => t.value)
+						.join(', ');
+				} else {
+					this.value = filter.active ? filter.value : '';
+				}
+				this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 			}
-			this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 		});
 	}
 

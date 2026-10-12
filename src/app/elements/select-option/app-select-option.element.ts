@@ -85,14 +85,6 @@ export class AppSelectOption extends LitElement {
 		this.option?.focus(options);
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', (event) => {
-			if (event.defaultPrevented) return;
-			this.dispatchEvent(new Event('app-option-click', { bubbles: true, composed: true }));
-		});
-	}
-
 	render() {
 		return html`
 			<button part="option" ?disabled=${this.disabled} .value=${this.value}>

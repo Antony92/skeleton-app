@@ -85,14 +85,6 @@ export class AppDropdownItem extends LitElement {
 	@property({ type: String })
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', (event) => {
-			if (event.defaultPrevented) return;
-			this.dispatchEvent(new Event('app-dropdown-item-click', { bubbles: true, composed: true }));
-		});
-	}
-
 	render() {
 		return html`
 			${when(

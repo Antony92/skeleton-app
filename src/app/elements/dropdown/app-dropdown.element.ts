@@ -2,7 +2,7 @@ import type { AppDropdownItem } from '@app/elements/dropdown-item/app-dropdown-i
 import { AppSelectEvent } from '@app/events/select.event';
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement } from 'lit';
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('app-dropdown')
 export class AppDropdown extends LitElement {
@@ -40,22 +40,19 @@ export class AppDropdown extends LitElement {
 	@query('[popover]')
 	accessor popup!: HTMLElement;
 
-	@queryAssignedElements({ slot: 'trigger' })
-	accessor triggers!: HTMLElement[];
-
-	@queryAssignedElements({ selector: 'app-dropdown-item' })
-	accessor assignedItems!: AppDropdownItem[];
-
 	@property({ type: Boolean, reflect: true })
 	accessor open = false;
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('app-dropdown-item-click', (event: Event) => {
-			event.stopPropagation();
-			const item = event.target as AppDropdownItem;
-			this.dispatchEvent(new AppSelectEvent(item.value));
-			this.closeDropdown();
+		this.addEventListener('click', (event: Event) => {
+			const target = event.target as HTMLElement;
+			if (target.assignedSlot?.name === 'trigger') {
+				this.toggleDropdown();
+			} else if (target.tagName === 'APP-DROPDOWN-ITEM') {
+				this.dispatchEvent(new AppSelectEvent((target as AppDropdownItem).value));
+				this.closeDropdown();
+			}
 		});
 	}
 
@@ -90,16 +87,10 @@ export class AppDropdown extends LitElement {
 		}
 	}
 
-	onTriggersAdded() {
-		this.triggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => this.toggleDropdown());
-		});
-	}
-
 	render() {
 		return html`
 			<div class="container">
-				<slot name="trigger" @slotchange=${this.onTriggersAdded}></slot>
+				<slot name="trigger"></slot>
 				<div part="popover" popover>
 					<slot></slot>
 				</div>

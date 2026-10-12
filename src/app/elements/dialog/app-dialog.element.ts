@@ -2,7 +2,7 @@ import { appDialogStyle } from '@app/elements/dialog/app-dialog.style';
 import { defaultStyle } from '@app/styles/default.style';
 import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
-import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
@@ -36,9 +36,6 @@ export class AppDialog extends LitElement {
 	@query('dialog')
 	accessor dialog!: HTMLDialogElement;
 
-	@queryAssignedElements({ slot: 'footer', selector: '[app-dialog-close]' })
-	accessor closeElements!: HTMLElement[];
-
 	#returnValue: string | undefined = '';
 
 	get returnValue() {
@@ -46,10 +43,19 @@ export class AppDialog extends LitElement {
 	}
 
 	protected firstUpdated() {
-		this.dialog.addEventListener('click', ({ target: element }) => {
-			if (element instanceof HTMLDialogElement === false) {
+		this.dialog.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (!target) return;
+
+			if (target.hasAttribute('app-dialog-close')) {
+				this.hide(target.getAttribute('app-dialog-close') || '');
 				return;
 			}
+
+			if (target instanceof HTMLDialogElement === false) {
+				return;
+			}
+
 			if (this.modal) {
 				this.pulseAnimation();
 			} else {
@@ -110,15 +116,6 @@ export class AppDialog extends LitElement {
 		return animation.finished;
 	}
 
-	onFooterSlotChange() {
-		this.closeElements.forEach((element) => {
-			element.addEventListener('click', () => {
-				const value = element.getAttribute('app-dialog-close') || '';
-				this.hide(value);
-			});
-		});
-	}
-
 	render() {
 		return html`
 			<dialog>
@@ -131,7 +128,7 @@ export class AppDialog extends LitElement {
 						<slot></slot>
 					</article>
 					<footer>
-						<slot name="footer" @slotchange=${this.onFooterSlotChange}></slot>
+						<slot name="footer"></slot>
 					</footer>
 				</div>
 			</dialog>
