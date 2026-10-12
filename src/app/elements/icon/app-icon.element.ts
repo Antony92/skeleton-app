@@ -8,7 +8,7 @@ export class AppIcon extends LitElement {
 		defaultStyle,
 		css`
 			:host {
-				font-family: 'Material Symbols Rounded';
+				font-family: "Material Symbols Rounded";
 				font-weight: normal;
 				font-style: normal;
 				font-size: 24px;
@@ -19,12 +19,12 @@ export class AppIcon extends LitElement {
 				white-space: nowrap;
 				word-wrap: normal;
 				direction: ltr;
-				-webkit-font-feature-settings: 'liga';
+				-webkit-font-feature-settings: "liga";
 				-webkit-font-smoothing: antialiased;
 			}
 
 			:host([filled]) {
-				font-variation-settings: 'FILL' 1;
+				font-variation-settings: "FILL" 1;
 			}
 		`,
 	];

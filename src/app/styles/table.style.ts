@@ -7,27 +7,28 @@ export const tableStyle = css`
 		position: relative;
 
 		&.hoverable {
-      tbody {
-        tr {
+			tbody {
+				tr {
+					&.active {
+						background: var(--theme-primary-color);
 
-          &.active {
-            background: var(--theme-primary-color);
+						td[sticky],
+						td[stickyend] {
+							background: var(--theme-primary-color);
+						}
+					}
 
-            td[sticky], td[stickyend] {
-              background: var(--theme-primary-color);
-            }
-          }
+					&:hover:not(.active) {
+						background: var(--theme-default-color);
 
-          &:hover:not(.active) {
-            background: var(--theme-default-color);
-
-            td[sticky], td[stickyend] {
-              background: var(--theme-default-color);
-            }
-          }
-        }
-      }
-    }
+						td[sticky],
+						td[stickyend] {
+							background: var(--theme-default-color);
+						}
+					}
+				}
+			}
+		}
 
 		thead {
 			th {

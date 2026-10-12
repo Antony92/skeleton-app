@@ -6,6 +6,6 @@ export const defaultStyle = css`
 	}
 
 	a.link[target="_blank"]::after {
-	  content: '↗';
+		content: "↗";
 	}
 `;

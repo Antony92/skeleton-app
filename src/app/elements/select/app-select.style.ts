@@ -56,7 +56,7 @@ export const appSelectStyle = css`
 
 		&:has(input[required]) {
 			label::after {
-				content: ' *';
+				content: " *";
 				color: var(--theme-invalid-color);
 			}
 		}
@@ -157,14 +157,14 @@ export const appSelectStyle = css`
 		}
 
 		input[type="search"] {
-		  background: none;
-		  border: none;
-		  border-bottom: 1px solid var(--theme-default-color);
-		  outline: none;
-		  padding: 0 25px;
-		  height: 30px;
-		  position: relative;
-		  top: -5px;
+			background: none;
+			border: none;
+			border-bottom: 1px solid var(--theme-default-color);
+			outline: none;
+			padding: 0 25px;
+			height: 30px;
+			position: relative;
+			top: -5px;
 		}
 	}
 `;

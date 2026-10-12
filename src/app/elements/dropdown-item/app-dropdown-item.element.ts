@@ -16,19 +16,19 @@ export class AppDropdownItem extends LitElement {
 				color: var(--theme-color);
 			}
 
-			:host([variant='primary']) {
+			:host([variant="primary"]) {
 				color: var(--theme-primary-color);
 			}
 
-			:host([variant='success']) {
+			:host([variant="success"]) {
 				color: var(--theme-success-color);
 			}
 
-			:host([variant='warning']) {
+			:host([variant="warning"]) {
 				color: var(--theme-warning-color);
 			}
 
-			:host([variant='error']) {
+			:host([variant="error"]) {
 				color: var(--theme-error-color);
 			}
 

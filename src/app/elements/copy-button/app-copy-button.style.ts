@@ -30,7 +30,7 @@ export const appCopyButtonStyle = css`
 		}
 
 		.success {
-		   color: var(--theme-success-color);
+			color: var(--theme-success-color);
 		}
 
 		&.small {

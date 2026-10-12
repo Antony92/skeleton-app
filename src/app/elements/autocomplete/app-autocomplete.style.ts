@@ -35,7 +35,7 @@ export const appAutocompleteStyle = css`
 
 		&:has(input[required]) {
 			label::after {
-				content: ' *';
+				content: " *";
 				color: var(--theme-invalid-color);
 			}
 		}

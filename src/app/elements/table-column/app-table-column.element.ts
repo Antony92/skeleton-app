@@ -40,7 +40,7 @@ export class AppTableColumn extends LitElement {
 						transition: opacity 0.3s;
 					}
 
-					&[order='none'] {
+					&[order="none"] {
 						app-icon {
 							opacity: 0;
 						}
@@ -50,7 +50,7 @@ export class AppTableColumn extends LitElement {
 						}
 					}
 
-					&:not([order='none']) {
+					&:not([order="none"]) {
 						color: var(--theme-primary-color);
 					}
 				}

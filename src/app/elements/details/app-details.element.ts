@@ -9,9 +9,9 @@ export class AppDetails extends LitElement {
 		defaultStyle,
 		focusStyle,
 		css`
-		  :host {
+			:host {
 				width: 100%;
-		  }
+			}
 
 			details {
 				border-radius: var(--radius-2);
@@ -22,7 +22,10 @@ export class AppDetails extends LitElement {
 					opacity: 0;
 					block-size: 0;
 					overflow-y: clip;
-					transition: content-visibility 250ms allow-discrete, opacity 250ms, block-size 250ms;
+					transition:
+						content-visibility 250ms allow-discrete,
+						opacity 250ms,
+						block-size 250ms;
 				}
 
 				&[open]::details-content {
@@ -44,15 +47,15 @@ export class AppDetails extends LitElement {
 					.caret {
 						margin-left: auto;
 						transition: 250ms rotate ease;
-            transform-box: fill-box;
-            display: flex;
-            align-items: center;
+						transform-box: fill-box;
+						display: flex;
+						align-items: center;
 
-            svg {
-              height: 1em;
-              overflow: visible;
-              width: auto;
-            }
+						svg {
+							height: 1em;
+							overflow: visible;
+							width: auto;
+						}
 					}
 				}
 

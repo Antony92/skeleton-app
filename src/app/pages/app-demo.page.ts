@@ -47,13 +47,13 @@ export class AppDemoPage extends LitElement {
 			}
 
 			.demo {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        border-radius: var(--radius-2);
-        border: 1px solid var(--theme-muted-color);
-        padding: 10px;
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 10px;
+				border-radius: var(--radius-2);
+				border: 1px solid var(--theme-muted-color);
+				padding: 10px;
 
 				.container {
 					display: flex;
@@ -62,7 +62,10 @@ export class AppDemoPage extends LitElement {
 					gap: 10px;
 					width: 100%;
 
-					app-input, app-autocomplete, app-textarea, app-select {
+					app-input,
+					app-autocomplete,
+					app-textarea,
+					app-select {
 						width: 100%;
 
 						@media (min-width: 768px) {
@@ -72,7 +75,8 @@ export class AppDemoPage extends LitElement {
 				}
 			}
 
-			h3, h4 {
+			h3,
+			h4 {
 				margin: 0 0 10px 0;
 			}
 		`,

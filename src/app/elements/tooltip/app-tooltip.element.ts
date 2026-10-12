@@ -42,7 +42,7 @@ export class AppTooltip extends LitElement {
 				}
 			}
 
-			:host([position='top']) [popover] {
+			:host([position="top"]) [popover] {
 				position-area: top center;
 				top: 0px;
 				bottom: calc(anchor(top) + 5px);
@@ -50,7 +50,7 @@ export class AppTooltip extends LitElement {
 				right: anchor(center);
 			}
 
-			:host([position='bottom']) [popover] {
+			:host([position="bottom"]) [popover] {
 				position-area: bottom center;
 				top: calc(anchor(bottom) + 5px);
 				bottom: 0px;
@@ -58,7 +58,7 @@ export class AppTooltip extends LitElement {
 				right: anchor(center);
 			}
 
-			:host([position='left']) [popover] {
+			:host([position="left"]) [popover] {
 				position-area: left center;
 				top: anchor(center);
 				bottom: anchor(center);
@@ -66,7 +66,7 @@ export class AppTooltip extends LitElement {
 				left: 0px;
 			}
 
-			:host([position='right']) [popover] {
+			:host([position="right"]) [popover] {
 				position-area: right center;
 				top: anchor(center);
 				bottom: anchor(center);

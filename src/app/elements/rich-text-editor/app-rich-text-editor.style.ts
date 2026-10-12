@@ -35,7 +35,7 @@ export const appRichTextEditorStyle = css`
 
 		&:has(textarea[required]) {
 			label::after {
-				content: ' *';
+				content: " *";
 				color: var(--theme-invalid-color);
 			}
 		}
@@ -56,7 +56,7 @@ export const appRichTextEditorStyle = css`
 				padding: 5px 10px;
 
 				button {
-				  border: none;
+					border: none;
 					background: none;
 					display: flex;
 					cursor: pointer;
@@ -64,19 +64,20 @@ export const appRichTextEditorStyle = css`
 					margin: 0;
 
 					&[disabled] {
-					  cursor: not-allowed;
+						cursor: not-allowed;
 					}
 
-					&:hover:not([disabled]), &.active:not([disabled]) {
-					  app-icon {
-					    color: var(--theme-primary-color);
+					&:hover:not([disabled]),
+					&.active:not([disabled]) {
+						app-icon {
+							color: var(--theme-primary-color);
 						}
 					}
 				}
 
 				.separator {
-				  width: 1px;
-				  height: 20px;
+					width: 1px;
+					height: 20px;
 					background: var(--theme-default-color);
 				}
 

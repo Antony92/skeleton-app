@@ -22,45 +22,45 @@ export class AppRichTextEditor extends FormElement {
 		defaultStyle,
 		appRichTextEditorStyle,
 		css`
-        .custom-link {
-          anchor-name: --anchor;
-        }
+			.custom-link {
+				anchor-name: --anchor;
+			}
 
-        .link-popup {
-          position-anchor: --anchor;
-          width: fit-content;
-          min-width: anchor-size(--anchor);
-          position-try: flip-block;
-          position-area: span-right;
-          left: anchor(left);
-          top: anchor(bottom);
-      		border: 1px solid var(--theme-default-color);
-          background: var(--theme-default-surface);
-          border-radius: var(--radius-2);
-          overflow: auto;
-          padding: 5px;
-          margin: 0;
-          white-space: nowrap;
-          box-shadow: var(--shadow-4);
+			.link-popup {
+				position-anchor: --anchor;
+				width: fit-content;
+				min-width: anchor-size(--anchor);
+				position-try: flip-block;
+				position-area: span-right;
+				left: anchor(left);
+				top: anchor(bottom);
+				border: 1px solid var(--theme-default-color);
+				background: var(--theme-default-surface);
+				border-radius: var(--radius-2);
+				overflow: auto;
+				padding: 5px;
+				margin: 0;
+				white-space: nowrap;
+				box-shadow: var(--shadow-4);
 
-          &:popover-open {
-    				display: flex;
-            align-items: center;
-          }
+				&:popover-open {
+					display: flex;
+					align-items: center;
+				}
 
-          app-icon {
-            font-size: 20px;
-          }
+				app-icon {
+					font-size: 20px;
+				}
 
-          input {
-            border: none;
-            padding: 10px;
-            margin-left: 5px;
-            height: 30px;
-            border-radius: var(--radius-2);
-          }
-        }
-    `,
+				input {
+					border: none;
+					padding: 10px;
+					margin-left: 5px;
+					height: 30px;
+					border-radius: var(--radius-2);
+				}
+			}
+		`,
 	];
 
 	@property({ type: Boolean })

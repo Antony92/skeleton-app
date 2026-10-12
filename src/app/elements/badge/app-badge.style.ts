@@ -4,10 +4,10 @@ export const appBadgeStyle = css`
 	.badge {
 		border-radius: var(--radius-1);
 		padding: 6px 10px;
-		font-size: .65rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 		cursor: default;
 		color: var(--color);
 		background: var(--background);

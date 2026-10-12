@@ -9,9 +9,9 @@ export class AppTabGroup extends LitElement {
 	static styles = [
 		defaultStyle,
 		css`
-		  :host {
+			:host {
 				width: 100%;
-		  }
+			}
 
 			.container {
 				display: flex;

@@ -8,10 +8,10 @@ export const appFilterStyle = css`
 		background: transparent;
 		color: var(--theme-muted-color);
 		cursor: pointer;
-    transition-property: background, border-color, color;
-    transition-duration: var(--transition-fast);
-    transition-timing-function: var(--transition-easing);
-    transform-origin: center center;
+		transition-property: background, border-color, color;
+		transition-duration: var(--transition-fast);
+		transition-timing-function: var(--transition-easing);
+		transform-origin: center center;
 		font-weight: 600;
 		font-size: 0.75rem;
 

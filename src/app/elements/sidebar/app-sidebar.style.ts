@@ -17,7 +17,7 @@ export const appSidebarStyle = css`
 
 			&:before,
 			&:after {
-				content: '';
+				content: "";
 			}
 
 			li {

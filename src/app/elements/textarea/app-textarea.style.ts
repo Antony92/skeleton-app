@@ -37,7 +37,7 @@ export const appTextareaStyle = css`
 
 		&:has(textarea[required]) {
 			label::after {
-				content: ' *';
+				content: " *";
 				color: var(--theme-invalid-color);
 			}
 		}

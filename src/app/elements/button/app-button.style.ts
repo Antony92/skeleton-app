@@ -18,16 +18,16 @@ export const appButtonStyle = css`
 		color: var(--color);
 		font-family: var(--theme-font-family);
 		font-size: var(--theme-font-size-1);
-    font-weight: 600;
+		font-weight: 600;
 		text-decoration: none;
 		transition-property: background-color, color;
-    transition-duration: var(--transition-fast);
-    transition-timing-function: var(--transition-easing);
-    transform-origin: center center;
+		transition-duration: var(--transition-fast);
+		transition-timing-function: var(--transition-easing);
+		transform-origin: center center;
 
-    &.small {
-      height: auto;
-    }
+		&.small {
+			height: auto;
+		}
 
 		&:disabled {
 			opacity: 0.5;
@@ -44,27 +44,27 @@ export const appButtonStyle = css`
 		}
 	}
 
-	:host([variant='primary']) {
+	:host([variant="primary"]) {
 		--background: var(--theme-primary-background);
 		--color: var(--theme-white-color);
 	}
 
-	:host([variant='success']) {
+	:host([variant="success"]) {
 		--background: var(--theme-success-background);
 		--color: var(--theme-white-color);
 	}
 
-	:host([variant='warning']) {
+	:host([variant="warning"]) {
 		--background: var(--theme-warning-background);
 		--color: var(--theme-white-color);
 	}
 
-	:host([variant='error']) {
+	:host([variant="error"]) {
 		--background: var(--theme-error-background);
 		--color: var(--theme-white-color);
 	}
 
-	:host([appearance='plain']) {
+	:host([appearance="plain"]) {
 		button,
 		a {
 			box-shadow: none;
@@ -81,7 +81,7 @@ export const appButtonStyle = css`
 		}
 	}
 
-	:host([appearance='outlined']) {
+	:host([appearance="outlined"]) {
 		button,
 		a {
 			box-shadow: none;
@@ -99,7 +99,7 @@ export const appButtonStyle = css`
 		}
 	}
 
-	:host(:not([appearance='plain'])) {
+	:host(:not([appearance="plain"])) {
 		::slotted(app-icon) {
 			font-size: 20px;
 		}
@@ -121,28 +121,28 @@ export const appButtonStyle = css`
 	}
 
 	.loader {
-    --color-1: var(--theme-white-color);
-    --color-2: var(--theme-black-color);
-    --size: 0.025rem;
-    width: calc(48 * var(--size));
-    height: calc(48 * var(--size));
-    border: calc(5 * var(--size)) solid var(--color-1);
-    border-bottom-color: var(--color-2);
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    position: absolute;
-    transform: translate(-50%, -50%);
+		--color-1: var(--theme-white-color);
+		--color-2: var(--theme-black-color);
+		--size: 0.025rem;
+		width: calc(48 * var(--size));
+		height: calc(48 * var(--size));
+		border: calc(5 * var(--size)) solid var(--color-1);
+		border-bottom-color: var(--color-2);
+		border-radius: 50%;
+		display: inline-block;
+		box-sizing: border-box;
+		animation: rotation 1s linear infinite;
+		position: absolute;
+		transform: translate(-50%, -50%);
 	}
 
 	@keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
+		0% {
+			transform: rotate(0deg);
+		}
 
-    100% {
-      transform: rotate(360deg);
-    }
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 `;

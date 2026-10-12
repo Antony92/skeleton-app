@@ -7,8 +7,8 @@ export const mainStyle = css`
 		grid-template-columns: auto 1fr;
 		grid-template-rows: auto 1fr;
 		grid-template-areas:
-			'header header'
-			'sidebar main';
+			"header header"
+			"sidebar main";
 	}
 
 	.main {
@@ -30,9 +30,9 @@ export const mainStyle = css`
 		.layout {
 			grid-template-columns: auto;
 			grid-template-areas:
-				'header'
-				'main'
-				'sidebar';
+				"header"
+				"main"
+				"sidebar";
 		}
 	}
 `;

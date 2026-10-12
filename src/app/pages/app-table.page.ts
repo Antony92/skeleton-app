@@ -33,7 +33,8 @@ export class AppTablePage extends LitElement {
 				margin: 0 0 10px 0;
 			}
 
-			th[sticky]:nth-child(2), td[sticky]:nth-child(2) {
+			th[sticky]:nth-child(2),
+			td[sticky]:nth-child(2) {
 				--sticky-start: 35px;
 			}
 		`,

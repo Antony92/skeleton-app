@@ -6,7 +6,7 @@ import { customElement } from 'lit/decorators.js';
 export class AppNotFoundPage extends LitElement {
 	static styles = [
 		css`
-		  h1 {
+			h1 {
 				text-align: center;
 			}
 		`,

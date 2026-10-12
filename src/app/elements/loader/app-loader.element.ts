@@ -32,7 +32,7 @@ export class AppLoader extends LitElement {
 				background-color: var(--theme-default-color);
 
 				&::after {
-					content: '';
+					content: "";
 					position: absolute;
 					left: -50%;
 					height: 3px;

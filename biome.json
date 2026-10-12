@@ -8,6 +8,7 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single"
-		}
+		},
+		"experimentalEmbeddedSnippetsEnabled": true
 	}
 }

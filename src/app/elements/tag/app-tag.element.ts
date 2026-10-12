@@ -13,12 +13,12 @@ export class AppTag extends LitElement {
 		focusStyle,
 		appTagStyle,
 		css`
-		:host {
-		  --border: var(--theme-default-background);
-			--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
-			--color: var(--theme-color);
-		}
-	`,
+			:host {
+				--border: var(--theme-default-background);
+				--background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
+				--color: var(--theme-color);
+			}
+		`,
 	];
 
 	@property({ type: String })

@@ -7,7 +7,7 @@ export const appHeaderStyle = css`
 		align-items: center;
 		height: 60px;
 		padding: 0 10px;
-        border-bottom: 1px solid var(--theme-default-color);
+		border-bottom: 1px solid var(--theme-default-color);
 	}
 
 	.spacer {

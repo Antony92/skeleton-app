@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 export const appDialogStyle = css`
-  :host([fullscreen]) {
+	:host([fullscreen]) {
 		dialog {
 			inline-size: 100vw;
 			max-block-size: 100dvh;
@@ -34,7 +34,6 @@ export const appDialogStyle = css`
 		}
 
 		&[open] {
-
 			&::backdrop {
 				background-color: rgb(0 0 0 / 20%);
 			}

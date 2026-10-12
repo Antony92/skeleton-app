@@ -69,31 +69,31 @@ export const appSnackbarStyle = css`
 		}
 	}
 
-	:host([variant='primary']) {
+	:host([variant="primary"]) {
 		--background: var(--theme-primary-surface);
 		--color: var(--theme-white-color);
 		--action: var(--theme-white-color);
 	}
 
-	:host([variant='success']) {
+	:host([variant="success"]) {
 		--background: var(--theme-success-surface);
 		--color: var(--theme-white-color);
 		--action: var(--theme-white-color);
 	}
 
-	:host([variant='warning']) {
+	:host([variant="warning"]) {
 		--background: var(--theme-warning-surface);
 		--color: var(--theme-white-color);
 		--action: var(--theme-white-color);
 	}
 
-	:host([variant='error']) {
+	:host([variant="error"]) {
 		--background: var(--theme-error-surface);
 		--color: var(--theme-white-color);
 		--action: var(--theme-white-color);
 	}
 
-	slot[name='icon'] {
+	slot[name="icon"] {
 		font-size: 1.2rem;
 	}
 `;
