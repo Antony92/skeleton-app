@@ -80,6 +80,7 @@ export class AppFileUpload extends FormElement {
 		this.addEventListener('click', (event) => {
 			const target = event.target as HTMLElement;
 			if (!this.disabled && (target.assignedSlot?.name === 'trigger' || target.closest('[slot="trigger"]'))) {
+				event.stopPropagation();
 				this.input.click();
 			}
 		});
