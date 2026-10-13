@@ -65,3 +65,7 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, tim
 		timer = setTimeout(() => func.apply(this, args), timeout);
 	};
 };
+
+export const copyToClipboard = (text: string) => {
+	navigator.clipboard.writeText(text);
+};

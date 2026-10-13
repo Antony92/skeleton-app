@@ -205,7 +205,6 @@ export class AppTable extends LitElement {
 							</app-input>
 						`,
 					)}
-					<slot name="actions"></slot>
 					${when(
 						this.clearable,
 						() => html`
@@ -216,10 +215,11 @@ export class AppTable extends LitElement {
 								?disabled=${!this.filtersApplied}
 							>
 								<app-icon filled>filter_alt_off</app-icon>
-								Clear filters
+								Clear
 							</app-button>
 						`,
 					)}
+					<slot name="actions"></slot>
 				</div>
 			</header>
 			<div class="table-container">

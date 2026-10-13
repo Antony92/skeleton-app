@@ -54,11 +54,11 @@ export class AppTablePage extends LitElement {
 	@query('app-paginator')
 	paginator!: AppPaginator;
 
-	@query('#edit-user-dialog')
-	editUserDialog!: AppDialog;
+	@query('#user-dialog')
+	userDialog!: AppDialog;
 
-	@query('#edit-user-dialog form')
-	editUserForm!: HTMLFormElement;
+	@query('#user-dialog form')
+	userForm!: HTMLFormElement;
 
 	private filtersMap = new Map();
 	private skip = 0;
@@ -109,13 +109,13 @@ export class AppTablePage extends LitElement {
 	onPaginate(event: AppPaginateEvent) {
 		const { pageSize, pageIndex } = event.value;
 		this.limit = pageSize;
-    this.skip = pageSize * pageIndex;
+		this.skip = pageSize * pageIndex;
 		this.filtersMap.set('skip', this.skip);
 		this.syncRouteAndReload();
 	}
 
 	async onTableFilter() {
-    this.skip = 0;
+		this.skip = 0;
 		this.filtersMap.delete('skip');
 		await this.syncRouteAndReload();
 		this.paginator.reset();
@@ -140,21 +140,22 @@ export class AppTablePage extends LitElement {
 
 	async saveUser(event: Event) {
 		event.preventDefault();
-		if (!this.editUserForm.checkValidity()) {
-			this.editUserForm.querySelector<HTMLElement>('*:state(invalid)')?.focus();
+		if (!this.userForm.checkValidity()) {
+			this.userForm.querySelector<HTMLElement>('*:state(invalid)')?.focus();
 			return;
 		}
-		const data = serializeForm(this.editUserForm);
+		const data = serializeForm(this.userForm);
 		const index = this.users.data.indexOf(this.selectedUser);
-		this.users.data.splice(index, 1, { ...this.selectedUser, ...data });
-		this.editUserDialog.hide();
+		this.users.data.splice(index, 1, { id: 1, ...this.selectedUser, ...data });
+		this.userDialog.hide();
 		this.requestUpdate();
-		notify({ message: 'User updated', variant: 'success' });
+		notify({ message: `User ${this.selectedUser ? 'updated' : 'created'}`, variant: 'success' });
 	}
 
-	async editUser(user: any) {
+	async openUserDialog(user?: any) {
+		if (!user) this.userForm.reset();
 		this.selectedUser = user;
-		this.editUserDialog.show();
+		this.userDialog.show();
 	}
 
 	async deleteUser(user: any) {
@@ -180,6 +181,10 @@ export class AppTablePage extends LitElement {
 			>
 			  <app-button title="Refresh" slot="actions" variant="primary" appearance="outlined" @click=${() => this.loadUsers()}>
 					<app-icon>refresh</app-icon>
+				</app-button>
+				<app-button title="Create user" slot="actions" variant="primary" appearance="outlined" @click=${() => this.openUserDialog()}>
+					<app-icon>add</app-icon>
+					Create
 				</app-button>
 				<table slot="table" class="hoverable">
 					<thead>
@@ -226,7 +231,7 @@ export class AppTablePage extends LitElement {
   										<app-button slot="trigger" variant="primary" appearance="plain" size="small">
      						        <app-icon filled>more_horiz</app-icon>
   										</app-button>
-  										<app-dropdown-item @click=${() => this.editUser(user)}>
+  										<app-dropdown-item @click=${() => this.openUserDialog(user)}>
      										<app-icon slot="prefix">edit_square</app-icon>
      										Edit
   										</app-dropdown-item>
@@ -278,14 +283,16 @@ export class AppTablePage extends LitElement {
 				</app-paginator>
 			</app-table>
 
-			<app-dialog id="edit-user-dialog" header="Edit User" modal @app-after-hide=${() => (this.selectedUser = null)}>
+			<app-dialog id="user-dialog" header="${this.selectedUser ? 'Update' : 'Create'} User" modal @app-after-hide=${() => (this.selectedUser = null)}>
 				<form @submit=${this.saveUser} novalidate>
 					<app-input label="Username" name="username" required .value=${this.selectedUser?.username || ''}></app-input>
 					<app-input label="First Name" name="firstName" required .value=${this.selectedUser?.firstName || ''}></app-input>
 					<app-input label="Last Name" name="lastName" required .value=${this.selectedUser?.lastName || ''}></app-input>
 				</form>
 				<app-button slot="footer" variant="primary" appearance="plain" app-dialog-close>Cancel</app-button>
-				<app-button slot="footer" variant="primary" autofocus @click=${() => this.editUserForm.requestSubmit()}>Update</app-button>
+				<app-button slot="footer" variant="primary" autofocus @click=${() => this.userForm.requestSubmit()}>
+					${this.selectedUser ? 'Update' : 'Create'}
+				</app-button>
 			</app-dialog>
 		`;
 	}
