@@ -14,7 +14,6 @@ import '@app/elements/input/app-input.element';
 import '@app/elements/button/app-button.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
-import type { AppTable } from '@app/elements/table/app-table.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
 import type { AppTableFilterEvent } from '@app/events/table.event';
 import { confirmDialog } from '@app/shared/dialogs';
@@ -53,9 +52,6 @@ export class AppTablePage extends LitElement {
 	@state()
 	loading = true;
 
-	@query('app-table')
-	table!: AppTable;
-
 	@query('app-paginator')
 	paginator!: AppPaginator;
 
@@ -70,7 +66,6 @@ export class AppTablePage extends LitElement {
 	private limit = 10;
 	private storageLimitName = 'table-limit';
 
-	@state()
 	columns: TableColumn[] = [
 		{ header: '#', field: 'id', type: 'number', sortable: true, filtarable: true, delay: 300 },
 		{ header: 'Username', field: 'username', type: 'text', sortable: true, filtarable: true, delay: 300 },
@@ -122,7 +117,6 @@ export class AppTablePage extends LitElement {
 
 	async onTableFilter(event: AppTableFilterEvent) {
 		this.filtersMap = event.filters;
-		this.columns = this.table.columns;
 		this.skip = 0;
 		await this.syncRouteAndReload();
 		this.paginator.reset();
