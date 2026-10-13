@@ -24,29 +24,43 @@ export class AppTable extends LitElement {
 				overflow-x: auto;
 			}
 
-			.actions-container {
+			header {
 				display: flex;
 				align-items: center;
 				flex-wrap: wrap;
 				gap: 10px;
 				margin-bottom: 10px;
 
+				h3 {
+					margin: 0;
+				}
+
 				app-input {
 					width: 100%;
 
 					@media (min-width: 768px) {
-						max-width: 350px;
+						width: 300px;
 					}
 				}
 
 				.actions {
 					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
 					gap: 10px;
-					margin-left: auto;
+					width: 100%;
+
+					@media (min-width: 768px) {
+						margin-left: auto;
+						width: fit-content;
+					}
 				}
 			}
 		`,
 	];
+
+	@property({ type: String })
+	accessor header = '';
 
 	@property({ type: Boolean })
 	accessor searchable = false;
@@ -173,23 +187,24 @@ export class AppTable extends LitElement {
 
 	render() {
 		return html`
-			<div class="actions-container">
-				${when(
-					this.searchable,
-					() => html`
-						<app-input
-							autocomplete="off"
-							.value=${this.searchValue}
-							clearable
-							placeholder="Search"
-							@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
-							@app-clear=${this.clearSearch}
-						>
-							<app-icon slot="prefix" filled>search</app-icon>
-						</app-input>
-					`,
-				)}
+			<header>
+			  <h3>${this.header}</h3>
 				<div class="actions">
+					${when(
+						this.searchable,
+						() => html`
+							<app-input
+								autocomplete="off"
+								.value=${this.searchValue}
+								clearable
+								placeholder="Search"
+								@app-input=${(event: Event) => this.search((event.target as AppInput).value)}
+								@app-clear=${this.clearSearch}
+							>
+								<app-icon slot="prefix" filled>search</app-icon>
+							</app-input>
+						`,
+					)}
 					<slot name="actions"></slot>
 					${when(
 						this.clearable,
@@ -206,7 +221,7 @@ export class AppTable extends LitElement {
 						`,
 					)}
 				</div>
-			</div>
+			</header>
 			<div class="table-container">
 				<slot name="table"></slot>
 			</div>

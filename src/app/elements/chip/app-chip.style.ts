@@ -50,6 +50,10 @@ export const appChipStyle = css`
 			right: 12px;
 			top: 50%;
 			transform: translateY(-50%);
+
+			&:disabled {
+				cursor: not-allowed;
+			}
 		}
 	}
 `;

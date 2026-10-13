@@ -23,11 +23,10 @@ export class AppChip extends LitElement {
 	accessor removable = false;
 
 	onRemove(event: Event) {
-		event.stopPropagation();
 		if (!this.dispatchEvent(new Event('app-remove', { cancelable: true }))) {
+			event.stopPropagation();
 			return;
 		}
-		this.active = false;
 	}
 
 	render() {
@@ -41,7 +40,7 @@ export class AppChip extends LitElement {
 			  >
 				  <slot></slot>
 			  </button>
-			  ${when(this.removable, () => html`<button class="remove" @click=${this.onRemove}>✕</button>`)}
+			  ${when(this.removable, () => html`<button class="remove" @click=${this.onRemove} ?disabled=${this.disabled}>✕</button>`)}
 		  </div>
 		`;
 	}

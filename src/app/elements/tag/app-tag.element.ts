@@ -25,6 +25,9 @@ export class AppTag extends LitElement {
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
 	@property({ type: Boolean })
+	accessor pill = false;
+
+	@property({ type: Boolean })
 	accessor removable = false;
 
 	onRemove() {
@@ -35,7 +38,7 @@ export class AppTag extends LitElement {
 
 	render() {
 		return html`
-			<div part="tag" class=${classMap({ removable: this.removable })}>
+			<div part="tag" class=${classMap({ removable: this.removable, pill: this.pill })}>
 				<slot></slot>
 				${when(this.removable, () => html`<button class="remove" @click=${this.onRemove}>✕</button>`)}
 			</div>

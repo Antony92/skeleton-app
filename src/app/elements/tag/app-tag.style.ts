@@ -10,11 +10,15 @@ export const appTagStyle = css`
 		font-weight: 600;
 		font-size: 0.75rem;
 		display: flex;
-		gap: 10px;
+		gap: 5px;
 		align-items: center;
 
 		&.removable {
 			padding: 6px 10px 6px 12px;
+		}
+
+		&.pill {
+			border-radius: var(--radius-round);
 		}
 
 		.remove {

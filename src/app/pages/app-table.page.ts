@@ -168,8 +168,8 @@ export class AppTablePage extends LitElement {
 
 	render() {
 		return html`
-			<h3>Table</h3>
 			<app-table
+				header="Table"
 				searchable
 				clearable
 				@app-table-clear=${this.onTableClear}
