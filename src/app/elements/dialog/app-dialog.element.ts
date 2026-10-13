@@ -3,6 +3,7 @@ import { defaultStyle } from '@app/styles/default.style';
 import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
@@ -31,7 +32,10 @@ export class AppDialog extends LitElement {
 	accessor modal = false;
 
 	@property({ type: Boolean })
-	accessor fullscreen = false;
+  accessor fullscreen = false;
+
+  @property({ type: Boolean, attribute: 'show-hide' })
+	accessor showHide = true;
 
 	@query('dialog')
 	accessor dialog!: HTMLDialogElement;
@@ -121,8 +125,10 @@ export class AppDialog extends LitElement {
 			<dialog>
 				<div class="container">
 					<header>
-						<h3>${this.header}</h3>
-						<button class="focus-visible" @click=${this.hide}>✕</button>
+					  <slot name="header">
+						  <h3>${this.header}</h3>
+					  </slot>
+						${when(this.showHide, () => html`<button class="focus-visible" @click=${this.hide}>✕</button>`)}
 					</header>
 					<article>
 						<slot></slot>
