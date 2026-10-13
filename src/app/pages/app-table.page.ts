@@ -101,21 +101,22 @@ export class AppTablePage extends LitElement {
 	}
 
 	async syncRouteAndReload() {
-		this.filtersMap.set('skip', this.skip);
 		const filters = Object.fromEntries(this.filtersMap);
 		addSearchToRoute(filters);
-		await this.loadUsers();
+		this.loadUsers();
 	}
 
 	onPaginate(event: AppPaginateEvent) {
 		const { pageSize, pageIndex } = event.value;
 		this.limit = pageSize;
-		this.skip = pageSize * pageIndex;
+    this.skip = pageSize * pageIndex;
+		this.filtersMap.set('skip', this.skip);
 		this.syncRouteAndReload();
 	}
 
 	async onTableFilter() {
-		this.skip = 0;
+    this.skip = 0;
+		this.filtersMap.delete('skip');
 		await this.syncRouteAndReload();
 		this.paginator.reset();
 	}
