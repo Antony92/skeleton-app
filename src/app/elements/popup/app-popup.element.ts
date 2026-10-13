@@ -53,7 +53,7 @@ export class AppPopup extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('click', (event) => {
 			const target = event.target as HTMLElement;
-			if (target.assignedSlot?.name === 'trigger' || target.closest('[slot="trigger"]')) {
+			if (target.assignedSlot?.name === 'trigger') {
 				event.stopPropagation();
 				this.togglePopup();
 			} else if (target.hasAttribute('app-popup-close')) {

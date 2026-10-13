@@ -53,6 +53,7 @@ export class AppDropdownItem extends LitElement {
 				.prefix {
 					display: flex;
 					align-items: center;
+					pointer-events: none;
 				}
 
 				&:not(:disabled, :focus-visible):hover {

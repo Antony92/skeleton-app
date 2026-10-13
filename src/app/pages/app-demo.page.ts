@@ -451,7 +451,10 @@ export class AppDemoPage extends LitElement {
 				printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and
 				typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
 				galley of type and scrambled it to make a type specimen book.
-				<app-button slot="footer" variant="primary" autofocus app-dialog-close>Close</app-button>
+				<app-button slot="footer" variant="primary" autofocus app-dialog-close>
+				   <app-icon>close</app-icon>
+				    Close
+				</app-button>
 			</app-dialog>
 		`;
 	}

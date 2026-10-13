@@ -18,6 +18,10 @@ export class AppButton extends LitElement {
 				--background: var(--theme-default-background);
 				--color: var(--theme-white-color);
 			}
+
+			::slotted(*) {
+				pointer-events: none;
+			}
 		`,
 	];
 
