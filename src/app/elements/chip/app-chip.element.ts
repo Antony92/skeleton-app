@@ -4,6 +4,7 @@ import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
 
 @customElement('app-chip')
 export class AppChip extends LitElement {
@@ -18,16 +19,30 @@ export class AppChip extends LitElement {
 	@property({ type: Boolean })
 	accessor disabled = false;
 
+	@property({ type: Boolean })
+	accessor removable = false;
+
+	onRemove(event: Event) {
+		event.stopPropagation();
+		if (!this.dispatchEvent(new Event('app-remove', { cancelable: true }))) {
+			return;
+		}
+		this.active = false;
+	}
+
 	render() {
 		return html`
-			<button
-				part="filter"
-				?disabled=${this.disabled}
-				class="${classMap({ 'focus-visible': true, active: this.active })}"
-				@click=${() => (this.active = !this.active)}
-			>
-				<slot></slot>
-			</button>
+		  <div>
+			  <button
+			    part="chip"
+				  ?disabled=${this.disabled}
+				  class="${classMap({ 'focus-visible': true, active: this.active, chip: true, removable: this.removable })}"
+				  @click=${() => (this.active = !this.active)}
+			  >
+				  <slot></slot>
+			  </button>
+			  ${when(this.removable, () => html`<button class="remove" @click=${this.onRemove}>✕</button>`)}
+		  </div>
 		`;
 	}
 }

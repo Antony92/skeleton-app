@@ -15,7 +15,6 @@ import '@app/elements/button/app-button.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
-import type { AppTableFilterEvent } from '@app/events/table.event';
 import { confirmDialog } from '@app/shared/dialogs';
 import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';

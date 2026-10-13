@@ -329,8 +329,8 @@ export class AppDemoPage extends LitElement {
 				<h4>Chips</h4>
 				<div class="container">
 					<app-chip-group>
-						<app-chip active value="all">All</app-chip>
-						<app-chip value="some">Only Some</app-chip>
+						<app-chip value="all">All</app-chip>
+						<app-chip value="some" removable>Only Some</app-chip>
 					</app-chip-group>
 				</div>
 			</div>

@@ -14,7 +14,7 @@ export const appTagStyle = css`
 		align-items: center;
 
 		&.removable {
-			padding: 6px 10px 6px 16px;
+			padding: 6px 10px 6px 12px;
 		}
 
 		.remove {
