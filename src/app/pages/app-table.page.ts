@@ -115,8 +115,7 @@ export class AppTablePage extends LitElement {
 		this.syncRouteAndReload();
 	}
 
-	async onTableFilter(event: AppTableFilterEvent) {
-		this.filtersMap = event.filters;
+	async onTableFilter() {
 		this.skip = 0;
 		await this.syncRouteAndReload();
 		this.paginator.reset();
