@@ -177,6 +177,9 @@ export class AppTablePage extends LitElement {
 				.columns=${this.columns}
 				.filtersMap=${this.filtersMap}
 			>
+			  <app-button title="Refresh" slot="actions" variant="primary" appearance="outlined" @click=${() => this.syncRouteAndReload()}>
+					<app-icon>refresh</app-icon>
+				</app-button>
 				<table slot="table" class="hoverable">
 					<thead>
 						<tr>
