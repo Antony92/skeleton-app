@@ -1,19 +1,10 @@
-import type { TableColumnFilterOrder, TableColumnFilterValue } from '@app/types/table.type';
+import type { TableHeaderFilter } from '@app/types/table.type';
 
-export class AppTableColumnFilterValueEvent extends Event {
-	readonly filter: TableColumnFilterValue;
+export class AppTableHeaderFilterEvent extends Event {
+	readonly filter: TableHeaderFilter;
 
-	constructor(filter: TableColumnFilterValue) {
-		super('app-table-column-filter-value', { bubbles: true, composed: true });
-		this.filter = filter;
-	}
-}
-
-export class AppTableColumnFilterOrderEvent extends Event {
-	readonly filter: TableColumnFilterOrder;
-
-	constructor(filter: TableColumnFilterOrder) {
-		super('app-table-column-filter-order', { bubbles: true, composed: true });
+	constructor(filter: TableHeaderFilter) {
+		super('app-table-header-filter', { bubbles: true, composed: true });
 		this.filter = filter;
 	}
 }
@@ -29,8 +20,7 @@ export class AppTableFilterEvent extends Event {
 
 declare global {
 	interface GlobalEventHandlersEventMap {
-		'app-table-column-filter-value': AppTableColumnFilterValueEvent;
-		'app-table-column-filter-order': AppTableColumnFilterOrderEvent;
+		'app-table-header-filter': AppTableHeaderFilterEvent;
 		'app-table-filter': AppTableFilterEvent;
 	}
 }

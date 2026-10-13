@@ -1,4 +1,4 @@
-import { AppTableColumnFilterOrderEvent, AppTableColumnFilterValueEvent } from '@app/events/table.event';
+import { AppTableHeaderFilterEvent } from '@app/events/table.event';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -12,8 +12,8 @@ import type { AppSelect } from '@app/elements/select/app-select.element';
 import { defaultStyle } from '@app/styles/default.style';
 import { debounce } from '@app/utils/html';
 
-@customElement('app-table-column')
-export class AppTableColumn extends LitElement {
+@customElement('app-table-header')
+export class AppTableHeader extends LitElement {
 	static styles = [
 		defaultStyle,
 		css`
@@ -87,19 +87,15 @@ export class AppTableColumn extends LitElement {
 
 	private debouncedSearch?: ReturnType<typeof debounce>;
 
-	dispatchFilterValueEvent() {
-		this.dispatchEvent(new AppTableColumnFilterValueEvent({ field: this.field, value: this.value }));
-	}
-
-	dispatchFilterOrderEvent() {
-		this.dispatchEvent(new AppTableColumnFilterOrderEvent({ field: this.field, order: this.order }));
+	dispatchFilterEvent(type: 'order' | 'value' = 'value') {
+		this.dispatchEvent(new AppTableHeaderFilterEvent({ field: this.field, value: this.value, order: this.order, type }));
 	}
 
 	private search(event: Event) {
 		const input = event.target as AppInput;
 		this.value = input.value;
 		if (!this.debouncedSearch) {
-			this.debouncedSearch = debounce(() => this.dispatchFilterValueEvent(), this.delay);
+			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), this.delay);
 		}
 		return this.debouncedSearch();
 	}
@@ -107,7 +103,7 @@ export class AppTableColumn extends LitElement {
 	private filterColumnValue(event: Event) {
 		const input = event.target as AppInput | AppSelect;
 		this.value = input.value;
-		this.dispatchFilterValueEvent();
+		this.dispatchFilterEvent('value');
 	}
 
 	private filterColumnOrder() {
@@ -120,7 +116,7 @@ export class AppTableColumn extends LitElement {
 		} else if (this.order === 'desc') {
 			this.order = null;
 		}
-		this.dispatchFilterOrderEvent();
+		this.dispatchFilterEvent('order');
 	}
 
 	clearFilters() {
@@ -133,12 +129,7 @@ export class AppTableColumn extends LitElement {
 	}
 
 	clearValueFilter() {
-		this.renderRoot.querySelectorAll('app-input').forEach((input) => {
-			input.value = '';
-		});
-		this.renderRoot.querySelectorAll('app-select').forEach((select) => {
-			select.value = '';
-		});
+		this.value = '';
 	}
 
 	render() {
@@ -225,6 +216,6 @@ export class AppTableColumn extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-table-column': AppTableColumn;
+		'app-table-header': AppTableHeader;
 	}
 }

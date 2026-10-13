@@ -5,7 +5,7 @@ import { serializeForm, setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/table/app-table.element';
-import '@app/elements/table-column/app-table-column.element';
+import '@app/elements/table-header/app-table-header.element';
 import '@app/elements/paginator/app-paginator.element';
 import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
@@ -14,6 +14,7 @@ import '@app/elements/input/app-input.element';
 import '@app/elements/button/app-button.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
+import type { AppTable } from '@app/elements/table/app-table.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
 import type { AppTableFilterEvent } from '@app/events/table.event';
 import { confirmDialog } from '@app/shared/dialogs';
@@ -52,6 +53,9 @@ export class AppTablePage extends LitElement {
 	@state()
 	loading = true;
 
+	@query('app-table')
+	table!: AppTable;
+
 	@query('app-paginator')
 	paginator!: AppPaginator;
 
@@ -61,7 +65,7 @@ export class AppTablePage extends LitElement {
 	@query('#edit-user-dialog form')
 	editUserForm!: HTMLFormElement;
 
-	private filterMap = new Map();
+	private filtersMap = new Map();
 	private skip = 0;
 	private limit = 10;
 	private storageLimitName = 'table-limit';
@@ -89,34 +93,22 @@ export class AppTablePage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		setPageTitle('Table');
-		this.filterMap = getRouteSearchMap();
+		this.filtersMap = getRouteSearchMap();
 		this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
-		this.skip = Number(this.filterMap.get('skip')) || this.skip;
-		this.filterMap.forEach((value, key) => {
-			const column = this.columns.find((column) => column.field === key);
-			if (column) {
-				column.value = value;
-			}
-			if (key === 'sort') {
-				const sortColumn = this.columns.find((column) => column.field === value);
-				if (sortColumn) {
-					sortColumn.order = this.filterMap.get('order');
-				}
-			}
-		});
+		this.skip = Number(this.filtersMap.get('skip')) || this.skip;
 		this.loadUsers();
 	}
 
 	async loadUsers() {
 		this.loading = true;
-		const filters = Object.fromEntries(this.filterMap);
+		const filters = Object.fromEntries(this.filtersMap);
 		this.users = await getUsers({ ...filters, skip: this.skip, limit: this.limit });
 		this.loading = false;
 	}
 
 	async syncRouteAndReload() {
-		this.filterMap.set('skip', this.skip);
-		const filters = Object.fromEntries(this.filterMap);
+		this.filtersMap.set('skip', this.skip);
+		const filters = Object.fromEntries(this.filtersMap);
 		addSearchToRoute(filters);
 		await this.loadUsers();
 	}
@@ -129,22 +121,15 @@ export class AppTablePage extends LitElement {
 	}
 
 	async onTableFilter(event: AppTableFilterEvent) {
-		this.filterMap = event.filters;
+		this.filtersMap = event.filters;
+		this.columns = this.table.columns;
 		this.skip = 0;
 		await this.syncRouteAndReload();
 		this.paginator.reset();
 	}
 
-	async onTableClear() {
-		this.filterMap.clear();
+	onTableClear() {
 		clearRouteSearch();
-		this.skip = 0;
-		this.columns.forEach((column) => {
-			column.value = '';
-			column.order = null;
-		});
-		await this.loadUsers();
-		this.paginator.reset();
 	}
 
 	toggleSelection(event: Event) {
@@ -193,12 +178,12 @@ export class AppTablePage extends LitElement {
 		return html`
 			<h3>Table</h3>
 			<app-table
-				.searchValue=${this.filterMap.get('search') || ''}
-				.filtersApplied=${this.filterMap.size > 0}
 				searchable
 				clearable
 				@app-table-clear=${this.onTableClear}
 				@app-table-filter=${this.onTableFilter}
+				.columns=${this.columns}
+				.filtersMap=${this.filtersMap}
 			>
 				<table slot="table" class="hoverable">
 					<thead>
@@ -215,7 +200,7 @@ export class AppTablePage extends LitElement {
 							${this.columns.map(
 								(column) => html`
 									<th>
-										<app-table-column
+										<app-table-header
 											?sortable=${column.sortable}
 											?filterable=${column.filtarable}
 											.label=${column.header}
@@ -227,7 +212,7 @@ export class AppTablePage extends LitElement {
 											.order=${column.order || null}
 										>
 											${column.header}
-										</app-table-column>
+										</app-table-header>
 									</th>
 								`,
 							)}

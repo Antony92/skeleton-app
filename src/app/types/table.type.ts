@@ -10,12 +10,9 @@ export type TableColumn = {
 	order?: 'desc' | 'asc' | null;
 };
 
-export type TableColumnFilterValue = {
+export type TableHeaderFilter = {
 	field: string;
 	value: string;
-};
-
-export type TableColumnFilterOrder = {
-	field: string;
 	order: 'desc' | 'asc' | null;
+	type: 'order' | 'value';
 };
