@@ -35,7 +35,7 @@ export class AppSnackbar extends LitElement {
 	@property({ type: String, reflect: true })
 	accessor variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default';
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	accessor position: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left' = 'bottom';
 
 	@property({ type: Number })

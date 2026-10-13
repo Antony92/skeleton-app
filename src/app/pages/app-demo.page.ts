@@ -29,8 +29,10 @@ import '@app/elements/popup/app-popup.element';
 import '@app/elements/details/app-details.element';
 import '@app/elements/tag/app-tag.element';
 import '@app/elements/switch/app-switch.element';
+import '@app/elements/drawer/app-drawer.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
+import type { AppDrawer } from '@app/elements/drawer/app-drawer.element';
 import { getProducts } from '@app/services/api.service';
 import { confirmDialog, promptDialog } from '@app/shared/dialogs';
 import { loading } from '@app/shared/loader';
@@ -85,6 +87,9 @@ export class AppDemoPage extends LitElement {
 
 	@query('app-dialog')
 	appDialog!: AppDialog;
+
+	@query('app-drawer')
+	appDrawer!: AppDrawer;
 
 	connectedCallback() {
 		super.connectedCallback();
@@ -285,6 +290,16 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
+				<h4>Drawer</h4>
+				<div class="container">
+				  <app-button variant="primary" @click=${() => this.appDrawer.show('left')}>Open Drawer Left</app-button>
+				  <app-button variant="primary" @click=${() => this.appDrawer.show('right')}>Open Drawer Right</app-button>
+				  <app-button variant="primary" @click=${() => this.appDrawer.show('top')}>Open Drawer Top</app-button>
+				  <app-button variant="primary" @click=${() => this.appDrawer.show('bottom')}>Open Drawer Bottom</app-button>
+				</div>
+			</div>
+
+			<div class="demo">
 				<h4>Snackbar</h4>
 				<div class="container">
 					<app-button
@@ -456,6 +471,41 @@ export class AppDemoPage extends LitElement {
 				    Close
 				</app-button>
 			</app-dialog>
+
+			<app-drawer header="Drawer" modal>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+        ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is
+        simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+        1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text
+        of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+        unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing
+        and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+        galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+        and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+        and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+        has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+        make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+        industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+        make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+        industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+        specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem
+        Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply
+        dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply
+        dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+        printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+        printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and
+        typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+        printer took a galley of type and scrambled it to make a type specimen book.
+				<app-button slot="footer" variant="primary" autofocus app-drawer-close>Close</app-button>
+			</app-drawer>
 		`;
 	}
 }
