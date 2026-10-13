@@ -182,7 +182,7 @@ export class AppTablePage extends LitElement {
 			  <app-button title="Refresh" slot="actions" variant="primary" appearance="outlined" @click=${() => this.loadUsers()}>
 					<app-icon>refresh</app-icon>
 				</app-button>
-				<app-button title="Create user" slot="actions" variant="primary" appearance="outlined" @click=${() => this.openUserDialog()}>
+				<app-button title="Create user" slot="actions" variant="primary" @click=${() => this.openUserDialog()}>
 					<app-icon>add</app-icon>
 					Create
 				</app-button>
