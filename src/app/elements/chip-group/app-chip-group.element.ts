@@ -1,10 +1,10 @@
-import type { AppFilter } from '@app/elements/filter/app-filter.element';
+import type { AppChip } from '@app/elements/chip/app-chip.element';
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, queryAssignedElements } from 'lit/decorators.js';
 
-@customElement('app-filter-group')
-export class AppFilterGroup extends LitElement {
+@customElement('app-chip-group')
+export class AppChipGroup extends LitElement {
 	static styles = [
 		defaultStyle,
 		css`
@@ -26,22 +26,22 @@ export class AppFilterGroup extends LitElement {
 	accessor multiple = false;
 
 	@queryAssignedElements()
-	accessor filters!: AppFilter[];
+	accessor chips!: AppChip[];
 
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('click', (event) => {
 			const target = event.target as HTMLElement;
-			if (target.tagName === 'APP-FILTER') {
+			if (target.tagName === 'APP-CHIP') {
 				event.stopPropagation();
-				const filter = target as AppFilter;
+				const chip = target as AppChip;
 				if (this.multiple) {
-					this.value = this.filters
+					this.value = this.chips
 						.filter((t) => t.active)
 						.map((t) => t.value)
 						.join(', ');
 				} else {
-					this.value = filter.active ? filter.value : '';
+					this.value = chip.active ? chip.value : '';
 				}
 				this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
 			}
@@ -50,13 +50,13 @@ export class AppFilterGroup extends LitElement {
 
 	protected updated(_changedProperties: PropertyValues) {
 		super.updated(_changedProperties);
-		this.filters.forEach((filter) => {
+		this.chips.forEach((chip) => {
 			if (this.multiple) {
-				filter.active = this.value.includes(filter.value);
+				chip.active = this.value.includes(chip.value);
 			} else {
-				filter.active = !!this.value && filter.value === this.value;
+				chip.active = !!this.value && chip.value === this.value;
 			}
-			filter.disabled = this.disabled;
+			chip.disabled = this.disabled;
 		});
 	}
 
@@ -67,6 +67,6 @@ export class AppFilterGroup extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'app-filter-group': AppFilterGroup;
+		'app-chip-group': AppChipGroup;
 	}
 }

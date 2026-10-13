@@ -42,11 +42,7 @@ export class AppTable extends LitElement {
 				.actions {
 					display: flex;
 					gap: 10px;
-					flex-grow: 1;
-
-					.clear-filters {
-						margin-left: auto;
-					}
+					margin-left: auto;
 				}
 			}
 		`,
@@ -199,7 +195,6 @@ export class AppTable extends LitElement {
 						this.clearable,
 						() => html`
 							<app-button
-								class="clear-filters"
 								variant="primary"
 								appearance="outlined"
 								@click=${this.clearAllFilters}

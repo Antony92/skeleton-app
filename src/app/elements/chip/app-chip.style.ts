@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const appFilterStyle = css`
+export const appChipStyle = css`
 	button {
 		padding: 6px 16px;
 		border-radius: var(--radius-round);

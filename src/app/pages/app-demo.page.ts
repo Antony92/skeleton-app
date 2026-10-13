@@ -22,8 +22,8 @@ import '@app/elements/tab-group/app-tab-group.element';
 import '@app/elements/tab-panel/app-tab-panel.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/file-upload/app-file-upload.element';
-import '@app/elements/filter-group/app-filter-group.element';
-import '@app/elements/filter/app-filter.element';
+import '@app/elements/chip-group/app-chip-group.element';
+import '@app/elements/chip/app-chip.element';
 import '@app/elements/tooltip/app-tooltip.element';
 import '@app/elements/popup/app-popup.element';
 import '@app/elements/details/app-details.element';
@@ -326,12 +326,12 @@ export class AppDemoPage extends LitElement {
 			</div>
 
 			<div class="demo">
-				<h4>Filters</h4>
+				<h4>Chips</h4>
 				<div class="container">
-					<app-filter-group>
-						<app-filter active value="all">All</app-filter>
-						<app-filter value="some">Only Some</app-filter>
-					</app-filter-group>
+					<app-chip-group>
+						<app-chip active value="all">All</app-chip>
+						<app-chip value="some">Only Some</app-chip>
+					</app-chip-group>
 				</div>
 			</div>
 
