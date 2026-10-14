@@ -242,6 +242,28 @@ export class AppDemoPage extends LitElement {
 							Delete
 						</app-dropdown-item>
 					</app-dropdown>
+
+					<app-dropdown>
+						<app-button slot="trigger" variant="primary">
+							Dropdown with submenu
+							<app-icon filled>arrow_drop_down</app-icon>
+						</app-button>
+						<app-dropdown-item value="1">
+							<app-icon slot="prefix">save</app-icon>
+							Save
+						</app-dropdown-item>
+						<app-dropdown-item>
+							<app-icon slot="prefix">delete</app-icon>
+							More
+							<app-icon slot="suffix">chevron_right</app-icon>
+							<app-dropdown-item value="2" slot="submenu">
+								Submenu item 1
+							</app-dropdown-item>
+							<app-dropdown-item value="3" slot="submenu">
+								Submenu item 2
+							</app-dropdown-item>
+						</app-dropdown-item>
+					</app-dropdown>
 				</div>
 			</div>
 

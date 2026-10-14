@@ -1,6 +1,6 @@
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-dropdown-item')
@@ -49,11 +49,17 @@ export class AppDropdownItem extends LitElement {
 				font-size: var(--theme-font-size-1);
 				border-radius: var(--radius-2);
 				color: inherit;
+				anchor-name: --anchor;
 
-				.prefix {
+				.prefix,
+				.suffix {
 					display: flex;
 					align-items: center;
 					pointer-events: none;
+				}
+
+				.suffix {
+					margin-left: auto;
 				}
 
 				&:not(:disabled, :focus-visible):hover {
@@ -71,6 +77,26 @@ export class AppDropdownItem extends LitElement {
 					cursor: not-allowed;
 				}
 			}
+
+			[popover] {
+				position-anchor: --anchor;
+				width: fit-content;
+				min-width: anchor-size(--anchor);
+				position-area: right span-bottom;
+				left: anchor(right);
+				top: anchor(top);
+				border: 1px solid var(--theme-default-color);
+				background: var(--theme-default-surface);
+				border-radius: var(--radius-2);
+				overflow: auto;
+				padding: 5px;
+				margin: 0;
+
+				&:popover-open {
+					display: flex;
+					flex-direction: column;
+				}
+			}
 		`,
 	];
 
@@ -86,6 +112,44 @@ export class AppDropdownItem extends LitElement {
 	@property({ type: String })
 	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
+	@query('[popover]')
+	accessor popup!: HTMLElement;
+
+	@queryAssignedElements({ slot: 'submenu', selector: 'app-dropdown-item' })
+	accessor submenuItems!: AppDropdownItem[];
+
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('mouseenter', (event) => {
+			const target = event.target as HTMLElement;
+			if (target === this && this.submenuItems.length > 0 && !this.popup.matches(':popover-open')) {
+				this.popup.showPopover();
+			}
+		});
+		this.addEventListener('mouseleave', (event) => {
+			const target = event.target as HTMLElement;
+			if (target === this && this.submenuItems.length > 0 && this.popup.matches(':popover-open')) {
+				this.popup.hidePopover();
+			}
+		});
+		this.addEventListener('click', (event: Event) => {
+			const target = event.target as HTMLElement;
+			if (target === this && this.submenuItems.length > 0) {
+				event.stopPropagation();
+				this.popup.showPopover();
+			}
+		});
+	}
+
+	protected firstUpdated() {
+		this.popup.addEventListener('toggle', (event: Event) => {
+			const toggleEvent = event as ToggleEvent;
+			if (toggleEvent.newState === 'closed') {
+				this.popup.hidePopover();
+			}
+		});
+	}
+
 	render() {
 		return html`
 			${when(
@@ -96,6 +160,9 @@ export class AppDropdownItem extends LitElement {
 							<slot name="prefix"></slot>
 						</span>
 						<slot></slot>
+						<span class="suffix">
+							<slot name="suffix"></slot>
+						</span>
 					</a>
 				`,
 				() => html`
@@ -104,9 +171,15 @@ export class AppDropdownItem extends LitElement {
 							<slot name="prefix"></slot>
 						</span>
 						<slot></slot>
+						<span class="suffix">
+							<slot name="suffix"></slot>
+						</span>
 					</button>
 				`,
 			)}
+			<div part="popover" popover>
+				<slot name="submenu"></slot>
+			</div>
 		`;
 	}
 }

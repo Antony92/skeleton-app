@@ -32,9 +32,9 @@ export class AppDrawer extends LitElement {
 	accessor modal = false;
 
 	@property({ type: String })
-  accessor position: 'top' | 'left' | 'right' | 'bottom' = 'left';
+	accessor position: 'top' | 'left' | 'right' | 'bottom' = 'left';
 
-  @property({ type: Boolean, attribute: 'show-hide' })
+	@property({ type: Boolean, attribute: 'show-hide' })
 	accessor showHide = true;
 
 	@query('dialog')

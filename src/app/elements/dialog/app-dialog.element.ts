@@ -32,9 +32,9 @@ export class AppDialog extends LitElement {
 	accessor modal = false;
 
 	@property({ type: Boolean })
-  accessor fullscreen = false;
+	accessor fullscreen = false;
 
-  @property({ type: Boolean, attribute: 'show-hide' })
+	@property({ type: Boolean, attribute: 'show-hide' })
 	accessor showHide = true;
 
 	@query('dialog')
