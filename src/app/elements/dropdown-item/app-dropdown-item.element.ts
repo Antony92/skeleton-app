@@ -122,7 +122,7 @@ export class AppDropdownItem extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('mouseenter', (event) => {
 			const target = event.target as HTMLElement;
-			if (target === this && this.submenuItems.length > 0 && !this.popup.matches(':popover-open')) {
+			if (target === this && this.submenuItems.length > 0 && !this.popup.matches(':popover-open') && !this.disabled) {
 				this.popup.showPopover();
 			}
 		});
@@ -134,7 +134,7 @@ export class AppDropdownItem extends LitElement {
 		});
 		this.addEventListener('click', (event: Event) => {
 			const target = event.target as HTMLElement;
-			if (target === this && this.submenuItems.length > 0) {
+			if (target === this && this.submenuItems.length > 0 && !this.disabled) {
 				event.stopPropagation();
 				this.popup.showPopover();
 			}
