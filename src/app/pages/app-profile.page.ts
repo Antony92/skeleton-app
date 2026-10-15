@@ -2,7 +2,7 @@ import { StoreController } from '@app/controllers/store.controller';
 import { $user } from '@app/shared/auth';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 
 @customElement('app-profile-page')
 export class AppProfilePage extends LitElement {
@@ -14,7 +14,6 @@ export class AppProfilePage extends LitElement {
     `,
   ];
 
-  @property()
   private userController = new StoreController(this, $user);
 
   connectedCallback() {

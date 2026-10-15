@@ -15,10 +15,12 @@ import { StoreController } from '@app/controllers/store.controller';
 export class AppHeader extends LitElement {
   static styles = [defaultStyle, appHeaderStyle, css``];
 
-  private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App';
-  private appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0-alpha';
+  @property({ type: String })
+  appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App';
 
-  @property()
+  @property({ type: String })
+  appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0-alpha';
+
   private userController = new StoreController(this, $user);
 
   async signIn() {

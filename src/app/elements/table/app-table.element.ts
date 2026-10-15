@@ -92,7 +92,6 @@ export class AppTable extends LitElement {
       const { type } = event.filter;
       if (type === 'order') this.onHeaderOrderFilter(event);
       if (type === 'value') this.onHeaderValueFilter(event);
-      this.filtersApplied = this.hasFiltersApplied();
       this.dispatchFilterEvent();
     });
     this.filtersApplied = this.hasFiltersApplied();
@@ -118,7 +117,6 @@ export class AppTable extends LitElement {
       this.filtersMap.delete('search');
     }
     this.searchValue = value;
-    this.filtersApplied = this.hasFiltersApplied();
     if (!this.debouncedSearch) {
       this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), 300);
     }
@@ -136,6 +134,7 @@ export class AppTable extends LitElement {
   }
 
   dispatchFilterEvent() {
+    this.filtersApplied = this.hasFiltersApplied();
     const filters = new Map(this.filtersMap);
     this.dispatchEvent(new AppTableFilterEvent(filters));
   }
