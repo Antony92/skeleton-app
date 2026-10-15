@@ -8,46 +8,50 @@ type RequestOptions = RequestInit & { loader?: boolean; auth?: boolean; json?: b
 let requestCount = 0;
 
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
-	const { loader = true, auth = false, json = false } = options ?? {};
+  const { loader = true, auth = false, json = false } = options ?? {};
 
-	// 1. Prepare Headers immutably
-	const headers = new Headers(options?.headers);
-	if (auth) headers.set('Authorization', `Bearer ${getAccessToken()}`);
-	if (json) headers.set('Content-Type', 'application/json');
+  // 1. Prepare Headers immutably
+  const headers = new Headers(options?.headers);
+  if (auth) headers.set('Authorization', `Bearer ${getAccessToken()}`);
+  if (json) headers.set('Content-Type', 'application/json');
 
-	try {
-		requestCount++;
-		if (loader) await loading(true);
+  try {
+    requestCount++;
+    if (loader) await loading(true);
 
-		// 2. Initial Fetch
-		let response = await fetch(url, { ...options, headers });
+    // 2. Initial Fetch
+    let response = await fetch(url, { ...options, headers });
 
-		// 3. Handle Token Refresh (401)
-		if (response.status === 401 && auth) {
-			const refreshed = await refreshTokenSilently();
-			if (refreshed) {
-				headers.set('Authorization', `Bearer ${getAccessToken()}`);
-				response = await fetch(url, { ...options, headers });
-			} else {
-				login();
-				throw response;
-			}
-		}
+    // 3. Handle Token Refresh (401)
+    if (response.status === 401 && auth) {
+      const refreshed = await refreshTokenSilently();
+      if (refreshed) {
+        headers.set('Authorization', `Bearer ${getAccessToken()}`);
+        response = await fetch(url, { ...options, headers });
+      } else {
+        login();
+        throw response;
+      }
+    }
 
-		if (!response.ok) {
-			const error = await response.clone().json();
-			notify({ message: `${url} failed: ${JSON.stringify(error)}`, variant: 'error', action: { label: 'Close' } });
-		}
+    if (!response.ok) {
+      const error = await response.clone().json();
+      notify({
+        message: `${url} failed: ${JSON.stringify(error)}`,
+        variant: 'error',
+        action: { label: 'Close' },
+      });
+    }
 
-		return response;
-	} catch (error: unknown) {
-		notify({ message: `${url} failed`, variant: 'error', action: { label: 'Close' } });
-		throw error;
-	} finally {
-		requestCount--;
-		if (requestCount <= 0) {
-			requestCount = 0;
-			loading(false);
-		}
-	}
+    return response;
+  } catch (error: unknown) {
+    notify({ message: `${url} failed`, variant: 'error', action: { label: 'Close' } });
+    throw error;
+  } finally {
+    requestCount--;
+    if (requestCount <= 0) {
+      requestCount = 0;
+      loading(false);
+    }
+  }
 };

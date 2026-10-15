@@ -6,28 +6,31 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-badge')
 export class AppBadge extends LitElement {
-	static styles = [defaultStyle, appBadgeStyle, css``];
+  static styles = [defaultStyle, appBadgeStyle, css``];
 
-	@property({ type: String })
-	accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
+  @property({ type: String })
+  accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
 
-	@property({ type: Boolean })
-	accessor pulse = false;
+  @property({ type: Boolean })
+  accessor pulse = false;
 
-	@property({ type: Boolean })
-	accessor outlined = false;
+  @property({ type: Boolean })
+  accessor outlined = false;
 
-	render() {
-		return html`
-			<div part="badge" class="${classMap({ badge: true, pulse: this.pulse, outlined: this.outlined, [this.variant]: true })}">
-				<slot></slot>
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div
+        part="badge"
+        class="${classMap({ badge: true, pulse: this.pulse, outlined: this.outlined, [this.variant]: true })}"
+      >
+        <slot></slot>
+      </div>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-badge': AppBadge;
-	}
+  interface HTMLElementTagNameMap {
+    'app-badge': AppBadge;
+  }
 }

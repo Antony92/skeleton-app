@@ -1,40 +1,37 @@
 {
-	"name": "skeleton-app",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"build-staging": "tsc && vite build --mode staging",
-		"build-production": "tsc && vite build --mode production",
-		"lint": "npx @biomejs/biome check --write",
-		"preview": "vite preview",
-		"test:ui": "vitest --ui",
-		"test:run": "vitest run"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "MIT",
-	"dependencies": {
-		"@lit-labs/signals": "~0.3.0",
-		"@lit/context": "~1.1.6",
-		"@lit/task": "~1.0.3",
-		"@tiptap/core": "~3.31.4",
-		"@tiptap/extension-text-style": "~3.31.4",
-		"@tiptap/extensions": "~3.31.4",
-		"@tiptap/pm": "~3.31.4",
-		"@tiptap/starter-kit": "~3.31.4",
-		"lit": "~3.3.3"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "~2.5.15",
-		"@typescript/lib-dom": "npm:@types/web@~0.0.358",
-		"@vitest/ui": "~5.0.3",
-		"typescript": "~7.0.2",
-		"vite": "~8.3.4",
-		"vite-plugin-pwa": "~2.0.0",
-		"vitest": "~5.0.3"
-	}
+  "name": "skeleton-app",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "build-staging": "vp build build --mode staging",
+    "build-production": "vp build --mode production",
+    "lint": "npx vp check --fix",
+    "preview": "vp preview",
+    "test:ui": "vp test --ui",
+    "test:run": "vp test run"
+  },
+  "dependencies": {
+    "@lit-labs/signals": "~0.3.0",
+    "@lit/context": "~1.1.6",
+    "@lit/task": "~1.0.3",
+    "@tiptap/core": "~3.31.4",
+    "@tiptap/extension-text-style": "~3.31.4",
+    "@tiptap/extensions": "~3.31.4",
+    "@tiptap/pm": "~3.31.4",
+    "@tiptap/starter-kit": "~3.31.4",
+    "lit": "~3.3.3"
+  },
+  "devDependencies": {
+    "@typescript/lib-dom": "npm:@types/web@~0.0.358",
+    "typescript": "~7.0.2",
+    "vite-plugin-pwa": "~2.0.0",
+    "vite-plus": "~1.2.0"
+  }
 }

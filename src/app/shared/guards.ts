@@ -6,17 +6,17 @@ import { navigate } from '@app/shared/navigation';
  * @param roles
  */
 export const authGuard = (roles?: string[]) => {
-	return (url: URL) => {
-		const user = getUser();
-		if (!user) {
-			localStorage.setItem('requested-page', `${url.pathname}${url.search}` || '/');
-			navigate('/login');
-			return false;
-		}
-		if (user && roles && !user.roles.some((role) => roles.includes(role))) {
-			navigate('/page-not-found');
-			return false;
-		}
-		return true;
-	};
+  return (url: URL) => {
+    const user = getUser();
+    if (!user) {
+      localStorage.setItem('requested-page', `${url.pathname}${url.search}` || '/');
+      navigate('/login');
+      return false;
+    }
+    if (user && roles && !user.roles.some((role) => roles.includes(role))) {
+      navigate('/page-not-found');
+      return false;
+    }
+    return true;
+  };
 };

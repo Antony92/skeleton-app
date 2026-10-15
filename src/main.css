@@ -1,98 +1,98 @@
-@import "vars.css";
+@import 'vars.css';
 
 body {
-	margin: 0;
-	padding: 0;
-	height: 100dvh;
-	box-sizing: border-box;
-	font-family: var(--theme-font-family);
-	font-size: var(--theme-font-size);
-	background-color: var(--theme-background);
-	color: var(--theme-color);
-	overflow: hidden;
-	transition: background-color 300ms ease-in-out;
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  box-sizing: border-box;
+  font-family: var(--theme-font-family);
+  font-size: var(--theme-font-size);
+  background-color: var(--theme-background);
+  color: var(--theme-color);
+  overflow: hidden;
+  transition: background-color 300ms ease-in-out;
 
-	&.initializing {
-		display: grid;
-		justify-items: center;
-		align-items: center;
+  &.initializing {
+    display: grid;
+    justify-items: center;
+    align-items: center;
 
-		app-root {
-			display: none;
-		}
-	}
+    app-root {
+      display: none;
+    }
+  }
 }
 
 .theme-dark {
-	color-scheme: dark;
+  color-scheme: dark;
 }
 
 .theme-light {
-	color-scheme: light;
+  color-scheme: light;
 }
 
 /* Icons */
 @font-face {
-	font-family: "Material Symbols Rounded";
-	font-style: normal;
-	font-weight: 400;
-	src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v232/syl7-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjpZIvLgyidOK7BDB_Qb9vUdV6_gjDK-P3JuF_Zs-obHph2-jOcZTKPq8a9A5M.woff2)
-		format("woff2");
+  font-family: 'Material Symbols Rounded';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v232/syl7-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjpZIvLgyidOK7BDB_Qb9vUdV6_gjDK-P3JuF_Zs-obHph2-jOcZTKPq8a9A5M.woff2)
+    format('woff2');
 }
 
 /* Initial loader */
 .loader {
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	display: inline-block;
-	position: relative;
-	border: 3px solid;
-	border-color: var(--theme-color) var(--theme-color) transparent transparent;
-	box-sizing: border-box;
-	animation: loaderRotation 1s linear infinite;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: var(--theme-color) var(--theme-color) transparent transparent;
+  box-sizing: border-box;
+  animation: loaderRotation 1s linear infinite;
 
-	&::after,
-	&::before {
-		content: "";
-		box-sizing: border-box;
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		margin: auto;
-		border: 3px solid;
-		border-color: transparent transparent var(--theme-primary-color) var(--theme-primary-color);
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		animation: loaderRotationBack 0.5s linear infinite;
-		transform-origin: center center;
-	}
+  &::after,
+  &::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent var(--theme-primary-color) var(--theme-primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    animation: loaderRotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
 
-	&::before {
-		width: 32px;
-		height: 32px;
-		border-color: var(--theme-color) var(--theme-color) transparent transparent;
-		animation: loaderRotation 1.5s linear infinite;
-	}
+  &::before {
+    width: 32px;
+    height: 32px;
+    border-color: var(--theme-color) var(--theme-color) transparent transparent;
+    animation: loaderRotation 1.5s linear infinite;
+  }
 }
 
 @keyframes loaderRotation {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes loaderRotationBack {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(-360deg);
-	}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
 }

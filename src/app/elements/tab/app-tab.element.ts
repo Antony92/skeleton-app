@@ -6,71 +6,71 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-tab')
 export class AppTab extends LitElement {
-	static styles = [
-		defaultStyle,
-		focusStyle,
-		css`
-			button {
-				font-family: var(--theme-font);
-				cursor: pointer;
-				display: flex;
-				align-items: center;
-				gap: 10px;
-				border: none;
-				padding: 10px;
-				white-space: nowrap;
-				height: 36px;
-				font-size: inherit;
-				font-weight: 600;
-				width: 100%;
-				color: var(--theme-muted-color);
-				background: none;
-				border-bottom: 2px solid transparent;
-				position: relative;
-				top: 2px;
+  static styles = [
+    defaultStyle,
+    focusStyle,
+    css`
+      button {
+        font-family: var(--theme-font);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        padding: 10px;
+        white-space: nowrap;
+        height: 36px;
+        font-size: inherit;
+        font-weight: 600;
+        width: 100%;
+        color: var(--theme-muted-color);
+        background: none;
+        border-bottom: 2px solid transparent;
+        position: relative;
+        top: 2px;
 
-				&:not(:disabled):hover {
-					color: var(--theme-primary-color);
-				}
+        &:not(:disabled):hover {
+          color: var(--theme-primary-color);
+        }
 
-				&.active {
-					color: var(--theme-primary-color);
-					border-bottom: solid 2px var(--theme-primary-color);
-				}
+        &.active {
+          color: var(--theme-primary-color);
+          border-bottom: solid 2px var(--theme-primary-color);
+        }
 
-				&:disabled {
-					opacity: 0.5;
-					cursor: not-allowed;
-				}
-			}
-		`,
-	];
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    `,
+  ];
 
-	@property({ type: Boolean })
-	accessor disabled = false;
+  @property({ type: Boolean })
+  accessor disabled = false;
 
-	@property({ type: Boolean, reflect: true })
-	accessor active = false;
+  @property({ type: Boolean, reflect: true })
+  accessor active = false;
 
-	@property({ type: String })
-	accessor panel = '';
+  @property({ type: String })
+  accessor panel = '';
 
-	render() {
-		return html`
-			<button
-			  part="tab"
-				?disabled=${this.disabled}
-				class="${classMap({ active: this.active, 'focus-visible': true })}"
-				@click=${() => (this.active = true)}
-			>
-				<slot></slot>
-			</button>
-		`;
-	}
+  render() {
+    return html`
+      <button
+        part="tab"
+        ?disabled=${this.disabled}
+        class="${classMap({ active: this.active, 'focus-visible': true })}"
+        @click=${() => (this.active = true)}
+      >
+        <slot></slot>
+      </button>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-tab': AppTab;
-	}
+  interface HTMLElementTagNameMap {
+    'app-tab': AppTab;
+  }
 }

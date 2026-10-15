@@ -11,16 +11,16 @@
  * @returns escaped string
  */
 export const escapeHtml = (html: string) => {
-	if (!html) return '';
+  if (!html) return '';
 
-	return html
-		.toString()
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&apos;')
-		.replace(/`(.*?)`/g, '<code>$1</code>');
+  return html
+    .toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/`(.*?)`/g, '<code>$1</code>');
 };
 
 /**
@@ -28,7 +28,7 @@ export const escapeHtml = (html: string) => {
  * @param title
  */
 export const setPageTitle = (title: string) => {
-	document.title = `${import.meta.env.VITE_APP_TITLE} - ${title}`;
+  document.title = `${import.meta.env.VITE_APP_TITLE} - ${title}`;
 };
 
 /**
@@ -37,7 +37,7 @@ export const setPageTitle = (title: string) => {
  * @returns object
  */
 export const serializeForm = (form: HTMLFormElement) => {
-	return Object.fromEntries(new FormData(form).entries());
+  return Object.fromEntries(new FormData(form).entries());
 };
 
 /**
@@ -47,25 +47,25 @@ export const serializeForm = (form: HTMLFormElement) => {
  * @returns pretty string
  */
 export const formatBytes = (bytes: number, decimals = 2) => {
-	if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return '0 Bytes';
 
-	const k = 1024;
-	const dm = decimals < 0 ? 0 : decimals;
-	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-	const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-	return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 };
 
 export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, timeout = 300) => {
-	let timer: number;
-	return (...args: unknown[]) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => func.apply(this, args), timeout);
-	};
+  let timer: number;
+  return (...args: unknown[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
 };
 
 export const copyToClipboard = (text: string) => {
-	navigator.clipboard.writeText(text);
+  return navigator.clipboard.writeText(text);
 };

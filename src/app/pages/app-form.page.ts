@@ -20,116 +20,155 @@ import { serializeForm, setPageTitle } from '@app/utils/html';
 
 @customElement('app-form-page')
 export class AppFormPage extends LitElement {
-	static styles = [
-		formStyle,
-		css`
-			.actions {
-				display: flex;
-				justify-content: flex-start;
-				gap: 10px;
-			}
+  static styles = [
+    formStyle,
+    css`
+      .actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+      }
 
-			form {
-				@media (min-width: 768px) {
-					max-width: 350px;
-				}
-			}
+      form {
+        @media (min-width: 768px) {
+          max-width: 350px;
+        }
+      }
 
-			h3 {
-				margin: 0 0 10px 0;
-			}
-		`,
-	];
+      h3 {
+        margin: 0 0 10px 0;
+      }
+    `,
+  ];
 
-	@query('form')
-	accessor form!: HTMLFormElement;
+  @query('form')
+  accessor form!: HTMLFormElement;
 
-	@state()
-	accessor formData: any = null;
+  @state()
+  accessor formData: any = null;
 
-	connectedCallback() {
-		super.connectedCallback();
-		setPageTitle('Form');
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    setPageTitle('Form');
+  }
 
-	protected async firstUpdated() {}
+  protected async firstUpdated() {}
 
-	async submit(event: SubmitEvent) {
-		event.preventDefault();
-		if (!this.form.checkValidity()) {
-			this.form.querySelector<HTMLElement>('*:state(invalid)')?.focus();
-			return;
-		}
-		const data = serializeForm(this.form);
-		pageHasUnsavedChanges(false);
-		notify({ message: 'Form submitted', variant: 'success' });
-		console.log(data);
-	}
+  async submit(event: SubmitEvent) {
+    event.preventDefault();
+    if (!this.form.checkValidity()) {
+      this.form.querySelector<HTMLElement>('*:state(invalid)')?.focus();
+      return;
+    }
+    const data = serializeForm(this.form);
+    pageHasUnsavedChanges(false);
+    notify({ message: 'Form submitted', variant: 'success' });
+    console.log(data);
+  }
 
-	async preload() {
-		this.formData = {
-			name: 'Test',
-			email: 'test@example.com',
-			textarea: 'test text',
-			checkbox: true,
-			radio: '2',
-			select: 'option-3',
-			checkboxes: '1,2',
-		};
-	}
+  async preload() {
+    this.formData = {
+      name: 'Test',
+      email: 'test@example.com',
+      textarea: 'test text',
+      checkbox: true,
+      radio: '2',
+      select: 'option-3',
+      checkboxes: '1,2',
+    };
+  }
 
-	render() {
-		return html`
-			<h3>Form</h3>
-			<form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
-				<app-input required name="name" label="Name" .value=${this.formData?.name || ''}></app-input>
-				<app-input required name="email" label="Email" type="email" .value=${this.formData?.email || ''}></app-input>
-				<app-textarea required name="textarea" label="Textarea" .value=${this.formData?.textarea || ''}></app-textarea>
-				<app-checkbox required name="checkbox" label="Are you sure?" .checked=${this.formData?.checkbox ?? false}></app-checkbox>
+  render() {
+    return html`
+      <h3>Form</h3>
+      <form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>
+        <app-input
+          required
+          name="name"
+          label="Name"
+          .value=${this.formData?.name || ''}
+        ></app-input>
+        <app-input
+          required
+          name="email"
+          label="Email"
+          type="email"
+          .value=${this.formData?.email || ''}
+        ></app-input>
+        <app-textarea
+          required
+          name="textarea"
+          label="Textarea"
+          .value=${this.formData?.textarea || ''}
+        ></app-textarea>
+        <app-checkbox
+          required
+          name="checkbox"
+          label="Are you sure?"
+          .checked=${this.formData?.checkbox ?? false}
+        ></app-checkbox>
 
-				<app-radio-group name="radio" required label="Select one radio" .value=${this.formData?.radio || ''}>
-					<app-radio label="Radio 1" value="1"></app-radio>
-					<app-radio label="Radio 2" value="2"></app-radio>
-				</app-radio-group>
+        <app-radio-group
+          name="radio"
+          required
+          label="Select one radio"
+          .value=${this.formData?.radio || ''}
+        >
+          <app-radio label="Radio 1" value="1"></app-radio>
+          <app-radio label="Radio 2" value="2"></app-radio>
+        </app-radio-group>
 
-				<app-checkbox-group name="checkboxes" required label="Select multiple checkboxes" .value=${this.formData?.checkboxes || ''}>
-					<app-checkbox label="Checkbox 1" value="1"></app-checkbox>
-					<app-checkbox label="Checkbox 2" value="2"></app-checkbox>
-					<app-checkbox label="Checkbox 3" value="3"></app-checkbox>
-					<app-checkbox label="Checkbox 4" value="4"></app-checkbox>
-				</app-checkbox-group>
+        <app-checkbox-group
+          name="checkboxes"
+          required
+          label="Select multiple checkboxes"
+          .value=${this.formData?.checkboxes || ''}
+        >
+          <app-checkbox label="Checkbox 1" value="1"></app-checkbox>
+          <app-checkbox label="Checkbox 2" value="2"></app-checkbox>
+          <app-checkbox label="Checkbox 3" value="3"></app-checkbox>
+          <app-checkbox label="Checkbox 4" value="4"></app-checkbox>
+        </app-checkbox-group>
 
-				<app-select required name="select" label="Select" placeholder="Select an option" clearable .value=${this.formData?.select || ''}>
-					<app-select-option value="option-1">Option 1</app-select-option>
-					<app-select-option value="option-2">Option 2</app-select-option>
-					<app-select-option value="option-3">Option 3</app-select-option>
-					<app-select-option value="option-4">Option 4</app-select-option>
-					<app-select-option value="option-5">Option 5</app-select-option>
-				</app-select>
+        <app-select
+          required
+          name="select"
+          label="Select"
+          placeholder="Select an option"
+          clearable
+          .value=${this.formData?.select || ''}
+        >
+          <app-select-option value="option-1">Option 1</app-select-option>
+          <app-select-option value="option-2">Option 2</app-select-option>
+          <app-select-option value="option-3">Option 3</app-select-option>
+          <app-select-option value="option-4">Option 4</app-select-option>
+          <app-select-option value="option-5">Option 5</app-select-option>
+        </app-select>
 
-				<app-autocomplete
-				  name="phone"
-					label="Search"
-					placeholder="Search..."
-					@app-search=${async (e: Event) => {
-						const target = e.target as AppAutocomplete;
-						const products = await getProducts(target.search);
-						target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
-					}}>
-					<app-icon slot="prefix" filled>search</app-icon>
-				</app-autocomplete>
+        <app-autocomplete
+          name="phone"
+          label="Search"
+          placeholder="Search..."
+          @app-search=${async (e: Event) => {
+            const target = e.target as AppAutocomplete;
+            const products = await getProducts(target.search);
+            target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
+          }}
+        >
+          <app-icon slot="prefix" filled>search</app-icon>
+        </app-autocomplete>
 
-				<app-file-upload name="file" size="0.1">
-					<app-button variant="primary" slot="trigger">Upload</app-button>
-					Upload files here
-				</app-file-upload>
+        <app-file-upload name="file" size="0.1">
+          <app-button variant="primary" slot="trigger">Upload</app-button>
+          Upload files here
+        </app-file-upload>
 
-				<div class="actions">
-					<app-button variant="primary" type="submit">Submit</app-button>
-					<app-button type="reset" @click=${() => (this.formData = null)}>Reset</app-button>
-					<app-button @click=${() => this.preload()}>Preload</app-button>
-				</div>
-			</form>
-		`;
-	}
+        <div class="actions">
+          <app-button variant="primary" type="submit">Submit</app-button>
+          <app-button type="reset" @click=${() => (this.formData = null)}>Reset</app-button>
+          <app-button @click=${() => this.preload()}>Preload</app-button>
+        </div>
+      </form>
+    `;
+  }
 }

@@ -1,115 +1,115 @@
 import { css } from 'lit';
 
 export const appSidebarStyle = css`
-	aside {
-		width: 80px;
-		height: 100%;
-		border-right: 1px solid var(--theme-default-color);
+  aside {
+    width: 80px;
+    height: 100%;
+    border-right: 1px solid var(--theme-default-color);
 
-		ul {
-			display: flex;
-			flex-direction: column;
-			gap: 20px;
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			height: 100%;
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      height: 100%;
 
-			&:before,
-			&:after {
-				content: "";
-			}
+      &:before,
+      &:after {
+        content: '';
+      }
 
-			li {
-				width: 100%;
+      li {
+        width: 100%;
 
-				&.bottom {
-					margin-top: auto;
-				}
+        &.bottom {
+          margin-top: auto;
+        }
 
-				a {
-					display: flex;
-					flex-direction: column;
-					align-items: center;
-					gap: 5px;
-					text-decoration: none;
-					cursor: pointer;
-					color: var(--theme-color);
-					transform-origin: center center;
+        a {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+          text-decoration: none;
+          cursor: pointer;
+          color: var(--theme-color);
+          transform-origin: center center;
 
-					span:first-child {
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						width: 56px;
-						height: 32px;
-						border-radius: 16px;
-						transition: background-color 0.3s;
+          span:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 32px;
+            border-radius: 16px;
+            transition: background-color 0.3s;
 
-						.icon {
-							font-size: 1.2rem;
-							transition: scale 0.3s ease-in-out;
-						}
-					}
+            .icon {
+              font-size: 1.2rem;
+              transition: scale 0.3s ease-in-out;
+            }
+          }
 
-					span:last-child {
-						font-size: 12px;
-						transition: color 0.3s;
-					}
+          span:last-child {
+            font-size: 12px;
+            transition: color 0.3s;
+          }
 
-					&.active {
-						span:first-child {
-							box-shadow: var(--shadow-1);
-							background-color: var(--theme-primary-background);
-							color: var(--theme-primary-color);
+          &.active {
+            span:first-child {
+              box-shadow: var(--shadow-1);
+              background-color: var(--theme-primary-background);
+              color: var(--theme-primary-color);
 
-							.icon {
-								color: var(--theme-white-color);
-								scale: 1.1;
-							}
-						}
+              .icon {
+                color: var(--theme-white-color);
+                scale: 1.1;
+              }
+            }
 
-						span:last-child {
-							color: var(--theme-primary-color);
-						}
-					}
+            span:last-child {
+              color: var(--theme-primary-color);
+            }
+          }
 
-					&:hover:not(.active) {
-						span:first-child {
-							background-color: var(--theme-muted-background);
+          &:hover:not(.active) {
+            span:first-child {
+              background-color: var(--theme-muted-background);
 
-							.icon {
-								scale: 1.1;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+              .icon {
+                scale: 1.1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-	@media only screen and (max-width: 900px) {
-		aside {
-			width: 100%;
-			border-top: 1px solid var(--theme-default-color);
-			border-right: none;
+  @media only screen and (max-width: 900px) {
+    aside {
+      width: 100%;
+      border-top: 1px solid var(--theme-default-color);
+      border-right: none;
 
-			ul {
-				margin: 0;
-				flex-direction: row;
-				overflow: auto;
-				width: 100vw;
+      ul {
+        margin: 0;
+        flex-direction: row;
+        overflow: auto;
+        width: 100vw;
 
-				li {
-					&[hide-on-mobile] {
-						display: none;
-					}
+        li {
+          &[hide-on-mobile] {
+            display: none;
+          }
 
-					a {
-						margin: 10px 0px;
-					}
-				}
-			}
-		}
-	}
+          a {
+            margin: 10px 0px;
+          }
+        }
+      }
+    }
+  }
 `;

@@ -1,85 +1,85 @@
 import { css } from 'lit';
 
 export const appDialogStyle = css`
-	:host([fullscreen]) {
-		dialog {
-			inline-size: 100vw;
-			max-block-size: 100dvh;
-			block-size: 100dvh;
-			max-inline-size: 100vw;
-			border-radius: 0;
+  :host([fullscreen]) {
+    dialog {
+      inline-size: 100vw;
+      max-block-size: 100dvh;
+      block-size: 100dvh;
+      max-inline-size: 100vw;
+      border-radius: 0;
 
-			.container {
-				max-block-size: 100dvh;
-				block-size: 100dvh;
-			}
-		}
-	}
+      .container {
+        max-block-size: 100dvh;
+        block-size: 100dvh;
+      }
+    }
+  }
 
-	dialog {
-		inset: 0;
-		padding: 0;
-		outline: 0;
-		inline-size: min(90vw, 60ch);
-		max-block-size: min(80dvh, 100%);
-		overflow: hidden;
-		border: none;
-		box-shadow: var(--shadow-2);
-		border-radius: var(--radius-2);
-		background: var(--theme-default-surface);
+  dialog {
+    inset: 0;
+    padding: 0;
+    outline: 0;
+    inline-size: min(90vw, 60ch);
+    max-block-size: min(80dvh, 100%);
+    overflow: hidden;
+    border: none;
+    box-shadow: var(--shadow-2);
+    border-radius: var(--radius-2);
+    background: var(--theme-default-surface);
 
-		&::backdrop {
-			background: rgb(0 0 0 / 0%);
-			/* transition: background-color 200ms ease; */
-		}
+    &::backdrop {
+      background: rgb(0 0 0 / 0%);
+      /* transition: background-color 200ms ease; */
+    }
 
-		&[open] {
-			&::backdrop {
-				background-color: rgb(0 0 0 / 20%);
-			}
-		}
+    &[open] {
+      &::backdrop {
+        background-color: rgb(0 0 0 / 20%);
+      }
+    }
 
-		&:not([open]) {
-			pointer-events: none;
-		}
+    &:not([open]) {
+      pointer-events: none;
+    }
 
-		.container {
-			display: grid;
-			grid-template-rows: auto 1fr auto;
-			max-block-size: 70dvh;
-		}
+    .container {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      max-block-size: 70dvh;
+    }
 
-		header {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			padding: 20px;
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
 
-			h3 {
-				margin: 0;
-			}
+      h3 {
+        margin: 0;
+      }
 
-			button {
-				background: none;
-				cursor: pointer;
-				border: none;
-				font-size: var(--theme-font-size-1);
-			}
-		}
+      button {
+        background: none;
+        cursor: pointer;
+        border: none;
+        font-size: var(--theme-font-size-1);
+      }
+    }
 
-		article {
-			overflow-y: auto;
-			overscroll-behavior-y: contain;
-			display: grid;
-			max-block-size: 100%;
-			padding: 5px 20px;
-		}
+    article {
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      display: grid;
+      max-block-size: 100%;
+      padding: 5px 20px;
+    }
 
-		footer {
-			display: flex;
-			justify-content: flex-end;
-			gap: 10px;
-			padding: 20px;
-		}
-	}
+    footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 20px;
+    }
+  }
 `;

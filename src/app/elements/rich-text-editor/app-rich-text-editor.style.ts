@@ -1,129 +1,129 @@
 import { css } from 'lit';
 
 export const appRichTextEditorStyle = css`
-	:host(:state(user-invalid)) {
-		.form-control {
-			.editor-wrapper {
-				outline-color: var(--theme-invalid-color);
-				border-color: var(--theme-invalid-color);
+  :host(:state(user-invalid)) {
+    .form-control {
+      .editor-wrapper {
+        outline-color: var(--theme-invalid-color);
+        border-color: var(--theme-invalid-color);
 
-				&:hover {
-					border-color: var(--theme-invalid-color);
-				}
-			}
+        &:hover {
+          border-color: var(--theme-invalid-color);
+        }
+      }
 
-			label {
-				color: var(--theme-invalid-color);
-			}
-		}
-	}
+      label {
+        color: var(--theme-invalid-color);
+      }
+    }
+  }
 
-	.form-control {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 5px;
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
 
-		label {
-			width: fit-content;
-			font-size: 0.9rem;
-		}
+    label {
+      width: fit-content;
+      font-size: 0.9rem;
+    }
 
-		small {
-			color: var(--theme-invalid-color);
-		}
+    small {
+      color: var(--theme-invalid-color);
+    }
 
-		&:has(textarea[required]) {
-			label::after {
-				content: " *";
-				color: var(--theme-invalid-color);
-			}
-		}
+    &:has(textarea[required]) {
+      label::after {
+        content: ' *';
+        color: var(--theme-invalid-color);
+      }
+    }
 
-		.editor-wrapper {
-			display: flex;
-			flex-direction: column;
-			background: var(--theme-default-surface);
-			border: 1px solid var(--theme-default-color);
-			border-radius: var(--radius-2);
+    .editor-wrapper {
+      display: flex;
+      flex-direction: column;
+      background: var(--theme-default-surface);
+      border: 1px solid var(--theme-default-color);
+      border-radius: var(--radius-2);
 
-			.toolbar {
-				display: flex;
-				flex-wrap: wrap;
-				align-items: center;
-				gap: 10px;
-				border-bottom: 1px solid var(--theme-default-color);
-				padding: 5px 10px;
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--theme-default-color);
+        padding: 5px 10px;
 
-				button {
-					border: none;
-					background: none;
-					display: flex;
-					cursor: pointer;
-					padding: 0;
-					margin: 0;
+        button {
+          border: none;
+          background: none;
+          display: flex;
+          cursor: pointer;
+          padding: 0;
+          margin: 0;
 
-					&[disabled] {
-						cursor: not-allowed;
-					}
+          &[disabled] {
+            cursor: not-allowed;
+          }
 
-					&:hover:not([disabled]),
-					&.active:not([disabled]) {
-						app-icon {
-							color: var(--theme-primary-color);
-						}
-					}
-				}
+          &:hover:not([disabled]),
+          &.active:not([disabled]) {
+            app-icon {
+              color: var(--theme-primary-color);
+            }
+          }
+        }
 
-				.separator {
-					width: 1px;
-					height: 20px;
-					background: var(--theme-default-color);
-				}
+        .separator {
+          width: 1px;
+          height: 20px;
+          background: var(--theme-default-color);
+        }
 
-				input[type="color"] {
-					width: 25px;
-					border: none;
-					background: none;
-					padding: 0;
-				}
-			}
+        input[type='color'] {
+          width: 25px;
+          border: none;
+          background: none;
+          padding: 0;
+        }
+      }
 
-			.editor {
-				font-family: var(--theme-font-family);
-				font-size: var(--theme-font-size-1);
-				overflow: auto;
-				padding: 0 10px;
-				max-height: 165px;
+      .editor {
+        font-family: var(--theme-font-family);
+        font-size: var(--theme-font-size-1);
+        overflow: auto;
+        padding: 0 10px;
+        max-height: 165px;
 
-				.tiptap {
-					outline: none;
-					height: 100%;
-					min-height: 150px;
+        .tiptap {
+          outline: none;
+          height: 100%;
+          min-height: 150px;
 
-					p.is-editor-empty:first-child::before {
-						color: var(--theme-muted-color);
-						content: attr(data-placeholder);
-						float: left;
-						height: 0;
-						pointer-events: none;
-					}
-				}
-			}
+          p.is-editor-empty:first-child::before {
+            color: var(--theme-muted-color);
+            content: attr(data-placeholder);
+            float: left;
+            height: 0;
+            pointer-events: none;
+          }
+        }
+      }
 
-			&:has(.tiptap:focus-visible) {
-				/*outline: 2px solid var(--theme-color);*/
-			}
+      &:has(.tiptap:focus-visible) {
+        /*outline: 2px solid var(--theme-color);*/
+      }
 
-			&:hover:not(:disabled, :focus-within) {
-				/*border-color: var(--theme-primary-color);*/
-			}
+      &:hover:not(:disabled, :focus-within) {
+        /*border-color: var(--theme-primary-color);*/
+      }
 
-			&:has(textarea:disabled) {
-				opacity: 0.5;
-				cursor: not-allowed;
-				pointer-events: none;
-			}
-		}
-	}
+      &:has(textarea:disabled) {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+  }
 `;

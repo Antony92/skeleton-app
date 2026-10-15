@@ -7,143 +7,143 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-	static styles = [
-		defaultStyle,
-		appDialogStyle,
-		focusStyle,
-		css`
-			:host {
-				display: none;
-			}
+  static styles = [
+    defaultStyle,
+    appDialogStyle,
+    focusStyle,
+    css`
+      :host {
+        display: none;
+      }
 
-			:host([open]) {
-				display: block;
-			}
-		`,
-	];
+      :host([open]) {
+        display: block;
+      }
+    `,
+  ];
 
-	@property({ type: String })
-	accessor header = '';
+  @property({ type: String })
+  accessor header = '';
 
-	@property({ type: Boolean, reflect: true })
-	accessor open = false;
+  @property({ type: Boolean, reflect: true })
+  accessor open = false;
 
-	@property({ type: Boolean })
-	accessor modal = false;
+  @property({ type: Boolean })
+  accessor modal = false;
 
-	@property({ type: Boolean })
-	accessor fullscreen = false;
+  @property({ type: Boolean })
+  accessor fullscreen = false;
 
-	@property({ type: Boolean, attribute: 'show-hide' })
-	accessor showHide = true;
+  @property({ type: Boolean, attribute: 'show-hide' })
+  accessor showHide = true;
 
-	@query('dialog')
-	accessor dialog!: HTMLDialogElement;
+  @query('dialog')
+  accessor dialog!: HTMLDialogElement;
 
-	#returnValue: string | undefined = '';
+  #returnValue: string | undefined = '';
 
-	get returnValue() {
-		return this.#returnValue;
-	}
+  get returnValue() {
+    return this.#returnValue;
+  }
 
-	protected firstUpdated() {
-		this.dialog.addEventListener('click', (event) => {
-			const target = event.target as HTMLElement;
-			if (!target) return;
+  protected firstUpdated() {
+    this.dialog.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (!target) return;
 
-			if (target.hasAttribute('app-dialog-close')) {
-				this.hide(target.getAttribute('app-dialog-close') || '');
-				return;
-			}
+      if (target.hasAttribute('app-dialog-close')) {
+        this.hide(target.getAttribute('app-dialog-close') || '');
+        return;
+      }
 
-			if (target instanceof HTMLDialogElement === false) {
-				return;
-			}
+      if (target instanceof HTMLDialogElement === false) {
+        return;
+      }
 
-			if (this.modal) {
-				this.pulseAnimation();
-			} else {
-				this.hide();
-			}
-		});
+      if (this.modal) {
+        this.pulseAnimation();
+      } else {
+        this.hide();
+      }
+    });
 
-		this.dialog.addEventListener('cancel', (event) => {
-			event.preventDefault();
-			this.hide();
-		});
-	}
+    this.dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      this.hide();
+    });
+  }
 
-	async show() {
-		if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
-			return;
-		}
-		this.open = true;
-		await this.updateComplete;
-		this.dialog.showModal();
-		await this.openAnimation();
-		this.querySelector<HTMLElement>('[autofocus]')?.focus();
-		this.dispatchEvent(new Event('app-after-show'));
-	}
+  async show() {
+    if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
+      return;
+    }
+    this.open = true;
+    await this.updateComplete;
+    this.dialog.showModal();
+    await this.openAnimation();
+    this.querySelector<HTMLElement>('[autofocus]')?.focus();
+    this.dispatchEvent(new Event('app-after-show'));
+  }
 
-	async hide(value?: string) {
-		this.#returnValue = value;
-		if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
-			return;
-		}
-		await this.updateComplete;
-		await this.openAnimation(true);
-		this.dialog.close(value);
-		this.open = false;
-		this.dispatchEvent(new Event('app-after-hide'));
-	}
+  async hide(value?: string) {
+    this.#returnValue = value;
+    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+      return;
+    }
+    await this.updateComplete;
+    await this.openAnimation(true);
+    this.dialog.close(value);
+    this.open = false;
+    this.dispatchEvent(new Event('app-after-hide'));
+  }
 
-	openAnimation(reverse = false) {
-		const animation = this.dialog.animate(
-			[
-				{ scale: 0, opacity: 0 },
-				{ scale: 1, opacity: 1 },
-			],
-			{
-				direction: reverse ? 'reverse' : 'normal',
-				duration: 200,
-				fill: 'both',
-			},
-		);
-		return animation.finished;
-	}
+  openAnimation(reverse = false) {
+    const animation = this.dialog.animate(
+      [
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1 },
+      ],
+      {
+        direction: reverse ? 'reverse' : 'normal',
+        duration: 200,
+        fill: 'both',
+      },
+    );
+    return animation.finished;
+  }
 
-	pulseAnimation() {
-		const animation = this.dialog.animate([{ scale: 1 }, { scale: 1.02 }, { scale: 1 }], {
-			duration: 250,
-			fill: 'both',
-		});
-		return animation.finished;
-	}
+  pulseAnimation() {
+    const animation = this.dialog.animate([{ scale: 1 }, { scale: 1.02 }, { scale: 1 }], {
+      duration: 250,
+      fill: 'both',
+    });
+    return animation.finished;
+  }
 
-	render() {
-		return html`
-			<dialog>
-				<div class="container">
-					<header>
-					  <slot name="header">
-						  <h3>${this.header}</h3>
-					  </slot>
-						${when(this.showHide, () => html`<button class="focus-visible" @click=${this.hide}>✕</button>`)}
-					</header>
-					<article>
-						<slot></slot>
-					</article>
-					<footer>
-						<slot name="footer"></slot>
-					</footer>
-				</div>
-			</dialog>
-		`;
-	}
+  render() {
+    return html`
+      <dialog>
+        <div class="container">
+          <header>
+            <slot name="header">
+              <h3>${this.header}</h3>
+            </slot>
+            ${when(this.showHide, () => html`<button class="focus-visible" @click=${this.hide}>✕</button>`)}
+          </header>
+          <article>
+            <slot></slot>
+          </article>
+          <footer>
+            <slot name="footer"></slot>
+          </footer>
+        </div>
+      </dialog>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-dialog': AppDialog;
-	}
+  interface HTMLElementTagNameMap {
+    'app-dialog': AppDialog;
+  }
 }

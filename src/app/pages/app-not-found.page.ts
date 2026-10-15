@@ -4,20 +4,20 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('app-not-found-page')
 export class AppNotFoundPage extends LitElement {
-	static styles = [
-		css`
-			h1 {
-				text-align: center;
-			}
-		`,
-	];
+  static styles = [
+    css`
+      h1 {
+        text-align: center;
+      }
+    `,
+  ];
 
-	connectedCallback() {
-		super.connectedCallback();
-		setPageTitle('404');
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    setPageTitle('404');
+  }
 
-	render() {
-		return html`<h1>Page not found</h1>`;
-	}
+  render() {
+    return html`<h1>Page not found</h1>`;
+  }
 }

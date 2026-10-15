@@ -14,208 +14,219 @@ import { debounce } from '@app/utils/html';
 
 @customElement('app-table-header')
 export class AppTableHeader extends LitElement {
-	static styles = [
-		defaultStyle,
-		css`
-			:host {
-				display: block;
-				min-width: 100px;
-			}
+  static styles = [
+    defaultStyle,
+    css`
+      :host {
+        display: block;
+        min-width: 100px;
+      }
 
-			button {
-				display: flex;
-				align-items: center;
-				font-family: var(--font-system-ui);
-				padding: 5px 0;
-				gap: 5px;
-				font-weight: bold;
-				border: none;
-				background: none;
+      button {
+        display: flex;
+        align-items: center;
+        font-family: var(--font-system-ui);
+        padding: 5px 0;
+        gap: 5px;
+        font-weight: bold;
+        border: none;
+        background: none;
 
-				&.sortable {
-					cursor: pointer;
+        &.sortable {
+          cursor: pointer;
 
-					app-icon {
-						font-size: 20px;
-						transition: opacity 0.3s;
-					}
+          app-icon {
+            font-size: 20px;
+            transition: opacity 0.3s;
+          }
 
-					&[order="none"] {
-						app-icon {
-							opacity: 0;
-						}
+          &[order='none'] {
+            app-icon {
+              opacity: 0;
+            }
 
-						&:not(:focus):hover app-icon {
-							opacity: 0.5;
-						}
-					}
+            &:not(:focus):hover app-icon {
+              opacity: 0.5;
+            }
+          }
 
-					&:not([order="none"]) {
-						color: var(--theme-primary-color);
-					}
-				}
-			}
-		`,
-	];
+          &:not([order='none']) {
+            color: var(--theme-primary-color);
+          }
+        }
+      }
+    `,
+  ];
 
-	@property({ type: String })
-	accessor label = '';
+  @property({ type: String })
+  accessor label = '';
 
-	@property({ type: Boolean })
-	accessor sortable = false;
+  @property({ type: Boolean })
+  accessor sortable = false;
 
-	@property({ type: String })
-	accessor order: 'asc' | 'desc' | null = null;
+  @property({ type: String })
+  accessor order: 'asc' | 'desc' | null = null;
 
-	@property({ type: Boolean })
-	accessor filterable = false;
+  @property({ type: Boolean })
+  accessor filterable = false;
 
-	@property({ type: String })
-	accessor field = '';
+  @property({ type: String })
+  accessor field = '';
 
-	@property({ type: String })
-	accessor value = '';
+  @property({ type: String })
+  accessor value = '';
 
-	@property({ type: String, reflect: true })
-	accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text';
+  @property({ type: String, reflect: true })
+  accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text';
 
-	@property({ type: Array })
-	accessor list: { label: string; value: string | boolean | number }[] = [];
+  @property({ type: Array })
+  accessor list: { label: string; value: string | boolean | number }[] = [];
 
-	@property({ type: Number })
-	accessor delay = 0;
+  @property({ type: Number })
+  accessor delay = 0;
 
-	private debouncedSearch?: ReturnType<typeof debounce>;
+  private debouncedSearch?: ReturnType<typeof debounce>;
 
-	dispatchFilterEvent(type: 'order' | 'value' = 'value') {
-		this.dispatchEvent(new AppTableHeaderFilterEvent({ field: this.field, value: this.value, order: this.order, type }));
-	}
+  dispatchFilterEvent(type: 'order' | 'value' = 'value') {
+    this.dispatchEvent(
+      new AppTableHeaderFilterEvent({
+        field: this.field,
+        value: this.value,
+        order: this.order,
+        type,
+      }),
+    );
+  }
 
-	private search(event: Event) {
-		const input = event.target as AppInput;
-		this.value = input.value;
-		if (!this.debouncedSearch) {
-			this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), this.delay);
-		}
-		return this.debouncedSearch();
-	}
+  private search(event: Event) {
+    const input = event.target as AppInput;
+    this.value = input.value;
+    if (!this.debouncedSearch) {
+      this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), this.delay);
+    }
+    return this.debouncedSearch();
+  }
 
-	private filterColumnValue(event: Event) {
-		const input = event.target as AppInput | AppSelect;
-		this.value = input.value;
-		this.dispatchFilterEvent('value');
-	}
+  private filterColumnValue(event: Event) {
+    const input = event.target as AppInput | AppSelect;
+    this.value = input.value;
+    this.dispatchFilterEvent('value');
+  }
 
-	private filterColumnOrder() {
-		if (!this.sortable) return;
+  private filterColumnOrder() {
+    if (!this.sortable) return;
 
-		if (!this.order) {
-			this.order = 'asc';
-		} else if (this.order === 'asc') {
-			this.order = 'desc';
-		} else if (this.order === 'desc') {
-			this.order = null;
-		}
-		this.dispatchFilterEvent('order');
-	}
+    if (!this.order) {
+      this.order = 'asc';
+    } else if (this.order === 'asc') {
+      this.order = 'desc';
+    } else if (this.order === 'desc') {
+      this.order = null;
+    }
+    this.dispatchFilterEvent('order');
+  }
 
-	clearFilters() {
-		this.clearOrderFilter();
-		this.clearValueFilter();
-	}
+  clearFilters() {
+    this.clearOrderFilter();
+    this.clearValueFilter();
+  }
 
-	clearOrderFilter() {
-		this.order = null;
-	}
+  clearOrderFilter() {
+    this.order = null;
+  }
 
-	clearValueFilter() {
-		this.value = '';
-	}
+  clearValueFilter() {
+    this.value = '';
+  }
 
-	render() {
-		return html`
-			<button order=${this.order || 'none'} class=${classMap({ sortable: this.sortable })} @click=${this.filterColumnOrder}>
-				<slot></slot>
-				${when(this.sortable && !this.order, () => html`<app-icon>sort</app-icon>`)}
-				${when(this.sortable && this.order === 'desc', () => html`<app-icon>arrow_downward_alt</app-icon>`)}
-				${when(this.sortable && this.order === 'asc', () => html`<app-icon>arrow_upward_alt</app-icon>`)}
-			</button>
-			${when(
-				this.filterable && this.type === 'text',
-				() => html`
-					<app-input
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						.value=${this.value}
-						@app-input=${this.search}
-						@app-clear=${this.filterColumnValue}
-					>
-					</app-input>
-				`,
-			)}
-			${when(
-				this.filterable && this.type === 'number',
-				() => html`
-					<app-input
-						type="number"
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						.value=${this.value}
-						@app-input=${this.search}
-						@app-clear=${this.filterColumnValue}
-					>
-					</app-input>
-				`,
-			)}
-			${when(
-				this.filterable && this.type === 'date',
-				() => html`
-					<app-input
-						type="date"
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						.value=${this.value}
-						@app-input=${this.search}
-						@app-clear=${this.filterColumnValue}
-					>
-					</app-input>
-				`,
-			)}
-			${when(
-				this.filterable && this.type === 'select',
-				() => html`
-					<app-select
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						@app-change=${this.filterColumnValue}
-						@app-clear=${this.filterColumnValue}
-						.value=${this.value}
-					>
-						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
-					</app-select>
-				`,
-			)}
-			${when(
-				this.filterable && this.type === 'select-multiple',
-				() => html`
-					<app-select
-						multiple
-						clearable
-						placeholder="Filter by ${this.label?.toLowerCase()}"
-						@app-change=${this.filterColumnValue}
-						@app-clear=${this.filterColumnValue}
-						.value=${this.value}
-					>
-						${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
-					</app-select>
-				`,
-			)}
-		`;
-	}
+  render() {
+    return html`
+      <button
+        order=${this.order || 'none'}
+        class=${classMap({ sortable: this.sortable })}
+        @click=${this.filterColumnOrder}
+      >
+        <slot></slot>
+        ${when(this.sortable && !this.order, () => html`<app-icon>sort</app-icon>`)}
+        ${when(this.sortable && this.order === 'desc', () => html`<app-icon>arrow_downward_alt</app-icon>`)}
+        ${when(this.sortable && this.order === 'asc', () => html`<app-icon>arrow_upward_alt</app-icon>`)}
+      </button>
+      ${when(
+        this.filterable && this.type === 'text',
+        () => html`
+          <app-input
+            clearable
+            placeholder="Filter by ${this.label?.toLowerCase()}"
+            .value=${this.value}
+            @app-input=${this.search}
+            @app-clear=${this.filterColumnValue}
+          >
+          </app-input>
+        `,
+      )}
+      ${when(
+        this.filterable && this.type === 'number',
+        () => html`
+          <app-input
+            type="number"
+            clearable
+            placeholder="Filter by ${this.label?.toLowerCase()}"
+            .value=${this.value}
+            @app-input=${this.search}
+            @app-clear=${this.filterColumnValue}
+          >
+          </app-input>
+        `,
+      )}
+      ${when(
+        this.filterable && this.type === 'date',
+        () => html`
+          <app-input
+            type="date"
+            clearable
+            placeholder="Filter by ${this.label?.toLowerCase()}"
+            .value=${this.value}
+            @app-input=${this.search}
+            @app-clear=${this.filterColumnValue}
+          >
+          </app-input>
+        `,
+      )}
+      ${when(
+        this.filterable && this.type === 'select',
+        () => html`
+          <app-select
+            clearable
+            placeholder="Filter by ${this.label?.toLowerCase()}"
+            @app-change=${this.filterColumnValue}
+            @app-clear=${this.filterColumnValue}
+            .value=${this.value}
+          >
+            ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
+          </app-select>
+        `,
+      )}
+      ${when(
+        this.filterable && this.type === 'select-multiple',
+        () => html`
+          <app-select
+            multiple
+            clearable
+            placeholder="Filter by ${this.label?.toLowerCase()}"
+            @app-change=${this.filterColumnValue}
+            @app-clear=${this.filterColumnValue}
+            .value=${this.value}
+          >
+            ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
+          </app-select>
+        `,
+      )}
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-table-header': AppTableHeader;
-	}
+  interface HTMLElementTagNameMap {
+    'app-table-header': AppTableHeader;
+  }
 }

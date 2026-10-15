@@ -4,28 +4,28 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
-	static styles = [
-		css`
-			img {
-				display: block;
-				width: 100%;
-				height: 100%;
-			}
+  static styles = [
+    css`
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
 
-			h3 {
-				margin: 0 0 10px 0;
-			}
-		`,
-	];
+      h3 {
+        margin: 0 0 10px 0;
+      }
+    `,
+  ];
 
-	connectedCallback() {
-		super.connectedCallback();
-		setPageTitle('Home');
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    setPageTitle('Home');
+  }
 
-	protected firstUpdated() {}
+  protected firstUpdated() {}
 
-	render() {
-		return html`Home`;
-	}
+  render() {
+    return html`Home`;
+  }
 }

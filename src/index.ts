@@ -10,10 +10,12 @@ applyDefaultTheme();
 
 // Load app
 Promise.allSettled([
-	// await refreshTokenSilently(),
-	import('@app/app-root.element'),
-	customElements.whenDefined('app-root'),
-]).then(() => {
-	document.querySelector('body')?.classList.remove('initializing');
-	document.querySelector('.loader')?.remove();
-});
+  // await refreshTokenSilently(),
+  import('@app/app-root.element'),
+  customElements.whenDefined('app-root'),
+])
+  .then(() => {
+    document.querySelector('body')?.classList.remove('initializing');
+    document.querySelector('.loader')?.remove();
+  })
+  .catch((error) => console.error(error));

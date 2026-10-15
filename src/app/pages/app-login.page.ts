@@ -7,48 +7,46 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
-	static styles = [
-		css`
-			.container {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				gap: 10px;
-				height: 100%;
-			}
-		`,
-	];
+  static styles = [
+    css`
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        height: 100%;
+      }
+    `,
+  ];
 
-	@state()
-	private error = '';
+  @state()
+  private error = '';
 
-	connectedCallback() {
-		super.connectedCallback();
-		setPageTitle('Login');
-		const { error } = getRouteSearch();
-		const user = getUser();
-		if (user) {
-			navigate(localStorage.getItem('requested-page') || '/');
-			localStorage.removeItem('requested-page');
-		} else if (error) {
-			this.error = error;
-		} else {
-			login();
-		}
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    setPageTitle('Login');
+    const { error } = getRouteSearch();
+    const user = getUser();
+    if (user) {
+      navigate(localStorage.getItem('requested-page') || '/');
+      localStorage.removeItem('requested-page');
+    } else if (error) {
+      this.error = error;
+    } else {
+      login();
+    }
+  }
 
-	render() {
-		return html`
-			<div class="container">
-				${when(
-					this.error,
-					() => html`<p>${this.error}</p>`,
-					() => html`
-						<p>Authenticating...</p>
-					`,
-				)}
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="container">
+        ${when(
+          this.error,
+          () => html`<p>${this.error}</p>`,
+          () => html` <p>Authenticating...</p> `,
+        )}
+      </div>
+    `;
+  }
 }

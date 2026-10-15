@@ -10,378 +10,397 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-select')
 export class AppSelect extends FormElement {
-	static styles = [
-		defaultStyle,
-		appSelectStyle,
-		css`
-			.select-wrapper {
-				anchor-name: --anchor;
-			}
+  static styles = [
+    defaultStyle,
+    appSelectStyle,
+    css`
+      .select-wrapper {
+        anchor-name: --anchor;
+      }
 
-			[popover] {
-				position-anchor: --anchor;
-				width: anchor-size(width);
-				position-try: flip-block;
-				position-area: span-bottom;
-				left: anchor(left);
-				top: anchor(bottom);
-				border: 1px solid var(--theme-default-color);
-				background: var(--theme-default-surface);
-				border-radius: var(--radius-2);
-				overflow: auto;
-				padding: 5px 0;
-				margin: 0;
+      [popover] {
+        position-anchor: --anchor;
+        width: anchor-size(width);
+        position-try: flip-block;
+        position-area: span-bottom;
+        left: anchor(left);
+        top: anchor(bottom);
+        border: 1px solid var(--theme-default-color);
+        background: var(--theme-default-surface);
+        border-radius: var(--radius-2);
+        overflow: auto;
+        padding: 5px 0;
+        margin: 0;
 
-				&:popover-open {
-					display: flex;
-					flex-direction: column;
-				}
-			}
-		`,
-	];
+        &:popover-open {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    `,
+  ];
 
-	@property({ type: Boolean })
-	accessor required = false;
+  @property({ type: Boolean })
+  accessor required = false;
 
-	@property({ type: String })
-	accessor label = '';
+  @property({ type: String })
+  accessor label = '';
 
-	@property({ type: String })
-	accessor displayValue = '';
+  @property({ type: String })
+  accessor displayValue = '';
 
-	@property({ type: String })
-	accessor placeholder = '';
+  @property({ type: String })
+  accessor placeholder = '';
 
-	@property({ type: Boolean, reflect: true })
-	accessor open = false;
+  @property({ type: Boolean, reflect: true })
+  accessor open = false;
 
-	@property({ type: Boolean })
-	accessor multiple = false;
+  @property({ type: Boolean })
+  accessor multiple = false;
 
-	@property({ type: Boolean })
-	accessor searchable = false;
+  @property({ type: Boolean })
+  accessor searchable = false;
 
-	@property({ type: Boolean })
-	accessor clearable = false;
+  @property({ type: Boolean })
+  accessor clearable = false;
 
-	@property({ type: Number })
-	accessor debounceTime = 100;
+  @property({ type: Number })
+  accessor debounceTime = 100;
 
-	@query('#input')
-	accessor input!: HTMLInputElement;
+  @query('#input')
+  accessor input!: HTMLInputElement;
 
-	@query('#search')
-	accessor searchInput!: HTMLInputElement;
+  @query('#search')
+  accessor searchInput!: HTMLInputElement;
 
-	@query('#trigger')
-	accessor trigger!: HTMLInputElement;
+  @query('#trigger')
+  accessor trigger!: HTMLInputElement;
 
-	@query('[popover]')
-	accessor popup!: HTMLElement;
+  @query('[popover]')
+  accessor popup!: HTMLElement;
 
-	@queryAssignedElements({ selector: 'app-select-option' })
-	accessor assignedOptions!: AppSelectOption[];
+  @queryAssignedElements({ selector: 'app-select-option' })
+  accessor assignedOptions!: AppSelectOption[];
 
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('keyup', this.handleKeyup);
-		window.addEventListener('mousedown', this.handleMouseDown);
-		this.addEventListener('keydown', (event) => {
-			const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
-			if (!keys.includes(event.key) || !this.open) return;
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('keyup', this.handleKeyup);
+    window.addEventListener('mousedown', this.handleMouseDown);
+    this.addEventListener('keydown', (event) => {
+      const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
+      if (!keys.includes(event.key) || !this.open) return;
 
-			event.preventDefault();
+      event.preventDefault();
 
-			const activeOptions = this.assignedOptions.filter((option) => !option.disabled);
-			const len = activeOptions.length;
-			if (len === 0) return;
+      const activeOptions = this.assignedOptions.filter((option) => !option.disabled);
+      const len = activeOptions.length;
+      if (len === 0) return;
 
-			const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0);
-			let newIndex = 0;
+      const currentIndex = activeOptions.findIndex((option) => option.tabIndex === 0);
+      let newIndex = 0;
 
-			switch (event.key) {
-				case 'ArrowDown':
-					// If nothing is selected yet, start at 0. Otherwise, move down with wrap-around.
-					newIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % len;
-					break;
-				case 'ArrowUp':
-					// If nothing is selected yet, start at the end. Otherwise, move up with wrap-around.
-					newIndex = currentIndex === -1 ? len - 1 : (currentIndex - 1 + len) % len;
-					break;
-				case 'Home':
-					newIndex = 0;
-					break;
-				case 'End':
-					newIndex = len - 1;
-					break;
-			}
+      switch (event.key) {
+        case 'ArrowDown':
+          // If nothing is selected yet, start at 0. Otherwise, move down with wrap-around.
+          newIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % len;
+          break;
+        case 'ArrowUp':
+          // If nothing is selected yet, start at the end. Otherwise, move up with wrap-around.
+          newIndex = currentIndex === -1 ? len - 1 : (currentIndex - 1 + len) % len;
+          break;
+        case 'Home':
+          newIndex = 0;
+          break;
+        case 'End':
+          newIndex = len - 1;
+          break;
+      }
 
-			activeOptions.forEach((option, index) => {
-				const isMatch = index === newIndex;
-				option.tabIndex = isMatch ? 0 : -1;
-				if (isMatch) option.focus();
-			});
-		});
-		this.addEventListener('click', (event) => {
-			const target = event.target as HTMLElement;
-			if (target.tagName === 'APP-SELECT-OPTION') {
-				event.stopPropagation();
-				const option = target as AppSelectOption;
-				if (this.multiple) {
-					option.selected = !option.selected;
-					this.value = this.getMultiValue();
-				} else {
-					option.selected = true;
-					this.value = option.value;
-					this.assignedOptions
-						.filter((opt) => opt.value !== this.value)
-						.forEach((opt) => {
-							opt.selected = false;
-						});
-					this.closeSelect();
-					this.focus();
-				}
-				this.displayValue = this.getDisplayValue();
-				this.onChange();
-			}
-		});
-	}
+      activeOptions.forEach((option, index) => {
+        const isMatch = index === newIndex;
+        option.tabIndex = isMatch ? 0 : -1;
+        if (isMatch) option.focus();
+      });
+    });
+    this.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'APP-SELECT-OPTION') {
+        event.stopPropagation();
+        const option = target as AppSelectOption;
+        if (this.multiple) {
+          option.selected = !option.selected;
+          this.value = this.getMultiValue();
+        } else {
+          option.selected = true;
+          this.value = option.value;
+          this.assignedOptions
+            .filter((opt) => opt.value !== this.value)
+            .forEach((opt) => {
+              opt.selected = false;
+            });
+          this.closeSelect();
+          this.focus();
+        }
+        this.displayValue = this.getDisplayValue();
+        this.onChange();
+      }
+    });
+  }
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		window.removeEventListener('keyup', this.handleKeyup);
-		window.removeEventListener('mousedown', this.handleMouseDown);
-	}
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('keyup', this.handleKeyup);
+    window.removeEventListener('mousedown', this.handleMouseDown);
+  }
 
-	protected willUpdate(_changedProperties: PropertyValues): void {
-		if (_changedProperties.has('value')) {
-			this.assignedOptions.forEach((option) => {
-				const selected = this.value
-					.split(',')
-					.map((v) => v.trim())
-					.filter((v) => !!v)
-					.includes(option.value);
-				option.selected = selected;
-			});
-		}
-		if (_changedProperties.has('value') && !_changedProperties.has('displayValue')) {
-			this.displayValue = this.getDisplayValue();
-		}
-	}
+  protected willUpdate(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has('value')) {
+      this.assignedOptions.forEach((option) => {
+        const selected = this.value
+          .split(',')
+          .map((v) => v.trim())
+          .filter((v) => !!v)
+          .includes(option.value);
+        option.selected = selected;
+      });
+    }
+    if (_changedProperties.has('value') && !_changedProperties.has('displayValue')) {
+      this.displayValue = this.getDisplayValue();
+    }
+  }
 
-	closeSelect() {
-		this.open = false;
-		if (this.searchInput && this.searchable) {
-			this.searchInput.value = '';
-			this.assignedOptions.forEach((option) => {
-				option.searchHidden = false;
-			});
-		}
-		this.popup.hidePopover();
-		this.onBlur();
-		this.dispatchEvent(new Event('app-hide', { cancelable: true }));
-	}
+  closeSelect() {
+    this.open = false;
+    if (this.searchInput && this.searchable) {
+      this.searchInput.value = '';
+      this.assignedOptions.forEach((option) => {
+        option.searchHidden = false;
+      });
+    }
+    this.popup.hidePopover();
+    this.onBlur();
+    this.dispatchEvent(new Event('app-hide', { cancelable: true }));
+  }
 
-	async openSelect() {
-		this.open = true;
-		await this.updateComplete;
-		this.popup.showPopover();
-		if (this.searchable) {
-			this.searchInput?.focus();
-		} else {
-			this.focusSelectedOption();
-		}
-		this.dispatchEvent(new Event('app-show', { cancelable: true }));
-	}
+  async openSelect() {
+    this.open = true;
+    await this.updateComplete;
+    this.popup.showPopover();
+    if (this.searchable) {
+      this.searchInput?.focus();
+    } else {
+      this.focusSelectedOption();
+    }
+    this.dispatchEvent(new Event('app-show', { cancelable: true }));
+  }
 
-	toggleSelect() {
-		if (this.open) {
-			this.closeSelect();
-		} else {
-			this.openSelect();
-		}
-	}
+  toggleSelect() {
+    if (this.open) {
+      this.closeSelect();
+    } else {
+      this.openSelect();
+    }
+  }
 
-	private handleMouseDown = (event: MouseEvent) => {
-		const path = event.composedPath();
-		if (!path.includes(this) && this.open) {
-			this.closeSelect();
-		}
-	};
+  private handleMouseDown = (event: MouseEvent) => {
+    const path = event.composedPath();
+    if (!path.includes(this) && this.open) {
+      this.closeSelect();
+    }
+  };
 
-	private handleKeyup = (event: KeyboardEvent) => {
-		if (event.key === 'Escape' && this.open) {
-			this.closeSelect();
-			this.focus();
-		}
-		if (event.key === 'Tab' && this.open) {
-			this.closeSelect();
-		}
-	};
+  private handleKeyup = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && this.open) {
+      this.closeSelect();
+      this.focus();
+    }
+    if (event.key === 'Tab' && this.open) {
+      this.closeSelect();
+    }
+  };
 
-	private focusSelectedOption() {
-		const options = this.assignedOptions
-			.filter((option) => !option.disabled)
-			.map((option) => {
-				option.tabIndex = option.selected ? 0 : -1;
-				return option;
-			});
-		const firstSelected = options.find((option) => option.selected);
-		firstSelected?.focus();
-	}
+  private focusSelectedOption() {
+    const options = this.assignedOptions
+      .filter((option) => !option.disabled)
+      .map((option) => {
+        option.tabIndex = option.selected ? 0 : -1;
+        return option;
+      });
+    const firstSelected = options.find((option) => option.selected);
+    firstSelected?.focus();
+  }
 
-	private onOptionsAdded() {
-		this.assignedOptions.forEach((option) => {
-			const shouldBeSelected = this.value
-				.split(',')
-				.map((v) => v.trim())
-				.filter((v) => !!v)
-				.includes(option.value);
-			option.selected = shouldBeSelected;
-		});
-		this.displayValue = this.getDisplayValue();
-	}
+  private onOptionsAdded() {
+    this.assignedOptions.forEach((option) => {
+      const shouldBeSelected = this.value
+        .split(',')
+        .map((v) => v.trim())
+        .filter((v) => !!v)
+        .includes(option.value);
+      option.selected = shouldBeSelected;
+    });
+    this.displayValue = this.getDisplayValue();
+  }
 
-	private getMultiValue() {
-		return this.assignedOptions
-			.filter((option) => option.selected)
-			.map((option) => option.value)
-			.join(',');
-	}
+  private getMultiValue() {
+    return this.assignedOptions
+      .filter((option) => option.selected)
+      .map((option) => option.value)
+      .join(',');
+  }
 
-	private getDisplayValue() {
-		return this.assignedOptions
-			.filter((option) =>
-				this.value
-					.split(',')
-					.map((v) => v.trim())
-					.includes(option.value),
-			)
-			.map((option) => option.textContent?.trim())
-			.filter((v) => !!v)
-			.join(', ');
-	}
+  private getDisplayValue() {
+    return this.assignedOptions
+      .filter((option) =>
+        this.value
+          .split(',')
+          .map((v) => v.trim())
+          .includes(option.value),
+      )
+      .map((option) => option.textContent?.trim())
+      .filter((v) => !!v)
+      .join(', ');
+  }
 
-	onChange() {
-		this.touched = true;
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
-		this.dispatchEvent(new Event('change', { bubbles: true }));
-	}
+  onChange() {
+    this.touched = true;
+    this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 
-	onBlur() {
-		this.touched = true;
-		this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
-	}
+  onBlur() {
+    this.touched = true;
+    this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
+  }
 
-	async onKeydown(event: KeyboardEvent) {
-		if (!['Enter', 'Space'].includes(event.code)) {
-			return;
-		}
-		event.preventDefault();
-		if (!this.open) {
-			this.openSelect();
-		}
-	}
+  async onKeydown(event: KeyboardEvent) {
+    if (!['Enter', 'Space'].includes(event.code)) {
+      return;
+    }
+    event.preventDefault();
+    if (!this.open) {
+      this.openSelect();
+    }
+  }
 
-	formResetCallback() {
-		super.formResetCallback();
-		this.displayValue = this.assignedOptions.find((option) => option.value === this.value)?.textContent || '';
-	}
+  formResetCallback() {
+    super.formResetCallback();
+    this.displayValue =
+      this.assignedOptions.find((option) => option.value === this.value)?.textContent || '';
+  }
 
-	focus(options?: FocusOptions) {
-		this.trigger.focus(options);
-	}
+  focus(options?: FocusOptions) {
+    this.trigger.focus(options);
+  }
 
-	getValidity() {
-		return { flags: this.input.validity, message: this.input.validationMessage, anchor: this.input };
-	}
+  getValidity() {
+    return {
+      flags: this.input.validity,
+      message: this.input.validationMessage,
+      anchor: this.input,
+    };
+  }
 
-	clear() {
-		this.value = '';
-		this.focus();
-		this.touched = true;
-		this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
-		this.dispatchEvent(new Event('change', { bubbles: true }));
-		this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
-	}
+  clear() {
+    this.value = '';
+    this.focus();
+    this.touched = true;
+    this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event('change', { bubbles: true }));
+    this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
+  }
 
-	onSearch() {
-		const search = this.searchInput.value;
-		this.assignedOptions.forEach((option) => {
-			const text = option.textContent?.toLowerCase() || '';
-			const matches = text.includes(search);
-			option.searchHidden = !!search && !matches;
-		});
-		this.requestUpdate();
-	}
+  onSearch() {
+    const search = this.searchInput.value;
+    this.assignedOptions.forEach((option) => {
+      const text = option.textContent?.toLowerCase() || '';
+      const matches = text.includes(search);
+      option.searchHidden = !!search && !matches;
+    });
+    this.requestUpdate();
+  }
 
-	get hasOptions() {
-		return this.assignedOptions.length > 0;
-	}
+  get hasOptions() {
+    return this.assignedOptions.length > 0;
+  }
 
-	get hasSearchResults() {
-		return this.assignedOptions.some((o) => !o.searchHidden);
-	}
+  get hasSearchResults() {
+    return this.assignedOptions.some((o) => !o.searchHidden);
+  }
 
-	render() {
-		return html`
-			<div class="form-control" part="form-control">
-				${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
-				<div class="select-wrapper" part="select-wrapper">
-					<span class="prefix" part="prefix">
-						<slot name="prefix"></slot>
-					</span>
-					<input
-						id="trigger"
-						part="input"
-						?disabled=${this.disabled}
-						?autofocus=${this.autofocus}
-						autocomplete="off"
-						readonly
-						?required=${this.required}
-						placeholder=${ifDefined(this.placeholder)}
-						.value=${live(this.displayValue)}
-						@click=${this.toggleSelect}
-						@keydown=${this.onKeydown}
-					/>
-					<input
-						id="input"
-						hidden
-						.value=${live(this.value)}
-						name=${ifDefined(this.name)}
-						?required=${this.required}
-						?disabled=${this.disabled}
-					/>
-					${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
-					<span class="caret">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" part="svg">
-							<path
-								fill-rule="evenodd"
-								d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-							>
-							</path>
-						</svg>
-					</span>
-				</div>
-				<div popover="manual" part="popover" ?open=${this.open}>
-					${when(
-						this.searchable,
-						() => html`
-						<input autocomplete="off" type="search" id="search" placeholder="Search..." @input=${this.onSearch}/>
-					`,
-					)}
-					${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
-					${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
-					<slot @slotchange=${this.onOptionsAdded}></slot>
-				</div>
-				<small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>${this.message}</small>
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="form-control" part="form-control">
+        ${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
+        <div class="select-wrapper" part="select-wrapper">
+          <span class="prefix" part="prefix">
+            <slot name="prefix"></slot>
+          </span>
+          <input
+            id="trigger"
+            part="input"
+            ?disabled=${this.disabled}
+            ?autofocus=${this.autofocus}
+            autocomplete="off"
+            readonly
+            ?required=${this.required}
+            placeholder=${ifDefined(this.placeholder)}
+            .value=${live(this.displayValue)}
+            @click=${this.toggleSelect}
+            @keydown=${this.onKeydown}
+          />
+          <input
+            id="input"
+            hidden
+            .value=${live(this.value)}
+            name=${ifDefined(this.name)}
+            ?required=${this.required}
+            ?disabled=${this.disabled}
+          />
+          ${when(this.clearable && this.value, () => html`<button class="clear" @click=${this.clear}>✕</button>`)}
+          <span class="caret">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              part="svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+              ></path>
+            </svg>
+          </span>
+        </div>
+        <div popover="manual" part="popover" ?open=${this.open}>
+          ${when(
+            this.searchable,
+            () => html`
+              <input
+                autocomplete="off"
+                type="search"
+                id="search"
+                placeholder="Search..."
+                @input=${this.onSearch}
+              />
+            `,
+          )}
+          ${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
+          ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
+          <slot @slotchange=${this.onOptionsAdded}></slot>
+        </div>
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
+          >${this.message}</small
+        >
+      </div>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-select': AppSelect;
-	}
+  interface HTMLElementTagNameMap {
+    'app-select': AppSelect;
+  }
 }

@@ -10,49 +10,53 @@ import { mainStyle } from '@app/styles/main.style';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
-	static styles = [mainStyle, css``];
+  static styles = [mainStyle, css``];
 
-	@query('#outlet')
-	accessor outlet!: HTMLElement;
+  @query('#outlet')
+  accessor outlet!: HTMLElement;
 
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('offline', () => notify({ variant: 'error', message: 'You are offline', duration: 0 }));
-		window.addEventListener('online', () => notify({ variant: 'success', message: 'You are back online', duration: 3000 }));
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('offline', () =>
+      notify({ variant: 'error', message: 'You are offline', duration: 0 }),
+    );
+    window.addEventListener('online', () =>
+      notify({ variant: 'success', message: 'You are back online', duration: 3000 }),
+    );
 
-		const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`);
-		serverEventSource.addEventListener('global', (event) => {
-			const data = JSON.parse(event.data);
-			globalMessage(data.message, data.type);
-		});
-		serverEventSource.addEventListener('error', () => {
-			serverEventSource.close();
-			// notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
-		});
-	}
+    const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`);
+    serverEventSource.addEventListener('global', (event) => {
+      const data = JSON.parse(event.data);
+      void globalMessage(data.message, data.type);
+    });
+    serverEventSource.addEventListener('error', () => {
+      serverEventSource.close();
+      // notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
+    });
+  }
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		destroyNavigation();
-	}
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    destroyNavigation();
+  }
 
-	protected async firstUpdated() {
-		initializeNavigation({ routes, outlet: this.outlet });
-	}
+  protected async firstUpdated() {
+    initializeNavigation({ routes, outlet: this.outlet });
+  }
 
-	render() {
-		return html`
-			<div class="layout">
-				<app-header class="header"></app-header>
-				<app-sidebar class="sidebar"></app-sidebar>
-				<main id="outlet" class="main"></main>
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="layout">
+        <app-header class="header"></app-header>
+        <app-sidebar class="sidebar"></app-sidebar>
+        <main id="outlet" class="main"></main>
+      </div>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-root': AppRoot;
-	}
+  interface HTMLElementTagNameMap {
+    'app-root': AppRoot;
+  }
 }

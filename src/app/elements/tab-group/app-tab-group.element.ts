@@ -6,115 +6,115 @@ import { customElement, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-tab-group')
 export class AppTabGroup extends LitElement {
-	static styles = [
-		defaultStyle,
-		css`
-			:host {
-				width: 100%;
-			}
+  static styles = [
+    defaultStyle,
+    css`
+      :host {
+        width: 100%;
+      }
 
-			.container {
-				display: flex;
-				flex-direction: column;
-				gap: 10px;
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
-				.nav {
-					display: flex;
-					overflow-x: auto;
+        .nav {
+          display: flex;
+          overflow-x: auto;
 
-					.tabs {
-						display: flex;
-						gap: 5px;
-						border-bottom: solid 2px color-mix(in srgb, var(--theme-muted-color) 40%, transparent);
-					}
-				}
+          .tabs {
+            display: flex;
+            gap: 5px;
+            border-bottom: solid 2px color-mix(in srgb, var(--theme-muted-color) 40%, transparent);
+          }
+        }
 
-				.panels {
-					display: flex;
-				}
-			}
-		`,
-	];
+        .panels {
+          display: flex;
+        }
+      }
+    `,
+  ];
 
-	@queryAssignedElements({ slot: 'tab' })
-	accessor tabs!: AppTab[];
+  @queryAssignedElements({ slot: 'tab' })
+  accessor tabs!: AppTab[];
 
-	@queryAssignedElements()
-	accessor panels!: AppTabPanel[];
+  @queryAssignedElements()
+  accessor panels!: AppTabPanel[];
 
-	#activeTab = '';
+  #activeTab = '';
 
-	get activeTab() {
-		return this.#activeTab;
-	}
+  get activeTab() {
+    return this.#activeTab;
+  }
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('click', (event) => {
-			const target = event.target as HTMLElement;
-			if (target.tagName === 'APP-TAB') {
-				event.stopPropagation();
-				const tab = target as AppTab;
-				const index = this.tabs.indexOf(tab);
-				this.setActiveTab(index);
-				this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
-			}
-		});
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'APP-TAB') {
+        event.stopPropagation();
+        const tab = target as AppTab;
+        const index = this.tabs.indexOf(tab);
+        this.setActiveTab(index);
+        this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
+      }
+    });
+  }
 
-	protected firstUpdated() {
-		const index = this.tabs.findIndex((tab) => tab.active);
-		this.setActiveTab(index === -1 ? 0 : index);
-	}
+  protected firstUpdated() {
+    const index = this.tabs.findIndex((tab) => tab.active);
+    this.setActiveTab(index === -1 ? 0 : index);
+  }
 
-	setActiveTab(index = 0) {
-		const tab = this.tabs.at(index);
-		this.#activeTab = tab?.panel ?? '';
-		this.tabs
-			.filter((t) => t !== tab)
-			.forEach((t) => {
-				t.active = false;
-			});
-		this.panels.forEach((p) => {
-			p.active = p.name === tab?.panel;
-		});
-	}
+  setActiveTab(index = 0) {
+    const tab = this.tabs.at(index);
+    this.#activeTab = tab?.panel ?? '';
+    this.tabs
+      .filter((t) => t !== tab)
+      .forEach((t) => {
+        t.active = false;
+      });
+    this.panels.forEach((p) => {
+      p.active = p.name === tab?.panel;
+    });
+  }
 
-	private tabObserver = new MutationObserver((mutations) => {
-		mutations.forEach((mutation) => {
-			const tab = mutation.target as AppTab;
-			if (tab.active) {
-				const index = this.tabs.indexOf(tab);
-				this.setActiveTab(index);
-			}
-		});
-	});
+  private tabObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      const tab = mutation.target as AppTab;
+      if (tab.active) {
+        const index = this.tabs.indexOf(tab);
+        this.setActiveTab(index);
+      }
+    });
+  });
 
-	private onTabsAdded() {
-		this.tabObserver.disconnect();
-		this.tabs.forEach((tab) => {
-			this.tabObserver.observe(tab, { attributes: true, attributeFilter: ['active'] });
-		});
-	}
+  private onTabsAdded() {
+    this.tabObserver.disconnect();
+    this.tabs.forEach((tab) => {
+      this.tabObserver.observe(tab, { attributes: true, attributeFilter: ['active'] });
+    });
+  }
 
-	render() {
-		return html`
-			<div class="container">
- 			  <div class="nav">
-				  <div class="tabs">
-   					<slot name="tab" @slotchange=${this.onTabsAdded}></slot>
-				  </div>
- 			  </div>
-				<div class="panels">
-					<slot></slot>
-				</div>
-			</div>
-		`;
-	}
+  render() {
+    return html`
+      <div class="container">
+        <div class="nav">
+          <div class="tabs">
+            <slot name="tab" @slotchange=${this.onTabsAdded}></slot>
+          </div>
+        </div>
+        <div class="panels">
+          <slot></slot>
+        </div>
+      </div>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'app-tab-group': AppTabGroup;
-	}
+  interface HTMLElementTagNameMap {
+    'app-tab-group': AppTabGroup;
+  }
 }

@@ -5,27 +5,27 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('app-profile-page')
 export class AppProfilePage extends LitElement {
-	static styles = [
-		css`
-			h3 {
-				margin: 0 0 10px 0;
-			}
-		`,
-	];
+  static styles = [
+    css`
+      h3 {
+        margin: 0 0 10px 0;
+      }
+    `,
+  ];
 
-	private get user() {
-		return getUser();
-	}
+  private get user() {
+    return getUser();
+  }
 
-	connectedCallback() {
-		super.connectedCallback();
-		setPageTitle('Profile');
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    setPageTitle('Profile');
+  }
 
-	render() {
-		return html`
-			<h3>Profile</h3>
-			${this.user?.name} - ${this.user?.roles.join(', ')}
-		`;
-	}
+  render() {
+    return html`
+      <h3>Profile</h3>
+      ${this.user?.name} - ${this.user?.roles.join(', ')}
+    `;
+  }
 }

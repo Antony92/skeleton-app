@@ -5,179 +5,186 @@ import { render } from 'lit';
 /* Internal Router State */
 
 const state: State = {
-	hasUnsavedChanges: false,
-	currentRoute: null,
-	options: null,
+  hasUnsavedChanges: false,
+  currentRoute: null,
+  options: null,
 };
 
 /* Public API */
 
 export const initializeNavigation = (options: NavigationOptions) => {
-	// 1. Pre-compile patterns for performance
-	options.routes = options.routes.map((route) => ({
-		...route,
-		pattern: route.pattern ?? new URLPattern({ pathname: route.path }),
-	}));
+  // 1. Pre-compile patterns for performance
+  options.routes = options.routes.map((route) => ({
+    ...route,
+    pattern: route.pattern ?? new URLPattern({ pathname: route.path }),
+  }));
 
-	state.options = options;
+  state.options = options;
 
-	// 2. Setup listeners
-	navigation.addEventListener('navigate', onNavigation);
-	navigation.addEventListener('navigatesuccess', onNavigationSuccess);
-	navigation.addEventListener('navigateerror', onNavigationError);
+  // 2. Setup listeners
+  navigation.addEventListener('navigate', onNavigation);
+  navigation.addEventListener('navigatesuccess', onNavigationSuccess);
+  navigation.addEventListener('navigateerror', onNavigationError);
 
-	// 3. Handle first load
-	handleInitialLoad();
+  // 3. Handle first load
+  handleInitialLoad();
 };
 
 export const destroyNavigation = () => {
-	navigation.removeEventListener('navigate', onNavigation);
-	navigation.removeEventListener('navigatesuccess', onNavigationSuccess);
-	navigation.removeEventListener('navigateerror', onNavigationError);
+  navigation.removeEventListener('navigate', onNavigation);
+  navigation.removeEventListener('navigatesuccess', onNavigationSuccess);
+  navigation.removeEventListener('navigateerror', onNavigationError);
 };
 
-export const navigate = (url: string | URL, options?: NavigationNavigateOptions) => navigation.navigate(url, options);
+export const navigate = (url: string | URL, options?: NavigationNavigateOptions) =>
+  navigation.navigate(url, options);
 
 export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value);
 
 export const getRouteParams = (): RouteParams => {
-	return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {};
+  return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {};
 };
 
 export const getRouteSearch = () => {
-	return Object.fromEntries(new URLSearchParams(location.search));
+  return Object.fromEntries(new URLSearchParams(location.search));
 };
 
 export const getRouteSearchMap = () => {
-	const object = Object.fromEntries(new URLSearchParams(location.search));
-	return new Map(Object.entries(object));
+  const object = Object.fromEntries(new URLSearchParams(location.search));
+  return new Map(Object.entries(object));
 };
 
 export const addSearchToRoute = (params: SearchParams, clear = true) => {
-	const search = new URLSearchParams(clear ? '' : location.search);
-	Object.entries(params).forEach(([key, value]) => {
-		if (value != null && value !== '') {
-			search.set(key, String(value));
-		}
-	});
-	const query = search.size > 0 ? `?${search.toString()}` : ``;
-	navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
+  const search = new URLSearchParams(clear ? '' : location.search);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value != null && value !== '') {
+      search.set(key, String(value));
+    }
+  });
+  const query = search.size > 0 ? `?${search.toString()}` : ``;
+  navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
 };
 
 export const clearRouteSearch = (params?: SearchParams) => {
-	let path = location.pathname;
-	if (params) {
-		const search = new URLSearchParams(location.search);
-		Object.entries(params).forEach(([key]) => {
-			search.delete(key);
-		});
-		const query = search.size > 0 ? `?${search.toString()}` : ``;
-		path += query;
-	}
-	navigation.navigate(path, { history: 'replace' });
+  let path = location.pathname;
+  if (params) {
+    const search = new URLSearchParams(location.search);
+    Object.entries(params).forEach(([key]) => {
+      search.delete(key);
+    });
+    const query = search.size > 0 ? `?${search.toString()}` : ``;
+    path += query;
+  }
+  navigation.navigate(path, { history: 'replace' });
 };
 
 /* Internal Logic */
 
 const findRoute = (url: string) => {
-	return state.options?.routes.find((r) => r.pattern?.test(url));
+  return state.options?.routes.find((r) => r.pattern?.test(url));
 };
 
 const handleInitialLoad = async () => {
-	if (!state.options) return;
+  if (!state.options) return;
 
-	const url = new URL(location.href);
-	const route = findRoute(url.href);
+  const url = new URL(location.href);
+  const route = findRoute(url.href);
 
-	if (!route) return;
-	if (route.redirect) {
-		navigate(route.redirect);
-		return;
-	}
+  if (!route) return;
+  if (route.redirect) {
+    navigate(route.redirect);
+    return;
+  }
 
-	state.currentRoute = route;
-	await interceptHandler(url, route, state.options.outlet);
+  state.currentRoute = route;
+  await interceptHandler(url, route, state.options.outlet);
 };
 
 const onNavigation = async (event: NavigateEvent) => {
-	const options = state.options;
-	if (shouldNotIntercept(event) || !options) return;
-	const url = new URL(event.destination.url);
-	const currentEntry = navigation.currentEntry;
+  const options = state.options;
+  if (shouldNotIntercept(event) || !options) return;
+  const url = new URL(event.destination.url);
+  const currentEntry = navigation.currentEntry;
 
-	// Avoid redundant navigation
-	if (event.destination.url === currentEntry?.url) {
-		event.preventDefault();
-		return;
-	}
+  // Avoid redundant navigation
+  if (event.destination.url === currentEntry?.url) {
+    event.preventDefault();
+    return;
+  }
 
-	const route = findRoute(url.href);
-	if (!route) return;
+  const route = findRoute(url.href);
+  if (!route) return;
 
-	// Handle Redirects
-	if (route.redirect) {
-		event.preventDefault();
-		navigate(route.redirect);
-		return;
-	}
+  // Handle Redirects
+  if (route.redirect) {
+    event.preventDefault();
+    navigate(route.redirect);
+    return;
+  }
 
-	// Handle Unsaved Changes
-	if (state.hasUnsavedChanges) {
-		event.preventDefault();
-		const confirm = await confirmDialog({
-			header: 'Unsaved Changes',
-			message: 'You have unsaved changes. Are you sure you want to leave?',
-		});
-		if (confirm) {
-			state.hasUnsavedChanges = false;
-			navigate(url.href);
-		}
-		return;
-	}
+  // Handle Unsaved Changes
+  if (state.hasUnsavedChanges) {
+    event.preventDefault();
+    const confirm = await confirmDialog({
+      header: 'Unsaved Changes',
+      message: 'You have unsaved changes. Are you sure you want to leave?',
+    });
+    if (confirm) {
+      state.hasUnsavedChanges = false;
+      navigate(url.href);
+    }
+    return;
+  }
 
-	state.currentRoute = route;
+  state.currentRoute = route;
 
-	// init animation if any
+  // init animation if any
 
-	event.intercept({
-		handler: () => interceptHandler(url, route, options.outlet),
-		focusReset: 'manual',
-	});
+  event.intercept({
+    handler: () => interceptHandler(url, route, options.outlet),
+    focusReset: 'manual',
+  });
 };
 
 const onNavigationSuccess = () => {
-	// TODO remove animation
+  // TODO remove animation
 };
 
 const onNavigationError = () => {
-	// TODO remove animation
+  // TODO remove animation
 };
 
 const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {
-	const params = route.pattern?.exec(url.href)?.pathname.groups || {};
+  const params = route.pattern?.exec(url.href)?.pathname.groups || {};
 
-	// 1. Guard check
-	if (route.guards) {
-		const guards = route.guards.map((guard) => guard(url, params));
-		const outcomes = await Promise.all(guards);
-		const passed = outcomes.every((outcome) => !!outcome);
-		if (!passed) {
-			// TODO remove animation
-			return;
-		}
-	}
+  // 1. Guard check
+  if (route.guards) {
+    const guards = route.guards.map((guard) => Promise.resolve(guard(url, params)));
+    const outcomes = await Promise.all(guards);
+    const passed = outcomes.every((outcome) => !!outcome);
+    if (!passed) {
+      // TODO remove animation
+      return;
+    }
+  }
 
-	// 2. Enter hook
-	if (route.enter) await route.enter(url, params);
+  // 2. Enter hook
+  if (route.enter) await route.enter(url, params);
 
-	// 3. Render
-	if (route.render) {
-		render(route.render(url, params), outlet);
-	}
+  // 3. Render
+  if (route.render) {
+    render(route.render(url, params), outlet);
+  }
 };
 
 const shouldNotIntercept = (event: NavigateEvent) => {
-	return event.navigationType === 'reload' || !event.canIntercept || event.hashChange || event.downloadRequest || !!event.formData;
+  return (
+    event.navigationType === 'reload' ||
+    !event.canIntercept ||
+    event.hashChange ||
+    event.downloadRequest ||
+    !!event.formData
+  );
 };
 
 /* Types */
@@ -185,22 +192,22 @@ const shouldNotIntercept = (event: NavigateEvent) => {
 export type RouteParams = Record<string, string | undefined>;
 
 export type Route = {
-	name?: string;
-	path: string;
-	redirect?: string;
-	pattern?: URLPattern;
-	render?: (url: URL, params: RouteParams) => unknown;
-	enter?: (url: URL, params: RouteParams) => Promise<void> | void;
-	guards?: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[];
+  name?: string;
+  path: string;
+  redirect?: string;
+  pattern?: URLPattern;
+  render?: (url: URL, params: RouteParams) => unknown;
+  enter?: (url: URL, params: RouteParams) => Promise<void> | void;
+  guards?: ((url: URL, params: RouteParams) => Promise<boolean> | boolean)[];
 };
 
 export type NavigationOptions = {
-	outlet: HTMLElement;
-	routes: Route[];
+  outlet: HTMLElement;
+  routes: Route[];
 };
 
 type State = {
-	hasUnsavedChanges: boolean;
-	currentRoute: Route | null;
-	options: NavigationOptions | null;
+  hasUnsavedChanges: boolean;
+  currentRoute: Route | null;
+  options: NavigationOptions | null;
 };
