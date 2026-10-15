@@ -98,6 +98,7 @@ export class AppAutocomplete extends FormElement {
   }
 
   clear() {
+    this.search = '';
     this.value = '';
     this.focus();
     this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
@@ -142,9 +143,9 @@ export class AppAutocomplete extends FormElement {
             <slot name="suffix"></slot>
           </span>
         </div>
-        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
-          >${this.message}</small
-        >
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
+          ${this.message}
+        </small>
       </div>
 
       <datalist id="results">
