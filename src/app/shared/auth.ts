@@ -18,7 +18,7 @@ export const hasUserRole = (roles: string[]) => {
 
 export const login = () => {
   // location.href = `${import.meta.env.VITE_API}/login`
-  dummyLogin({ username: 'emilys', password: 'emilyspass' });
+  void dummyLogin({ username: 'emilys', password: 'emilyspass' });
 };
 
 export const logout = async () => {

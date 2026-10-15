@@ -417,7 +417,7 @@ export class AppDemoPage extends LitElement {
           <app-button
             variant="primary"
             @click=${() => {
-              loading(true);
+              void loading(true);
               setTimeout(() => loading(false), 3000);
             }}
           >

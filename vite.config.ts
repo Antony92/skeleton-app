@@ -11,6 +11,10 @@ export default defineConfig({
     },
   },
   lint: {
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
     ignorePatterns: ['dist/**'],
     rules: {
       'typescript/unbound-method': 'off',

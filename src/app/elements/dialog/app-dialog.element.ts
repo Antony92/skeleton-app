@@ -52,7 +52,7 @@ export class AppDialog extends LitElement {
       if (!target) return;
 
       if (target.hasAttribute('app-dialog-close')) {
-        this.hide(target.getAttribute('app-dialog-close') || '');
+        void this.hide(target.getAttribute('app-dialog-close') || '');
         return;
       }
 
@@ -61,15 +61,15 @@ export class AppDialog extends LitElement {
       }
 
       if (this.modal) {
-        this.pulseAnimation();
+        void this.pulseAnimation();
       } else {
-        this.hide();
+        void this.hide();
       }
     });
 
     this.dialog.addEventListener('cancel', (event) => {
       event.preventDefault();
-      this.hide();
+      void this.hide();
     });
   }
 

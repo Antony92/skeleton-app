@@ -13,7 +13,7 @@ export class AppThemeSwitcher extends LitElement {
   static styles = [defaultStyle, css``];
 
   @property({ type: String, reflect: true })
-  accessor theme: 'auto' | 'light' | 'dark' | string = localStorage.getItem('theme') || 'auto';
+  accessor theme = localStorage.getItem('theme') || 'auto';
 
   preferedDark = window?.matchMedia('(prefers-color-scheme: dark)').matches;
   preferedLight = window?.matchMedia('(prefers-color-scheme: light)').matches;

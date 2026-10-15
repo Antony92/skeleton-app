@@ -104,7 +104,7 @@ export class AppTablePage extends LitElement {
     this.filtersMap = getRouteSearchMap();
     this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
     this.skip = Number(this.filtersMap.get('skip')) || this.skip;
-    this.loadUsers();
+    void this.loadUsers();
   }
 
   async loadUsers() {
@@ -117,7 +117,7 @@ export class AppTablePage extends LitElement {
   async syncRouteAndReload() {
     const filters = Object.fromEntries(this.filtersMap);
     addSearchToRoute(filters);
-    this.loadUsers();
+    void this.loadUsers();
   }
 
   onPaginate(event: AppPaginateEvent) {
@@ -125,7 +125,7 @@ export class AppTablePage extends LitElement {
     this.limit = pageSize;
     this.skip = pageSize * pageIndex;
     this.filtersMap.set('skip', this.skip);
-    this.syncRouteAndReload();
+    void this.syncRouteAndReload();
   }
 
   async onTableFilter() {
@@ -161,15 +161,18 @@ export class AppTablePage extends LitElement {
     const data = serializeForm(this.userForm);
     const index = this.users.data.indexOf(this.selectedUser);
     this.users.data.splice(index, 1, { id: 1, ...this.selectedUser, ...data });
-    this.userDialog.hide();
+    void this.userDialog.hide();
     this.requestUpdate();
-    notify({ message: `User ${this.selectedUser ? 'updated' : 'created'}`, variant: 'success' });
+    void notify({
+      message: `User ${this.selectedUser ? 'updated' : 'created'}`,
+      variant: 'success',
+    });
   }
 
   async openUserDialog(user?: any) {
     if (!user) this.userForm.reset();
     this.selectedUser = user;
-    this.userDialog.show();
+    void this.userDialog.show();
   }
 
   async deleteUser(user: any) {
@@ -180,7 +183,7 @@ export class AppTablePage extends LitElement {
       const index = this.users.data.indexOf(user);
       this.users.data.splice(index, 1);
       this.requestUpdate();
-      notify({
+      void notify({
         variant: 'success',
         message: `User ${user.firstName} ${user.lastName} has been deleted.`,
       });

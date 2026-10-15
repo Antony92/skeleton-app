@@ -46,7 +46,7 @@ export class AppDrawer extends LitElement {
       if (!target) return;
 
       if (target.hasAttribute('app-drawer-close')) {
-        this.hide();
+        void this.hide();
         return;
       }
 
@@ -55,15 +55,15 @@ export class AppDrawer extends LitElement {
       }
 
       if (this.modal) {
-        this.pulseAnimation();
+        void this.pulseAnimation();
       } else {
-        this.hide();
+        void this.hide();
       }
     });
 
     this.dialog.addEventListener('cancel', (event) => {
       event.preventDefault();
-      this.hide();
+      void this.hide();
     });
   }
 

@@ -93,7 +93,7 @@ export class AppSnackbar extends LitElement {
     if (!this.dispatchEvent(new Event('app-snackbar-action', { cancelable: true }))) {
       return;
     }
-    this.hide();
+    void this.hide();
   }
 
   render() {

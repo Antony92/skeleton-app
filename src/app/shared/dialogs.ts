@@ -46,7 +46,7 @@ export const dialog = async (options: { header: string; message: string; modal?:
   document.body.appendChild(dialog);
 
   // Show dialog
-  dialog.show();
+  void dialog.show();
 
   return promise;
 };
@@ -101,7 +101,7 @@ export const confirmDialog = async (options: { header?: string; message: string 
   document.body.appendChild(dialog);
 
   // Show dialog
-  dialog.show();
+  void dialog.show();
 
   return promise;
 };
@@ -164,7 +164,7 @@ export const promptDialog = async (options: {
     if (!input.checkValidity()) {
       input.focus();
     } else {
-      dialog.hide('true');
+      void dialog.hide('true');
     }
   });
 
@@ -175,7 +175,7 @@ export const promptDialog = async (options: {
   document.body.appendChild(dialog);
 
   // Show dialog
-  dialog.show();
+  void dialog.show();
 
   return promise;
 };

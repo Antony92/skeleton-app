@@ -62,7 +62,7 @@ export class AppFormPage extends LitElement {
     }
     const data = serializeForm(this.form);
     pageHasUnsavedChanges(false);
-    notify({ message: 'Form submitted', variant: 'success' });
+    void notify({ message: 'Form submitted', variant: 'success' });
     console.log(data);
   }
 

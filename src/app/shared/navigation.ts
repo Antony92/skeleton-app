@@ -27,7 +27,7 @@ export const initializeNavigation = (options: NavigationOptions) => {
   navigation.addEventListener('navigateerror', onNavigationError);
 
   // 3. Handle first load
-  handleInitialLoad();
+  void handleInitialLoad();
 };
 
 export const destroyNavigation = () => {

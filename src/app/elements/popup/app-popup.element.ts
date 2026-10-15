@@ -94,7 +94,7 @@ export class AppPopup extends LitElement {
     if (this.open) {
       this.closePopup();
     } else {
-      this.openPopup();
+      void this.openPopup();
     }
   }
 

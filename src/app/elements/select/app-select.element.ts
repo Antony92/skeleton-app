@@ -198,7 +198,7 @@ export class AppSelect extends FormElement {
     if (this.open) {
       this.closeSelect();
     } else {
-      this.openSelect();
+      void this.openSelect();
     }
   }
 
@@ -279,7 +279,7 @@ export class AppSelect extends FormElement {
     }
     event.preventDefault();
     if (!this.open) {
-      this.openSelect();
+      void this.openSelect();
     }
   }
 

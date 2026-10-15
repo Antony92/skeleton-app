@@ -89,7 +89,7 @@ export abstract class FormElement extends LitElement implements FormControl {
     super.updated(_changedProperties);
     const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
     if (shouldValidate) {
-      this.validate();
+      void this.validate();
     }
   }
 
@@ -161,6 +161,6 @@ export abstract class FormElement extends LitElement implements FormControl {
 
   setCustomValidity(message: string) {
     this.#customError = message;
-    this.validate();
+    void this.validate();
   }
 }

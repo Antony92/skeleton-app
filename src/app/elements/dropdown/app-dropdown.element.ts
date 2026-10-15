@@ -85,7 +85,7 @@ export class AppDropdown extends LitElement {
     if (this.open) {
       this.closeDropdown();
     } else {
-      this.openDropdown();
+      void this.openDropdown();
     }
   }
 

@@ -5,7 +5,7 @@
     "useDefineForClassFields": false,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["vite/client", "vite-plugin-pwa/client"],
+    "types": ["vite-plus/client", "vite-plugin-pwa/client"],
     "skipLibCheck": true,
 
     /* Paths */
