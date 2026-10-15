@@ -1,15 +1,11 @@
 import { request } from '@app/http/request';
-import { dummyLogin } from '@app/services/api.service';
-import type { User } from '@app/types/user.type';
-import { signal } from '@lit-labs/signals';
+import { Role, type User } from '@app/types/user.type';
+import { atom } from 'nanostores';
+import { navigate } from '@app/shared/navigation';
 
-const $user = signal<User>(null);
-
-export const getUser = () => $user.get();
+export const $user = atom<User>(null);
 
 export const getAccessToken = () => $user.get()?.accessToken;
-
-export const setUser = (user: User) => $user.set(user);
 
 export const hasUserRole = (roles: string[]) => {
   const user = $user.get();
@@ -23,7 +19,7 @@ export const login = () => {
 
 export const logout = async () => {
   try {
-    setUser(null);
+    $user.set(null);
     const req = await request(`${import.meta.env.VITE_API}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
@@ -43,7 +39,7 @@ export const refreshTokenSilently = async () => {
     const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' });
     if (!req.ok) return false;
     const user = await req.json();
-    setUser(user);
+    $user.set(user);
     return true;
   } catch (error) {
     console.error('Token refresh failed: ', error);
@@ -62,10 +58,34 @@ export const impersonate = async (username: string) => {
     });
     if (!req.ok) return false;
     const user = await req.json();
-    setUser(user);
+    $user.set(user);
     return true;
   } catch (error) {
     console.error('Impersonation failed: ', error);
     return false;
+  }
+};
+
+export const dummyLogin = async (user: { username: string; password: string }) => {
+  try {
+    const req = await request(`${import.meta.env.VITE_API}/auth/login`, {
+      method: 'POST',
+      auth: true,
+      json: true,
+      body: JSON.stringify(user),
+      credentials: 'include',
+    });
+    const res = await req.json();
+    $user.set({
+      id: res.id,
+      username: res.email,
+      name: `${res.firstName} ${res.lastName}`,
+      roles: [Role.ADMIN],
+      accessToken: res.accessToken,
+    });
+    navigate(localStorage.getItem('requested-page') || '/');
+    localStorage.removeItem('requested-page');
+  } catch (error) {
+    console.error(error);
   }
 };

@@ -1,9 +1,6 @@
 import { request } from '@app/http/request';
-import { setUser } from '@app/shared/auth';
-import { navigate } from '@app/shared/navigation';
 import type { PaginatedResponse } from '@app/types/response.type';
 import type { SearchParams } from '@app/types/search.type';
-import { Role } from '@app/types/user.type';
 import { searchParamsToQuery } from '@app/utils/url';
 
 export const getProducts = async (search?: string) => {
@@ -52,28 +49,4 @@ export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse
     total: 0,
     data: [],
   };
-};
-
-export const dummyLogin = async (user: { username: string; password: string }) => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/auth/login`, {
-      method: 'POST',
-      auth: true,
-      json: true,
-      body: JSON.stringify(user),
-      credentials: 'include',
-    });
-    const res = await req.json();
-    setUser({
-      id: res.id,
-      username: res.email,
-      name: `${res.firstName} ${res.lastName}`,
-      roles: [Role.ADMIN],
-      accessToken: res.accessToken,
-    });
-    navigate(localStorage.getItem('requested-page') || '/');
-    localStorage.removeItem('requested-page');
-  } catch (error) {
-    console.error(error);
-  }
 };

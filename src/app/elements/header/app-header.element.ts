@@ -3,35 +3,23 @@ import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
 import '@app/elements/theme-switcher/app-theme-switcher.element';
 import { appHeaderStyle } from '@app/elements/header/app-header.style';
-import { getUser, login, logout } from '@app/shared/auth';
+import { $user, login, logout } from '@app/shared/auth';
 import { navigate } from '@app/shared/navigation';
 import { defaultStyle } from '@app/styles/default.style';
-import { computed, SignalWatcher } from '@lit-labs/signals';
 import { css, html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { StoreController } from '@app/controllers/store.controller';
 
 @customElement('app-header')
-export class AppHeader extends SignalWatcher(LitElement) {
+export class AppHeader extends LitElement {
   static styles = [defaultStyle, appHeaderStyle, css``];
 
   private appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App';
   private appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0-alpha';
 
-  private get user() {
-    return getUser();
-  }
-
-  private get initials() {
-    return this.$initials.get();
-  }
-
-  private $initials = computed(() => {
-    return this.user?.name
-      .match(/\b(\w)/g)
-      ?.join('')
-      .toUpperCase();
-  });
+  @property()
+  private userController = new StoreController(this, $user);
 
   async signIn() {
     localStorage.removeItem('requested-page');
@@ -43,16 +31,23 @@ export class AppHeader extends SignalWatcher(LitElement) {
     await logout();
   }
 
+  get initials() {
+    return this.userController.value?.name
+      .match(/\b(\w)/g)
+      ?.join('')
+      .toUpperCase();
+  }
+
   render() {
     return html`
       <header>
         <img class="logo" src="/images/logo.png" />
         <h2 class="title" title=${this.appVersion}>${this.appTitle}</h2>
-        ${when(this.user?.impersonated, () => html`Impersonate mode`)}
+        ${when(this.userController.value?.impersonated, () => html`Impersonate mode`)}
         <div class="spacer"></div>
         <app-theme-switcher></app-theme-switcher>
         ${when(
-          this.user,
+          this.userController.value,
           () => html`
             <app-dropdown>
               <button slot="trigger" class="avatar">${this.initials}</button>

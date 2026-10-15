@@ -1,7 +1,8 @@
-import { getUser } from '@app/shared/auth';
+import { StoreController } from '@app/controllers/store.controller';
+import { $user } from '@app/shared/auth';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-profile-page')
 export class AppProfilePage extends LitElement {
@@ -13,9 +14,8 @@ export class AppProfilePage extends LitElement {
     `,
   ];
 
-  private get user() {
-    return getUser();
-  }
+  @property()
+  private userController = new StoreController(this, $user);
 
   connectedCallback() {
     super.connectedCallback();
@@ -25,7 +25,7 @@ export class AppProfilePage extends LitElement {
   render() {
     return html`
       <h3>Profile</h3>
-      ${this.user?.name} - ${this.user?.roles.join(', ')}
+      ${this.userController.value?.name} - ${this.userController.value?.roles.join(', ')}
     `;
   }
 }

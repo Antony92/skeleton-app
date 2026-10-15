@@ -2,20 +2,6 @@ import type { AppSnackbar } from '@app/elements/snackbar/app-snackbar.element';
 import { html, render } from 'lit';
 import { when } from 'lit/directives/when.js';
 
-export type NotificationVariant = 'default' | 'primary' | 'success' | 'warning' | 'error';
-
-export interface NotifyOptions {
-  message: string;
-  variant?: NotificationVariant;
-  icon?: string | boolean;
-  duration?: number;
-  position?: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left';
-  action?: {
-    label: string;
-    onAction?: (event: Event) => void;
-  };
-}
-
 const DEFAULT_ICON_MAP: Record<NotificationVariant, string> = {
   default: 'info',
   primary: 'info',
@@ -74,3 +60,17 @@ export const notify = async (notification: NotifyOptions) => {
 
   return snackbar;
 };
+
+export type NotificationVariant = 'default' | 'primary' | 'success' | 'warning' | 'error';
+
+export interface NotifyOptions {
+  message: string;
+  variant?: NotificationVariant;
+  icon?: string | boolean;
+  duration?: number;
+  position?: 'top' | 'top-right' | 'top-left' | 'bottom' | 'bottom-right' | 'bottom-left';
+  action?: {
+    label: string;
+    onAction?: (event: Event) => void;
+  };
+}

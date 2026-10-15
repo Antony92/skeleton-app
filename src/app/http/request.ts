@@ -2,8 +2,6 @@ import { getAccessToken, login, refreshTokenSilently } from '@app/shared/auth';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
 
-type RequestOptions = RequestInit & { loader?: boolean; auth?: boolean; json?: boolean };
-
 // Counter for number of request
 let requestCount = 0;
 
@@ -59,3 +57,5 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
     }
   }
 };
+
+type RequestOptions = RequestInit & { loader?: boolean; auth?: boolean; json?: boolean };

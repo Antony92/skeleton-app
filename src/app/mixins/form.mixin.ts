@@ -1,40 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { LitElement, type PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
-
-type Validity = {
-  flags?: ValidityStateFlags;
-  message?: string;
-  anchor?: HTMLElement;
-};
-
-export interface FormControl {
-  name: string;
-  value: string;
-  defaultValue: string;
-  disabled: boolean;
-  touched: boolean;
-  message: string;
-
-  // default form element methods
-  get form(): HTMLFormElement | null;
-  get validity(): ValidityState;
-  get validationMessage(): string;
-  get willValidate(): boolean;
-  checkValidity(): boolean;
-  reportValidity(): boolean;
-  setCustomValidity(message: string): void;
-
-  // default form internal calls
-  formAssociatedCallback(form: HTMLFormElement): void;
-  formDisabledCallback(disabled: boolean): void;
-  formResetCallback(): void;
-
-  // custom form methods
-  validated(validity: ValidityState, message: string): void;
-  getValidity(): Validity;
-  getFormValue(): string | null;
-}
 
 export abstract class FormElement extends LitElement implements FormControl {
   @property({ type: String, reflect: true })
@@ -114,7 +79,7 @@ export abstract class FormElement extends LitElement implements FormControl {
     this.validated(this.validity, this.validationMessage);
   }
 
-  formAssociatedCallback(form: HTMLFormElement) {}
+  formAssociatedCallback(_form: HTMLFormElement) {}
 
   formDisabledCallback(disabled: boolean) {
     this.disabled = disabled;
@@ -163,4 +128,38 @@ export abstract class FormElement extends LitElement implements FormControl {
     this.#customError = message;
     void this.validate();
   }
+}
+
+type Validity = {
+  flags?: ValidityStateFlags;
+  message?: string;
+  anchor?: HTMLElement;
+};
+
+export interface FormControl {
+  name: string;
+  value: string;
+  defaultValue: string;
+  disabled: boolean;
+  touched: boolean;
+  message: string;
+
+  // default form element methods
+  get form(): HTMLFormElement | null;
+  get validity(): ValidityState;
+  get validationMessage(): string;
+  get willValidate(): boolean;
+  checkValidity(): boolean;
+  reportValidity(): boolean;
+  setCustomValidity(message: string): void;
+
+  // default form internal calls
+  formAssociatedCallback(form: HTMLFormElement): void;
+  formDisabledCallback(disabled: boolean): void;
+  formResetCallback(): void;
+
+  // custom form methods
+  validated(validity: ValidityState, message: string): void;
+  getValidity(): Validity;
+  getFormValue(): string | null;
 }

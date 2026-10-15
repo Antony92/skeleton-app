@@ -6,10 +6,9 @@ import { customElement } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import '@app/elements/icon/app-icon.element';
 import { defaultStyle } from '@app/styles/default.style';
-import { SignalWatcher } from '@lit-labs/signals';
 
 @customElement('app-sidebar')
-export class AppSidebar extends SignalWatcher(LitElement) {
+export class AppSidebar extends LitElement {
   static styles = [defaultStyle, appSidebarStyle, css``];
 
   connectedCallback() {

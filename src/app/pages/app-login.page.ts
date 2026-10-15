@@ -1,4 +1,4 @@
-import { getUser, login } from '@app/shared/auth';
+import { $user, login } from '@app/shared/auth';
 import { getRouteSearch, navigate } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
@@ -27,7 +27,7 @@ export class AppLoginPage extends LitElement {
     super.connectedCallback();
     setPageTitle('Login');
     const { error } = getRouteSearch();
-    const user = getUser();
+    const user = $user.get();
     if (user) {
       navigate(localStorage.getItem('requested-page') || '/');
       localStorage.removeItem('requested-page');
