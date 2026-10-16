@@ -5,6 +5,8 @@ import { navigate } from '@app/shared/navigation';
 
 export const $user = atom<User>(null);
 
+export const getUser = () => $user.get();
+
 export const getAccessToken = () => $user.get()?.accessToken;
 
 export const hasUserRole = (roles: string[]) => {

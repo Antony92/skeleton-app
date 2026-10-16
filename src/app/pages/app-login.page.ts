@@ -1,9 +1,9 @@
-import { $user, login } from '@app/shared/auth';
 import { getRouteSearch, navigate } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
+import { getUser, login } from '@app/shared/auth';
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
@@ -27,7 +27,7 @@ export class AppLoginPage extends LitElement {
     super.connectedCallback();
     setPageTitle('Login');
     const { error } = getRouteSearch();
-    const user = $user.get();
+    const user = getUser();
     if (user) {
       navigate(localStorage.getItem('requested-page') || '/');
       localStorage.removeItem('requested-page');

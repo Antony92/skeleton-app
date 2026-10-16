@@ -40,16 +40,20 @@ export class AppHeader extends LitElement {
       .toUpperCase();
   }
 
+  get user() {
+    return this.userController.value;
+  }
+
   render() {
     return html`
       <header>
         <img class="logo" src="/images/logo.png" />
         <h2 class="title" title=${this.appVersion}>${this.appTitle}</h2>
-        ${when(this.userController.value?.impersonated, () => html`Impersonate mode`)}
+        ${when(this.user?.impersonated, () => html`Impersonate mode`)}
         <div class="spacer"></div>
         <app-theme-switcher></app-theme-switcher>
         ${when(
-          this.userController.value,
+          this.user,
           () => html`
             <app-dropdown>
               <button slot="trigger" class="avatar">${this.initials}</button>

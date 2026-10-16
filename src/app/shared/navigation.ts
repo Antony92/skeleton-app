@@ -2,24 +2,25 @@ import { confirmDialog } from '@app/shared/dialogs';
 import type { SearchParams } from '@app/types/search.type';
 import { render } from 'lit';
 
+let outlet: HTMLElement | undefined;
+let routes: Route[] = [];
+
 /* Internal Router State */
 
-const state: State = {
+const state: RouterState = {
   hasUnsavedChanges: false,
   currentRoute: null,
-  options: null,
 };
 
 /* Public API */
 
 export const initializeNavigation = (options: NavigationOptions) => {
   // 1. Pre-compile patterns for performance
-  options.routes = options.routes.map((route) => ({
+  routes = options.routes.map((route) => ({
     ...route,
     pattern: route.pattern ?? new URLPattern({ pathname: route.path }),
   }));
-
-  state.options = options;
+  outlet = options.outlet;
 
   // 2. Setup listeners
   navigation.addEventListener('navigate', onNavigation);
@@ -81,12 +82,10 @@ export const clearRouteSearch = (params?: SearchParams) => {
 /* Internal Logic */
 
 const findRoute = (url: string) => {
-  return state.options?.routes.find((r) => r.pattern?.test(url));
+  return routes.find((r) => r.pattern?.test(url));
 };
 
 const handleInitialLoad = async () => {
-  if (!state.options) return;
-
   const url = new URL(location.href);
   const route = findRoute(url.href);
 
@@ -97,12 +96,11 @@ const handleInitialLoad = async () => {
   }
 
   state.currentRoute = route;
-  await interceptHandler(url, route, state.options.outlet);
+  await interceptHandler(url, route, outlet);
 };
 
 const onNavigation = async (event: NavigateEvent) => {
-  const options = state.options;
-  if (shouldNotIntercept(event) || !options) return;
+  if (shouldNotIntercept(event)) return;
   const url = new URL(event.destination.url);
   const currentEntry = navigation.currentEntry;
 
@@ -141,7 +139,7 @@ const onNavigation = async (event: NavigateEvent) => {
   // init animation if any
 
   event.intercept({
-    handler: () => interceptHandler(url, route, options.outlet),
+    handler: () => interceptHandler(url, route, outlet),
     focusReset: 'manual',
   });
 };
@@ -154,7 +152,7 @@ const onNavigationError = () => {
   // TODO remove animation
 };
 
-const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => {
+const interceptHandler = async (url: URL, route: Route, outlet?: HTMLElement) => {
   const params = route.pattern?.exec(url.href)?.pathname.groups || {};
 
   // 1. Guard check
@@ -172,7 +170,7 @@ const interceptHandler = async (url: URL, route: Route, outlet: HTMLElement) => 
   if (route.enter) await route.enter(url, params);
 
   // 3. Render
-  if (route.render) {
+  if (route.render && outlet) {
     render(route.render(url, params), outlet);
   }
 };
@@ -206,8 +204,7 @@ export type NavigationOptions = {
   routes: Route[];
 };
 
-type State = {
+type RouterState = {
   hasUnsavedChanges: boolean;
   currentRoute: Route | null;
-  options: NavigationOptions | null;
 };

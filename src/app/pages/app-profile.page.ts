@@ -1,5 +1,5 @@
-import { StoreController } from '@app/controllers/store.controller';
-import { $user } from '@app/shared/auth';
+import { getUser } from '@app/shared/auth';
+import type { User } from '@app/types/user.type';
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
@@ -14,17 +14,18 @@ export class AppProfilePage extends LitElement {
     `,
   ];
 
-  private userController = new StoreController(this, $user);
+  user: User | null = null;
 
   connectedCallback() {
     super.connectedCallback();
     setPageTitle('Profile');
+    this.user = getUser();
   }
 
   render() {
     return html`
       <h3>Profile</h3>
-      ${this.userController.value?.name} - ${this.userController.value?.roles.join(', ')}
+      ${this.user?.name} - ${this.user?.roles.join(', ')}
     `;
   }
 }

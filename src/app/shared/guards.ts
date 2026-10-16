@@ -1,4 +1,4 @@
-import { $user } from '@app/shared/auth';
+import { getUser } from '@app/shared/auth';
 import { navigate } from '@app/shared/navigation';
 
 /**
@@ -7,7 +7,7 @@ import { navigate } from '@app/shared/navigation';
  */
 export const authGuard = (roles?: string[]) => {
   return (url: URL) => {
-    const user = $user.get();
+    const user = getUser();
     if (!user) {
       localStorage.setItem('requested-page', `${url.pathname}${url.search}` || '/');
       navigate('/login');
