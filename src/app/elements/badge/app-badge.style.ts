@@ -16,6 +16,10 @@ export const appBadgeStyle = css`
       border: 1px solid var(--border);
     }
 
+    &.pill {
+      border-radius: var(--radius-round);
+    }
+
     &.default {
       --background: color-mix(in srgb, var(--theme-default-background) 20%, transparent);
       --color: var(--theme-muted-color);

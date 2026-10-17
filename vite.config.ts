@@ -1,5 +1,5 @@
 import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig } from 'vite-plus';
+import { defineConfig, PluginOption } from 'vite-plus';
 
 export default defineConfig({
   build: {
@@ -24,5 +24,5 @@ export default defineConfig({
     semi: true,
     singleQuote: true,
   },
-  plugins: [VitePWA({ registerType: 'autoUpdate' })],
+  plugins: [VitePWA({ registerType: 'autoUpdate' })] as PluginOption[],
 });

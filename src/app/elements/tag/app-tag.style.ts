@@ -12,6 +12,7 @@ export const appTagStyle = css`
     display: flex;
     gap: 5px;
     align-items: center;
+    height: 1.8rem;
 
     &.removable {
       padding: 6px 10px 6px 12px;
