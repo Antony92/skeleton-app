@@ -139,6 +139,7 @@ export class AppTreeItem extends LitElement {
               !this.isLeaf,
               () => html`
                 <button
+                  id="expand-button"
                   class=${classMap({ expanded: this.expanded })}
                   @click=${() => (this.expanded = !this.expanded)}
                 >
@@ -165,7 +166,11 @@ export class AppTreeItem extends LitElement {
             ?hidden=${this.selection === 'leaf' && !this.isLeaf}
             ?disabled=${this.disabled || (this.selection === 'leaf' && !this.isLeaf)}
           />
-          <label for="checkbox"><slot></slot></label>
+          <label
+            for="${this.selection === 'multiple' || (this.selection === 'leaf' && this.isLeaf) ? 'checkbox' : 'expand-button'}"
+          >
+            <slot></slot>
+          </label>
         </div>
         <div
           class=${classMap({ expanded: this.expanded, 'tree-item-children': true })}
