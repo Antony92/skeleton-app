@@ -7,8 +7,8 @@
 
 /**
  * Escape string from all html specific tags
- * @param html
- * @returns escaped string
+ * @param html - The string to escape
+ * @returns The escaped HTML string
  */
 export const escapeHtml = (html: string) => {
   if (!html) return '';
@@ -25,7 +25,7 @@ export const escapeHtml = (html: string) => {
 
 /**
  * Set page title based on app config + provided title
- * @param title
+ * @param title - The specific page title to append
  */
 export const setPageTitle = (title: string) => {
   document.title = `${import.meta.env.VITE_APP_TITLE} - ${title}`;
@@ -33,31 +33,19 @@ export const setPageTitle = (title: string) => {
 
 /**
  * Transform html form to object
- * @param form
- * @returns object
+ * @param form - The HTMLFormElement to serialize
+ * @returns A plain object containing form key-value pairs
  */
 export const serializeForm = (form: HTMLFormElement) => {
   return Object.fromEntries(new FormData(form).entries());
 };
 
 /**
- * Format bytes to user readable
- * @param bytes
- * @param decimals
- * @returns pretty string
+ * Creates a debounced version of a function that delays its execution
+ * @param func - The function to debounce
+ * @param timeout - The delay in milliseconds (defaults to 300ms)
+ * @returns The debounced function
  */
-export const formatBytes = (bytes: number, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes';
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
-};
-
 export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, timeout = 300) => {
   let timer: number;
   return (...args: unknown[]) => {
@@ -66,6 +54,11 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, tim
   };
 };
 
+/**
+ * Copies the provided text to the system clipboard
+ * @param text - The string to copy
+ * @returns A promise that resolves when the text is successfully copied
+ */
 export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text);
 };

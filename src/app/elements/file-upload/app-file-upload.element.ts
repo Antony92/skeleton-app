@@ -2,7 +2,7 @@ import { appFileUploadStyle } from '@app/elements/file-upload/app-file-upload.st
 import { AppFileUploadErrorEvent, AppFileUploadEvent } from '@app/events/file-upload.event';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
-import { formatBytes } from '@app/utils/html';
+import { formatBytes } from '@app/utils/format';
 import { css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
