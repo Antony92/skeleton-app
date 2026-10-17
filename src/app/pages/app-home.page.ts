@@ -41,7 +41,7 @@ export class AppHomePage extends LitElement {
           </app-tree-item>
           <app-tree-item value="phones">
             Phones
-            <app-tree-item value="smartphones" disabled>Smartphones</app-tree-item>
+            <app-tree-item value="smartphones">Smartphones</app-tree-item>
             <app-tree-item value="accessories">Accessories</app-tree-item>
           </app-tree-item>
         </app-tree-item>
