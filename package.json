@@ -12,10 +12,10 @@
     "build": "vp build",
     "build-staging": "vp build build --mode staging",
     "build-production": "vp build --mode production",
-    "lint": "npx vp check --fix",
+    "lint": "vp check --fix",
     "preview": "vp preview",
-    "test:ui": "vp test --ui",
-    "test:run": "vp test run"
+    "test:ui": "vp test --ui --watch",
+    "test:": "vp test run"
   },
   "dependencies": {
     "@lit/context": "~1.1.6",
