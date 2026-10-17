@@ -74,12 +74,12 @@ export const confirmDialog = async (options: { header?: string; message: string 
 
   const template = html`
     ${message}
-    <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close="false"
-      >Cancel</app-button
-    >
-    <app-button slot="footer" variant="primary" autofocus app-dialog-close="true"
-      >Confirm</app-button
-    >
+    <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close="false">
+      Cancel
+    </app-button>
+    <app-button slot="footer" variant="primary" autofocus app-dialog-close="true">
+      Confirm
+    </app-button>
   `;
 
   const dialog = Object.assign(document.createElement('app-dialog'), {
@@ -136,10 +136,10 @@ export const promptDialog = async (options: {
     ${message}
     <br /><br />
     <app-input placeholder="Type '${promt}'" pattern="${promt}" required autofocus></app-input>
-    <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close="false"
-      >Cancel</app-button
-    >
-    <app-button slot="footer" variant="primary" id="confirm">Confirm</app-button>
+    <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close="false">
+      Cancel
+    </app-button>
+    <app-button slot="footer" variant="primary" id="confirm"> Confirm </app-button>
   `;
 
   const dialog = Object.assign(document.createElement('app-dialog'), {

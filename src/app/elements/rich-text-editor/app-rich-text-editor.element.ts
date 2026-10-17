@@ -63,9 +63,6 @@ export class AppRichTextEditor extends FormElement {
     `,
   ];
 
-  @property({ type: Boolean })
-  accessor disabled = false;
-
   @property({ type: String })
   accessor placeholder = '';
 
@@ -359,9 +356,9 @@ export class AppRichTextEditor extends FormElement {
           >
           </textarea>
         </div>
-        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
-          >${this.message}</small
-        >
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
+          ${this.message}
+        </small>
       </div>
 
       <div popover class="link-popup">

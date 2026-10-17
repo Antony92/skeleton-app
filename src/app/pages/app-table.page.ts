@@ -60,10 +60,10 @@ export class AppTablePage extends LitElement {
   @query('#user-dialog form')
   userForm!: HTMLFormElement;
 
-  private filtersMap = new Map();
-  private skip = 0;
-  private limit = 10;
-  private storageLimitName = 'table-limit';
+  filtersMap = new Map();
+  skip = 0;
+  limit = 10;
+  storageLimitName = 'table-limit';
 
   columns: TableColumn[] = [
     { header: '#', field: 'id', type: 'number', sortable: true, filtarable: true, delay: 300 },
