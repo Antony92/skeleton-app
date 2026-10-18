@@ -108,9 +108,13 @@ export class AppTreeItem extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has('selected') && !this.isExternalChange) {
+    if (
+      ['selected', 'disabled'].some((prop) => _changedProperties.has(prop)) &&
+      !this.isExternalChange
+    ) {
       this.treeItems.forEach((item) => {
         item.selected = this.selected;
+        item.disabled = this.disabled;
         item.indeterminate = false;
       });
     }

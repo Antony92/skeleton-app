@@ -20,6 +20,9 @@ export class AppTree extends LitElement {
   @property({ type: String })
   accessor selection: 'leaf' | 'multiple' = 'leaf';
 
+  @property({ type: Boolean })
+  accessor disabled = false;
+
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-change', async (event) => {
@@ -36,10 +39,11 @@ export class AppTree extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has('selection')) {
+    if (['selection', 'disabled'].some((prop) => _changedProperties.has(prop))) {
       const allTreeItems = this.querySelectorAll<AppTreeItem>('app-tree-item');
       allTreeItems.forEach((item) => {
         item.selection = this.selection;
+        item.disabled = this.disabled;
       });
     }
   }
