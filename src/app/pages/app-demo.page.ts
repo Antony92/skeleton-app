@@ -31,6 +31,9 @@ import '@app/elements/tag/app-tag.element';
 import '@app/elements/switch/app-switch.element';
 import '@app/elements/drawer/app-drawer.element';
 import '@app/elements/skeleton/app-skeleton.element';
+import '@app/elements/tree/app-tree.element';
+import '@app/elements/tree-item/app-tree-item.element';
+import type { AppSelect } from '@app/elements/select/app-select.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppDrawer } from '@app/elements/drawer/app-drawer.element';
@@ -461,6 +464,35 @@ export class AppDemoPage extends LitElement {
       </div>
 
       <div class="demo">
+        <h4>Tree</h4>
+        <div class="container">
+          <app-tree @app-select=${(event: AppSelect) => console.log(event.value)}>
+            <app-tree-item expanded value="electronics">
+              Electronics
+              <app-tree-item expanded value="computers">
+                Computers
+                <app-tree-item value="laptops">Laptops</app-tree-item>
+                <app-tree-item value="desktops">Desktops</app-tree-item>
+                <app-tree-item value="tablets">Tablets</app-tree-item>
+              </app-tree-item>
+              <app-tree-item value="phones">
+                Phones
+                <app-tree-item value="smartphones">Smartphones</app-tree-item>
+                <app-tree-item value="accessories">Accessories</app-tree-item>
+              </app-tree-item>
+            </app-tree-item>
+            <app-tree-item value="clothing">
+              Clothing
+              <app-tree-item value="shirts">Shirts</app-tree-item>
+              <app-tree-item value="pants">Pants</app-tree-item>
+              <app-tree-item value="shoes">Shoes</app-tree-item>
+            </app-tree-item>
+            <app-tree-item value="books">Books</app-tree-item>
+          </app-tree>
+        </div>
+      </div>
+
+      <div class="demo">
         <h4>Popup</h4>
         <div class="container">
           <app-popup>
@@ -539,10 +571,7 @@ export class AppDemoPage extends LitElement {
         specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
         unknown printer took a galley of type and scrambled it to make a type specimen book.
-        <app-button slot="footer" variant="primary" autofocus app-dialog-close>
-          <app-icon>close</app-icon>
-          Close
-        </app-button>
+        <app-button slot="footer" variant="primary" autofocus app-dialog-close> Close </app-button>
       </app-dialog>
 
       <app-drawer header="Drawer" modal>
