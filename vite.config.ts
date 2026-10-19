@@ -1,5 +1,5 @@
 import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig, PluginOption } from 'vite-plus';
+import { defineConfig, type PluginOption } from 'vite-plus';
 
 export default defineConfig({
   build: {
