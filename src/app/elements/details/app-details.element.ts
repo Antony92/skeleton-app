@@ -88,7 +88,8 @@ export class AppDetails extends LitElement {
     this.open = target.open;
     if (this.open && this.name) {
       const root = this.getRootNode() as Document | ShadowRoot;
-      root.querySelectorAll<AppDetails>(`app-details[name="${this.name}"]`).forEach((detail) => {
+      const details = root.querySelectorAll<AppDetails>(`app-details[name="${this.name}"]`);
+      details.forEach((detail) => {
         if (detail !== this && detail.open) {
           detail.open = false;
         }
