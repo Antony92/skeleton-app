@@ -75,7 +75,7 @@ export const appDrawerStyle = css`
         background: none;
         cursor: pointer;
         border: none;
-        font-size: var(--theme-font-size-1);
+        font-size: var(--theme-font-size);
       }
     }
 

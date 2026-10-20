@@ -41,7 +41,7 @@ export const appSystemMessageStyle = css`
       cursor: pointer;
       border: none;
       color: var(--theme-white-color);
-      font-size: var(--theme-font-size-1);
+      font-size: var(--theme-font-size);
     }
   }
 `;
