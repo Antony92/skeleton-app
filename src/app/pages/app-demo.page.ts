@@ -309,9 +309,9 @@ export class AppDemoPage extends LitElement {
       <div class="demo">
         <h4>Dialog</h4>
         <div class="container">
-          <app-button variant="primary" @click=${() => this.appDialog.show()}
-            >Open template dialog</app-button
-          >
+          <app-button variant="primary" @click=${() => this.appDialog.show()}>
+            Open template dialog
+          </app-button>
           <app-button
             variant="primary"
             @click=${() =>

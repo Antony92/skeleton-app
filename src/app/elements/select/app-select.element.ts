@@ -331,7 +331,7 @@ export class AppSelect extends FormElement {
   render() {
     return html`
       <div class="form-control" part="form-control">
-        ${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
+        ${when(this.label, () => html`<label for="trigger" part="label">${this.label}</label>`)}
         <div class="select-wrapper" part="select-wrapper">
           <span class="prefix" part="prefix">
             <slot name="prefix"></slot>
@@ -391,9 +391,9 @@ export class AppSelect extends FormElement {
           ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
           <slot @slotchange=${this.onOptionsAdded}></slot>
         </div>
-        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
-          >${this.message}</small
-        >
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
+          ${this.message}
+        </small>
       </div>
     `;
   }

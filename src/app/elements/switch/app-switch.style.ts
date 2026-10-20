@@ -34,7 +34,7 @@ export const appSwitchStyle = css`
 
     .switch-wrapper {
       display: flex;
-      gap: 5px;
+      gap: 10px;
       align-items: center;
 
       > label {

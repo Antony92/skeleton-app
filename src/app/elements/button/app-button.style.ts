@@ -7,7 +7,7 @@ export const appButtonStyle = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     border: none;
     border-radius: var(--radius-2);
     padding: 0 10px;
