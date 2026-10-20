@@ -292,7 +292,7 @@ export class AppDemoPage extends LitElement {
       </div>
 
       <div class="demo">
-        <h4>Global messages</h4>
+        <h4>System messages</h4>
         <div class="container">
           <app-button variant="primary" @click=${() => systemMessage('This is info', 'info')}>
             Info
