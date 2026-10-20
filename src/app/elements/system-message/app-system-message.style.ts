@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
-export const appGlobalMessageStyle = css`
-  .global-message {
+export const appSystemMessageStyle = css`
+  .system-message {
     align-items: center;
     gap: 10px;
     min-width: 300px;

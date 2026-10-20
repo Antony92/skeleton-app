@@ -1,4 +1,4 @@
-import { globalMessage } from '@app/shared/global-message';
+import { systemMessage } from '@app/shared/system-message';
 import { css, html, LitElement } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import '@app/elements/dialog/app-dialog.element';
@@ -294,13 +294,13 @@ export class AppDemoPage extends LitElement {
       <div class="demo">
         <h4>Global messages</h4>
         <div class="container">
-          <app-button variant="primary" @click=${() => globalMessage('This is info', 'info')}>
+          <app-button variant="primary" @click=${() => systemMessage('This is info', 'info')}>
             Info
           </app-button>
-          <app-button variant="warning" @click=${() => globalMessage('This is warning', 'warning')}>
+          <app-button variant="warning" @click=${() => systemMessage('This is warning', 'warning')}>
             Warning
           </app-button>
-          <app-button variant="error" @click=${() => globalMessage('This is error', 'error')}>
+          <app-button variant="error" @click=${() => systemMessage('This is error', 'error')}>
             Error
           </app-button>
         </div>

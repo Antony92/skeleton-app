@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import '@app/elements/header/app-header.element';
 import '@app/elements/sidebar/app-sidebar.element';
-import { globalMessage } from '@app/shared/global-message';
+import { systemMessage } from '@app/shared/system-message';
 import { destroyNavigation, initializeNavigation } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { routes } from '@app/shared/routes';
@@ -27,7 +27,7 @@ export class AppRoot extends LitElement {
     const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`);
     serverEventSource.addEventListener('global', (event) => {
       const data = JSON.parse(event.data);
-      void globalMessage(data.message, data.type);
+      void systemMessage(data.message, data.type);
     });
     serverEventSource.addEventListener('error', () => {
       serverEventSource.close();

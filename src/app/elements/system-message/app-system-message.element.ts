@@ -1,15 +1,15 @@
-import { appGlobalMessageStyle } from '@app/elements/global-message/app-global-message.style';
+import { appSystemMessageStyle } from '@app/elements/system-message/app-system-message.style';
 import { defaultStyle } from '@app/styles/default.style';
 import { focusStyle } from '@app/styles/focus.style';
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 
-@customElement('app-global-message')
-export class AppGlobalMessage extends LitElement {
+@customElement('app-system-message')
+export class AppSystemMessage extends LitElement {
   static styles = [
     defaultStyle,
-    appGlobalMessageStyle,
+    appSystemMessageStyle,
     focusStyle,
     css`
       :host {
@@ -25,8 +25,8 @@ export class AppGlobalMessage extends LitElement {
   @property({ type: String })
   accessor level: 'info' | 'warning' | 'error' = 'info';
 
-  @query('.global-message')
-  accessor globalMessage!: HTMLDivElement;
+  @query('.system-message')
+  accessor systemMessage!: HTMLDivElement;
 
   @property({ type: Boolean, reflect: true })
   accessor open = false;
@@ -35,7 +35,7 @@ export class AppGlobalMessage extends LitElement {
     this.dispatchEvent(new Event('app-show'));
     this.open = true;
     await this.updateComplete;
-    this.globalMessage.showPopover();
+    this.systemMessage.showPopover();
     await this.animation();
     this.dispatchEvent(new Event('app-after-show'));
   }
@@ -44,13 +44,13 @@ export class AppGlobalMessage extends LitElement {
     this.dispatchEvent(new Event('app-hide'));
     await this.updateComplete;
     await this.animation(true);
-    this.globalMessage.hidePopover();
+    this.systemMessage.hidePopover();
     this.open = false;
     this.dispatchEvent(new Event('app-after-hide'));
   }
 
   async animation(reverse = false) {
-    const animation = this.globalMessage.animate(
+    const animation = this.systemMessage.animate(
       [
         { transform: 'translateY(-100px)', opacity: 0 },
         { transform: 'translateY(0)', opacity: 1 },
@@ -66,7 +66,7 @@ export class AppGlobalMessage extends LitElement {
 
   render() {
     return html`
-      <div class="global-message ${this.level}" popover="manual">
+      <div class="system-message ${this.level}" popover="manual">
         ${choose(
           this.level,
           [
@@ -85,6 +85,6 @@ export class AppGlobalMessage extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'app-global-message': AppGlobalMessage;
+    'app-system-message': AppSystemMessage;
   }
 }

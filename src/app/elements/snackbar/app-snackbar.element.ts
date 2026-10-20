@@ -30,7 +30,7 @@ export class AppSnackbar extends LitElement {
   accessor snackbar!: HTMLDivElement;
 
   @property({ type: String })
-  accessor action = '';
+  accessor action = '✕';
 
   @property({ type: String, reflect: true })
   accessor variant: 'default' | 'primary' | 'success' | 'error' | 'warning' = 'default';
