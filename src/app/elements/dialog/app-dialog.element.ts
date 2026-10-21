@@ -52,7 +52,7 @@ export class AppDialog extends LitElement {
       if (!target) return;
 
       if (target.hasAttribute('app-dialog-close')) {
-        void this.hide(target.getAttribute('app-dialog-close') || '');
+        void this.close(target.getAttribute('app-dialog-close') || '');
         return;
       }
 
@@ -63,13 +63,13 @@ export class AppDialog extends LitElement {
       if (this.modal) {
         void this.pulseAnimation();
       } else {
-        void this.hide();
+        void this.close();
       }
     });
 
     this.dialog.addEventListener('cancel', (event) => {
       event.preventDefault();
-      void this.hide();
+      void this.close();
     });
   }
 
@@ -85,7 +85,7 @@ export class AppDialog extends LitElement {
     this.dispatchEvent(new Event('app-after-show'));
   }
 
-  async hide(value?: string) {
+  async close(value?: string) {
     this.#returnValue = value;
     if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
       return;
@@ -128,7 +128,7 @@ export class AppDialog extends LitElement {
             <slot name="header">
               <h3>${this.header}</h3>
             </slot>
-            ${when(this.showHide, () => html`<button class="focus-visible" @click=${this.hide}>✕</button>`)}
+            ${when(this.showHide, () => html`<button class="focus-visible" @click=${this.close}>✕</button>`)}
           </header>
           <article>
             <slot></slot>

@@ -1,3 +1,4 @@
+import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import { confirmDialog } from '@app/shared/dialogs';
 import type { SearchParams } from '@app/types/search.type';
 import { render } from 'lit';
@@ -14,6 +15,10 @@ const state: RouterState = {
 
 /* Public API */
 
+/**
+ * Initializes the navigation system, compiles route patterns,
+ * attaches navigation event listeners, and handles the initial load.
+ */
 export const initializeNavigation = (options: NavigationOptions) => {
   // 1. Pre-compile patterns for performance
   routes = options.routes.map((route) => ({
@@ -32,6 +37,9 @@ export const initializeNavigation = (options: NavigationOptions) => {
   void handleInitialLoad();
 };
 
+/**
+ * Cleans up and removes all global navigation and window event listeners.
+ */
 export const destroyNavigation = () => {
   navigation.removeEventListener('navigate', onNavigation);
   navigation.removeEventListener('navigatesuccess', onNavigationSuccess);
@@ -39,23 +47,41 @@ export const destroyNavigation = () => {
   window.removeEventListener('beforeunload', onBeforeUnload);
 };
 
+/**
+ * Programmatically triggers a navigation to a new URL using the Navigation API.
+ */
 export const navigate = (url: string | URL, options?: NavigationNavigateOptions) =>
   navigation.navigate(url, options);
 
+/**
+ * Updates or checks the global unsaved changes status flag.
+ */
 export const pageHasUnsavedChanges = (value = true) => (state.hasUnsavedChanges = value);
 
+/**
+ * Extracts and returns route parameter groups from the current URL path.
+ */
 export const getRouteParams = (): RouteParams => {
   return state.currentRoute?.pattern?.exec(location.href)?.pathname.groups || {};
 };
 
+/**
+ * Parses and returns the current URL search parameters as a standard key-value object.
+ */
 export const getRouteSearch = () => {
   return Object.fromEntries(new URLSearchParams(location.search));
 };
 
+/**
+ * Parses and returns the current URL search parameters as a JavaScript Map.
+ */
 export const getRouteSearchMap = () => {
   return new Map(new URLSearchParams(location.search).entries());
 };
 
+/**
+ * Adds or updates search query parameters in the current URL and replaces the history state.
+ */
 export const addSearchToRoute = (params: SearchParams, clear = true) => {
   const search = new URLSearchParams(clear ? '' : location.search);
   Object.entries(params).forEach(([key, value]) => {
@@ -67,13 +93,15 @@ export const addSearchToRoute = (params: SearchParams, clear = true) => {
   navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
 };
 
-export const clearRouteSearch = (params?: SearchParams | string[]) => {
+/**
+ * Clears specified parameters or all query parameters from the current URL search string.
+ */
+export const clearRouteSearch = (params?: string[]) => {
   let path = location.pathname;
   if (params) {
     const search = new URLSearchParams(location.search);
-    const keys = Array.isArray(params) ? params : Object.keys(params);
-    keys.forEach((key) => {
-      search.delete(key);
+    params.forEach((param) => {
+      search.delete(param);
     });
     const query = search.size > 0 ? `?${search.toString()}` : '';
     path += query;
@@ -83,16 +111,25 @@ export const clearRouteSearch = (params?: SearchParams | string[]) => {
 
 /* Internal Logic */
 
+/**
+ * Finds and returns the first registered route matching the provided URL.
+ */
 const findRoute = (url: string) => {
   return routes.find((r) => r.pattern?.test(url));
 };
 
+/**
+ * Window beforeunload event listener to warn users about unsaved changes.
+ */
 const onBeforeUnload = (event: BeforeUnloadEvent) => {
-  if (state.hasUnsavedChanges) {
+  if (state.hasUnsavedChanges && event.cancelable) {
     event.preventDefault();
   }
 };
 
+/**
+ * Handles the initial page load by matching the current URL and executing route hooks/rendering.
+ */
 const handleInitialLoad = async () => {
   const url = new URL(location.href);
   const route = findRoute(url.href);
@@ -106,6 +143,9 @@ const handleInitialLoad = async () => {
   await interceptHandler(url, route, outlet);
 };
 
+/**
+ * Prompts the user via confirmation dialog when navigating away with unsaved changes.
+ */
 const handleUnsavedChanges = async (event: NavigateEvent) => {
   const confirm = await confirmDialog({
     header: 'Unsaved Changes',
@@ -122,6 +162,17 @@ const handleUnsavedChanges = async (event: NavigateEvent) => {
   }
 };
 
+/**
+ * Resets the unsaved changes state flag and closes any open confirmation dialogs.
+ */
+const resetUnsavedChanges = () => {
+  state.hasUnsavedChanges = false;
+  void document.querySelector<AppDialog>('#confirm-dialog')?.close();
+};
+
+/**
+ * Intercepts navigation events to manage redirects, guards, and unsaved changes confirmation.
+ */
 const onNavigation = (event: NavigateEvent) => {
   if (shouldNotIntercept(event)) return;
   const url = new URL(event.destination.url);
@@ -152,6 +203,8 @@ const onNavigation = (event: NavigateEvent) => {
     event.preventDefault();
     void handleUnsavedChanges(event);
     return;
+  } else {
+    resetUnsavedChanges();
   }
 
   // init animation if any
@@ -162,14 +215,23 @@ const onNavigation = (event: NavigateEvent) => {
   });
 };
 
+/**
+ * Callback executed when a navigation operation completes successfully.
+ */
 const onNavigationSuccess = () => {
   // TODO remove animation
 };
 
+/**
+ * Callback executed when a navigation operation fails or encounters an error.
+ */
 const onNavigationError = () => {
   // TODO remove animation
 };
 
+/**
+ * Sequentially executes route guards, runs enter hooks, and renders the route component into the outlet.
+ */
 const interceptHandler = async (
   url: URL,
   route: Route,
@@ -205,6 +267,9 @@ const interceptHandler = async (
   }
 };
 
+/**
+ * Determines whether a navigation event should be ignored (e.g. reloads, hash changes, downloads).
+ */
 const shouldNotIntercept = (event: NavigateEvent) => {
   return (
     event.navigationType === 'reload' ||

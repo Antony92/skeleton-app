@@ -161,7 +161,7 @@ export class AppTablePage extends LitElement {
     const data = serializeForm(this.userForm);
     const index = this.users.data.indexOf(this.selectedUser);
     this.users.data.splice(index, 1, { id: 1, ...this.selectedUser, ...data });
-    void this.userDialog.hide();
+    void this.userDialog.close();
     this.requestUpdate();
     void notify({
       message: `User ${this.selectedUser ? 'updated' : 'created'}`,

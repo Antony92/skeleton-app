@@ -164,7 +164,7 @@ export const promptDialog = async (options: {
     if (!input.checkValidity()) {
       input.focus();
     } else {
-      void dialog.hide('true');
+      void dialog.close('true');
     }
   });
 
