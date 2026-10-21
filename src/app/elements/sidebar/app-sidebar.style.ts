@@ -35,7 +35,6 @@ export const appSidebarStyle = css`
           text-decoration: none;
           cursor: pointer;
           color: var(--theme-color);
-          transform-origin: center center;
 
           span:first-child {
             display: flex;
@@ -44,7 +43,8 @@ export const appSidebarStyle = css`
             width: 56px;
             height: 32px;
             border-radius: 16px;
-            transition: background-color 0.3s;
+            transform-origin: center center;
+            transition: background-color 0.3s ease-in-out;
 
             .icon {
               font-size: 1.2rem;
@@ -54,7 +54,7 @@ export const appSidebarStyle = css`
 
           span:last-child {
             font-size: 12px;
-            transition: color 0.3s;
+            transition: color 0.3s ease-in-out;
           }
 
           &.active {

@@ -1,4 +1,3 @@
-import { request } from '@app/http/request';
 import { Role, type User } from '@app/types/user.type';
 import { atom } from 'nanostores';
 import { navigate } from '@app/shared/navigation';
@@ -11,7 +10,7 @@ export const getAccessToken = () => $user.get()?.accessToken;
 
 export const hasUserRole = (roles: string[]) => {
   const user = $user.get();
-  return user?.roles.some((role) => roles.includes(role));
+  return user?.roles.some((role) => roles.includes(role)) ?? false;
 };
 
 export const login = () => {
@@ -21,12 +20,12 @@ export const login = () => {
 
 export const logout = async () => {
   try {
-    $user.set(null);
-    const req = await request(`${import.meta.env.VITE_API}/auth/logout`, {
+    const req = await fetch(`${import.meta.env.VITE_API}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });
     const res = await req.json();
+    $user.set(null);
     return res;
   } catch (error) {
     console.error('Logout failed: ', error);
@@ -51,11 +50,13 @@ export const refreshTokenSilently = async () => {
 
 export const impersonate = async (username: string) => {
   try {
-    const req = await request(`${import.meta.env.VITE_API}/auth/impersonate`, {
+    const req = await fetch(`${import.meta.env.VITE_API}/auth/impersonate`, {
       method: 'POST',
       credentials: 'include',
-      auth: true,
-      json: true,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
       body: JSON.stringify({ username }),
     });
     if (!req.ok) return false;
@@ -70,10 +71,9 @@ export const impersonate = async (username: string) => {
 
 export const dummyLogin = async (user: { username: string; password: string }) => {
   try {
-    const req = await request(`${import.meta.env.VITE_API}/auth/login`, {
+    const req = await fetch(`${import.meta.env.VITE_API}/auth/login`, {
       method: 'POST',
-      auth: true,
-      json: true,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
       credentials: 'include',
     });

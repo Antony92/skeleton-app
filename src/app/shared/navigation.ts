@@ -26,6 +26,7 @@ export const initializeNavigation = (options: NavigationOptions) => {
   navigation.addEventListener('navigate', onNavigation);
   navigation.addEventListener('navigatesuccess', onNavigationSuccess);
   navigation.addEventListener('navigateerror', onNavigationError);
+  window.addEventListener('beforeunload', onBeforeUnload);
 
   // 3. Handle first load
   void handleInitialLoad();
@@ -35,6 +36,7 @@ export const destroyNavigation = () => {
   navigation.removeEventListener('navigate', onNavigation);
   navigation.removeEventListener('navigatesuccess', onNavigationSuccess);
   navigation.removeEventListener('navigateerror', onNavigationError);
+  window.removeEventListener('beforeunload', onBeforeUnload);
 };
 
 export const navigate = (url: string | URL, options?: NavigationNavigateOptions) =>
@@ -51,8 +53,7 @@ export const getRouteSearch = () => {
 };
 
 export const getRouteSearchMap = () => {
-  const object = Object.fromEntries(new URLSearchParams(location.search));
-  return new Map(Object.entries(object));
+  return new Map(new URLSearchParams(location.search).entries());
 };
 
 export const addSearchToRoute = (params: SearchParams, clear = true) => {
@@ -62,18 +63,19 @@ export const addSearchToRoute = (params: SearchParams, clear = true) => {
       search.set(key, String(value));
     }
   });
-  const query = search.size > 0 ? `?${search.toString()}` : ``;
+  const query = search.size > 0 ? `?${search.toString()}` : '';
   navigation.navigate(`${location.pathname}${query}`, { history: 'replace' });
 };
 
-export const clearRouteSearch = (params?: SearchParams) => {
+export const clearRouteSearch = (params?: SearchParams | string[]) => {
   let path = location.pathname;
   if (params) {
     const search = new URLSearchParams(location.search);
-    Object.entries(params).forEach(([key]) => {
+    const keys = Array.isArray(params) ? params : Object.keys(params);
+    keys.forEach((key) => {
       search.delete(key);
     });
-    const query = search.size > 0 ? `?${search.toString()}` : ``;
+    const query = search.size > 0 ? `?${search.toString()}` : '';
     path += query;
   }
   navigation.navigate(path, { history: 'replace' });
@@ -85,27 +87,52 @@ const findRoute = (url: string) => {
   return routes.find((r) => r.pattern?.test(url));
 };
 
+const onBeforeUnload = (event: BeforeUnloadEvent) => {
+  if (state.hasUnsavedChanges) {
+    event.preventDefault();
+  }
+};
+
 const handleInitialLoad = async () => {
   const url = new URL(location.href);
   const route = findRoute(url.href);
 
   if (!route) return;
   if (route.redirect) {
-    navigate(route.redirect);
+    navigate(route.redirect, { history: 'replace' });
     return;
   }
 
-  state.currentRoute = route;
   await interceptHandler(url, route, outlet);
 };
 
-const onNavigation = async (event: NavigateEvent) => {
+const handleUnsavedChanges = async (event: NavigateEvent) => {
+  const confirm = await confirmDialog({
+    header: 'Unsaved Changes',
+    message: 'You have unsaved changes. Are you sure you want to leave?',
+  });
+  if (!confirm) return;
+  state.hasUnsavedChanges = false;
+  if (event.navigationType === 'traverse' && event.destination.key) {
+    navigation.traverseTo(event.destination.key);
+  } else {
+    navigate(event.destination.url, {
+      history: event.navigationType === 'replace' ? 'replace' : 'auto',
+    });
+  }
+};
+
+const onNavigation = (event: NavigateEvent) => {
   if (shouldNotIntercept(event)) return;
   const url = new URL(event.destination.url);
   const currentEntry = navigation.currentEntry;
 
   // Avoid redundant navigation
-  if (event.destination.url === currentEntry?.url) {
+  if (
+    event.destination.url === currentEntry?.url &&
+    event.destination.getState() === currentEntry?.getState() &&
+    event.cancelable
+  ) {
     event.preventDefault();
     return;
   }
@@ -114,32 +141,23 @@ const onNavigation = async (event: NavigateEvent) => {
   if (!route) return;
 
   // Handle Redirects
-  if (route.redirect) {
+  if (route.redirect && event.cancelable) {
     event.preventDefault();
-    navigate(route.redirect);
+    navigate(route.redirect, { history: 'replace' });
     return;
   }
 
   // Handle Unsaved Changes
-  if (state.hasUnsavedChanges) {
+  if (state.hasUnsavedChanges && event.cancelable) {
     event.preventDefault();
-    const confirm = await confirmDialog({
-      header: 'Unsaved Changes',
-      message: 'You have unsaved changes. Are you sure you want to leave?',
-    });
-    if (confirm) {
-      state.hasUnsavedChanges = false;
-      navigate(url.href);
-    }
+    void handleUnsavedChanges(event);
     return;
   }
-
-  state.currentRoute = route;
 
   // init animation if any
 
   event.intercept({
-    handler: () => interceptHandler(url, route, outlet),
+    handler: () => interceptHandler(url, route, outlet, event.signal),
     focusReset: 'manual',
   });
 };
@@ -152,24 +170,36 @@ const onNavigationError = () => {
   // TODO remove animation
 };
 
-const interceptHandler = async (url: URL, route: Route, outlet?: HTMLElement) => {
+const interceptHandler = async (
+  url: URL,
+  route: Route,
+  outlet?: HTMLElement,
+  signal?: AbortSignal,
+) => {
   const params = route.pattern?.exec(url.href)?.pathname.groups || {};
 
-  // 1. Guard check
+  // 1. Guard check (run sequentially)
   if (route.guards) {
-    const guards = route.guards.map((guard) => Promise.resolve(guard(url, params)));
-    const outcomes = await Promise.all(guards);
-    const passed = outcomes.every((outcome) => !!outcome);
-    if (!passed) {
-      // TODO remove animation
-      return;
+    for (const guard of route.guards) {
+      if (signal?.aborted) return;
+      const passed = await guard(url, params);
+      if (!passed) {
+        // TODO remove animation
+        return;
+      }
     }
   }
 
-  // 2. Enter hook
-  if (route.enter) await route.enter(url, params);
+  if (signal?.aborted) return;
 
-  // 3. Render
+  // 2. Commit current route after guards pass
+  state.currentRoute = route;
+
+  // 3. Enter hook
+  if (route.enter) await route.enter(url, params);
+  if (signal?.aborted) return;
+
+  // 4. Render
   if (route.render && outlet) {
     render(route.render(url, params), outlet);
   }
