@@ -44,17 +44,17 @@ export const appSidebarStyle = css`
             height: 32px;
             border-radius: 16px;
             transform-origin: center center;
-            transition: background-color 0.3s ease-in-out;
+            transition: background-color 0.2s ease-in-out;
 
             .icon {
               font-size: 1.2rem;
-              transition: scale 0.3s ease-in-out;
+              transition: scale 0.2s ease-in-out;
             }
           }
 
           span:last-child {
             font-size: 12px;
-            transition: color 0.3s ease-in-out;
+            transition: color 0.2s ease-in-out;
           }
 
           &.active {
