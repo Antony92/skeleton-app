@@ -49,6 +49,9 @@ export class AppTablePage extends LitElement {
   selectedUser: any = null;
 
   @state()
+  selection: Map<string, any> = new Map();
+
+  @state()
   loading = true;
 
   @query('app-paginator')
@@ -141,14 +144,25 @@ export class AppTablePage extends LitElement {
 
   toggleSelection(event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
-    this.users.data.forEach((user) => {
-      user.selected = checked;
-    });
+    if (checked) {
+      this.users.data.forEach((user) => {
+        this.selection.set(user.id, user);
+      });
+    } else {
+      this.users.data.forEach((user) => {
+        this.selection.delete(user.id);
+      });
+    }
     this.requestUpdate();
   }
 
-  toggleSelected(user: any) {
-    user.selected = !user.selected;
+  toggleSelected(event: Event, user: any) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selection.set(user.id, user);
+    } else {
+      this.selection.delete(user.id);
+    }
     this.requestUpdate();
   }
 
@@ -182,6 +196,7 @@ export class AppTablePage extends LitElement {
     if (confirmed) {
       const index = this.users.data.indexOf(user);
       this.users.data.splice(index, 1);
+      this.selection.delete(user.id);
       this.requestUpdate();
       void notify({
         variant: 'success',
@@ -226,8 +241,11 @@ export class AppTablePage extends LitElement {
                 <input
                   type="checkbox"
                   @change=${this.toggleSelection}
-                  ?checked=${this.users.data.length > 0 && this.users.data.every((user) => user.selected)}
-                  ?indeterminate=${this.users.data.some((user) => user.selected) && this.users.data.some((user) => !user.selected)}
+                  .checked=${this.users.data.every((user) => this.selection.has(user.id))}
+                  .indeterminate=${
+                    this.users.data.some((user) => this.selection.has(user.id)) &&
+                    !this.users.data.every((user) => this.selection.has(user.id))
+                  }
                 />
               </th>
               <th action sticky>Actions</th>
@@ -259,8 +277,8 @@ export class AppTablePage extends LitElement {
                   <td sticky>
                     <input
                       type="checkbox"
-                      .checked=${user.selected}
-                      @change=${() => this.toggleSelected(user)}
+                      .checked=${this.selection.has(user.id)}
+                      @change=${(event: Event) => this.toggleSelected(event, user)}
                     />
                   </td>
                   <td sticky>
