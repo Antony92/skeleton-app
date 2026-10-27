@@ -67,6 +67,8 @@ export class AppFormPage extends LitElement {
   }
 
   async preload() {
+    this.formData = null;
+    await this.updateComplete;
     this.formData = {
       name: 'Test',
       email: 'test@example.com',
