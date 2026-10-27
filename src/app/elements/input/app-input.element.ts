@@ -140,9 +140,9 @@ export class AppInput extends FormElement(LitElement) {
             <slot name="suffix"></slot>
           </span>
         </div>
-        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
-          >${this.message}</small
-        >
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
+          ${this.message}
+        </small>
       </div>
 
       <datalist id="suggestions">

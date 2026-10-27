@@ -77,7 +77,7 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
       };
     }
 
-    get validationTriggers(): string[] {
+    get validationTriggers() {
       return [
         'value',
         'name',
@@ -94,7 +94,7 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
       ];
     }
 
-    protected updated(_changedProperties: PropertyValues): void {
+    protected updated(_changedProperties: PropertyValues) {
       super.updated(_changedProperties);
       const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
       if (shouldValidate) {
@@ -105,14 +105,16 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
     async validate() {
       await this.updateComplete;
 
+      const { flags = {}, message = '', anchor } = this.getValidity() ?? {};
+
       if (this.#customError) {
-        this.internals.setValidity({ customError: true }, this.#customError, this);
+        this.internals.setValidity({ customError: true }, this.#customError, anchor);
       } else {
-        const { flags = {}, message = '', anchor } = this.getValidity() ?? {};
         this.internals.setValidity(flags, message, anchor);
       }
 
-      this.internals.setFormValue(this.getFormValue());
+      const value = this.getFormValue();
+      this.internals.setFormValue(value);
 
       this.internals.states.clear();
       const valid = this.internals.validity.valid;
@@ -142,7 +144,7 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
       return this.value || null;
     }
 
-    validated(validity: ValidityState, message: string): void {
+    validated(validity: ValidityState, message: string) {
       this.message = this.touched && !validity.valid ? message : '';
     }
 
