@@ -1,14 +1,14 @@
 import { appSwitchStyle } from '@app/elements/switch/app-switch.style';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
-import { css, html } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-switch')
-export class AppSwitch extends FormElement {
+export class AppSwitch extends FormElement(LitElement) {
   static styles = [defaultStyle, appSwitchStyle, css``];
 
   @property({ type: Boolean })

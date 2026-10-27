@@ -2,14 +2,14 @@ import { appSelectStyle } from '@app/elements/select/app-select.style';
 import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
-import { css, html, type PropertyValues } from 'lit';
+import { css, html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { live } from 'lit/directives/live.js';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-select')
-export class AppSelect extends FormElement {
+export class AppSelect extends FormElement(LitElement) {
   static styles = [
     defaultStyle,
     appSelectStyle,

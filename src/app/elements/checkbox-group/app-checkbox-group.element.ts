@@ -2,13 +2,13 @@ import type { AppCheckbox } from '@app/elements/checkbox/app-checkbox.element';
 import { appCheckboxGroupStyle } from '@app/elements/checkbox-group/app-checkbox-group.style';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
-import { css, html, type PropertyValues } from 'lit';
+import { css, html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query, queryAssignedElements } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { when } from 'lit/directives/when.js';
 
 @customElement('app-checkbox-group')
-export class AppCheckboxGroup extends FormElement {
+export class AppCheckboxGroup extends FormElement(LitElement) {
   static styles = [defaultStyle, appCheckboxGroupStyle, css``];
 
   @property({ type: Boolean })

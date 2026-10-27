@@ -1,136 +1,9 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
-export abstract class FormElement extends LitElement implements FormControl {
-  @property({ type: String, reflect: true })
-  accessor name = '';
+export type Constructor<T = object> = new (...args: any[]) => T;
 
-  @property({ type: String })
-  accessor value = '';
-
-  @property({ type: String })
-  accessor defaultValue = '';
-
-  @property({ type: Boolean, reflect: true })
-  accessor disabled = false;
-
-  @state()
-  accessor touched = false;
-
-  @state()
-  accessor message = '';
-
-  #customError = '';
-  internals = this.attachInternals();
-  static formAssociated = true;
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener('invalid', async () => {
-      this.touched = true;
-    });
-  }
-
-  abstract getValidity(): Validity;
-
-  protected get validationTriggers() {
-    return [
-      'value',
-      'name',
-      'disabled',
-      'touched',
-      'required',
-      'min',
-      'max',
-      'maxlength',
-      'minlength',
-      'type',
-      'pattern',
-      'checked',
-    ];
-  }
-
-  protected updated(_changedProperties: PropertyValues): void {
-    super.updated(_changedProperties);
-    const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
-    if (shouldValidate) {
-      void this.validate();
-    }
-  }
-
-  async validate() {
-    await this.updateComplete;
-    if (this.#customError) {
-      this.internals.setValidity({ customError: true }, this.#customError, this);
-    } else {
-      const { flags, message, anchor } = this.getValidity();
-      this.internals.setValidity(flags, message, anchor);
-    }
-    this.internals.setFormValue(this.getFormValue());
-    this.internals.states.clear();
-
-    const valid = this.internals.validity.valid;
-    this.internals.states.add(valid ? 'valid' : 'invalid');
-
-    if (this.touched) {
-      this.internals.states.add(valid ? 'user-valid' : 'user-invalid');
-    }
-
-    this.validated(this.validity, this.validationMessage);
-  }
-
-  formAssociatedCallback(_form: HTMLFormElement) {}
-
-  formDisabledCallback(disabled: boolean) {
-    this.disabled = disabled;
-    this.touched = false;
-  }
-
-  formResetCallback() {
-    this.value = this.defaultValue;
-    this.touched = false;
-    this.#customError = '';
-  }
-
-  getFormValue() {
-    return this.value || null;
-  }
-
-  validated(validity: ValidityState, message: string): void {
-    this.message = this.touched && !validity.valid ? message : '';
-  }
-
-  get form() {
-    return this.internals.form;
-  }
-
-  get validity() {
-    return this.internals.validity;
-  }
-
-  get validationMessage() {
-    return this.internals.validationMessage;
-  }
-
-  get willValidate() {
-    return this.internals.willValidate;
-  }
-
-  checkValidity() {
-    return this.internals.checkValidity();
-  }
-
-  reportValidity() {
-    return this.internals.reportValidity();
-  }
-
-  setCustomValidity(message: string) {
-    this.#customError = message;
-    void this.validate();
-  }
-}
-
-type Validity = {
+export type Validity = {
   flags?: ValidityStateFlags;
   message?: string;
   anchor?: HTMLElement;
@@ -143,23 +16,165 @@ export interface FormControl {
   disabled: boolean;
   touched: boolean;
   message: string;
+  internals: ElementInternals;
 
-  // default form element methods
-  get form(): HTMLFormElement | null;
-  get validity(): ValidityState;
-  get validationMessage(): string;
-  get willValidate(): boolean;
+  readonly form: HTMLFormElement | null;
+  readonly validity: ValidityState;
+  readonly validationMessage: string;
+  readonly willValidate: boolean;
+  readonly validationTriggers: string[];
+
   checkValidity(): boolean;
   reportValidity(): boolean;
   setCustomValidity(message: string): void;
 
-  // default form internal calls
-  formAssociatedCallback(form: HTMLFormElement): void;
+  formAssociatedCallback(form: HTMLFormElement | null): void;
   formDisabledCallback(disabled: boolean): void;
   formResetCallback(): void;
 
-  // custom form methods
   validated(validity: ValidityState, message: string): void;
   getValidity(): Validity;
-  getFormValue(): string | null;
+  getFormValue(): File | string | FormData | null;
 }
+
+export const FormElement = <T extends Constructor<LitElement>>(superClass: T) => {
+  class FormElementClass extends superClass {
+    static readonly formAssociated = true;
+
+    @property({ type: String, reflect: true })
+    accessor name = '';
+
+    @property({ type: String })
+    accessor value = '';
+
+    @property({ type: String })
+    accessor defaultValue = '';
+
+    @property({ type: Boolean, reflect: true })
+    accessor disabled = false;
+
+    @state()
+    accessor touched = false;
+
+    @state()
+    accessor message = '';
+
+    #customError = '';
+    internals = this.attachInternals();
+
+    connectedCallback() {
+      super.connectedCallback();
+      this.addEventListener('invalid', async () => {
+        this.touched = true;
+      });
+    }
+
+    getValidity(): Validity {
+      return {
+        flags: {},
+        message: '',
+        anchor: undefined,
+      };
+    }
+
+    get validationTriggers(): string[] {
+      return [
+        'value',
+        'name',
+        'disabled',
+        'touched',
+        'required',
+        'min',
+        'max',
+        'maxlength',
+        'minlength',
+        'type',
+        'pattern',
+        'checked',
+      ];
+    }
+
+    protected updated(_changedProperties: PropertyValues): void {
+      super.updated(_changedProperties);
+      const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
+      if (shouldValidate) {
+        void this.validate();
+      }
+    }
+
+    async validate() {
+      await this.updateComplete;
+
+      if (this.#customError) {
+        this.internals.setValidity({ customError: true }, this.#customError, this);
+      } else {
+        const { flags = {}, message = '', anchor } = this.getValidity() ?? {};
+        this.internals.setValidity(flags, message, anchor);
+      }
+
+      this.internals.setFormValue(this.getFormValue());
+
+      this.internals.states.clear();
+      const valid = this.internals.validity.valid;
+      this.internals.states.add(valid ? 'valid' : 'invalid');
+
+      if (this.touched) {
+        this.internals.states.add(valid ? 'user-valid' : 'user-invalid');
+      }
+
+      this.validated(this.validity, this.validationMessage);
+    }
+
+    formAssociatedCallback(_form: HTMLFormElement | null) {}
+
+    formDisabledCallback(disabled: boolean) {
+      this.disabled = disabled;
+      this.touched = false;
+    }
+
+    formResetCallback() {
+      this.value = this.defaultValue;
+      this.touched = false;
+      this.#customError = '';
+    }
+
+    getFormValue(): File | string | FormData | null {
+      return this.value || null;
+    }
+
+    validated(validity: ValidityState, message: string): void {
+      this.message = this.touched && !validity.valid ? message : '';
+    }
+
+    get form() {
+      return this.internals.form;
+    }
+
+    get validity() {
+      return this.internals.validity;
+    }
+
+    get validationMessage() {
+      return this.internals.validationMessage;
+    }
+
+    get willValidate() {
+      return this.internals.willValidate;
+    }
+
+    checkValidity() {
+      return this.internals.checkValidity();
+    }
+
+    reportValidity() {
+      return this.internals.reportValidity();
+    }
+
+    setCustomValidity(message: string) {
+      this.#customError = message;
+      void this.validate();
+    }
+  }
+
+  return FormElementClass as unknown as Constructor<FormControl> & T;
+};

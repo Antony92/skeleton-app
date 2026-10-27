@@ -7,7 +7,7 @@ import { Link } from '@tiptap/extension-link';
 import { Color, TextStyle } from '@tiptap/extension-text-style';
 import { Placeholder } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
-import { css, html, type PropertyValues } from 'lit';
+import { css, html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -17,7 +17,7 @@ import '@app/elements/icon/app-icon.element';
 import '@app/elements/button/app-button.element';
 
 @customElement('app-rich-text-editor')
-export class AppRichTextEditor extends FormElement {
+export class AppRichTextEditor extends FormElement(LitElement) {
   static styles = [
     defaultStyle,
     appRichTextEditorStyle,
