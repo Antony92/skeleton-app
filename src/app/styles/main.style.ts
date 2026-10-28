@@ -15,6 +15,20 @@ export const mainStyle = css`
     grid-area: main;
     padding: 20px 20px 80px 20px;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > * {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      > * {
+        min-width: 350px;
+        width: auto;
+      }
+    }
   }
 
   .sidebar {

@@ -18,13 +18,11 @@ export class AppPaginator extends LitElement {
         gap: 10px;
       }
 
-      label {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+      app-select {
+        width: 75px;
 
-        app-select {
-          width: 75px;
+        &::part(select-wrapper) {
+          height: 30px;
         }
       }
 
@@ -33,8 +31,10 @@ export class AppPaginator extends LitElement {
         height: auto;
       }
 
-      app-select::part(select-wrapper) {
-        height: 30px;
+      @media (max-width: 480px) {
+        label {
+          display: none;
+        }
       }
     `,
   ];
@@ -137,12 +137,10 @@ export class AppPaginator extends LitElement {
 
   render() {
     return html`
-      <label>
-        Items per page:
-        <app-select @app-change=${this.pageSizeChange} .value=${this.pageSize.toString()}>
-          ${this.pageSizeOptions.map((value) => html`<app-select-option value=${value?.toString()}>${value}</<app-select-option>`)}
-        </app-select>
-      </label>
+      <label> Items per page: </label>
+      <app-select @app-change=${this.pageSizeChange} .value=${this.pageSize.toString()}>
+        ${this.pageSizeOptions.map((value) => html`<app-select-option value=${value?.toString()}>${value}</<app-select-option>`)}
+      </app-select>
       ${this.getRangeLabel()}
       <app-button
         variant="primary"
