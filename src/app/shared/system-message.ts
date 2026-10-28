@@ -20,7 +20,7 @@ export const systemMessage = async (
     id: 'system-message',
     level,
   });
-  systemMessage.addEventListener('app-after-hide', () => systemMessage?.remove());
+  systemMessage.addEventListener('app-after-close', () => systemMessage?.remove());
 
   // Set up state
   const template = html`${message}`;

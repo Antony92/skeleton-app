@@ -71,7 +71,7 @@ export class AppDropdown extends LitElement {
     this.open = false;
     this.popup.hidePopover();
     this.popup.removeAttribute('style');
-    this.dispatchEvent(new Event('app-hide', { cancelable: true }));
+    this.dispatchEvent(new Event('app-close', { cancelable: true }));
   }
 
   async openDropdown() {

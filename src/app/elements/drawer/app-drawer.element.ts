@@ -13,11 +13,7 @@ export class AppDrawer extends LitElement {
     focusStyle,
     css`
       :host {
-        display: none;
-      }
-
-      :host([open]) {
-        display: block;
+        display: contents;
       }
     `,
   ];
@@ -34,8 +30,8 @@ export class AppDrawer extends LitElement {
   @property({ type: String })
   accessor position: 'top' | 'left' | 'right' | 'bottom' = 'left';
 
-  @property({ type: Boolean, attribute: 'show-hide' })
-  accessor showHide = true;
+  @property({ type: Boolean, attribute: 'show-close-button' })
+  accessor showHideButton = true;
 
   @query('dialog')
   accessor dialog!: HTMLDialogElement;
@@ -46,7 +42,7 @@ export class AppDrawer extends LitElement {
       if (!target) return;
 
       if (target.hasAttribute('app-drawer-close')) {
-        void this.hide();
+        void this.close();
         return;
       }
 
@@ -57,13 +53,13 @@ export class AppDrawer extends LitElement {
       if (this.modal) {
         void this.pulseAnimation();
       } else {
-        void this.hide();
+        void this.close();
       }
     });
 
     this.dialog.addEventListener('cancel', (event) => {
       event.preventDefault();
-      void this.hide();
+      void this.close();
     });
   }
 
@@ -80,15 +76,15 @@ export class AppDrawer extends LitElement {
     this.dispatchEvent(new Event('app-after-show'));
   }
 
-  async hide() {
-    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+  async close() {
+    if (!this.dispatchEvent(new Event('app-close', { cancelable: true }))) {
       return;
     }
     await this.updateComplete;
     await this.openAnimation(true);
     this.dialog.close();
     this.open = false;
-    this.dispatchEvent(new Event('app-after-hide'));
+    this.dispatchEvent(new Event('app-after-close'));
   }
 
   openAnimation(reverse = false) {
@@ -133,7 +129,7 @@ export class AppDrawer extends LitElement {
             <slot name="header">
               <h3>${this.header}</h3>
             </slot>
-            ${when(this.showHide, () => html`<button class="focus-visible" @click=${this.hide}>✕</button>`)}
+            ${when(this.showHideButton, () => html`<button class="focus-visible" @click=${this.close}>✕</button>`)}
           </header>
           <article>
             <slot></slot>

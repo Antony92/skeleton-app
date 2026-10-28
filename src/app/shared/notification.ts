@@ -37,7 +37,7 @@ export const notify = async (notification: NotifyOptions) => {
     position,
     action: action?.label,
   });
-  snackbar.addEventListener('app-after-hide', () => snackbar?.remove(), { once: true });
+  snackbar.addEventListener('app-after-close', () => snackbar?.remove(), { once: true });
 
   if (action?.onAction) {
     snackbar.addEventListener('app-snackbar-action', (e) => action.onAction?.(e));

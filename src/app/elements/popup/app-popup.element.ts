@@ -55,10 +55,10 @@ export class AppPopup extends LitElement {
       const target = event.target as HTMLElement;
       if (target.assignedSlot?.name === 'trigger') {
         event.stopPropagation();
-        this.togglePopup();
+        this.close();
       } else if (target.hasAttribute('app-popup-close')) {
         event.stopPropagation();
-        this.closePopup();
+        this.close();
       }
     });
   }
@@ -67,13 +67,13 @@ export class AppPopup extends LitElement {
     this.popup.addEventListener('toggle', (event: Event) => {
       const toggleEvent = event as ToggleEvent;
       if (toggleEvent.newState === 'closed') {
-        this.closePopup();
+        this.close();
       }
     });
   }
 
-  closePopup() {
-    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+  close() {
+    if (!this.dispatchEvent(new Event('app-close', { cancelable: true }))) {
       return;
     }
     this.open = false;
@@ -81,7 +81,7 @@ export class AppPopup extends LitElement {
     this.popup.removeAttribute('style');
   }
 
-  async openPopup() {
+  async show() {
     if (!this.dispatchEvent(new Event('app-show', { cancelable: true }))) {
       return;
     }
@@ -90,11 +90,11 @@ export class AppPopup extends LitElement {
     this.popup.showPopover();
   }
 
-  togglePopup() {
+  toggle() {
     if (this.open) {
-      this.closePopup();
+      void this.show();
     } else {
-      void this.openPopup();
+      this.close();
     }
   }
 

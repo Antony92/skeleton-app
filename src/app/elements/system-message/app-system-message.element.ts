@@ -41,12 +41,12 @@ export class AppSystemMessage extends LitElement {
   }
 
   async hide() {
-    this.dispatchEvent(new Event('app-hide'));
+    this.dispatchEvent(new Event('app-close'));
     await this.updateComplete;
     await this.animation(true);
     this.systemMessage.hidePopover();
     this.open = false;
-    this.dispatchEvent(new Event('app-after-hide'));
+    this.dispatchEvent(new Event('app-after-close'));
   }
 
   async animation(reverse = false) {

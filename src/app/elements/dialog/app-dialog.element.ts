@@ -13,11 +13,7 @@ export class AppDialog extends LitElement {
     focusStyle,
     css`
       :host {
-        display: none;
-      }
-
-      :host([open]) {
-        display: block;
+        display: contents;
       }
     `,
   ];
@@ -34,8 +30,8 @@ export class AppDialog extends LitElement {
   @property({ type: Boolean })
   accessor fullscreen = false;
 
-  @property({ type: Boolean, attribute: 'show-hide' })
-  accessor showHide = true;
+  @property({ type: Boolean, attribute: 'show-close-button' })
+  accessor showHideButton = true;
 
   @query('dialog')
   accessor dialog!: HTMLDialogElement;
@@ -87,14 +83,14 @@ export class AppDialog extends LitElement {
 
   async close(value?: string) {
     this.#returnValue = value;
-    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+    if (!this.dispatchEvent(new Event('app-close', { cancelable: true }))) {
       return;
     }
     await this.updateComplete;
     await this.openAnimation(true);
     this.dialog.close(value);
     this.open = false;
-    this.dispatchEvent(new Event('app-after-hide'));
+    this.dispatchEvent(new Event('app-after-close'));
   }
 
   openAnimation(reverse = false) {
@@ -128,7 +124,7 @@ export class AppDialog extends LitElement {
             <slot name="header">
               <h3>${this.header}</h3>
             </slot>
-            ${when(this.showHide, () => html`<button class="focus-visible" @click=${this.close}>✕</button>`)}
+            ${when(this.showHideButton, () => html`<button class="focus-visible" @click=${this.close}>✕</button>`)}
           </header>
           <article>
             <slot></slot>

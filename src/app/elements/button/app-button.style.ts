@@ -90,11 +90,11 @@ export const appButtonStyle = css`
       color: var(--background);
 
       &:not(:disabled):active {
-        background-color: color-mix(in oklab, var(--background), var(--theme-background) 75%);
+        background-color: color-mix(in oklab, var(--background), var(--theme-background) 85%);
       }
 
       &:hover:not(:active, :disabled) {
-        background-color: color-mix(in oklab, var(--background), var(--theme-background) 80%);
+        background-color: color-mix(in oklab, var(--background), var(--theme-background) 90%);
       }
     }
   }

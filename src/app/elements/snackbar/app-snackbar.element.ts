@@ -14,14 +14,10 @@ export class AppSnackbar extends LitElement {
     focusStyle,
     css`
       :host {
-        display: none;
+        display: contents;
         --background: var(--theme-inverse-surface);
         --color: var(--theme-color-inverse);
         --action: var(--theme-primary-color);
-      }
-
-      :host([open]) {
-        display: block;
       }
     `,
   ];
@@ -58,19 +54,19 @@ export class AppSnackbar extends LitElement {
     this.dispatchEvent(new Event('app-after-show'));
     if (this.duration && !this.action) {
       clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => this.hide(), this.duration);
+      this.timeout = setTimeout(() => this.close(), this.duration);
     }
   }
 
-  async hide() {
-    if (!this.dispatchEvent(new Event('app-hide', { cancelable: true }))) {
+  async close() {
+    if (!this.dispatchEvent(new Event('app-close', { cancelable: true }))) {
       return;
     }
     await this.updateComplete;
     await this.animation(true);
     this.snackbar.hidePopover();
     this.open = false;
-    this.dispatchEvent(new Event('app-after-hide'));
+    this.dispatchEvent(new Event('app-after-close'));
   }
 
   async animation(reverse = false) {
@@ -93,7 +89,7 @@ export class AppSnackbar extends LitElement {
     if (!this.dispatchEvent(new Event('app-snackbar-action', { cancelable: true }))) {
       return;
     }
-    void this.hide();
+    void this.close();
   }
 
   render() {

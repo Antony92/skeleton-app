@@ -37,10 +37,10 @@ export const dialog = async (options: { header: string; message: string; modal?:
   render(template, dialog);
 
   // On hide complete remove dialog from DOM
-  dialog.addEventListener('app-after-hide', () => dialog.remove(), { once: true });
+  dialog.addEventListener('app-after-close', () => dialog.remove(), { once: true });
 
   // Resolve when dialog hide
-  dialog.addEventListener('app-hide', async () => resolve());
+  dialog.addEventListener('app-close', async () => resolve());
 
   // Render dialog in body
   document.body.appendChild(dialog);
@@ -92,10 +92,10 @@ export const confirmDialog = async (options: { header?: string; message: string 
   render(template, dialog);
 
   // On hide complete remove dialog from DOM
-  dialog.addEventListener('app-after-hide', () => dialog.remove(), { once: true });
+  dialog.addEventListener('app-after-close', () => dialog.remove(), { once: true });
 
   // Resolve when dialog hide
-  dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'));
+  dialog.addEventListener('app-close', async () => resolve(dialog.returnValue === 'true'));
 
   // Append dialog to body
   document.body.appendChild(dialog);
@@ -152,7 +152,7 @@ export const promptDialog = async (options: {
   render(template, dialog);
 
   // On hide complete remove dialog from DOM
-  dialog.addEventListener('app-after-hide', () => dialog.remove(), { once: true });
+  dialog.addEventListener('app-after-close', () => dialog.remove(), { once: true });
 
   // Input element
   const input = dialog.querySelector('app-input');
@@ -169,7 +169,7 @@ export const promptDialog = async (options: {
   });
 
   // Resolve when dialog hide
-  dialog.addEventListener('app-hide', async () => resolve(dialog.returnValue === 'true'));
+  dialog.addEventListener('app-close', async () => resolve(dialog.returnValue === 'true'));
 
   // Append dialog to body
   document.body.appendChild(dialog);

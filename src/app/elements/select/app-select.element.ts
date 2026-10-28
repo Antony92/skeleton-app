@@ -179,7 +179,7 @@ export class AppSelect extends FormElement(LitElement) {
     }
     this.popup.hidePopover();
     this.onBlur();
-    this.dispatchEvent(new Event('app-hide', { cancelable: true }));
+    this.dispatchEvent(new Event('app-close', { cancelable: true }));
   }
 
   async openSelect() {
