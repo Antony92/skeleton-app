@@ -4,10 +4,12 @@ import { setPageTitle } from '@app/utils/html';
 import { Task } from '@lit/task';
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-test-page')
 export class AppTestPage extends LitElement {
   static styles = [
+    pageStyle,
     css`
       h3 {
         margin: 0 0 10px 0;

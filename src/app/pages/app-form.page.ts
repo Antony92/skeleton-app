@@ -16,23 +16,19 @@ import { getProducts } from '@app/services/api.service';
 import { pageHasUnsavedChanges } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { formStyle } from '@app/styles/form.style';
+import { pageStyle } from '@app/styles/page.style';
 import { serializeForm, setPageTitle } from '@app/utils/html';
 
 @customElement('app-form-page')
 export class AppFormPage extends LitElement {
   static styles = [
+    pageStyle,
     formStyle,
     css`
       .actions {
         display: flex;
         justify-content: flex-start;
         gap: 10px;
-      }
-
-      form {
-        @media (min-width: 768px) {
-          max-width: 350px;
-        }
       }
 
       h3 {

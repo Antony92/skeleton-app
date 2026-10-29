@@ -2,10 +2,12 @@ import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-drag-drop-page')
 export class AppDragDropPage extends LitElement {
   static styles = [
+    pageStyle,
     css`
       .items {
         display: flex;

@@ -118,7 +118,8 @@ export const appSelectStyle = css`
         background: none;
         border: none;
         font-size: 20px;
-        padding: 1px 35px 0px 0px;
+        padding: 0px;
+        margin: 1px 35px 0px 0px;
         color: color-mix(in srgb, currentColor 90%, transparent);
 
         &:hover {

@@ -19,6 +19,7 @@ import { confirmDialog } from '@app/shared/dialogs';
 import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { formStyle } from '@app/styles/form.style';
+import { pageStyle } from '@app/styles/page.style';
 import type { TableColumn } from '@app/types/table.type';
 import { when } from 'lit/directives/when.js';
 
@@ -26,6 +27,7 @@ import { when } from 'lit/directives/when.js';
 export class AppTablePage extends LitElement {
   static styles = [
     formStyle,
+    pageStyle,
     tableStyle,
     css`
       h3 {

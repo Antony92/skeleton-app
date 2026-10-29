@@ -42,10 +42,12 @@ import { confirmDialog, promptDialog } from '@app/shared/dialogs';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
 import { setPageTitle } from '@app/utils/html';
+import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-demo-page')
 export class AppDemoPage extends LitElement {
   static styles = [
+    pageStyle,
     css`
       :host {
         display: flex;

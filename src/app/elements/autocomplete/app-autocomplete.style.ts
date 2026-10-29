@@ -90,7 +90,8 @@ export const appAutocompleteStyle = css`
         border: none;
         font-size: 20px;
         color: color-mix(in srgb, currentColor 100%, transparent);
-        padding: 1px 10px 0px 0px;
+        margin: 1px 10px 0px 0px;
+        padding: 0;
 
         &:hover {
           color: color-mix(in srgb, currentColor 90%, transparent);

@@ -4,10 +4,12 @@ import { css, html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { when } from 'lit/directives/when.js';
 import { getUser, login } from '@app/shared/auth';
+import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
   static styles = [
+    pageStyle,
     css`
       .container {
         display: flex;
