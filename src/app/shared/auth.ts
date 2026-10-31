@@ -37,7 +37,10 @@ export const refreshTokenSilently = async () => {
     return true;
   }
   try {
-    const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, { credentials: 'include' });
+    const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    });
     if (!req.ok) return false;
     const user = await req.json();
     $user.set(user);
