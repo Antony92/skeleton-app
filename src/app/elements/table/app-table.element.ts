@@ -84,6 +84,8 @@ export class AppTable extends LitElement {
   accessor searchValue = '';
 
   private debouncedSearch?: ReturnType<typeof debounce>;
+  private tableObserver?: MutationObserver;
+  private resizeObserver?: ResizeObserver;
 
   connectedCallback() {
     super.connectedCallback();
@@ -96,6 +98,12 @@ export class AppTable extends LitElement {
     });
     this.filtersApplied = this.hasFiltersApplied();
     this.syncColumnsWithFilters();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.tableObserver?.disconnect();
+    this.resizeObserver?.disconnect();
   }
 
   syncColumnsWithFilters() {
@@ -184,6 +192,55 @@ export class AppTable extends LitElement {
       });
   }
 
+  syncStickyColumns() {
+    const table = this.tables[0];
+    if (!table) return;
+
+    const headerRow = table.querySelector('thead tr');
+    if (!headerRow) return;
+
+    const headers = Array.from(table.querySelectorAll<HTMLTableCellElement>('thead th'));
+    const rows = Array.from(table.querySelectorAll<HTMLTableRowElement>('tbody tr'));
+
+    let stickyStart = 0;
+
+    headers.forEach((header) => {
+      const isSticky = header.hasAttribute('data-sticky');
+      if (isSticky) {
+        const width = header.getBoundingClientRect().width;
+        const actualColIndex = header.cellIndex;
+        header.setAttribute('data-sticky', '');
+        header.style.setProperty('--sticky-start', `${stickyStart}px`);
+        rows.forEach((row) => {
+          const td = row.children[actualColIndex] as HTMLElement | undefined;
+          if (td) {
+            td.setAttribute('data-sticky', '');
+            td.style.setProperty('--sticky-start', `${stickyStart}px`);
+          }
+        });
+        stickyStart += width;
+      }
+    });
+  }
+
+  onTableSlotChange() {
+    const table = this.tables[0];
+    if (!table) return;
+    this.syncStickyColumns();
+
+    this.tableObserver?.disconnect();
+    this.tableObserver = new MutationObserver(() => {
+      this.syncStickyColumns();
+    });
+    this.tableObserver.observe(table, { childList: true, subtree: true });
+
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = new ResizeObserver(() => {
+      this.syncStickyColumns();
+    });
+    this.resizeObserver.observe(table);
+  }
+
   render() {
     return html`
       <header>
@@ -222,7 +279,7 @@ export class AppTable extends LitElement {
         </div>
       </header>
       <div class="table-container">
-        <slot name="table"></slot>
+        <slot name="table" @slotchange=${this.onTableSlotChange}></slot>
       </div>
       <slot name="paginator"></slot>
     `;

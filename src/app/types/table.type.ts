@@ -8,6 +8,7 @@ export type TableColumn = {
   value?: string;
   list?: { label: string; value: string | boolean | number }[];
   order?: 'desc' | 'asc' | null;
+  frozen?: boolean;
 };
 
 export type TableHeaderFilter = {

@@ -33,11 +33,6 @@ export class AppTablePage extends LitElement {
       h3 {
         margin: 0 0 10px 0;
       }
-
-      th[sticky]:nth-child(2),
-      td[sticky]:nth-child(2) {
-        --sticky-start: 35px;
-      }
     `,
   ];
 
@@ -79,6 +74,7 @@ export class AppTablePage extends LitElement {
       sortable: true,
       filtarable: true,
       delay: 300,
+      frozen: true,
     },
     {
       header: 'First Name',
@@ -239,7 +235,7 @@ export class AppTablePage extends LitElement {
         <table slot="table" class="hoverable">
           <thead>
             <tr>
-              <th action sticky>
+              <th data-action data-sticky>
                 <input
                   type="checkbox"
                   @change=${this.toggleSelection}
@@ -250,10 +246,10 @@ export class AppTablePage extends LitElement {
                   }
                 />
               </th>
-              <th action sticky>Actions</th>
+              <th data-action data-sticky>Actions</th>
               ${this.columns.map(
                 (column) => html`
-                  <th>
+                  <th ?data-sticky=${column.frozen}>
                     <app-table-header
                       ?sortable=${column.sortable}
                       ?filterable=${column.filtarable}
@@ -276,14 +272,14 @@ export class AppTablePage extends LitElement {
             ${this.users.data.map(
               (user) => html`
                 <tr>
-                  <td sticky>
+                  <td data-sticky>
                     <input
                       type="checkbox"
                       .checked=${this.selection.has(user.id)}
                       @change=${(event: Event) => this.toggleSelected(event, user)}
                     />
                   </td>
-                  <td sticky>
+                  <td data-sticky>
                     <app-dropdown>
                       <app-button slot="trigger" variant="primary" appearance="plain" size="small">
                         <app-icon filled>more_horiz</app-icon>
@@ -305,7 +301,7 @@ export class AppTablePage extends LitElement {
                   <td>${user.firstName}</td>
                   <td>${user.lastName}</td>
                   <td>${user.email}</td>
-                  <td textlimit title=${user.userAgent}>${user.userAgent}</td>
+                  <td data-textlimit title=${user.userAgent}>${user.userAgent}</td>
                   <td>${user.role}</td>
                 </tr>
               `,
@@ -352,23 +348,26 @@ export class AppTablePage extends LitElement {
             name="username"
             required
             .value=${this.selectedUser?.username || ''}
-          ></app-input>
+          >
+          </app-input>
           <app-input
             label="First Name"
             name="firstName"
             required
             .value=${this.selectedUser?.firstName || ''}
-          ></app-input>
+          >
+          </app-input>
           <app-input
             label="Last Name"
             name="lastName"
             required
             .value=${this.selectedUser?.lastName || ''}
-          ></app-input>
+          >
+          </app-input>
         </form>
-        <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close
-          >Cancel</app-button
-        >
+        <app-button slot="footer" variant="primary" appearance="plain" app-dialog-close>
+          Cancel
+        </app-button>
         <app-button
           slot="footer"
           variant="primary"

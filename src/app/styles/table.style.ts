@@ -12,8 +12,8 @@ export const tableStyle = css`
           &.active {
             background: var(--theme-primary-color);
 
-            td[sticky],
-            td[stickyend] {
+            td[data-sticky],
+            td[data-stickyend] {
               background: var(--theme-primary-color);
             }
           }
@@ -21,8 +21,8 @@ export const tableStyle = css`
           &:hover:not(.active) {
             background: var(--theme-default-color);
 
-            td[sticky],
-            td[stickyend] {
+            td[data-sticky],
+            td[data-stickyend] {
               background: var(--theme-default-color);
             }
           }
@@ -38,21 +38,14 @@ export const tableStyle = css`
         padding: 10px;
         font-size: 0.85rem;
 
-        &[action] {
+        &[data-action] {
           width: var(--action-width, 1%);
         }
 
-        &[sticky] {
+        &[data-sticky] {
           position: sticky;
           left: var(--sticky-start, -1px);
-          z-index: 1;
-          background: var(--theme-background);
-        }
-
-        &[stickyend] {
-          position: sticky;
-          right: var(--sticky-end, -1px);
-          z-index: 1;
+          z-index: 2;
           background: var(--theme-background);
         }
       }
@@ -71,36 +64,25 @@ export const tableStyle = css`
         white-space: nowrap;
         padding: 10px;
 
-        &[textlimit] {
+        &[data-textlimit] {
           max-width: var(--textlimit, 300px);
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
 
-        &[textwrap] {
+        &[data-textwrap] {
           white-space: normal;
         }
 
-        &[sticky] {
+        &[data-sticky] {
           position: sticky;
           left: var(--sticky-start, -1px);
           z-index: 1;
           background: var(--theme-background);
 
           &:has(sl-dropdown[open]) {
-            z-index: 2;
-          }
-        }
-
-        &[stickyend] {
-          position: sticky;
-          right: var(--sticky-end, -1px);
-          z-index: 1;
-          background: var(--theme-background);
-
-          &:has(sl-dropdown[open]) {
-            z-index: 2;
+            z-index: 3;
           }
         }
       }
