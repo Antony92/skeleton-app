@@ -223,7 +223,6 @@ export class AppTable extends LitElement {
     const table = this.tables[0];
     if (!table) return;
     this.tableObserver = new MutationObserver(() => {
-      console.log('observe');
       this.syncStickyColumns();
     });
     this.tableObserver.observe(table, {
