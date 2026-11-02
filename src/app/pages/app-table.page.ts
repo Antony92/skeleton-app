@@ -31,6 +31,10 @@ export class AppTablePage extends LitElement {
     pageStyle,
     tableStyle,
     css`
+      :host {
+        max-width: 100%;
+      }
+
       h3 {
         margin: 0 0 10px 0;
       }
@@ -287,14 +291,14 @@ export class AppTablePage extends LitElement {
               (user) => user.id,
               (user) => html`
                 <tr>
-                  <td data-sticky>
+                  <td>
                     <input
                       type="checkbox"
                       .checked=${this.selection.has(user.id)}
                       @change=${(event: Event) => this.toggleSelected(event, user)}
                     />
                   </td>
-                  <td data-sticky>
+                  <td>
                     <app-dropdown>
                       <app-button slot="trigger" variant="primary" appearance="plain" size="small">
                         <app-icon filled>more_horiz</app-icon>
@@ -309,7 +313,15 @@ export class AppTablePage extends LitElement {
                       </app-dropdown-item>
                     </app-dropdown>
                   </td>
-                  ${this.columns.map((column) => html`<td data-textlimit>${user[column.field]}</td>`)}
+                  <td>
+                    <a href="/test/${user.id}">${user.id} </a>
+                  </td>
+                  <td>${user.username}</td>
+                  <td>${user.firstName}</td>
+                  <td>${user.lastName}</td>
+                  <td>${user.email}</td>
+                  <td data-textlimit title=${user.userAgent}>${user.userAgent}</td>
+                  <td>${user.role}</td>
                 </tr>
               `,
             )}

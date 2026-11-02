@@ -84,7 +84,7 @@ export class AppTable extends LitElement {
   accessor searchValue = '';
 
   private debouncedSearch?: ReturnType<typeof debounce>;
-  private resizeObserver?: ResizeObserver;
+  private tableObserver?: MutationObserver;
 
   connectedCallback() {
     super.connectedCallback();
@@ -101,7 +101,7 @@ export class AppTable extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.resizeObserver?.disconnect();
+    this.tableObserver?.disconnect();
   }
 
   syncColumnsWithFilters() {
@@ -193,32 +193,45 @@ export class AppTable extends LitElement {
   syncStickyColumns() {
     const table = this.tables[0];
     if (!table) return;
-
-    const headers = table.querySelectorAll<HTMLTableCellElement>('thead th[data-sticky]');
+    const headers = table.querySelectorAll<HTMLTableCellElement>('thead th');
     let stickyStart = 0;
     headers.forEach((header) => {
-      const width = header.getBoundingClientRect().width;
       const index = header.cellIndex;
-      header.style.setProperty('--sticky-start', `${stickyStart}px`);
       const cells = table.querySelectorAll<HTMLTableCellElement>(
         `tbody tr td:nth-child(${index + 1})`,
       );
-      cells.forEach((cell) => {
-        cell.setAttribute('data-sticky', '');
-        cell.style.setProperty('--sticky-start', `${stickyStart}px`);
-      });
-      stickyStart += width;
+      if (header.hasAttribute('data-sticky')) {
+        const width = header.getBoundingClientRect().width;
+        header.style.setProperty('--sticky-start', `${stickyStart}px`);
+        cells.forEach((cell) => {
+          cell.classList.add('sticky');
+          cell.style.setProperty('--sticky-start', `${stickyStart}px`);
+        });
+        stickyStart += width;
+      } else {
+        header.style.removeProperty('--sticky-start');
+        cells.forEach((cell) => {
+          cell.classList.remove('sticky');
+          cell.style.removeProperty('--sticky-start');
+        });
+      }
     });
   }
 
   onTableSlotChange() {
+    this.tableObserver?.disconnect();
     const table = this.tables[0];
     if (!table) return;
-    this.resizeObserver?.disconnect();
-    this.resizeObserver = new ResizeObserver(() => {
+    this.tableObserver = new MutationObserver(() => {
+      console.log('observe');
       this.syncStickyColumns();
     });
-    this.resizeObserver.observe(table);
+    this.tableObserver.observe(table, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-sticky'],
+    });
   }
 
   render() {

@@ -12,8 +12,7 @@ export const tableStyle = css`
           &.active {
             background: var(--theme-primary-color);
 
-            td[data-sticky],
-            td[data-stickyend] {
+            td.sticky {
               background: var(--theme-primary-color);
             }
           }
@@ -21,8 +20,7 @@ export const tableStyle = css`
           &:hover:not(.active) {
             background: var(--theme-default-color);
 
-            td[data-sticky],
-            td[data-stickyend] {
+            td.sticky {
               background: var(--theme-default-color);
             }
           }
@@ -75,7 +73,7 @@ export const tableStyle = css`
           white-space: normal;
         }
 
-        &[data-sticky] {
+        &.sticky {
           position: sticky;
           left: var(--sticky-start, -1px);
           z-index: 1;
