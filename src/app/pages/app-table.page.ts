@@ -256,7 +256,7 @@ export class AppTablePage extends LitElement {
                   type="checkbox"
                   @change=${this.toggleSelection}
                   .checked=${this.isAllSelected}
-                  .indeterminate=${this.isAllSelected}
+                  .indeterminate=${this.isIndeterminate}
                 />
               </th>
               <th data-action data-sticky>Actions</th>

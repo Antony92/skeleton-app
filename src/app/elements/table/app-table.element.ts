@@ -193,6 +193,7 @@ export class AppTable extends LitElement {
   syncStickyColumns() {
     const table = this.tables[0];
     if (!table) return;
+
     const headers = table.querySelectorAll<HTMLTableCellElement>('thead th[data-sticky]');
     let stickyStart = 0;
     headers.forEach((header) => {
