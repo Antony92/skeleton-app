@@ -84,7 +84,6 @@ export class AppTable extends LitElement {
   accessor searchValue = '';
 
   private debouncedSearch?: ReturnType<typeof debounce>;
-  private tableObserver?: MutationObserver;
   private resizeObserver?: ResizeObserver;
 
   connectedCallback() {
@@ -102,7 +101,6 @@ export class AppTable extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.tableObserver?.disconnect();
     this.resizeObserver?.disconnect();
   }
 
@@ -195,45 +193,26 @@ export class AppTable extends LitElement {
   syncStickyColumns() {
     const table = this.tables[0];
     if (!table) return;
-
-    const headerRow = table.querySelector('thead tr');
-    if (!headerRow) return;
-
-    const headers = Array.from(table.querySelectorAll<HTMLTableCellElement>('thead th'));
-    const rows = Array.from(table.querySelectorAll<HTMLTableRowElement>('tbody tr'));
-
+    const headers = table.querySelectorAll<HTMLTableCellElement>('thead th[data-sticky]');
     let stickyStart = 0;
-
     headers.forEach((header) => {
-      const isSticky = header.hasAttribute('data-sticky');
-      if (isSticky) {
-        const width = header.getBoundingClientRect().width;
-        const actualColIndex = header.cellIndex;
-        header.setAttribute('data-sticky', '');
-        header.style.setProperty('--sticky-start', `${stickyStart}px`);
-        rows.forEach((row) => {
-          const td = row.children[actualColIndex] as HTMLElement | undefined;
-          if (td) {
-            td.setAttribute('data-sticky', '');
-            td.style.setProperty('--sticky-start', `${stickyStart}px`);
-          }
-        });
-        stickyStart += width;
-      }
+      const width = header.getBoundingClientRect().width;
+      const index = header.cellIndex;
+      header.style.setProperty('--sticky-start', `${stickyStart}px`);
+      const cells = table.querySelectorAll<HTMLTableCellElement>(
+        `tbody tr td:nth-child(${index + 1})`,
+      );
+      cells.forEach((cell) => {
+        cell.setAttribute('data-sticky', '');
+        cell.style.setProperty('--sticky-start', `${stickyStart}px`);
+      });
+      stickyStart += width;
     });
   }
 
   onTableSlotChange() {
     const table = this.tables[0];
     if (!table) return;
-    this.syncStickyColumns();
-
-    this.tableObserver?.disconnect();
-    this.tableObserver = new MutationObserver(() => {
-      this.syncStickyColumns();
-    });
-    this.tableObserver.observe(table, { childList: true, subtree: true });
-
     this.resizeObserver?.disconnect();
     this.resizeObserver = new ResizeObserver(() => {
       this.syncStickyColumns();

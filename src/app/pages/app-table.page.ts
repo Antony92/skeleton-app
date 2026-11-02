@@ -22,6 +22,7 @@ import { formStyle } from '@app/styles/form.style';
 import { pageStyle } from '@app/styles/page.style';
 import type { TableColumn } from '@app/types/table.type';
 import { when } from 'lit/directives/when.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -66,32 +67,32 @@ export class AppTablePage extends LitElement {
   storageLimitName = 'table-limit';
 
   columns: TableColumn[] = [
-    { header: '#', field: 'id', type: 'number', sortable: true, filtarable: true, delay: 300 },
+    { header: '#', field: 'id', type: 'number', sortable: true, filterable: true, delay: 300 },
     {
       header: 'Username',
       field: 'username',
       type: 'text',
       sortable: true,
-      filtarable: true,
+      filterable: true,
       delay: 300,
-      frozen: true,
+      sticky: true,
     },
     {
       header: 'First Name',
       field: 'firstName',
       type: 'text',
       sortable: true,
-      filtarable: true,
+      filterable: true,
       delay: 300,
     },
-    { header: 'Last Name', field: 'lastName', type: 'text', filtarable: true, delay: 300 },
-    { header: 'Email', field: 'email', type: 'text', filtarable: true, delay: 300 },
-    { header: 'User Agent', field: 'userAgent', type: 'text', filtarable: true, delay: 300 },
+    { header: 'Last Name', field: 'lastName', type: 'text', filterable: true, delay: 300 },
+    { header: 'Email', field: 'email', type: 'text', filterable: true, delay: 300 },
+    { header: 'User Agent', field: 'userAgent', type: 'text', filterable: true, delay: 300 },
     {
       header: 'Role',
       field: 'role',
       type: 'select',
-      filtarable: true,
+      filterable: true,
       list: [
         { label: 'Admin', value: 'admin' },
         { label: 'Moderator', value: 'moderator' },
@@ -203,6 +204,21 @@ export class AppTablePage extends LitElement {
     }
   }
 
+  get isAllSelected(): boolean {
+    const len = this.users.data.length;
+    return (
+      len > 0 &&
+      this.selection.size >= len &&
+      this.users.data.every((u) => this.selection.has(u.id))
+    );
+  }
+
+  get isIndeterminate(): boolean {
+    const len = this.users.data.length;
+    const count = this.users.data.filter((u) => this.selection.has(u.id)).length;
+    return count > 0 && count < len;
+  }
+
   render() {
     return html`
       <app-table
@@ -219,7 +235,7 @@ export class AppTablePage extends LitElement {
           slot="actions"
           variant="primary"
           appearance="outlined"
-          @click=${() => this.loadUsers()}
+          @click=${this.loadUsers}
         >
           <app-icon>refresh</app-icon>
         </app-button>
@@ -227,7 +243,7 @@ export class AppTablePage extends LitElement {
           title="Create user"
           slot="actions"
           variant="primary"
-          @click=${() => this.openUserDialog()}
+          @click=${this.openUserDialog}
         >
           <app-icon>add</app-icon>
           Create
@@ -239,20 +255,17 @@ export class AppTablePage extends LitElement {
                 <input
                   type="checkbox"
                   @change=${this.toggleSelection}
-                  .checked=${this.users.data.every((user) => this.selection.has(user.id))}
-                  .indeterminate=${
-                    this.users.data.some((user) => this.selection.has(user.id)) &&
-                    !this.users.data.every((user) => this.selection.has(user.id))
-                  }
+                  .checked=${this.isAllSelected}
+                  .indeterminate=${this.isAllSelected}
                 />
               </th>
               <th data-action data-sticky>Actions</th>
               ${this.columns.map(
                 (column) => html`
-                  <th ?data-sticky=${column.frozen}>
+                  <th ?data-sticky=${column.sticky}>
                     <app-table-header
                       ?sortable=${column.sortable}
-                      ?filterable=${column.filtarable}
+                      ?filterable=${column.filterable}
                       .label=${column.header}
                       .field=${column.field}
                       .type=${column.type || 'text'}
@@ -269,7 +282,9 @@ export class AppTablePage extends LitElement {
             </tr>
           </thead>
           <tbody>
-            ${this.users.data.map(
+            ${repeat(
+              this.users.data,
+              (user) => user.id,
               (user) => html`
                 <tr>
                   <td data-sticky>
@@ -294,15 +309,7 @@ export class AppTablePage extends LitElement {
                       </app-dropdown-item>
                     </app-dropdown>
                   </td>
-                  <td>
-                    <a href="/test/${user.id}">${user.id} </a>
-                  </td>
-                  <td>${user.username}</td>
-                  <td>${user.firstName}</td>
-                  <td>${user.lastName}</td>
-                  <td>${user.email}</td>
-                  <td data-textlimit title=${user.userAgent}>${user.userAgent}</td>
-                  <td>${user.role}</td>
+                  ${this.columns.map((column) => html`<td data-textlimit>${user[column.field]}</td>`)}
                 </tr>
               `,
             )}
