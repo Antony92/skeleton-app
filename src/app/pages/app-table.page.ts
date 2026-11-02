@@ -359,7 +359,10 @@ export class AppTablePage extends LitElement {
         id="user-dialog"
         header="${this.selectedUser ? 'Update' : 'Create'} User"
         modal
-        @app-after-close=${() => (this.selectedUser = null)}
+        @app-after-close=${() => {
+          this.selectedUser = null;
+          this.userForm.reset();
+        }}
       >
         <form @submit=${this.saveUser} novalidate>
           <app-input
