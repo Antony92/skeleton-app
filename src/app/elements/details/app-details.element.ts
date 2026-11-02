@@ -10,13 +10,14 @@ export class AppDetails extends LitElement {
     focusStyle,
     css`
       :host {
-        width: 100%;
+        display: contents;
       }
 
       details {
         border-radius: var(--radius-2);
         border: 1px solid var(--theme-muted-color);
         interpolate-size: allow-keywords;
+        width: 100%;
 
         &::details-content {
           opacity: 0;

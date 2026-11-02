@@ -63,6 +63,8 @@ export class AppDemoPage extends LitElement {
         border-radius: var(--radius-2);
         border: 1px solid var(--theme-muted-color);
         padding: 10px;
+        max-width: 1000px;
+        width: auto;
 
         .container {
           display: flex;
