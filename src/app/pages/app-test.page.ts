@@ -27,7 +27,7 @@ export class AppTestPage extends LitElement {
     this.userId = id || '';
   }
 
-  private getUserTask = new Task(this, {
+  getUserTask = new Task(this, {
     task: async ([userId]) => getUser(userId),
     args: () => [this.userId],
   });
