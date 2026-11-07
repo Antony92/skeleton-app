@@ -60,6 +60,25 @@ export class AppTable extends LitElement {
         justify-content: flex-end;
         align-items: center;
         gap: 10px;
+
+        .configuration {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 0 5px 5px 5px;
+
+          h5 {
+            margin: 0;
+          }
+
+          .columns {
+            overflow-y: auto;
+            max-height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+          }
+        }
       }
     `,
   ];
@@ -295,25 +314,29 @@ export class AppTable extends LitElement {
                 variant="primary"
                 appearance="plain"
                 slot="trigger"
-                title="Table Configuration"
+                title="Column Configuration"
               >
                 <app-icon filled>settings</app-icon>
               </app-button>
-
-              ${this.columns.map(
-                (column) => html`
-                  <app-checkbox
-                    label=${column.header}
-                    ?checked=${!column.hidden}
-                    ?disabled=${column.default}
-                    @app-change=${() => {
-                      column.hidden = !column.hidden;
-                      this.dispatchTableUpdate();
-                    }}
-                  >
-                  </app-checkbox>
-                `,
-              )}
+              <div class="configuration">
+                <h5>Column Configuration</h5>
+                <div class="columns">
+                  ${this.columns.map(
+                    (column) => html`
+                      <app-checkbox
+                        label=${column.header}
+                        ?checked=${!column.hidden}
+                        ?disabled=${column.default}
+                        @app-change=${() => {
+                          column.hidden = !column.hidden;
+                          this.dispatchTableUpdate();
+                        }}
+                      >
+                      </app-checkbox>
+                    `,
+                  )}
+                </div>
+              </div>
             </app-popup>
           `,
         )}
