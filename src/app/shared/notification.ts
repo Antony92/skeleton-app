@@ -35,7 +35,7 @@ export const notify = async (notification: NotifyOptions) => {
     variant,
     duration,
     position,
-    action: action?.label,
+    action: action?.label || '✕',
   });
   snackbar.addEventListener('app-after-close', () => snackbar?.remove(), { once: true });
 
