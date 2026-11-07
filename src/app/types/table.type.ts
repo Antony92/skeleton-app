@@ -6,7 +6,6 @@ export type TableColumn<T = unknown> = {
   sortable?: boolean;
   filterable?: boolean;
   type?: 'text' | 'number' | 'date' | 'select' | 'select-multiple';
-  delay?: number;
   value?: string;
   list?: { label: string; value: string | boolean | number }[];
   order?: 'desc' | 'asc' | null;

@@ -78,7 +78,6 @@ export class AppTablePage extends LitElement {
       type: 'number',
       sortable: true,
       filterable: true,
-      delay: 300,
       default: true,
       render: (value) => html`<a href="/test/${value}">${value}</a>`,
     },
@@ -88,7 +87,6 @@ export class AppTablePage extends LitElement {
       type: 'text',
       sortable: true,
       filterable: true,
-      delay: 300,
       sticky: true,
       default: true,
     },
@@ -98,16 +96,14 @@ export class AppTablePage extends LitElement {
       type: 'text',
       sortable: true,
       filterable: true,
-      delay: 300,
     },
-    { header: 'Last Name', field: 'lastName', type: 'text', filterable: true, delay: 300 },
-    { header: 'Email', field: 'email', type: 'text', filterable: true, delay: 300 },
+    { header: 'Last Name', field: 'lastName', type: 'text', filterable: true },
+    { header: 'Email', field: 'email', type: 'text', filterable: true },
     {
       header: 'User Agent',
       field: 'userAgent',
       type: 'text',
       filterable: true,
-      delay: 300,
       textlimit: true,
     },
     {
@@ -301,7 +297,6 @@ export class AppTablePage extends LitElement {
                       .label=${column.header}
                       .field=${column.field}
                       .type=${column.type || 'text'}
-                      .delay=${column.delay || 0}
                       .list=${column.list || []}
                       .value=${column.value || ''}
                       .order=${column.order || null}

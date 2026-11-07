@@ -11,7 +11,6 @@ import '@app/elements/popup/app-popup.element';
 import type { AppInput } from '@app/elements/input/app-input.element';
 import type { AppSelect } from '@app/elements/select/app-select.element';
 import { defaultStyle } from '@app/styles/default.style';
-import { debounce } from '@app/utils/html';
 import { choose } from 'lit/directives/choose.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -96,6 +95,13 @@ export class AppTableHeader extends LitElement {
       .filter-popup {
         min-width: 200px;
         padding: 5px;
+
+        .actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 10px;
+        }
       }
     `,
   ];
@@ -124,11 +130,6 @@ export class AppTableHeader extends LitElement {
   @property({ type: Array })
   accessor list: { label: string; value: string | boolean | number }[] = [];
 
-  @property({ type: Number })
-  accessor delay = 0;
-
-  private debouncedSearch?: ReturnType<typeof debounce>;
-
   dispatchFilterEvent(type: 'order' | 'value' = 'value') {
     this.dispatchEvent(
       new AppTableHeaderFilterEvent({
@@ -140,19 +141,9 @@ export class AppTableHeader extends LitElement {
     );
   }
 
-  private onInput(event: Event) {
-    const input = event.target as AppInput;
-    this.value = input.value;
-    if (!this.debouncedSearch) {
-      this.debouncedSearch = debounce(() => this.dispatchFilterEvent(), this.delay);
-    }
-    return this.debouncedSearch();
-  }
-
   private onFilterColumnValue(event: Event) {
     const input = event.target as AppInput | AppSelect;
     this.value = input.value;
-    this.dispatchFilterEvent('value');
   }
 
   private onFilterColumnOrder() {
@@ -179,6 +170,15 @@ export class AppTableHeader extends LitElement {
 
   clearValueFilter() {
     this.value = '';
+  }
+
+  private apply() {
+    this.dispatchFilterEvent('value');
+  }
+
+  private clear() {
+    this.value = '';
+    this.dispatchFilterEvent('value');
   }
 
   render() {
@@ -218,8 +218,7 @@ export class AppTableHeader extends LitElement {
                         clearable
                         placeholder="Filter by ${this.label?.toLowerCase()}"
                         .value=${this.value}
-                        @app-input=${this.onInput}
-                        @app-clear=${this.onFilterColumnValue}
+                        @app-change=${this.onFilterColumnValue}
                       >
                       </app-input>
                     `,
@@ -232,7 +231,6 @@ export class AppTableHeader extends LitElement {
                         label=${ifDefined(this.label)}
                         placeholder="Filter by ${this.label?.toLowerCase()}"
                         @app-change=${this.onFilterColumnValue}
-                        @app-clear=${this.onFilterColumnValue}
                         .value=${this.value}
                       >
                         ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
@@ -247,7 +245,6 @@ export class AppTableHeader extends LitElement {
                         label=${ifDefined(this.label)}
                         placeholder="Filter by ${this.label?.toLowerCase()}"
                         @app-change=${this.onFilterColumnValue}
-                        @app-clear=${this.onFilterColumnValue}
                         .value=${this.value}
                       >
                         ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
@@ -261,12 +258,24 @@ export class AppTableHeader extends LitElement {
                     label=${ifDefined(this.label)}
                     placeholder="Filter by ${this.label?.toLowerCase()}"
                     .value=${this.value}
-                    @app-input=${this.onInput}
-                    @app-clear=${this.onFilterColumnValue}
+                    @app-change=${this.onFilterColumnValue}
                   >
                   </app-input>
                 `,
               )}
+              <div class="actions">
+                <app-button
+                  variant="primary"
+                  appearance="plain"
+                  app-popup-close
+                  @click=${this.clear}
+                >
+                  Clear
+                </app-button>
+                <app-button variant="primary" app-popup-close @click=${this.apply}>
+                  Apply
+                </app-button>
+              </div>
             </div>
           </app-popup>
         `,

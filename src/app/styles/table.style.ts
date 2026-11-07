@@ -35,6 +35,7 @@ export const tableStyle = css`
         text-align: justify;
         padding: 10px;
         font-size: 0.85rem;
+        vertical-align: middle;
 
         &[data-action] {
           width: var(--action-width, 1%);
