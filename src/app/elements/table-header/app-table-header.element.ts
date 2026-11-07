@@ -7,10 +7,13 @@ import '@app/elements/icon/app-icon.element';
 import '@app/elements/select/app-select.element';
 import '@app/elements/select-option/app-select-option.element';
 import '@app/elements/input/app-input.element';
+import '@app/elements/popup/app-popup.element';
 import type { AppInput } from '@app/elements/input/app-input.element';
 import type { AppSelect } from '@app/elements/select/app-select.element';
 import { defaultStyle } from '@app/styles/default.style';
 import { debounce } from '@app/utils/html';
+import { choose } from 'lit/directives/choose.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('app-table-header')
 export class AppTableHeader extends LitElement {
@@ -18,15 +21,19 @@ export class AppTableHeader extends LitElement {
     defaultStyle,
     css`
       :host {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         min-width: 100px;
+        gap: 10px;
+        height: 20px;
       }
 
-      button {
+      button.header {
         display: flex;
         align-items: center;
         font-family: var(--font-system-ui);
-        padding: 5px 0;
+        padding: 0;
         gap: 5px;
         font-weight: bold;
         border: none;
@@ -40,7 +47,7 @@ export class AppTableHeader extends LitElement {
             transition: opacity 0.3s;
           }
 
-          &[order='none'] {
+          &[data-order='none'] {
             app-icon {
               opacity: 0;
             }
@@ -50,10 +57,45 @@ export class AppTableHeader extends LitElement {
             }
           }
 
-          &:not([order='none']) {
+          &:not([data-order='none']) {
             color: var(--theme-primary-color);
           }
         }
+      }
+
+      button.filter {
+        display: flex;
+        align-items: center;
+        font-family: var(--font-system-ui);
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition:
+          color 0.3s ease-in-out,
+          background 0.3s ease-in-out;
+        color: var(--theme-muted-color);
+        border-radius: 50%;
+        padding: 2px;
+
+        app-icon {
+          pointer-events: none;
+          font-size: 16px;
+        }
+
+        &[data-has-value] {
+          color: var(--theme-white-color);
+          background: var(--theme-primary-color);
+        }
+
+        &:hover:not([data-has-value]) {
+          color: var(--theme-primary-color);
+        }
+      }
+
+      .filter-popup {
+        min-width: 200px;
+        padding: 5px;
       }
     `,
   ];
@@ -98,7 +140,7 @@ export class AppTableHeader extends LitElement {
     );
   }
 
-  private search(event: Event) {
+  private onInput(event: Event) {
     const input = event.target as AppInput;
     this.value = input.value;
     if (!this.debouncedSearch) {
@@ -107,13 +149,13 @@ export class AppTableHeader extends LitElement {
     return this.debouncedSearch();
   }
 
-  private filterColumnValue(event: Event) {
+  private onFilterColumnValue(event: Event) {
     const input = event.target as AppInput | AppSelect;
     this.value = input.value;
     this.dispatchFilterEvent('value');
   }
 
-  private filterColumnOrder() {
+  private onFilterColumnOrder() {
     if (!this.sortable) return;
 
     if (!this.order) {
@@ -142,9 +184,9 @@ export class AppTableHeader extends LitElement {
   render() {
     return html`
       <button
-        order=${this.order || 'none'}
-        class=${classMap({ sortable: this.sortable })}
-        @click=${this.filterColumnOrder}
+        data-order=${this.order || 'none'}
+        class=${classMap({ header: true, sortable: this.sortable })}
+        @click=${this.onFilterColumnOrder}
       >
         <slot></slot>
         ${when(this.sortable && !this.order, () => html`<app-icon>sort</app-icon>`)}
@@ -152,73 +194,81 @@ export class AppTableHeader extends LitElement {
         ${when(this.sortable && this.order === 'asc', () => html`<app-icon>arrow_upward_alt</app-icon>`)}
       </button>
       ${when(
-        this.filterable && this.type === 'text',
+        this.filterable,
         () => html`
-          <app-input
-            clearable
-            placeholder="Filter by ${this.label?.toLowerCase()}"
-            .value=${this.value}
-            @app-input=${this.search}
-            @app-clear=${this.filterColumnValue}
-          >
-          </app-input>
-        `,
-      )}
-      ${when(
-        this.filterable && this.type === 'number',
-        () => html`
-          <app-input
-            type="number"
-            clearable
-            placeholder="Filter by ${this.label?.toLowerCase()}"
-            .value=${this.value}
-            @app-input=${this.search}
-            @app-clear=${this.filterColumnValue}
-          >
-          </app-input>
-        `,
-      )}
-      ${when(
-        this.filterable && this.type === 'date',
-        () => html`
-          <app-input
-            type="date"
-            clearable
-            placeholder="Filter by ${this.label?.toLowerCase()}"
-            .value=${this.value}
-            @app-input=${this.search}
-            @app-clear=${this.filterColumnValue}
-          >
-          </app-input>
-        `,
-      )}
-      ${when(
-        this.filterable && this.type === 'select',
-        () => html`
-          <app-select
-            clearable
-            placeholder="Filter by ${this.label?.toLowerCase()}"
-            @app-change=${this.filterColumnValue}
-            @app-clear=${this.filterColumnValue}
-            .value=${this.value}
-          >
-            ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
-          </app-select>
-        `,
-      )}
-      ${when(
-        this.filterable && this.type === 'select-multiple',
-        () => html`
-          <app-select
-            multiple
-            clearable
-            placeholder="Filter by ${this.label?.toLowerCase()}"
-            @app-change=${this.filterColumnValue}
-            @app-clear=${this.filterColumnValue}
-            .value=${this.value}
-          >
-            ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</<app-select-option>`)}
-          </app-select>
+          <app-popup>
+            <button
+              ?data-has-value=${!!this.value}
+              class="filter"
+              slot="trigger"
+              title="Filter by ${this.label?.toLowerCase()}"
+            >
+              <app-icon>filter_alt</app-icon>
+            </button>
+            <div class="filter-popup">
+              ${choose(
+                this.type,
+                [
+                  [
+                    'number',
+                    () => html`
+                      <app-input
+                        type="number"
+                        label=${ifDefined(this.label)}
+                        clearable
+                        placeholder="Filter by ${this.label?.toLowerCase()}"
+                        .value=${this.value}
+                        @app-input=${this.onInput}
+                        @app-clear=${this.onFilterColumnValue}
+                      >
+                      </app-input>
+                    `,
+                  ],
+                  [
+                    'select',
+                    () => html`
+                      <app-select
+                        clearable
+                        label=${ifDefined(this.label)}
+                        placeholder="Filter by ${this.label?.toLowerCase()}"
+                        @app-change=${this.onFilterColumnValue}
+                        @app-clear=${this.onFilterColumnValue}
+                        .value=${this.value}
+                      >
+                        ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
+                      </app-select>
+                    `,
+                  ],
+                  [
+                    'select-multiple',
+                    () => html`
+                      <app-select
+                        clearable
+                        label=${ifDefined(this.label)}
+                        placeholder="Filter by ${this.label?.toLowerCase()}"
+                        @app-change=${this.onFilterColumnValue}
+                        @app-clear=${this.onFilterColumnValue}
+                        .value=${this.value}
+                      >
+                        ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
+                      </app-select>
+                    `,
+                  ],
+                ],
+                () => html`
+                  <app-input
+                    clearable
+                    label=${ifDefined(this.label)}
+                    placeholder="Filter by ${this.label?.toLowerCase()}"
+                    .value=${this.value}
+                    @app-input=${this.onInput}
+                    @app-clear=${this.onFilterColumnValue}
+                  >
+                  </app-input>
+                `,
+              )}
+            </div>
+          </app-popup>
         `,
       )}
     `;

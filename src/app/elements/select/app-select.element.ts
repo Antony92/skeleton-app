@@ -23,7 +23,6 @@ export class AppSelect extends FormElement(LitElement) {
         width: anchor-size(width);
         position-try: flip-block;
         position-area: span-bottom;
-        left: anchor(left);
         top: anchor(bottom);
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);

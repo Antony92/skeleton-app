@@ -20,7 +20,6 @@ export class AppDropdown extends LitElement {
         min-width: anchor-size(--anchor);
         position-try: flip-block;
         position-area: span-right;
-        left: anchor(left);
         top: anchor(bottom);
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);

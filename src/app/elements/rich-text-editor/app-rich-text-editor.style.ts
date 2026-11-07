@@ -27,6 +27,7 @@ export const appRichTextEditorStyle = css`
     label {
       width: fit-content;
       font-size: 0.9rem;
+      font-weight: 500;
     }
 
     small {

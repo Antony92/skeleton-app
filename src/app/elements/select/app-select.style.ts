@@ -48,6 +48,7 @@ export const appSelectStyle = css`
     label {
       width: fit-content;
       font-size: 0.9rem;
+      font-weight: 500;
     }
 
     small.invalid {
@@ -96,6 +97,7 @@ export const appSelectStyle = css`
         cursor: pointer;
         font-family: var(--theme-font-family);
         font-size: var(--theme-font-size-1);
+        caret-color: transparent;
 
         &::placeholder {
           color: var(--theme-muted-color);
