@@ -4,6 +4,8 @@ import { when } from 'lit/directives/when.js';
 import '@app/elements/button/app-button.element';
 import '@app/elements/icon/app-icon.element';
 import '@app/elements/input/app-input.element';
+import '@app/elements/popup/app-popup.element';
+import '@app/elements/checkbox/app-checkbox.element';
 import type { AppInput } from '@app/elements/input/app-input.element';
 import { AppTableFilterEvent, type AppTableHeaderFilterEvent } from '@app/events/table.event';
 import { defaultStyle } from '@app/styles/default.style';
@@ -15,15 +17,6 @@ export class AppTable extends LitElement {
   static styles = [
     defaultStyle,
     css`
-      ::slotted(app-paginator) {
-        margin-top: 10px;
-        justify-content: flex-end;
-      }
-
-      .table-container {
-        overflow-x: auto;
-      }
-
       header {
         display: flex;
         align-items: center;
@@ -56,6 +49,18 @@ export class AppTable extends LitElement {
           }
         }
       }
+
+      main {
+        overflow-x: auto;
+      }
+
+      footer {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+      }
     `,
   ];
 
@@ -67,6 +72,9 @@ export class AppTable extends LitElement {
 
   @property({ type: Boolean })
   accessor clearable = false;
+
+  @property({ type: Boolean })
+  accessor configurable = false;
 
   @property({ type: Map })
   accessor filtersMap = new Map();
@@ -233,6 +241,10 @@ export class AppTable extends LitElement {
     });
   }
 
+  dispatchTableUpdate() {
+    this.dispatchEvent(new Event('app-table-update'));
+  }
+
   render() {
     return html`
       <header>
@@ -270,10 +282,42 @@ export class AppTable extends LitElement {
           <slot name="actions"></slot>
         </div>
       </header>
-      <div class="table-container">
+      <main>
         <slot name="table" @slotchange=${this.onTableSlotChange}></slot>
-      </div>
-      <slot name="paginator"></slot>
+      </main>
+      <footer>
+        <slot name="paginator"></slot>
+        ${when(
+          this.configurable,
+          () => html`
+            <app-popup>
+              <app-button
+                variant="primary"
+                appearance="plain"
+                slot="trigger"
+                title="Table Configuration"
+              >
+                <app-icon filled>settings</app-icon>
+              </app-button>
+
+              ${this.columns.map(
+                (column) => html`
+                  <app-checkbox
+                    label=${column.header}
+                    ?checked=${!column.hidden}
+                    ?disabled=${column.default}
+                    @app-change=${() => {
+                      column.hidden = !column.hidden;
+                      this.dispatchTableUpdate();
+                    }}
+                  >
+                  </app-checkbox>
+                `,
+              )}
+            </app-popup>
+          `,
+        )}
+      </footer>
     `;
   }
 }

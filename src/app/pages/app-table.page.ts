@@ -23,6 +23,7 @@ import { pageStyle } from '@app/styles/page.style';
 import type { TableColumn } from '@app/types/table.type';
 import { when } from 'lit/directives/when.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { choose } from 'lit/directives/choose.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -71,7 +72,15 @@ export class AppTablePage extends LitElement {
   storageLimitName = 'table-limit';
 
   columns: TableColumn[] = [
-    { header: '#', field: 'id', type: 'number', sortable: true, filterable: true, delay: 300 },
+    {
+      header: '#',
+      field: 'id',
+      type: 'number',
+      sortable: true,
+      filterable: true,
+      delay: 300,
+      default: true,
+    },
     {
       header: 'Username',
       field: 'username',
@@ -80,6 +89,7 @@ export class AppTablePage extends LitElement {
       filterable: true,
       delay: 300,
       sticky: true,
+      default: true,
     },
     {
       header: 'First Name',
@@ -91,7 +101,14 @@ export class AppTablePage extends LitElement {
     },
     { header: 'Last Name', field: 'lastName', type: 'text', filterable: true, delay: 300 },
     { header: 'Email', field: 'email', type: 'text', filterable: true, delay: 300 },
-    { header: 'User Agent', field: 'userAgent', type: 'text', filterable: true, delay: 300 },
+    {
+      header: 'User Agent',
+      field: 'userAgent',
+      type: 'text',
+      filterable: true,
+      delay: 300,
+      textlimit: true,
+    },
     {
       header: 'Role',
       field: 'role',
@@ -143,6 +160,10 @@ export class AppTablePage extends LitElement {
 
   onTableClear() {
     clearRouteSearch();
+  }
+
+  onTableUpdate() {
+    this.requestUpdate();
   }
 
   toggleSelection(event: Event) {
@@ -223,12 +244,18 @@ export class AppTablePage extends LitElement {
     return count > 0 && count < len;
   }
 
+  get visibleColumns(): TableColumn[] {
+    return this.columns.filter((column) => !column.hidden);
+  }
+
   render() {
     return html`
       <app-table
         header="Table"
         searchable
         clearable
+        configurable
+        @app-table-update=${this.onTableUpdate}
         @app-table-clear=${this.onTableClear}
         @app-table-filter=${this.onTableFilter}
         .columns=${this.columns}
@@ -264,7 +291,7 @@ export class AppTablePage extends LitElement {
                 />
               </th>
               <th data-action data-sticky>Actions</th>
-              ${this.columns.map(
+              ${this.visibleColumns.map(
                 (column) => html`
                   <th ?data-sticky=${column.sticky}>
                     <app-table-header
@@ -313,15 +340,17 @@ export class AppTablePage extends LitElement {
                       </app-dropdown-item>
                     </app-dropdown>
                   </td>
-                  <td>
-                    <a href="/test/${user.id}">${user.id} </a>
-                  </td>
-                  <td>${user.username}</td>
-                  <td>${user.firstName}</td>
-                  <td>${user.lastName}</td>
-                  <td>${user.email}</td>
-                  <td data-textlimit title=${user.userAgent}>${user.userAgent}</td>
-                  <td>${user.role}</td>
+                  ${this.visibleColumns.map(
+                    (column) => html`
+                      <td ?data-textlimit=${column.textlimit} title=${user[column.field]}>
+                        ${choose(
+                          column.field,
+                          [['id', () => html`<a href="/test/${user.id}">${user.id} </a>`]],
+                          () => html`${user[column.field]}`,
+                        )}
+                      </td>
+                    `,
+                  )}
                 </tr>
               `,
             )}
@@ -329,7 +358,7 @@ export class AppTablePage extends LitElement {
               this.users.data.length === 0 && this.loading,
               () => html`
                 <tr>
-                  <td colspan=${this.columns.length + 2}>Loading...</td>
+                  <td colspan=${this.visibleColumns.length + 2}>Loading...</td>
                 </tr>
               `,
             )}
@@ -337,7 +366,7 @@ export class AppTablePage extends LitElement {
               this.users.data.length === 0 && !this.loading,
               () => html`
                 <tr>
-                  <td colspan=${this.columns.length + 2}>No results found</td>
+                  <td colspan=${this.visibleColumns.length + 2}>No results found</td>
                 </tr>
               `,
             )}

@@ -47,7 +47,7 @@ export class AppPopup extends LitElement {
   accessor open = false;
 
   @property({ type: String })
-  accessor behaviour: 'auto' | 'manual' = 'manual';
+  accessor behaviour: 'auto' | 'manual' = 'auto';
 
   connectedCallback() {
     super.connectedCallback();
@@ -55,7 +55,7 @@ export class AppPopup extends LitElement {
       const target = event.target as HTMLElement;
       if (target.assignedSlot?.name === 'trigger') {
         event.stopPropagation();
-        void this.show();
+        this.toggle();
       } else if (target.hasAttribute('app-popup-close')) {
         event.stopPropagation();
         this.close();
@@ -91,7 +91,7 @@ export class AppPopup extends LitElement {
   }
 
   toggle() {
-    if (this.open) {
+    if (!this.open) {
       void this.show();
     } else {
       this.close();
