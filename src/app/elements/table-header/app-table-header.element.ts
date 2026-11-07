@@ -1,8 +1,11 @@
 import { AppTableHeaderFilterEvent } from '@app/events/table.event';
-import { css, html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { css, html, LitElement, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
+import { choose } from 'lit/directives/choose.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { defaultStyle } from '@app/styles/default.style';
 import '@app/elements/icon/app-icon.element';
 import '@app/elements/select/app-select.element';
 import '@app/elements/select-option/app-select-option.element';
@@ -10,9 +13,6 @@ import '@app/elements/input/app-input.element';
 import '@app/elements/popup/app-popup.element';
 import type { AppInput } from '@app/elements/input/app-input.element';
 import type { AppSelect } from '@app/elements/select/app-select.element';
-import { defaultStyle } from '@app/styles/default.style';
-import { choose } from 'lit/directives/choose.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('app-table-header')
 export class AppTableHeader extends LitElement {
@@ -71,8 +71,8 @@ export class AppTableHeader extends LitElement {
         background: none;
         cursor: pointer;
         transition:
-          color 0.3s ease-in-out,
-          background 0.3s ease-in-out;
+          color 0.2s ease-in-out,
+          background 0.2s ease-in-out;
         color: var(--theme-muted-color);
         border-radius: 50%;
         padding: 2px;
@@ -95,6 +95,9 @@ export class AppTableHeader extends LitElement {
       .filter-popup {
         min-width: 200px;
         padding: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
         .actions {
           display: flex;
@@ -124,11 +127,31 @@ export class AppTableHeader extends LitElement {
   @property({ type: String })
   accessor value = '';
 
+  @state()
+  private accessor draftValue = '';
+
   @property({ type: String, reflect: true })
   accessor type: 'text' | 'number' | 'date' | 'select' | 'select-multiple' = 'text';
 
   @property({ type: Array })
   accessor list: { label: string; value: string | boolean | number }[] = [];
+
+  @state()
+  accessor fromDate = '';
+
+  @state()
+  accessor toDate = '';
+
+  override willUpdate(changedProperties: PropertyValues) {
+    if (changedProperties.has('value')) {
+      this.draftValue = this.value;
+      if (this.type === 'date') {
+        const [fromDate = '', toDate = ''] = this.draftValue.split(',').filter(Boolean);
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+      }
+    }
+  }
 
   dispatchFilterEvent(type: 'order' | 'value' = 'value') {
     this.dispatchEvent(
@@ -143,7 +166,14 @@ export class AppTableHeader extends LitElement {
 
   private onFilterColumnValue(event: Event) {
     const input = event.target as AppInput | AppSelect;
-    this.value = input.value;
+    this.draftValue = input.value;
+  }
+
+  private onFilterColumnDateValue(event: Event) {
+    const input = event.target as AppInput;
+    if (input.name === 'fromDate') this.fromDate = input.value;
+    if (input.name === 'toDate') this.toDate = input.value;
+    this.draftValue = [this.fromDate, this.toDate].filter(Boolean).join(',');
   }
 
   private onFilterColumnOrder() {
@@ -170,13 +200,16 @@ export class AppTableHeader extends LitElement {
 
   clearValueFilter() {
     this.value = '';
+    this.draftValue = '';
   }
 
   private apply() {
+    this.value = this.draftValue;
     this.dispatchFilterEvent('value');
   }
 
   private clear() {
+    this.draftValue = '';
     this.value = '';
     this.dispatchFilterEvent('value');
   }
@@ -217,7 +250,7 @@ export class AppTableHeader extends LitElement {
                         label=${ifDefined(this.label)}
                         clearable
                         placeholder="Filter by ${this.label?.toLowerCase()}"
-                        .value=${this.value}
+                        .value=${this.draftValue}
                         @app-change=${this.onFilterColumnValue}
                       >
                       </app-input>
@@ -231,9 +264,15 @@ export class AppTableHeader extends LitElement {
                         label=${ifDefined(this.label)}
                         placeholder="Filter by ${this.label?.toLowerCase()}"
                         @app-change=${this.onFilterColumnValue}
-                        .value=${this.value}
+                        .value=${this.draftValue}
                       >
-                        ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
+                        ${this.list?.map(
+                          (item) => html`
+                            <app-select-option value=${item.value?.toString()}>
+                              ${item.label}
+                            </app-select-option>
+                          `,
+                        )}
                       </app-select>
                     `,
                   ],
@@ -245,10 +284,43 @@ export class AppTableHeader extends LitElement {
                         label=${ifDefined(this.label)}
                         placeholder="Filter by ${this.label?.toLowerCase()}"
                         @app-change=${this.onFilterColumnValue}
-                        .value=${this.value}
+                        .value=${this.draftValue}
                       >
-                        ${this.list?.map((item) => html`<app-select-option value=${item.value?.toString()}>${item.label}</app-select-option>`)}
+                        ${this.list?.map(
+                          (item) => html`
+                            <app-select-option value=${item.value?.toString()}>
+                              ${item.label}
+                            </app-select-option>
+                          `,
+                        )}
                       </app-select>
+                    `,
+                  ],
+                  [
+                    'date',
+                    () => html`
+                      <app-input
+                        type="date"
+                        label="From Date"
+                        name="fromDate"
+                        clearable
+                        placeholder="Filter by ${this.label?.toLowerCase()}"
+                        .value=${this.fromDate}
+                        max=${this.toDate}
+                        @app-change=${this.onFilterColumnDateValue}
+                      >
+                      </app-input>
+                      <app-input
+                        type="date"
+                        label="To Date"
+                        name="toDate"
+                        min=${this.fromDate}
+                        clearable
+                        placeholder="Filter by ${this.label?.toLowerCase()}"
+                        .value=${this.toDate}
+                        @app-change=${this.onFilterColumnDateValue}
+                      >
+                      </app-input>
                     `,
                   ],
                 ],
@@ -257,7 +329,7 @@ export class AppTableHeader extends LitElement {
                     clearable
                     label=${ifDefined(this.label)}
                     placeholder="Filter by ${this.label?.toLowerCase()}"
-                    .value=${this.value}
+                    .value=${this.draftValue}
                     @app-change=${this.onFilterColumnValue}
                   >
                   </app-input>
