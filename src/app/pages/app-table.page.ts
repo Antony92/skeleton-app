@@ -23,7 +23,7 @@ import { pageStyle } from '@app/styles/page.style';
 import type { TableColumn } from '@app/types/table.type';
 import { when } from 'lit/directives/when.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { choose } from 'lit/directives/choose.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
@@ -80,6 +80,7 @@ export class AppTablePage extends LitElement {
       filterable: true,
       delay: 300,
       default: true,
+      render: (value) => html`<a href="/test/${value}">${value}</a>`,
     },
     {
       header: 'Username',
@@ -340,17 +341,17 @@ export class AppTablePage extends LitElement {
                       </app-dropdown-item>
                     </app-dropdown>
                   </td>
-                  ${this.visibleColumns.map(
-                    (column) => html`
-                      <td ?data-textlimit=${column.textlimit} title=${user[column.field]}>
-                        ${choose(
-                          column.field,
-                          [['id', () => html`<a href="/test/${user.id}">${user.id} </a>`]],
-                          () => html`${user[column.field]}`,
-                        )}
+                  ${this.visibleColumns.map((column) => {
+                    const value = user[column.field];
+                    return html`
+                      <td
+                        ?data-textlimit=${column.textlimit}
+                        title=${ifDefined(column.textlimit ? value : undefined)}
+                      >
+                        ${column.render ? column.render(value) : value}
                       </td>
-                    `,
-                  )}
+                    `;
+                  })}
                 </tr>
               `,
             )}

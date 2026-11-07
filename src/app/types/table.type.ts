@@ -1,4 +1,6 @@
-export type TableColumn = {
+import type { TemplateResult } from 'lit';
+
+export type TableColumn<T = unknown> = {
   header: string;
   field: string;
   sortable?: boolean;
@@ -12,6 +14,7 @@ export type TableColumn = {
   hidden?: boolean;
   default?: boolean;
   textlimit?: boolean;
+  render?: (value: T) => TemplateResult;
 };
 
 export type TableHeaderFilter = {
