@@ -13,17 +13,19 @@ export class AppPopup extends LitElement {
       }
 
       [popover] {
+        inset: auto;
+        margin: 0;
         position-anchor: --anchor;
         min-width: anchor-size(width);
+        position-area: bottom span-all;
         position-try: flip-block;
-        position-area: bottom center;
-        top: calc(anchor(bottom) + 5px);
+        position-visibility: anchors-visible;
+        margin-top: 5px;
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);
         border-radius: var(--radius-2);
         overflow: auto;
         padding: 5px;
-        margin: 0;
         white-space: nowrap;
         box-shadow: var(--shadow-4);
 

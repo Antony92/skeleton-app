@@ -19,11 +19,13 @@ export class AppSelect extends FormElement(LitElement) {
       }
 
       [popover] {
+        inset: auto;
+        margin: 0;
         position-anchor: --anchor;
         width: anchor-size(width);
+        position-area: bottom center;
         position-try: flip-block;
-        position-area: span-bottom;
-        top: anchor(bottom);
+        position-visibility: anchors-visible;
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);
         border-radius: var(--radius-2);
