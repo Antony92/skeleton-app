@@ -88,9 +88,9 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
           ${when(this.label, () => html`<legend>${this.label}</legend>`)}
           <slot></slot>
         </fieldset>
-        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}
-          >${this.message}</small
-        >
+        <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
+          ${this.message}
+        </small>
       </div>
     `;
   }

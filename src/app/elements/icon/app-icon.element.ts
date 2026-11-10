@@ -29,7 +29,7 @@ export class AppIcon extends LitElement {
     `,
   ];
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor filled = false;
 
   render() {

@@ -61,14 +61,13 @@ export class AppHeader extends LitElement {
                 <app-icon slot="prefix">account_box</app-icon>
                 Profile
               </app-dropdown-item>
-              <app-dropdown-item @click=${() => this.signOut()}>
+              <app-dropdown-item @click=${this.signOut}>
                 <app-icon slot="prefix">logout</app-icon>
                 Logout
               </app-dropdown-item>
             </app-dropdown>
           `,
-          () =>
-            html`<app-button variant="primary" @click=${() => this.signIn()}>Sign in</app-button>`,
+          () => html`<app-button variant="primary" @click=${this.signIn}>Sign in</app-button>`,
         )}
       </header>
     `;
