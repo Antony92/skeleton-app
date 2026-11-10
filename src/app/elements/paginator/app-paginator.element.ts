@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 import '@app/elements/button/app-button.element';
 import '@app/elements/icon/app-icon.element';
 import '@app/elements/select/app-select.element';
-import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/option/app-option.element';
 import { defaultStyle } from '@app/styles/default.style';
 
 @customElement('app-paginator')
@@ -139,7 +139,7 @@ export class AppPaginator extends LitElement {
     return html`
       <label> Items per page: </label>
       <app-select @app-change=${this.pageSizeChange} .value=${this.pageSize.toString()}>
-        ${this.pageSizeOptions.map((value) => html`<app-select-option value=${value?.toString()}>${value}</<app-select-option>`)}
+        ${this.pageSizeOptions.map((value) => html`<app-option value=${value?.toString()}>${value}</<app-option>`)}
       </app-select>
       ${this.getRangeLabel()}
       <app-button

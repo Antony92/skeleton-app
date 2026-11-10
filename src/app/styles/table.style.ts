@@ -12,7 +12,7 @@ export const tableStyle = css`
           &.active {
             background: var(--theme-primary-color);
 
-            td.sticky {
+            td.frozen {
               background: var(--theme-primary-color);
             }
           }
@@ -20,7 +20,7 @@ export const tableStyle = css`
           &:hover:not(.active) {
             background: var(--theme-default-color);
 
-            td.sticky {
+            td.frozen {
               background: var(--theme-default-color);
             }
           }
@@ -41,7 +41,7 @@ export const tableStyle = css`
           width: var(--action-width, 1%);
         }
 
-        &[data-sticky] {
+        &[data-frozen] {
           position: sticky;
           left: var(--sticky-start, -1px);
           z-index: 2;
@@ -74,7 +74,7 @@ export const tableStyle = css`
           white-space: normal;
         }
 
-        &.sticky {
+        &.frozen {
           position: sticky;
           left: var(--sticky-start, -1px);
           z-index: 1;

@@ -9,7 +9,7 @@ import '@app/elements/radio-group/app-radio-group.element';
 import '@app/elements/textarea/app-textarea.element';
 import '@app/elements/button/app-button.element';
 import '@app/elements/select/app-select.element';
-import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/option/app-option.element';
 import '@app/elements/file-upload/app-file-upload.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import { getProducts } from '@app/services/api.service';
@@ -136,11 +136,11 @@ export class AppFormPage extends LitElement {
           clearable
           .value=${this.formData?.select || ''}
         >
-          <app-select-option value="option-1">Option 1</app-select-option>
-          <app-select-option value="option-2">Option 2</app-select-option>
-          <app-select-option value="option-3">Option 3</app-select-option>
-          <app-select-option value="option-4">Option 4</app-select-option>
-          <app-select-option value="option-5">Option 5</app-select-option>
+          <app-option value="option-1">Option 1</app-option>
+          <app-option value="option-2">Option 2</app-option>
+          <app-option value="option-3">Option 3</app-option>
+          <app-option value="option-4">Option 4</app-option>
+          <app-option value="option-5">Option 5</app-option>
         </app-select>
 
         <app-autocomplete

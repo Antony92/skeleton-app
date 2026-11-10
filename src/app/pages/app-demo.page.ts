@@ -15,7 +15,7 @@ import '@app/elements/textarea/app-textarea.element';
 import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
 import '@app/elements/select/app-select.element';
-import '@app/elements/select-option/app-select-option.element';
+import '@app/elements/option/app-option.element';
 import '@app/elements/autocomplete/app-autocomplete.element';
 import '@app/elements/tab/app-tab.element';
 import '@app/elements/tab-group/app-tab-group.element';
@@ -198,37 +198,37 @@ export class AppDemoPage extends LitElement {
 
         <div class="container">
           <app-select label="Select single" placeholder="Select">
-            <app-select-option value="option-1">Option 1</app-select-option>
-            <app-select-option value="option-2">Option 2</app-select-option>
-            <app-select-option value="option-3">Option 3</app-select-option>
-            <app-select-option value="option-4">Option 4</app-select-option>
-            <app-select-option value="option-5">Option 5</app-select-option>
+            <app-option value="option-1">Option 1</app-option>
+            <app-option value="option-2">Option 2</app-option>
+            <app-option value="option-3">Option 3</app-option>
+            <app-option value="option-4">Option 4</app-option>
+            <app-option value="option-5">Option 5</app-option>
           </app-select>
 
           <app-select label="Select multiple" multiple placeholder="Select multiple">
-            <app-select-option value="option-1">Option 1</app-select-option>
-            <app-select-option value="option-2">Option 2</app-select-option>
-            <app-select-option value="option-3">Option 3</app-select-option>
-            <app-select-option value="option-4">Option 4</app-select-option>
-            <app-select-option value="option-5">Option 5</app-select-option>
+            <app-option value="option-1">Option 1</app-option>
+            <app-option value="option-2">Option 2</app-option>
+            <app-option value="option-3">Option 3</app-option>
+            <app-option value="option-4">Option 4</app-option>
+            <app-option value="option-5">Option 5</app-option>
           </app-select>
 
           <app-select label="Select with groups" placeholder="Select">
             <small>Group 1</small>
-            <app-select-option value="option-1">Option 1</app-select-option>
-            <app-select-option value="option-2">Option 2</app-select-option>
-            <app-select-option value="option-3">Option 3</app-select-option>
+            <app-option value="option-1">Option 1</app-option>
+            <app-option value="option-2">Option 2</app-option>
+            <app-option value="option-3">Option 3</app-option>
             <small>Group 2</small>
-            <app-select-option value="option-4">Option 4</app-select-option>
-            <app-select-option value="option-5">Option 5</app-select-option>
+            <app-option value="option-4">Option 4</app-option>
+            <app-option value="option-5">Option 5</app-option>
           </app-select>
 
           <app-select label="Select with search" placeholder="Select" searchable>
-            <app-select-option value="option-1">Option 1</app-select-option>
-            <app-select-option value="option-2">Option 2</app-select-option>
-            <app-select-option value="option-3">Option 3</app-select-option>
-            <app-select-option value="option-4">Option 4</app-select-option>
-            <app-select-option value="option-5">Option 5</app-select-option>
+            <app-option value="option-1">Option 1</app-option>
+            <app-option value="option-2">Option 2</app-option>
+            <app-option value="option-3">Option 3</app-option>
+            <app-option value="option-4">Option 4</app-option>
+            <app-option value="option-5">Option 5</app-option>
           </app-select>
         </div>
       </div>

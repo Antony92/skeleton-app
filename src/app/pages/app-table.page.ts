@@ -79,6 +79,8 @@ export class AppTablePage extends LitElement {
       sortable: true,
       filterable: true,
       default: true,
+      freezable: true,
+      frozen: true,
       render: (value) => html`<a href="/test/${value}">${value}</a>`,
     },
     {
@@ -87,7 +89,7 @@ export class AppTablePage extends LitElement {
       type: 'text',
       sortable: true,
       filterable: true,
-      sticky: true,
+      freezable: true,
       default: true,
     },
     {
@@ -279,7 +281,7 @@ export class AppTablePage extends LitElement {
         <table slot="table" class="hoverable">
           <thead>
             <tr>
-              <th data-action data-sticky>
+              <th data-action data-frozen>
                 <input
                   type="checkbox"
                   @change=${this.toggleSelection}
@@ -287,19 +289,25 @@ export class AppTablePage extends LitElement {
                   .indeterminate=${this.isIndeterminate}
                 />
               </th>
-              <th data-action data-sticky>Actions</th>
+              <th data-action data-frozen>Actions</th>
               ${this.visibleColumns.map(
                 (column) => html`
-                  <th ?data-sticky=${column.sticky}>
+                  <th ?data-frozen=${column.frozen}>
                     <app-table-header
                       ?sortable=${column.sortable}
                       ?filterable=${column.filterable}
+                      ?freezable=${column.freezable}
                       .label=${column.header}
                       .field=${column.field}
                       .type=${column.type || 'text'}
                       .list=${column.list || []}
                       .value=${column.value || ''}
                       .order=${column.order || null}
+                      .frozen=${column.frozen ?? false}
+                      @app-table-column-freeze=${() => {
+                        column.frozen = !column.frozen;
+                        this.requestUpdate();
+                      }}
                     >
                       ${column.header}
                     </app-table-header>

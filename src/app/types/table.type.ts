@@ -9,10 +9,11 @@ export type TableColumn<T = unknown> = {
   value?: string;
   list?: { label: string; value: string | boolean | number }[];
   order?: 'desc' | 'asc' | null;
-  sticky?: boolean;
   hidden?: boolean;
   default?: boolean;
   textlimit?: boolean;
+  freezable?: boolean;
+  frozen?: boolean;
   render?: (value: T) => TemplateResult;
 };
 

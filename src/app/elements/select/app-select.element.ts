@@ -1,5 +1,5 @@
 import { appSelectStyle } from '@app/elements/select/app-select.style';
-import type { AppSelectOption } from '@app/elements/select-option/app-select-option.element';
+import type { AppOption } from '@app/elements/option/app-option.element';
 import { FormElement } from '@app/mixins/form.mixin';
 import { defaultStyle } from '@app/styles/default.style';
 import { css, html, LitElement, type PropertyValues } from 'lit';
@@ -80,8 +80,8 @@ export class AppSelect extends FormElement(LitElement) {
   @query('[popover]')
   accessor popup!: HTMLElement;
 
-  @queryAssignedElements({ selector: 'app-select-option' })
-  accessor assignedOptions!: AppSelectOption[];
+  @queryAssignedElements({ selector: 'app-option' })
+  accessor assignedOptions!: AppOption[];
 
   connectedCallback() {
     super.connectedCallback();
@@ -125,9 +125,9 @@ export class AppSelect extends FormElement(LitElement) {
     });
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.tagName === 'APP-SELECT-OPTION') {
+      if (target.tagName === 'APP-OPTION') {
         event.stopPropagation();
-        const option = target as AppSelectOption;
+        const option = target as AppOption;
         if (this.multiple) {
           option.selected = !option.selected;
           this.value = this.getMultiValue();

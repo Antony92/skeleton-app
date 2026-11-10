@@ -217,7 +217,7 @@ export class AppTable extends LitElement {
       });
   }
 
-  syncStickyColumns() {
+  syncFrozenColumns() {
     const table = this.tables[0];
     if (!table) return;
     const headers = table.querySelectorAll<HTMLTableCellElement>('thead th');
@@ -227,18 +227,18 @@ export class AppTable extends LitElement {
       const cells = table.querySelectorAll<HTMLTableCellElement>(
         `tbody tr td:nth-child(${index + 1})`,
       );
-      if (header.hasAttribute('data-sticky')) {
+      if (header.hasAttribute('data-frozen')) {
         const width = header.getBoundingClientRect().width;
         header.style.setProperty('--sticky-start', `${stickyStart}px`);
         cells.forEach((cell) => {
-          cell.classList.add('sticky');
+          cell.classList.add('frozen');
           cell.style.setProperty('--sticky-start', `${stickyStart}px`);
         });
         stickyStart += width;
       } else {
         header.style.removeProperty('--sticky-start');
         cells.forEach((cell) => {
-          cell.classList.remove('sticky');
+          cell.classList.remove('frozen');
           cell.style.removeProperty('--sticky-start');
         });
       }
@@ -250,13 +250,13 @@ export class AppTable extends LitElement {
     const table = this.tables[0];
     if (!table) return;
     this.tableObserver = new MutationObserver(() => {
-      this.syncStickyColumns();
+      this.syncFrozenColumns();
     });
     this.tableObserver.observe(table, {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['data-sticky'],
+      attributeFilter: ['data-frozen'],
     });
   }
 

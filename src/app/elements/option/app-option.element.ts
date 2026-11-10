@@ -3,8 +3,8 @@ import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
-@customElement('app-select-option')
-export class AppSelectOption extends LitElement {
+@customElement('app-option')
+export class AppOption extends LitElement {
   static styles = [
     defaultStyle,
     css`
@@ -110,6 +110,6 @@ export class AppSelectOption extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'app-select-option': AppSelectOption;
+    'app-option': AppOption;
   }
 }
