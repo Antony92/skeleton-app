@@ -101,9 +101,10 @@ export class AppPopup extends LitElement {
     return html`
       <div class="container">
         <slot name="trigger"></slot>
-        <div part="popover" popover=${this.behaviour}>
-          <slot></slot>
-        </div>
+      </div>
+
+      <div part="popover" popover=${this.behaviour}>
+        <slot></slot>
       </div>
     `;
   }

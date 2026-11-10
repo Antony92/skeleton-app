@@ -30,6 +30,8 @@ export class AppOption extends LitElement {
         font-size: var(--theme-font-size-1);
         width: 100%;
         background: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
 
         &:not(:disabled, :focus-visible, :focus-within):hover {
           background: var(--theme-muted-background);

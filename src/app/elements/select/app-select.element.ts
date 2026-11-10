@@ -32,6 +32,7 @@ export class AppSelect extends FormElement(LitElement) {
         overflow: auto;
         padding: 5px 0;
         margin: 0;
+        max-height: 350px;
 
         &:popover-open {
           display: flex;
@@ -315,10 +316,9 @@ export class AppSelect extends FormElement(LitElement) {
     const search = this.searchInput.value;
     this.assignedOptions.forEach((option) => {
       const text = option.textContent?.toLowerCase() || '';
-      const matches = text.includes(search);
+      const matches = text.includes(search.toLowerCase());
       option.searchHidden = !!search && !matches;
     });
-    this.requestUpdate();
   }
 
   get hasOptions() {
@@ -375,26 +375,27 @@ export class AppSelect extends FormElement(LitElement) {
             </svg>
           </span>
         </div>
-        <div popover="manual" part="popover" ?open=${this.open}>
-          ${when(
-            this.searchable,
-            () => html`
-              <input
-                autocomplete="off"
-                type="search"
-                id="search"
-                placeholder="Search..."
-                @input=${this.onSearch}
-              />
-            `,
-          )}
-          ${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
-          ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
-          <slot @slotchange=${this.onOptionsAdded}></slot>
-        </div>
         <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
           ${this.message}
         </small>
+      </div>
+
+      <div popover="manual" part="popover" ?open=${this.open}>
+        ${when(
+          this.searchable,
+          () => html`
+            <input
+              autocomplete="off"
+              type="search"
+              id="search"
+              placeholder="Search..."
+              @input=${this.onSearch}
+            />
+          `,
+        )}
+        ${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
+        ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
+        <slot @slotchange=${this.onOptionsAdded}></slot>
       </div>
     `;
   }

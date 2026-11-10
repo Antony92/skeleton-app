@@ -92,9 +92,9 @@ export class AppDropdown extends LitElement {
     return html`
       <div class="container">
         <slot name="trigger"></slot>
-        <div part="popover" popover>
-          <slot></slot>
-        </div>
+      </div>
+      <div popover="manual" part="popover" ?open=${this.open}>
+        <slot></slot>
       </div>
     `;
   }

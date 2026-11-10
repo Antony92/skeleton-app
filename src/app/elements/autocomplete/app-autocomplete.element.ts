@@ -39,18 +39,18 @@ export class AppAutocomplete extends FormElement(LitElement) {
   @property({ type: Boolean })
   accessor clearable = false;
 
+  @query('#trigger')
+  accessor trigger!: HTMLInputElement;
+
   @query('#input')
   accessor input!: HTMLInputElement;
-
-  @query('#hidden-input')
-  accessor hiddenInput!: HTMLInputElement;
 
   private debouncedSearch?: ReturnType<typeof debounce>;
 
   onInput() {
-    this.search = this.input.value;
+    this.search = this.trigger.value;
     this.dispatchEvent(new Event('app-input', { bubbles: true, composed: true }));
-    const result = this.results.find((r) => r.label === this.input.value);
+    const result = this.results.find((r) => r.label === this.search);
     if (result) {
       this.value = result.value;
     } else {
@@ -65,7 +65,7 @@ export class AppAutocomplete extends FormElement(LitElement) {
   }
 
   onChange() {
-    const result = this.results.find((r) => r.label === this.input.value);
+    const result = this.results.find((r) => r.label === this.trigger.value);
     this.value = result?.value || '';
     this.touched = true;
     this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
@@ -81,13 +81,13 @@ export class AppAutocomplete extends FormElement(LitElement) {
   }
 
   focus(options?: FocusOptions) {
-    this.input.focus(options);
+    this.trigger.focus(options);
   }
 
   getValidity() {
     return {
-      flags: this.hiddenInput.validity,
-      message: this.hiddenInput.validationMessage,
+      flags: this.input.validity,
+      message: this.input.validationMessage,
       anchor: this.input,
     };
   }
@@ -109,13 +109,13 @@ export class AppAutocomplete extends FormElement(LitElement) {
   render() {
     return html`
       <div class="form-control" part="form-control">
-        ${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}
+        ${when(this.label, () => html`<label for="trigger" part="label">${this.label}</label>`)}
         <div class="input-wrapper" part="input-wrapper">
           <span class="prefix" part="prefix">
             <slot name="prefix"></slot>
           </span>
           <input
-            id="input"
+            id="trigger"
             part="input"
             ?disabled=${this.disabled}
             ?autofocus=${this.autofocus}
@@ -130,7 +130,7 @@ export class AppAutocomplete extends FormElement(LitElement) {
             list="results"
           />
           <input
-            id="hidden-input"
+            id="input"
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
             ?required=${this.required}
