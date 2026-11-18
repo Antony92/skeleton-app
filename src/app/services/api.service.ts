@@ -27,7 +27,10 @@ export const getUser = async (id: string, loader = true) => {
   return null;
 };
 
-export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse<any>> => {
+export const getUsers = async (
+  params?: SearchParams,
+  signal?: AbortSignal,
+): Promise<PaginatedResponse<any>> => {
   try {
     const query = searchParamsToQuery({
       q: params?.search,
@@ -36,7 +39,7 @@ export const getUsers = async (params?: SearchParams): Promise<PaginatedResponse
       sortBy: params?.sort,
       order: params?.order,
     });
-    const req = await request(`${import.meta.env.VITE_API}/users${query}`);
+    const req = await request(`${import.meta.env.VITE_API}/users${query}`, { signal });
     const res = await req.json();
     return {
       total: res.total,

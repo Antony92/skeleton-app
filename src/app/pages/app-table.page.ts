@@ -70,6 +70,7 @@ export class AppTablePage extends LitElement {
   skip = 0;
   limit = 10;
   storageLimitName = 'table-limit';
+  private abortController?: AbortController;
 
   columns: TableColumn[] = [
     {
@@ -129,10 +130,20 @@ export class AppTablePage extends LitElement {
     void this.loadUsers();
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.abortController?.abort();
+  }
+
   async loadUsers() {
     this.loading = true;
+    this.abortController?.abort();
+    this.abortController = new AbortController();
     const filters = Object.fromEntries(this.filtersMap);
-    this.users = await getUsers({ ...filters, skip: this.skip, limit: this.limit });
+    this.users = await getUsers(
+      { ...filters, skip: this.skip, limit: this.limit },
+      this.abortController.signal,
+    );
     this.loading = false;
   }
 
