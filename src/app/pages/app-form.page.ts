@@ -21,7 +21,7 @@ import { serializeForm, setPageTitle } from '@app/utils/html';
 
 @customElement('app-form-page')
 export class AppFormPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     formStyle,
     css`
@@ -43,12 +43,12 @@ export class AppFormPage extends LitElement {
   @state()
   accessor formData: any = null;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Form');
   }
 
-  protected async firstUpdated() {}
+  override async firstUpdated() {}
 
   async submit(event: SubmitEvent) {
     event.preventDefault();
@@ -76,7 +76,7 @@ export class AppFormPage extends LitElement {
     };
   }
 
-  render() {
+  override render() {
     return html`
       <h3>Form</h3>
       <form @submit=${this.submit} @change=${() => pageHasUnsavedChanges()} novalidate>

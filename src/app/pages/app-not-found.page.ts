@@ -5,7 +5,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-not-found-page')
 export class AppNotFoundPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       h1 {
@@ -14,12 +14,12 @@ export class AppNotFoundPage extends LitElement {
     `,
   ];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('404');
   }
 
-  render() {
+  override render() {
     return html`<h1>Page not found</h1>`;
   }
 }

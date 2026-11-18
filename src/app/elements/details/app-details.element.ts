@@ -5,7 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-details')
 export class AppDetails extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     focusStyle,
     css`
@@ -79,7 +79,7 @@ export class AppDetails extends LitElement {
   @property({ type: String })
   accessor name = '';
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
   }
 
@@ -98,7 +98,7 @@ export class AppDetails extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <details
         part="details"

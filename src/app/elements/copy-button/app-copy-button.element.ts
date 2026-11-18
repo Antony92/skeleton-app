@@ -8,7 +8,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-copy-button')
 export class AppCopyButton extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appCopyButtonStyle,
     focusStyle,
@@ -41,7 +41,7 @@ export class AppCopyButton extends LitElement {
     setTimeout(() => (this.copied = false), 1000);
   }
 
-  render() {
+  override render() {
     return html`
       <button
         part="button"

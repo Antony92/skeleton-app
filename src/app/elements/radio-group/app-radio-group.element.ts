@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-radio-group')
 export class AppRadioGroup extends FormElement(LitElement) {
-  static styles = [defaultStyle, appRadioGroupStyle, css``];
+  static override styles = [defaultStyle, appRadioGroupStyle, css``];
 
   @property({ type: Boolean })
   accessor required = false;
@@ -23,7 +23,7 @@ export class AppRadioGroup extends FormElement(LitElement) {
   @queryAssignedElements()
   accessor radios!: AppRadio[];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-change', (event) => {
       const radio = event.target as AppRadio;
@@ -32,7 +32,7 @@ export class AppRadioGroup extends FormElement(LitElement) {
     });
   }
 
-  protected updated(_changedProperties: PropertyValues) {
+  override updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
     this.radios.forEach((r) => {
       r.checked = !!this.value && r.value === this.value;
@@ -40,7 +40,7 @@ export class AppRadioGroup extends FormElement(LitElement) {
     });
   }
 
-  getValidity() {
+  override getValidity() {
     if (!this.value && this.required) {
       return {
         flags: { valueMissing: true },
@@ -51,14 +51,14 @@ export class AppRadioGroup extends FormElement(LitElement) {
     return {};
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.radios
       .filter((r) => !r.checked)
       .at(0)
       ?.focus(options);
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         <fieldset ?disabled=${this.disabled} name=${ifDefined(this.name)}>

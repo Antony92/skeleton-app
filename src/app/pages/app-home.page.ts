@@ -5,7 +5,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-home-page')
 export class AppHomePage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       img {
@@ -20,14 +20,14 @@ export class AppHomePage extends LitElement {
     `,
   ];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Home');
   }
 
-  protected firstUpdated() {}
+  override firstUpdated() {}
 
-  render() {
+  override render() {
     return html``;
   }
 }

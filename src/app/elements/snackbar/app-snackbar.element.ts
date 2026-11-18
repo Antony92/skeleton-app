@@ -8,7 +8,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-snackbar')
 export class AppSnackbar extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appSnackbarStyle,
     focusStyle,
@@ -92,7 +92,7 @@ export class AppSnackbar extends LitElement {
     void this.close();
   }
 
-  render() {
+  override render() {
     return html`
       <div popover="manual" class=${classMap({ [this.position]: true })}>
         <slot name="icon"></slot>

@@ -4,7 +4,7 @@ import { customElement } from 'lit/decorators.js';
 
 @customElement('app-admin-page')
 export class AppAdminPage extends LitElement {
-  static styles = [
+  static override styles = [
     css`
       h3 {
         margin: 0 0 10px 0;
@@ -12,12 +12,12 @@ export class AppAdminPage extends LitElement {
     `,
   ];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Admin');
   }
 
-  render() {
+  override render() {
     return html` <h3>Admin</h3> `;
   }
 }

@@ -21,7 +21,7 @@ class WhenUserRole extends AsyncDirective {
     return noChange;
   }
 
-  disconnected() {
+  override disconnected() {
     this.unsubscribe?.();
   }
 }

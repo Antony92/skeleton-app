@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-radio')
 export class AppRadio extends FormElement(LitElement) {
-  static styles = [defaultStyle, appRadioStyle, css``];
+  static override styles = [defaultStyle, appRadioStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -26,7 +26,7 @@ export class AppRadio extends FormElement(LitElement) {
   @query('input')
   accessor input!: HTMLInputElement;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.defaultValue = this.defaultValue || this.value;
   }
@@ -51,16 +51,16 @@ export class AppRadio extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.checked = false;
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.input.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -68,7 +68,7 @@ export class AppRadio extends FormElement(LitElement) {
     };
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         <div class="radio-wrapper" part="radio-wrapper">

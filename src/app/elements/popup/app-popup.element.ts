@@ -4,7 +4,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('app-popup')
 export class AppPopup extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       .container {
@@ -48,7 +48,7 @@ export class AppPopup extends LitElement {
   @property({ type: String })
   accessor behaviour: 'auto' | 'manual' = 'auto';
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
@@ -62,7 +62,7 @@ export class AppPopup extends LitElement {
     });
   }
 
-  protected firstUpdated() {
+  override firstUpdated() {
     this.popup.addEventListener('toggle', (event: Event) => {
       const toggleEvent = event as ToggleEvent;
       if (toggleEvent.newState === 'closed') {
@@ -97,7 +97,7 @@ export class AppPopup extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         <slot name="trigger"></slot>

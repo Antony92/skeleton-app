@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-input')
 export class AppInput extends FormElement(LitElement) {
-  static styles = [defaultStyle, appInputStyle, css``];
+  static override styles = [defaultStyle, appInputStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -84,11 +84,11 @@ export class AppInput extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.input.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -104,7 +104,7 @@ export class AppInput extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}

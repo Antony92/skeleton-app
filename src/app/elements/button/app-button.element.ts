@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-button')
 export class AppButton extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appButtonStyle,
     focusStyle,
@@ -58,7 +58,7 @@ export class AppButton extends LitElement {
   static formAssociated = true;
   internals = this.attachInternals();
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (e) => {
       if (e.defaultPrevented) return;
@@ -71,7 +71,7 @@ export class AppButton extends LitElement {
     });
   }
 
-  render() {
+  override render() {
     return html`
       ${when(
         this.href,

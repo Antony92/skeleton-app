@@ -6,7 +6,7 @@ import { customElement, queryAssignedElements } from 'lit/decorators.js';
 
 @customElement('app-tab-group')
 export class AppTabGroup extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -48,7 +48,7 @@ export class AppTabGroup extends LitElement {
     return this.#activeTab;
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
@@ -62,7 +62,7 @@ export class AppTabGroup extends LitElement {
     });
   }
 
-  protected firstUpdated() {
+  override firstUpdated() {
     const index = this.tabs.findIndex((tab) => tab.active);
     this.setActiveTab(index === -1 ? 0 : index);
   }
@@ -97,7 +97,7 @@ export class AppTabGroup extends LitElement {
     });
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         <div class="nav">

@@ -27,7 +27,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 @customElement('app-table-page')
 export class AppTablePage extends LitElement {
-  static styles = [
+  static override styles = [
     formStyle,
     pageStyle,
     tableStyle,
@@ -121,7 +121,7 @@ export class AppTablePage extends LitElement {
     },
   ];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Table');
     this.filtersMap = getRouteSearchMap();
@@ -130,7 +130,7 @@ export class AppTablePage extends LitElement {
     void this.loadUsers();
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     this.abortController?.abort();
   }
@@ -258,7 +258,7 @@ export class AppTablePage extends LitElement {
     return this.columns.filter((column) => !column.hidden);
   }
 
-  render() {
+  override render() {
     return html`
       <app-table
         header="Table"

@@ -6,7 +6,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('app-dropdown')
 export class AppDropdown extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       .container {
@@ -42,7 +42,7 @@ export class AppDropdown extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor open = false;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
@@ -57,7 +57,7 @@ export class AppDropdown extends LitElement {
     });
   }
 
-  protected firstUpdated() {
+  override firstUpdated() {
     this.popup.addEventListener('toggle', (event: Event) => {
       const toggleEvent = event as ToggleEvent;
       if (toggleEvent.newState === 'closed') {
@@ -88,7 +88,7 @@ export class AppDropdown extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         <slot name="trigger"></slot>

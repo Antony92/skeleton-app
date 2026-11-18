@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-icon')
 export class AppIcon extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -32,7 +32,7 @@ export class AppIcon extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor filled = false;
 
-  render() {
+  override render() {
     return html`<slot></slot>`;
   }
 }

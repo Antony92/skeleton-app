@@ -5,7 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-option')
 export class AppOption extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -83,11 +83,11 @@ export class AppOption extends LitElement {
   @query('button')
   accessor option!: HTMLButtonElement;
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.option?.focus(options);
   }
 
-  render() {
+  override render() {
     return html`
       <button part="option" ?disabled=${this.disabled} .value=${this.value}>
         <svg

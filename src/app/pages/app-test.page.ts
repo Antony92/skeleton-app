@@ -8,7 +8,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-test-page')
 export class AppTestPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       h3 {
@@ -20,7 +20,7 @@ export class AppTestPage extends LitElement {
   @property()
   userId = '';
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle(`Test page`);
     const { id } = getRouteParams();
@@ -32,7 +32,7 @@ export class AppTestPage extends LitElement {
     args: () => [this.userId],
   });
 
-  render() {
+  override render() {
     return this.getUserTask.render({
       pending: () => html`<p>Loading user...</p>`,
       complete: (user) => html`

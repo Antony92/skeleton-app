@@ -10,7 +10,7 @@ import { choose } from 'lit/directives/choose.js';
 
 @customElement('app-theme-switcher')
 export class AppThemeSwitcher extends LitElement {
-  static styles = [defaultStyle, css``];
+  static override styles = [defaultStyle, css``];
 
   @property({ type: String, reflect: true })
   accessor theme = localStorage.getItem('theme') || 'auto';
@@ -37,7 +37,7 @@ export class AppThemeSwitcher extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <app-dropdown @app-select=${this.changeTheme} title="Choose theme">
         <app-button slot="trigger" appearance="plain">

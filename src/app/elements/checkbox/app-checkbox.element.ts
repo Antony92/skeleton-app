@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-checkbox')
 export class AppCheckbox extends FormElement(LitElement) {
-  static styles = [defaultStyle, appCheckStyle, css``];
+  static override styles = [defaultStyle, appCheckStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -26,7 +26,7 @@ export class AppCheckbox extends FormElement(LitElement) {
   @query('input')
   accessor input!: HTMLInputElement;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.defaultValue = this.defaultValue || this.value;
   }
@@ -51,7 +51,7 @@ export class AppCheckbox extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -59,20 +59,20 @@ export class AppCheckbox extends FormElement(LitElement) {
     };
   }
 
-  getFormValue() {
+  override getFormValue() {
     return this.checked ? this.value || 'on' : null;
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.checked = false;
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.input.focus(options);
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         <div class="checkbox-wrapper" part="checkbox-wrapper">

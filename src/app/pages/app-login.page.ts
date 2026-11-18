@@ -8,7 +8,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-login-page')
 export class AppLoginPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       .container {
@@ -25,7 +25,7 @@ export class AppLoginPage extends LitElement {
   @state()
   private error = '';
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Login');
     const { error } = getRouteSearch();
@@ -40,7 +40,7 @@ export class AppLoginPage extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         ${when(

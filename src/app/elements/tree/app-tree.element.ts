@@ -6,7 +6,7 @@ import { AppSelectEvent } from '@app/events/select.event';
 
 @customElement('app-tree')
 export class AppTree extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       .container {
@@ -23,7 +23,7 @@ export class AppTree extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-change', async (event) => {
       event.stopPropagation();
@@ -38,7 +38,7 @@ export class AppTree extends LitElement {
     });
   }
 
-  protected updated(_changedProperties: PropertyValues): void {
+  override updated(_changedProperties: PropertyValues): void {
     if (['selection', 'disabled'].some((prop) => _changedProperties.has(prop))) {
       const allTreeItems = this.querySelectorAll<AppTreeItem>('app-tree-item');
       allTreeItems.forEach((item) => {
@@ -48,7 +48,7 @@ export class AppTree extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         <slot></slot>

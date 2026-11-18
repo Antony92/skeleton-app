@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-loader')
 export class AppLoader extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -63,7 +63,7 @@ export class AppLoader extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor active = false;
 
-  render() {
+  override render() {
     return html`<div class="loader-line"></div>`;
   }
 }

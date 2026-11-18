@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-switch')
 export class AppSwitch extends FormElement(LitElement) {
-  static styles = [defaultStyle, appSwitchStyle, css``];
+  static override styles = [defaultStyle, appSwitchStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -46,7 +46,7 @@ export class AppSwitch extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -54,20 +54,20 @@ export class AppSwitch extends FormElement(LitElement) {
     };
   }
 
-  getFormValue() {
+  override getFormValue() {
     return this.checked ? this.value || 'on' : null;
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.checked = false;
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.input.focus(options);
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         <div class="switch-wrapper" part="switch-wrapper">

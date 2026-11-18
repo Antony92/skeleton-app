@@ -16,7 +16,7 @@ import type { AppSelect } from '@app/elements/select/app-select.element';
 
 @customElement('app-table-header')
 export class AppTableHeader extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -231,7 +231,7 @@ export class AppTableHeader extends LitElement {
     this.dispatchEvent(new Event('app-table-column-freeze'));
   }
 
-  render() {
+  override render() {
     return html`
       <button
         data-order=${this.order || 'none'}

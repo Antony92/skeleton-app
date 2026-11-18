@@ -10,7 +10,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-select')
 export class AppSelect extends FormElement(LitElement) {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appSelectStyle,
     css`
@@ -84,7 +84,7 @@ export class AppSelect extends FormElement(LitElement) {
   @queryAssignedElements({ selector: 'app-option' })
   accessor assignedOptions!: AppOption[];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     window.addEventListener('keyup', this.handleKeyup);
     window.addEventListener('mousedown', this.handleMouseDown);
@@ -149,13 +149,13 @@ export class AppSelect extends FormElement(LitElement) {
     });
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('keyup', this.handleKeyup);
     window.removeEventListener('mousedown', this.handleMouseDown);
   }
 
-  protected willUpdate(_changedProperties: PropertyValues): void {
+  override willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('value')) {
       this.assignedOptions.forEach((option) => {
         const selected = this.value
@@ -285,17 +285,17 @@ export class AppSelect extends FormElement(LitElement) {
     }
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.displayValue =
       this.assignedOptions.find((option) => option.value === this.value)?.textContent || '';
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.trigger.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -329,7 +329,7 @@ export class AppSelect extends FormElement(LitElement) {
     return this.assignedOptions.some((o) => !o.searchHidden);
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="trigger" part="label">${this.label}</label>`)}

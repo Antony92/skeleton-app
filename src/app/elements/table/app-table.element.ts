@@ -14,7 +14,7 @@ import { debounce } from '@app/utils/html';
 
 @customElement('app-table')
 export class AppTable extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       header {
@@ -113,7 +113,7 @@ export class AppTable extends LitElement {
   private debouncedSearch?: ReturnType<typeof debounce>;
   private tableObserver?: MutationObserver;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-table-header-filter', (event) => {
       event.stopPropagation();
@@ -126,7 +126,7 @@ export class AppTable extends LitElement {
     this.syncColumnsWithFilters();
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     this.tableObserver?.disconnect();
   }
@@ -264,7 +264,7 @@ export class AppTable extends LitElement {
     this.dispatchEvent(new Event('app-table-update'));
   }
 
-  render() {
+  override render() {
     return html`
       <header>
         <h3>${this.header}</h3>

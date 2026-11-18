@@ -46,7 +46,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-demo-page')
 export class AppDemoPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       :host {
@@ -112,14 +112,14 @@ export class AppDemoPage extends LitElement {
   @query('app-drawer')
   appDrawer!: AppDrawer;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Demo');
   }
 
-  protected async firstUpdated() {}
+  override async firstUpdated() {}
 
-  render() {
+  override render() {
     return html`
       <h3>Demo</h3>
       <div class="demo">

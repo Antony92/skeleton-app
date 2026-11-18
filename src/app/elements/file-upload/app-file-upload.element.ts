@@ -11,7 +11,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-file-upload')
 export class AppFileUpload extends FormElement(LitElement) {
-  static styles = [defaultStyle, appFileUploadStyle, css``];
+  static override styles = [defaultStyle, appFileUploadStyle, css``];
 
   @property({ type: Boolean })
   accessor required = false;
@@ -75,7 +75,7 @@ export class AppFileUpload extends FormElement(LitElement) {
     'application/x-rar-compressed': 'rar',
   };
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
@@ -86,7 +86,7 @@ export class AppFileUpload extends FormElement(LitElement) {
     });
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     this.cleanFilesURL();
   }
@@ -105,17 +105,17 @@ export class AppFileUpload extends FormElement(LitElement) {
     this.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.files = null;
     this.filesList = [];
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.input.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -175,7 +175,7 @@ export class AppFileUpload extends FormElement(LitElement) {
     });
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="input" part="label">${this.label}</label>`)}

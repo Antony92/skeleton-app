@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-checkbox-group')
 export class AppCheckboxGroup extends FormElement(LitElement) {
-  static styles = [defaultStyle, appCheckboxGroupStyle, css``];
+  static override styles = [defaultStyle, appCheckboxGroupStyle, css``];
 
   @property({ type: Boolean })
   accessor required = false;
@@ -29,7 +29,7 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
   @queryAssignedElements()
   accessor checkboxes!: AppCheckbox[];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-change', () => {
       this.value = this.checkboxes
@@ -40,7 +40,7 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
     });
   }
 
-  protected updated(_changedProperties: PropertyValues) {
+  override updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
     this.checkboxes.forEach((c) => {
       c.checked = this.value.split(',').includes(c.value);
@@ -48,7 +48,7 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
     });
   }
 
-  getValidity() {
+  override getValidity() {
     if (!this.value && this.required) {
       return {
         flags: { valueMissing: true },
@@ -74,14 +74,14 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
     return {};
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.checkboxes
       .filter((c) => !c.checked)
       .at(0)
       ?.focus(options);
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         <fieldset ?disabled=${this.disabled} name=${ifDefined(this.name)}>

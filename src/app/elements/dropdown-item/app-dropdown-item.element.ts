@@ -5,7 +5,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-dropdown-item')
 export class AppDropdownItem extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       ::slotted(app-icon) {
@@ -118,7 +118,7 @@ export class AppDropdownItem extends LitElement {
   @queryAssignedElements({ slot: 'submenu', selector: 'app-dropdown-item' })
   accessor submenuItems!: AppDropdownItem[];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('mouseenter', (event) => {
       const target = event.target as HTMLElement;
@@ -146,7 +146,7 @@ export class AppDropdownItem extends LitElement {
     });
   }
 
-  protected firstUpdated() {
+  override firstUpdated() {
     this.popup.addEventListener('toggle', (event: Event) => {
       const toggleEvent = event as ToggleEvent;
       if (toggleEvent.newState === 'closed') {
@@ -155,7 +155,7 @@ export class AppDropdownItem extends LitElement {
     });
   }
 
-  render() {
+  override render() {
     return html`
       ${when(
         this.href,

@@ -9,17 +9,17 @@ import { defaultStyle } from '@app/styles/default.style';
 
 @customElement('app-sidebar')
 export class AppSidebar extends LitElement {
-  static styles = [defaultStyle, appSidebarStyle, css``];
+  static override styles = [defaultStyle, appSidebarStyle, css``];
 
   @state()
   private accessor currentPath = location.pathname;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     navigation.addEventListener('currententrychange', this.setActiveLink);
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     navigation.removeEventListener('currententrychange', this.setActiveLink);
   }
@@ -31,7 +31,7 @@ export class AppSidebar extends LitElement {
     }
   };
 
-  render() {
+  override render() {
     return html`
       <aside>
         <ul>

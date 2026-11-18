@@ -9,7 +9,7 @@ import { defaultStyle } from '@app/styles/default.style';
 
 @customElement('app-paginator')
 export class AppPaginator extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -135,7 +135,7 @@ export class AppPaginator extends LitElement {
     );
   }
 
-  render() {
+  override render() {
     return html`
       <label> Items per page: </label>
       <app-select @app-change=${this.pageSizeChange} .value=${this.pageSize.toString()}>

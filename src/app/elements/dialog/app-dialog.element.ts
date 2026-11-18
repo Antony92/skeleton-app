@@ -7,7 +7,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-dialog')
 export class AppDialog extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appDialogStyle,
     focusStyle,
@@ -42,7 +42,7 @@ export class AppDialog extends LitElement {
     return this.#returnValue;
   }
 
-  protected firstUpdated() {
+  override firstUpdated() {
     this.dialog.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (!target) return;
@@ -116,7 +116,7 @@ export class AppDialog extends LitElement {
     return animation.finished;
   }
 
-  render() {
+  override render() {
     return html`
       <dialog>
         <div class="container">

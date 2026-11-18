@@ -8,7 +8,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-tag')
 export class AppTag extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     focusStyle,
     appTagStyle,
@@ -36,7 +36,7 @@ export class AppTag extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div part="tag" class=${classMap({ removable: this.removable, pill: this.pill })}>
         <slot></slot>

@@ -6,7 +6,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-drag-drop-page')
 export class AppDragDropPage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       .items {
@@ -63,7 +63,7 @@ export class AppDragDropPage extends LitElement {
     { id: crypto.randomUUID(), title: 'Item 4' },
   ];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Drag & Drop Demo');
   }
@@ -131,9 +131,9 @@ export class AppDragDropPage extends LitElement {
     (event.target as HTMLElement).closest('.item')?.removeAttribute('draggable');
   }
 
-  protected firstUpdated() {}
+  override firstUpdated() {}
 
-  render() {
+  override render() {
     return html`
       <div class="items">
         ${repeat(

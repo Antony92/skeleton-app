@@ -5,7 +5,7 @@ import { customElement, property, queryAssignedElements } from 'lit/decorators.j
 
 @customElement('app-chip-group')
 export class AppChipGroup extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       .container {
@@ -28,7 +28,7 @@ export class AppChipGroup extends LitElement {
   @queryAssignedElements()
   accessor chips!: AppChip[];
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
@@ -48,7 +48,7 @@ export class AppChipGroup extends LitElement {
     });
   }
 
-  protected updated(_changedProperties: PropertyValues) {
+  override updated(_changedProperties: PropertyValues) {
     super.updated(_changedProperties);
     this.chips.forEach((chip) => {
       if (this.multiple) {
@@ -60,7 +60,7 @@ export class AppChipGroup extends LitElement {
     });
   }
 
-  render() {
+  override render() {
     return html`<div class="container"><slot></slot></div>`;
   }
 }

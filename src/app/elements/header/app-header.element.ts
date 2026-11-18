@@ -13,7 +13,7 @@ import { StoreController } from '@app/controllers/store.controller';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-  static styles = [defaultStyle, appHeaderStyle, css``];
+  static override styles = [defaultStyle, appHeaderStyle, css``];
 
   @property({ type: String })
   appTitle = import.meta.env.VITE_APP_TITLE || 'Skeleton App';
@@ -44,7 +44,7 @@ export class AppHeader extends LitElement {
     return this.userController.value;
   }
 
-  render() {
+  override render() {
     return html`
       <header>
         <img class="logo" src="/images/logo.png" />

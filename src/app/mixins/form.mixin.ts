@@ -62,7 +62,7 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
     #customError = '';
     internals = this.attachInternals();
 
-    connectedCallback() {
+    override connectedCallback() {
       super.connectedCallback();
       this.addEventListener('invalid', async () => {
         this.touched = true;
@@ -94,7 +94,7 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
       ];
     }
 
-    protected updated(_changedProperties: PropertyValues) {
+    override updated(_changedProperties: PropertyValues) {
       super.updated(_changedProperties);
       const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
       if (shouldValidate) {

@@ -8,7 +8,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-chip')
 export class AppChip extends LitElement {
-  static styles = [defaultStyle, focusStyle, appChipStyle, css``];
+  static override styles = [defaultStyle, focusStyle, appChipStyle, css``];
 
   @property({ type: String })
   accessor value = '';
@@ -29,7 +29,7 @@ export class AppChip extends LitElement {
     }
   }
 
-  render() {
+  override render() {
     return html`
       <div>
         <button

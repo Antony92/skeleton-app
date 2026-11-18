@@ -6,7 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-tab')
 export class AppTab extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     focusStyle,
     css`
@@ -55,7 +55,7 @@ export class AppTab extends LitElement {
   @property({ type: String })
   accessor panel = '';
 
-  render() {
+  override render() {
     return html`
       <button
         part="tab"

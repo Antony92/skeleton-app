@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-tab-panel')
 export class AppTabPanel extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -24,7 +24,7 @@ export class AppTabPanel extends LitElement {
   @property({ type: String })
   accessor name = '';
 
-  render() {
+  override render() {
     return html`
       <div part="panel">
         <slot></slot>

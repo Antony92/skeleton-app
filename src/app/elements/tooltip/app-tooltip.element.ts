@@ -5,7 +5,7 @@ import { customElement, property, query, queryAssignedElements } from 'lit/decor
 
 @customElement('app-tooltip')
 export class AppTooltip extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     focusStyle,
     css`
@@ -100,7 +100,7 @@ export class AppTooltip extends LitElement {
     return this.triggers[0];
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('mouseover', () => {
       if (this.timeout !== 0) return;
@@ -115,7 +115,7 @@ export class AppTooltip extends LitElement {
     });
   }
 
-  render() {
+  override render() {
     return html`
       <div class="anchor">
         <slot></slot>

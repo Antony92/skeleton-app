@@ -18,7 +18,7 @@ import '@app/elements/button/app-button.element';
 
 @customElement('app-rich-text-editor')
 export class AppRichTextEditor extends FormElement(LitElement) {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appRichTextEditorStyle,
     css`
@@ -87,7 +87,7 @@ export class AppRichTextEditor extends FormElement(LitElement) {
   editor: Editor | null = null;
   isInternalChange = false;
 
-  protected firstUpdated() {
+  override firstUpdated() {
     this.editor = new Editor({
       element: this.renderRoot.querySelector('#editor'),
       extensions: [
@@ -134,12 +134,12 @@ export class AppRichTextEditor extends FormElement(LitElement) {
     });
   }
 
-  disconnectedCallback(): void {
+  override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.editor?.destroy();
   }
 
-  protected updated(_changedProperties: PropertyValues) {
+  override updated(_changedProperties: PropertyValues) {
     if (_changedProperties.has('value') && !this.isInternalChange) {
       this.editor?.commands.setContent(this.value, { emitUpdate: false });
     }
@@ -148,7 +148,7 @@ export class AppRichTextEditor extends FormElement(LitElement) {
     }
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.textarea.validity,
       message: this.textarea.validationMessage,
@@ -164,11 +164,11 @@ export class AppRichTextEditor extends FormElement(LitElement) {
     this.editor?.chain().focus().unsetAllMarks().run();
   }
 
-  focus() {
+  override focus() {
     this.editor?.commands.focus();
   }
 
-  blur() {
+  override blur() {
     this.editor?.commands.blur();
   }
 
@@ -279,7 +279,7 @@ export class AppRichTextEditor extends FormElement(LitElement) {
     this.linkPopup.hidePopover();
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="textarea" part="label">${this.label}</label>`)}

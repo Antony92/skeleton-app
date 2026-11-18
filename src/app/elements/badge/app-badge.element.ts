@@ -6,7 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 @customElement('app-badge')
 export class AppBadge extends LitElement {
-  static styles = [defaultStyle, appBadgeStyle, css``];
+  static override styles = [defaultStyle, appBadgeStyle, css``];
 
   @property({ type: String })
   accessor variant: 'default' | 'primary' | 'success' | 'warning' | 'error' = 'default';
@@ -20,7 +20,7 @@ export class AppBadge extends LitElement {
   @property({ type: Boolean })
   accessor pill = false;
 
-  render() {
+  override render() {
     return html`
       <div
         part="badge"

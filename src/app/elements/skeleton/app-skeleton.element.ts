@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('app-skeleton')
 export class AppSkeleton extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     css`
       :host {
@@ -69,7 +69,7 @@ export class AppSkeleton extends LitElement {
   @property({ type: String })
   accessor effect: 'pulse' | 'sheen' | 'none' = 'sheen';
 
-  render() {
+  override render() {
     return html`<div part="skeleton" class="${this.effect}"></div>`;
   }
 }

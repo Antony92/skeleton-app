@@ -7,7 +7,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-tree-item')
 export class AppTreeItem extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     focusStyle,
     css`
@@ -91,7 +91,7 @@ export class AppTreeItem extends LitElement {
 
   private isExternalChange = false;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     this.addEventListener('app-change', (event) => {
       if (event.target !== this && this.selection !== 'leaf') {
@@ -107,7 +107,7 @@ export class AppTreeItem extends LitElement {
     }
   }
 
-  protected updated(_changedProperties: PropertyValues): void {
+  override updated(_changedProperties: PropertyValues): void {
     if (
       ['selected', 'disabled'].some((prop) => _changedProperties.has(prop)) &&
       !this.isExternalChange
@@ -134,7 +134,7 @@ export class AppTreeItem extends LitElement {
     this.dispatchEvent(new Event('app-change', { bubbles: true, composed: true }));
   }
 
-  render() {
+  override render() {
     return html`
       <div class="container">
         <div class="tree-item" part="tree-item">

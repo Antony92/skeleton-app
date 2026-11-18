@@ -9,7 +9,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-textarea')
 export class AppTextarea extends FormElement(LitElement) {
-  static styles = [defaultStyle, appTextareaStyle, css``];
+  static override styles = [defaultStyle, appTextareaStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -56,11 +56,11 @@ export class AppTextarea extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.textarea.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.textarea.validity,
       message: this.textarea.validationMessage,
@@ -68,7 +68,7 @@ export class AppTextarea extends FormElement(LitElement) {
     };
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="textarea" part="label">${this.label}</label>`)}

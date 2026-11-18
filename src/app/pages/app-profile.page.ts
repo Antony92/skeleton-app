@@ -7,7 +7,7 @@ import { pageStyle } from '@app/styles/page.style';
 
 @customElement('app-profile-page')
 export class AppProfilePage extends LitElement {
-  static styles = [
+  static override styles = [
     pageStyle,
     css`
       h3 {
@@ -18,13 +18,13 @@ export class AppProfilePage extends LitElement {
 
   user: User | null = null;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     setPageTitle('Profile');
     this.user = getUser();
   }
 
-  render() {
+  override render() {
     return html`
       <h3>Profile</h3>
       ${this.user?.name} - ${this.user?.roles.join(', ')}

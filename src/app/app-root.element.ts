@@ -10,12 +10,12 @@ import { mainStyle } from '@app/styles/main.style';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
-  static styles = [mainStyle, css``];
+  static override styles = [mainStyle, css``];
 
   @query('#outlet')
   accessor outlet!: HTMLElement;
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     window.addEventListener('offline', () =>
       notify({ variant: 'error', message: 'You are offline', duration: 0 }),
@@ -35,16 +35,16 @@ export class AppRoot extends LitElement {
     });
   }
 
-  disconnectedCallback() {
+  override disconnectedCallback() {
     super.disconnectedCallback();
     destroyNavigation();
   }
 
-  protected async firstUpdated() {
+  override async firstUpdated() {
     initializeNavigation({ routes, outlet: this.outlet });
   }
 
-  render() {
+  override render() {
     return html`
       <div class="layout">
         <app-header class="header"></app-header>

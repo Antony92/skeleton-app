@@ -7,7 +7,7 @@ import { choose } from 'lit/directives/choose.js';
 
 @customElement('app-system-message')
 export class AppSystemMessage extends LitElement {
-  static styles = [
+  static override styles = [
     defaultStyle,
     appSystemMessageStyle,
     focusStyle,
@@ -64,7 +64,7 @@ export class AppSystemMessage extends LitElement {
     return animation.finished;
   }
 
-  render() {
+  override render() {
     return html`
       <div class="system-message ${this.level}" popover="manual">
         ${choose(

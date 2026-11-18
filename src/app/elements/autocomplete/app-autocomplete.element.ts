@@ -10,7 +10,7 @@ import { when } from 'lit/directives/when.js';
 
 @customElement('app-autocomplete')
 export class AppAutocomplete extends FormElement(LitElement) {
-  static styles = [defaultStyle, appAutocompleteStyle, css``];
+  static override styles = [defaultStyle, appAutocompleteStyle, css``];
 
   @property({ type: Boolean })
   accessor readonly = false;
@@ -80,11 +80,11 @@ export class AppAutocomplete extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
   }
 
-  focus(options?: FocusOptions) {
+  override focus(options?: FocusOptions) {
     this.trigger.focus(options);
   }
 
-  getValidity() {
+  override getValidity() {
     return {
       flags: this.input.validity,
       message: this.input.validationMessage,
@@ -92,7 +92,7 @@ export class AppAutocomplete extends FormElement(LitElement) {
     };
   }
 
-  formResetCallback() {
+  override formResetCallback() {
     super.formResetCallback();
     this.search = '';
   }
@@ -106,7 +106,7 @@ export class AppAutocomplete extends FormElement(LitElement) {
     this.dispatchEvent(new Event('app-clear', { bubbles: true, composed: true }));
   }
 
-  render() {
+  override render() {
     return html`
       <div class="form-control" part="form-control">
         ${when(this.label, () => html`<label for="trigger" part="label">${this.label}</label>`)}
