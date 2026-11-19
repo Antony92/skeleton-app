@@ -21,7 +21,7 @@ export class AppDropdown extends LitElement {
         min-width: anchor-size(width);
         position-area: bottom span-right;
         position-try: flip-block;
-        position-visibility: anchors-visible;
+        position-visibility: anchor-visible;
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);
         border-radius: var(--radius-2);

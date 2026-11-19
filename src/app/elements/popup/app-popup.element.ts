@@ -19,7 +19,7 @@ export class AppPopup extends LitElement {
         min-width: anchor-size(width);
         position-area: bottom span-all;
         position-try: flip-block;
-        position-visibility: anchors-visible;
+        position-visibility: anchor-visible;
         margin-top: 5px;
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);

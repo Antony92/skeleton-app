@@ -25,7 +25,7 @@ export class AppSelect extends FormElement(LitElement) {
         width: anchor-size(width);
         position-area: bottom center;
         position-try: flip-block;
-        position-visibility: anchors-visible;
+        position-visibility: anchor-visible;
         border: 1px solid var(--theme-default-color);
         background: var(--theme-default-surface);
         border-radius: var(--radius-2);
