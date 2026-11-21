@@ -1,5 +1,5 @@
 // import { registerSW } from 'virtual:pwa-register';
-// import { refreshTokenSilently } from '@app/shared/auth';
+import { refreshTokenSilently } from '@app/shared/auth';
 import { applyDefaultTheme } from '@app/utils/theme';
 
 // Register service worker
@@ -8,12 +8,11 @@ import { applyDefaultTheme } from '@app/utils/theme';
 // Set up theme
 applyDefaultTheme();
 
+// Refresh token silently
+await refreshTokenSilently();
+
 // Load app
-Promise.allSettled([
-  // await refreshTokenSilently(),
-  import('@app/app-root.element'),
-  customElements.whenDefined('app-root'),
-])
+Promise.allSettled([import('@app/app-root.element'), customElements.whenDefined('app-root')])
   .then(() => {
     document.querySelector('body')?.classList.remove('initializing');
     document.querySelector('.loader')?.remove();

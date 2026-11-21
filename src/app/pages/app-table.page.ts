@@ -1,4 +1,4 @@
-import { getUsers } from '@app/services/api.service';
+import { getDummyUsers } from '@app/services/api.service';
 import { tableStyle } from '@app/styles/table.style';
 import type { PaginatedResponse } from '@app/types/response.type';
 import { serializeForm, setPageTitle } from '@app/utils/html';
@@ -140,7 +140,7 @@ export class AppTablePage extends LitElement {
     this.abortController?.abort();
     this.abortController = new AbortController();
     const filters = Object.fromEntries(this.filtersMap);
-    this.users = await getUsers(
+    this.users = await getDummyUsers(
       { ...filters, skip: this.skip, limit: this.limit },
       this.abortController.signal,
     );

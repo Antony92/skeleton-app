@@ -25,7 +25,7 @@ export class AppLoginPage extends LitElement {
   @state()
   private error = '';
 
-  override connectedCallback() {
+  override async connectedCallback() {
     super.connectedCallback();
     setPageTitle('Login');
     const { error } = getRouteSearch();

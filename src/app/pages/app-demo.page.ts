@@ -37,7 +37,7 @@ import type { AppSelect } from '@app/elements/select/app-select.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
 import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppDrawer } from '@app/elements/drawer/app-drawer.element';
-import { getProducts } from '@app/services/api.service';
+import { getDummyProducts } from '@app/services/api.service';
 import { confirmDialog, promptDialog } from '@app/shared/dialogs';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
@@ -240,7 +240,7 @@ export class AppDemoPage extends LitElement {
             placeholder="Search..."
             @app-search=${async (e: Event) => {
               const target = e.target as AppAutocomplete;
-              const products = await getProducts(target.search);
+              const products = await getDummyProducts(target.search);
               target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
             }}
           >

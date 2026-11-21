@@ -67,6 +67,10 @@ export const appSnackbarStyle = css`
         color: color-mix(in oklab, var(--action), black 8%);
       }
     }
+
+    .content {
+      word-break: break-word;
+    }
   }
 
   :host([variant='primary']) {

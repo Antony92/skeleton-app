@@ -1,28 +1,44 @@
 import { $user } from '@app/shared/auth';
-import { noChange, nothing } from 'lit';
+import type { User } from '@app/types/user.type';
+import { nothing } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive } from 'lit/directive.js';
 
 class WhenUser extends AsyncDirective {
   private unsubscribe?: () => void;
+  private trueCase?: () => unknown;
+  private falseCase?: () => unknown;
 
   render<T, F>(trueCase: () => T, falseCase?: () => F) {
-    if (this.isConnected && !this.unsubscribe) {
-      this.unsubscribe = $user.subscribe((user) => {
-        if (user) {
-          this.setValue(trueCase());
-        } else if (falseCase) {
-          this.setValue(falseCase());
-        } else {
-          this.setValue(nothing);
-        }
-      });
-    }
-    return noChange;
+    this.trueCase = trueCase;
+    this.falseCase = falseCase;
+    this.subscribe();
+    return this.getValue($user.get());
+  }
+
+  override reconnected() {
+    this.subscribe();
+    this.setValue(this.getValue($user.get()));
   }
 
   override disconnected() {
     this.unsubscribe?.();
+  }
+
+  subscribe() {
+    if (this.isConnected && !this.unsubscribe) {
+      this.unsubscribe = $user.listen((user) => this.setValue(this.getValue(user)));
+    }
+  }
+
+  getValue(user: User) {
+    if (user && this.trueCase) {
+      return this.trueCase();
+    } else if (this.falseCase) {
+      return this.falseCase();
+    } else {
+      return nothing;
+    }
   }
 }
 

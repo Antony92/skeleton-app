@@ -1,28 +1,46 @@
 import { $user } from '@app/shared/auth';
-import { noChange, nothing } from 'lit';
+import type { User } from '@app/types/user.type';
+import { nothing } from 'lit';
 import { AsyncDirective } from 'lit/async-directive.js';
 import { directive } from 'lit/directive.js';
 
 class WhenUserRole extends AsyncDirective {
   private unsubscribe?: () => void;
+  private roles: string[] = [];
+  private trueCase?: () => unknown;
+  private falseCase?: () => unknown;
 
   render<T, F>(roles: string[], trueCase: () => T, falseCase?: () => F) {
-    if (this.isConnected && !this.unsubscribe) {
-      this.unsubscribe = $user.subscribe((user) => {
-        if (user?.roles.some((role) => roles.includes(role))) {
-          this.setValue(trueCase());
-        } else if (falseCase) {
-          this.setValue(falseCase());
-        } else {
-          this.setValue(nothing);
-        }
-      });
-    }
-    return noChange;
+    this.roles = roles;
+    this.trueCase = trueCase;
+    this.falseCase = falseCase;
+    this.subscribe();
+    return this.getValue($user.get());
+  }
+
+  override reconnected() {
+    this.subscribe();
+    this.setValue(this.getValue($user.get()));
   }
 
   override disconnected() {
     this.unsubscribe?.();
+  }
+
+  subscribe() {
+    if (this.isConnected && !this.unsubscribe) {
+      this.unsubscribe = $user.listen((user) => this.setValue(this.getValue(user)));
+    }
+  }
+
+  getValue(user: User) {
+    if (user?.roles.some((role) => this.roles.includes(role)) && this.trueCase) {
+      return this.trueCase();
+    } else if (this.falseCase) {
+      return this.falseCase();
+    } else {
+      return nothing;
+    }
   }
 }
 

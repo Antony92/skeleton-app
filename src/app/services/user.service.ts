@@ -95,18 +95,3 @@ export const getRoles = async () => {
   }
   return [];
 };
-
-export const getMe = async () => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/me`, {
-      auth: true,
-    });
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.error(error);
-  }
-  return {
-    data: null,
-  };
-};

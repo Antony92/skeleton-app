@@ -1,4 +1,4 @@
-import { getUser } from '@app/services/api.service';
+import { getDummyUser } from '@app/services/api.service';
 import { getRouteParams } from '@app/shared/navigation';
 import { setPageTitle } from '@app/utils/html';
 import { Task } from '@lit/task';
@@ -28,7 +28,7 @@ export class AppTestPage extends LitElement {
   }
 
   getUserTask = new Task(this, {
-    task: async ([userId]) => getUser(userId),
+    task: async ([userId]) => getDummyUser(userId),
     args: () => [this.userId],
   });
 

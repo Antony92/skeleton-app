@@ -14,13 +14,13 @@ export const hasUserRole = (roles: string[]) => {
 };
 
 export const login = () => {
-  // location.href = `${import.meta.env.VITE_API}/login`
-  void dummyLogin({ username: 'emilys', password: 'emilyspass' });
+  location.href = `${import.meta.env.VITE_AUTH}/login`;
+  // void dummyLogin({ username: 'emilys', password: 'emilyspass' });
 };
 
 export const logout = async () => {
   try {
-    const req = await fetch(`${import.meta.env.VITE_API}/auth/logout`, {
+    const req = await fetch(`${import.meta.env.VITE_AUTH}/logout`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -33,17 +33,14 @@ export const logout = async () => {
 };
 
 export const refreshTokenSilently = async () => {
-  if (location.pathname === '/login') {
-    return true;
-  }
   try {
-    const req = await fetch(`${import.meta.env.VITE_API}/auth/refresh`, {
+    const req = await fetch(`${import.meta.env.VITE_AUTH}/refresh`, {
       method: 'POST',
       credentials: 'include',
     });
     if (!req.ok) return false;
-    const user = await req.json();
-    $user.set(user);
+    const { user, accessToken } = await req.json();
+    $user.set({ ...user, accessToken });
     return true;
   } catch (error) {
     console.error('Token refresh failed: ', error);
@@ -53,7 +50,7 @@ export const refreshTokenSilently = async () => {
 
 export const impersonate = async (username: string) => {
   try {
-    const req = await fetch(`${import.meta.env.VITE_API}/auth/impersonate`, {
+    const req = await fetch(`${import.meta.env.VITE_AUTH}/impersonate`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -63,8 +60,8 @@ export const impersonate = async (username: string) => {
       body: JSON.stringify({ username }),
     });
     if (!req.ok) return false;
-    const user = await req.json();
-    $user.set(user);
+    const { user, accessToken } = await req.json();
+    $user.set({ ...user, accessToken });
     return true;
   } catch (error) {
     console.error('Impersonation failed: ', error);
@@ -74,7 +71,7 @@ export const impersonate = async (username: string) => {
 
 export const dummyLogin = async (user: { username: string; password: string }) => {
   try {
-    const req = await fetch(`${import.meta.env.VITE_API}/auth/login`, {
+    const req = await fetch(`${import.meta.env.VITE_AUTH}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),

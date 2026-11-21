@@ -37,7 +37,7 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
     if (!response.ok) {
       const error = await response.clone().json();
       void notify({
-        message: `${JSON.stringify(url)} failed: ${JSON.stringify(error)}`,
+        message: `${error?.message}`,
         variant: 'error',
         action: { label: 'Close' },
       });

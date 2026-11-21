@@ -96,7 +96,9 @@ export class AppSnackbar extends LitElement {
     return html`
       <div popover="manual" class=${classMap({ [this.position]: true })}>
         <slot name="icon"></slot>
-        <slot></slot>
+        <div class="content">
+          <slot></slot>
+        </div>
         ${when(this.action, () => html`<button class="focus-visible" autofocus @click=${this.onAction}>${this.action}</button>`)}
       </div>
     `;

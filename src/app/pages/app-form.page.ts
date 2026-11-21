@@ -12,7 +12,7 @@ import '@app/elements/select/app-select.element';
 import '@app/elements/option/app-option.element';
 import '@app/elements/file-upload/app-file-upload.element';
 import type { AppAutocomplete } from '@app/elements/autocomplete/app-autocomplete.element';
-import { getProducts } from '@app/services/api.service';
+import { getDummyProducts } from '@app/services/api.service';
 import { pageHasUnsavedChanges } from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { formStyle } from '@app/styles/form.style';
@@ -149,7 +149,7 @@ export class AppFormPage extends LitElement {
           placeholder="Search..."
           @app-search=${async (e: Event) => {
             const target = e.target as AppAutocomplete;
-            const products = await getProducts(target.search);
+            const products = await getDummyProducts(target.search);
             target.results = products.map((p: any) => ({ label: p.title, value: p.id }));
           }}
         >

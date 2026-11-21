@@ -3,10 +3,10 @@ import type { PaginatedResponse } from '@app/types/response.type';
 import type { SearchParams } from '@app/types/search.type';
 import { searchParamsToQuery } from '@app/utils/url';
 
-export const getProducts = async (search?: string) => {
+export const getDummyProducts = async (search?: string) => {
   try {
     const req = await request(
-      `${import.meta.env.VITE_API}/products/search${searchParamsToQuery({ q: search })}`,
+      `${import.meta.env.VITE_DUMMY_API}/products/search${searchParamsToQuery({ q: search })}`,
     );
     const res = await req.json();
     return res?.products || [];
@@ -16,9 +16,12 @@ export const getProducts = async (search?: string) => {
   return [];
 };
 
-export const getUser = async (id: string, loader = true) => {
+export const getDummyUser = async (id: string, loader = true) => {
   try {
-    const req = await request(`${import.meta.env.VITE_API}/users/${id}`, { auth: true, loader });
+    const req = await request(`${import.meta.env.VITE_DUMMY_API}/users/${id}`, {
+      auth: true,
+      loader,
+    });
     const res = await req.json();
     return res;
   } catch (error) {
@@ -27,7 +30,7 @@ export const getUser = async (id: string, loader = true) => {
   return null;
 };
 
-export const getUsers = async (
+export const getDummyUsers = async (
   params?: SearchParams,
   signal?: AbortSignal,
 ): Promise<PaginatedResponse<any>> => {
@@ -39,7 +42,7 @@ export const getUsers = async (
       sortBy: params?.sort,
       order: params?.order,
     });
-    const req = await request(`${import.meta.env.VITE_API}/users${query}`, { signal });
+    const req = await request(`${import.meta.env.VITE_DUMMY_API}/users${query}`, { signal });
     const res = await req.json();
     return {
       total: res.total,

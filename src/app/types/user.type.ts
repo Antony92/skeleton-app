@@ -8,6 +8,6 @@ export type User = {
 } | null;
 
 export const Role = {
-  GUEST: 'GUEST',
-  ADMIN: 'ADMIN',
-};
+  GUEST: 'guest',
+  ADMIN: 'admin',
+} as const;
