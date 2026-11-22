@@ -85,7 +85,7 @@ export class AppUsersPage extends LitElement {
     {
       header: 'ID',
       field: 'id',
-      type: 'number',
+      type: 'text',
       sortable: true,
       filterable: true,
       default: true,
@@ -193,7 +193,7 @@ export class AppUsersPage extends LitElement {
       filterable: true,
       list: [
         { label: 'Admin', value: 'admin' },
-        { label: 'Guest', value: 'guest' },
+        { label: 'Guest', value: 'guest1' },
       ],
       render: (value) =>
         html`${value.roles.map((role) => html`<app-badge variant="primary">${role}</app-badge>`)}`,
@@ -216,15 +216,20 @@ export class AppUsersPage extends LitElement {
   }
 
   async loadUsers() {
-    this.loading = true;
-    this.abortController?.abort();
-    this.abortController = new AbortController();
-    const filters = Object.fromEntries(this.filtersMap);
-    this.users = await getUsers(
-      { ...filters, skip: this.skip, limit: this.limit },
-      this.abortController.signal,
-    );
-    this.loading = false;
+    try {
+      this.loading = true;
+      this.abortController?.abort();
+      this.abortController = new AbortController();
+      const filters = Object.fromEntries(this.filtersMap);
+      this.users = await getUsers(
+        { ...filters, skip: this.skip, limit: this.limit },
+        this.abortController.signal,
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
   }
 
   async syncRouteAndReload() {
@@ -306,27 +311,31 @@ export class AppUsersPage extends LitElement {
       return;
     }
     const data = serializeForm(this.userForm) as Record<string, string | undefined>;
-    if (this.selectedUser) {
-      await updateUser({
-        id: this.selectedUser.id,
-        name: data.name,
-        username: data.username,
-        roles: data.roles?.split(','),
-        blocked: data.blocked === 'on',
+    try {
+      if (this.selectedUser) {
+        await updateUser({
+          id: this.selectedUser.id,
+          name: data.name,
+          username: data.username,
+          roles: data.roles?.split(','),
+          blocked: data.blocked === 'on',
+        });
+      } else {
+        await createUser({
+          name: data.name!,
+          username: data.username!,
+          roles: data.roles?.split(','),
+        });
+      }
+      await this.loadUsers();
+      void this.userDialog.close();
+      void notify({
+        message: `User ${this.selectedUser ? 'updated' : 'created'}`,
+        variant: 'success',
       });
-    } else {
-      await createUser({
-        name: data.name!,
-        username: data.username!,
-        roles: data.roles?.split(','),
-      });
+    } catch (error) {
+      console.error(error);
     }
-    await this.loadUsers();
-    void this.userDialog.close();
-    void notify({
-      message: `User ${this.selectedUser ? 'updated' : 'created'}`,
-      variant: 'success',
-    });
   }
 
   async openUserDialog(user?: DbUser) {
@@ -340,14 +349,16 @@ export class AppUsersPage extends LitElement {
       message: `Are you sure you want to delete user '${user.username}'?`,
     });
     if (!confirmed) return;
-    const { data } = await deleteUser(user.id);
-    if (data) {
+    try {
+      await deleteUser(user.id);
       this.selection.delete(user.id);
       await this.loadUsers();
       void notify({
         variant: 'success',
         message: `User '${user.username}' has been deleted.`,
       });
+    } catch (error) {
+      console.error(error);
     }
   }
 

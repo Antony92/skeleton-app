@@ -1,41 +1,29 @@
 import { request } from '@app/http/request';
 
 export const getServerEvents = async () => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/server-events`, { auth: true });
-    const res = await req.json();
-    return {
-      data: res.data as [],
-      total: res.total as number,
-    };
-  } catch (error) {
-    console.error(error);
+  const req = await request(`${import.meta.env.VITE_API}/server-events`, { auth: true });
+  const res = await req.json();
+  if (!res.ok) {
+    throw res;
   }
-  return {
-    total: 0,
-    data: [],
-  };
+  return res;
 };
 
 export const createServerEvent = async (event: {
   type: 'info' | 'warning' | 'error';
   message: string;
 }) => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/server-event`, {
-      method: 'POST',
-      auth: true,
-      json: true,
-      body: JSON.stringify(event),
-    });
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.error(error);
+  const req = await request(`${import.meta.env.VITE_API}/server-event`, {
+    method: 'POST',
+    auth: true,
+    json: true,
+    body: JSON.stringify(event),
+  });
+  const res = await req.json();
+  if (!res.ok) {
+    throw res;
   }
-  return {
-    data: null,
-  };
+  return res;
 };
 
 export const updateServerEvent = async (event: {
@@ -43,35 +31,27 @@ export const updateServerEvent = async (event: {
   type?: 'info' | 'warning' | 'error';
   message?: string;
 }) => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/server-event/${event.id}`, {
-      method: 'PATCH',
-      auth: true,
-      json: true,
-      body: JSON.stringify(event),
-    });
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.error(error);
+  const req = await request(`${import.meta.env.VITE_API}/server-event/${event.id}`, {
+    method: 'PATCH',
+    auth: true,
+    json: true,
+    body: JSON.stringify(event),
+  });
+  const res = await req.json();
+  if (!res.ok) {
+    throw res;
   }
-  return {
-    data: null,
-  };
+  return res;
 };
 
 export const deleteServerEvent = async (id: string) => {
-  try {
-    const req = await request(`${import.meta.env.VITE_API}/server-event/${id}`, {
-      method: 'DELETE',
-      auth: true,
-    });
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.error(error);
+  const req = await request(`${import.meta.env.VITE_API}/server-event/${id}`, {
+    method: 'DELETE',
+    auth: true,
+  });
+  const res = await req.json();
+  if (!res.ok) {
+    throw res;
   }
-  return {
-    data: null,
-  };
+  return res;
 };

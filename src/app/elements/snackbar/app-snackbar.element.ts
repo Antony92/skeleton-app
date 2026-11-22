@@ -99,7 +99,7 @@ export class AppSnackbar extends LitElement {
         <div class="content">
           <slot></slot>
         </div>
-        ${when(this.action, () => html`<button class="focus-visible" autofocus @click=${this.onAction}>${this.action}</button>`)}
+        ${when(this.action, () => html`<button class="focus-visible" @click=${this.onAction}>${this.action}</button>`)}
       </div>
     `;
   }

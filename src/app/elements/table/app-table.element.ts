@@ -65,10 +65,10 @@ export class AppTable extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 5px;
-          padding: 0 5px 5px 5px;
+          padding: 5px;
 
           h5 {
-            margin: 0;
+            margin: 0 0 5px 0;
           }
 
           .columns {

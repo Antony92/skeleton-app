@@ -2,13 +2,18 @@ import { getAccessToken, login, refreshTokenSilently } from '@app/shared/auth';
 import { loading } from '@app/shared/loader';
 import { notify } from '@app/shared/notification';
 
-type RequestOptions = RequestInit & { loader?: boolean; auth?: boolean; json?: boolean };
+type RequestOptions = RequestInit & {
+  loader?: boolean;
+  auth?: boolean;
+  json?: boolean;
+  silent?: boolean;
+};
 
 // Counter for number of request
 let requestCount = 0;
 
 export const request = async (url: URL | RequestInfo, options?: RequestOptions) => {
-  const { loader = true, auth = false, json = false } = options ?? {};
+  const { loader = true, auth = false, json = false, silent = false } = options ?? {};
 
   // 1. Prepare Headers immutably
   const headers = new Headers(options?.headers);
@@ -36,20 +41,24 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
 
     if (!response.ok) {
       const error = await response.clone().json();
-      void notify({
-        message: `${error?.message}`,
-        variant: 'error',
-        action: { label: 'Close' },
-      });
+      if (!silent) {
+        void notify({
+          message: `${error?.message}`,
+          variant: 'error',
+          action: { label: 'Close' },
+        });
+      }
     }
 
     return response;
   } catch (error: unknown) {
-    void notify({
-      message: `${JSON.stringify(url)} failed`,
-      variant: 'error',
-      action: { label: 'Close' },
-    });
+    if (!silent) {
+      void notify({
+        message: `${JSON.stringify(url)} failed`,
+        variant: 'error',
+        action: { label: 'Close' },
+      });
+    }
     throw error;
   } finally {
     requestCount--;

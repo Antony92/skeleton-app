@@ -9,20 +9,15 @@ export const getAuditLogs = async (
   signal?: AbortSignal,
   loader = true,
 ): Promise<PaginatedResponse<AuditLog>> => {
-  try {
-    const query = searchParamsToQuery({ ...params });
-    const req = await request(`${import.meta.env.VITE_API}/audit-logs${query}`, {
-      auth: true,
-      loader,
-      signal,
-    });
-    const res = await req.json();
-    return res;
-  } catch (error) {
-    console.error(error);
+  const query = searchParamsToQuery({ ...params });
+  const req = await request(`${import.meta.env.VITE_API}/audit-logs${query}`, {
+    auth: true,
+    loader,
+    signal,
+  });
+  const res = await req.json();
+  if (!req.ok) {
+    throw res;
   }
-  return {
-    total: 0,
-    data: [],
-  };
+  return res;
 };

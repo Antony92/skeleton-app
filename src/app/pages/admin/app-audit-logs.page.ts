@@ -33,7 +33,7 @@ export class AppAuditLogsPage extends LitElement {
         overflow: auto;
         max-height: 350px;
         border-radius: var(--radius-2);
-        background-color: var(--theme-muted-background);
+        background-color: light-dark(#f0f0f0, #000000);
         padding: 10px;
       }
     `,
@@ -142,15 +142,20 @@ export class AppAuditLogsPage extends LitElement {
   }
 
   async loadAuditLogs() {
-    this.loading = true;
-    this.abortController?.abort();
-    this.abortController = new AbortController();
-    const filters = Object.fromEntries(this.filtersMap);
-    this.auditLogs = await getAuditLogs(
-      { ...filters, skip: this.skip, limit: this.limit },
-      this.abortController.signal,
-    );
-    this.loading = false;
+    try {
+      this.loading = true;
+      this.abortController?.abort();
+      this.abortController = new AbortController();
+      const filters = Object.fromEntries(this.filtersMap);
+      this.auditLogs = await getAuditLogs(
+        { ...filters, skip: this.skip, limit: this.limit },
+        this.abortController.signal,
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
   }
 
   async syncRouteAndReload() {
@@ -254,6 +259,7 @@ export class AppAuditLogsPage extends LitElement {
                       variant="primary"
                       appearance="plain"
                       size="small"
+                      title="View Details"
                       @click=${() => this.openDataDialog(auditLog)}
                     >
                       <app-icon filled>info</app-icon>
