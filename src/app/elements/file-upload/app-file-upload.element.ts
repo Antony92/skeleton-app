@@ -75,8 +75,8 @@ export class AppFileUpload extends FormElement(LitElement) {
     'application/x-rar-compressed': 'rar',
   };
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (!this.disabled && target.assignedSlot?.name === 'trigger') {

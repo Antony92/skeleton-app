@@ -82,6 +82,7 @@ export const appTextareaStyle = css`
 
         textarea {
           cursor: not-allowed;
+          caret-color: transparent;
         }
       }
     }

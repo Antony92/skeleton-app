@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const tableStyle = css`
+  :host {
+    max-width: 100%;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;

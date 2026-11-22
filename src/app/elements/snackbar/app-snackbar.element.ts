@@ -52,7 +52,7 @@ export class AppSnackbar extends LitElement {
     this.snackbar.showPopover();
     await this.animation();
     this.dispatchEvent(new Event('app-after-show'));
-    if (this.duration && !this.action) {
+    if (this.duration) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => this.close(), this.duration);
     }

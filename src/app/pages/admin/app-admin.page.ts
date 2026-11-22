@@ -1,6 +1,7 @@
 import { setPageTitle } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import '@app/elements/button/app-button.element';
 
 @customElement('app-admin-page')
 export class AppAdminPage extends LitElement {
@@ -18,6 +19,11 @@ export class AppAdminPage extends LitElement {
   }
 
   override render() {
-    return html` <h3>Admin</h3> `;
+    return html`
+      <h3>Admin</h3>
+      <app-button variant="primary" href="/admin/users">Users</app-button>
+      <app-button variant="primary" href="/admin/audit-logs">Audit Logs</app-button>
+      <app-button variant="primary" href="/admin/server-events">Server Events</app-button>
+    `;
   }
 }

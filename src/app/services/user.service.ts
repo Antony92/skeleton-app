@@ -1,16 +1,23 @@
 import { request } from '@app/http/request';
+import type { PaginatedResponse } from '@app/types/response.type';
 import type { SearchParams } from '@app/types/search.type';
 import { searchParamsToQuery } from '@app/utils/url';
+import type { DbUser } from '@app/types/user.type';
 
-export const getUsers = async (params?: SearchParams, loader = true) => {
+export const getUsers = async (
+  params?: SearchParams,
+  signal?: AbortSignal,
+  loader = true,
+): Promise<PaginatedResponse<DbUser>> => {
   try {
     const query = searchParamsToQuery({ ...params });
-    const req = await request(`${import.meta.env.VITE_API}/users${query}`, { auth: true, loader });
+    const req = await request(`${import.meta.env.VITE_API}/users${query}`, {
+      auth: true,
+      loader,
+      signal,
+    });
     const res = await req.json();
-    return {
-      data: res.data as [],
-      total: res.total as number,
-    };
+    return res;
   } catch (error) {
     console.error(error);
   }
@@ -20,13 +27,7 @@ export const getUsers = async (params?: SearchParams, loader = true) => {
   };
 };
 
-export const createUser = async (user: {
-  name: string;
-  username: string;
-  roles?: string[];
-  blocked?: boolean;
-  active?: boolean;
-}) => {
+export const createUser = async (user: { name: string; username: string; roles?: string[] }) => {
   try {
     const req = await request(`${import.meta.env.VITE_API}/user`, {
       method: 'POST',
@@ -49,12 +50,11 @@ export const updateUser = async (user: {
   name?: string;
   username?: string;
   roles?: string[];
-  active?: boolean;
   blocked?: boolean;
 }) => {
   try {
     const req = await request(`${import.meta.env.VITE_API}/user/${user.id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       auth: true,
       json: true,
       body: JSON.stringify(user),
@@ -94,4 +94,19 @@ export const getRoles = async () => {
     console.error(error);
   }
   return [];
+};
+
+export const getMe = async () => {
+  try {
+    const req = await request(`${import.meta.env.VITE_API}/me`, {
+      auth: true,
+    });
+    const res = await req.json();
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+  return {
+    data: null,
+  };
 };

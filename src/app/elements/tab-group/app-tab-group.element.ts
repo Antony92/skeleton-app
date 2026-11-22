@@ -48,8 +48,8 @@ export class AppTabGroup extends LitElement {
     return this.#activeTab;
   }
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (target.tagName === 'APP-TAB') {

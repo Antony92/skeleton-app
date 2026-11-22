@@ -104,6 +104,7 @@ export const appInputStyle = css`
 
         input {
           cursor: not-allowed;
+          caret-color: transparent;
         }
       }
 

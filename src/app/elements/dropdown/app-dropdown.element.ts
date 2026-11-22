@@ -42,8 +42,8 @@ export class AppDropdown extends LitElement {
   @property({ type: Boolean, reflect: true })
   accessor open = false;
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('click', (event: Event) => {
       const target = event.target as HTMLElement;
       if (target.assignedSlot?.name === 'trigger') {
@@ -93,7 +93,7 @@ export class AppDropdown extends LitElement {
       <div class="container">
         <slot name="trigger"></slot>
       </div>
-      <div popover="manual" part="popover" ?open=${this.open}>
+      <div popover part="popover" ?open=${this.open}>
         <slot></slot>
       </div>
     `;

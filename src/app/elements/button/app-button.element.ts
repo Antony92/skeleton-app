@@ -17,6 +17,7 @@ export class AppButton extends LitElement {
       :host {
         --background: var(--theme-default-background);
         --color: var(--theme-white-color);
+        display: contents;
       }
 
       ::slotted(*) {
@@ -58,8 +59,8 @@ export class AppButton extends LitElement {
   static formAssociated = true;
   internals = this.attachInternals();
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('click', (e) => {
       if (e.defaultPrevented) return;
       if (this.type === 'submit') {

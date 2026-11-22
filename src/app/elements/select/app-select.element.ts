@@ -84,10 +84,8 @@ export class AppSelect extends FormElement(LitElement) {
   @queryAssignedElements({ selector: 'app-option' })
   accessor assignedOptions!: AppOption[];
 
-  override connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener('keyup', this.handleKeyup);
-    window.addEventListener('mousedown', this.handleMouseDown);
+  constructor() {
+    super();
     this.addEventListener('keydown', (event) => {
       const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
       if (!keys.includes(event.key) || !this.open) return;
@@ -149,10 +147,23 @@ export class AppSelect extends FormElement(LitElement) {
     });
   }
 
+  override connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('keyup', this.handleKeyup);
+  }
+
   override disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('keyup', this.handleKeyup);
-    window.removeEventListener('mousedown', this.handleMouseDown);
+  }
+
+  override firstUpdated() {
+    this.popup.addEventListener('toggle', (event: Event) => {
+      const toggleEvent = event as ToggleEvent;
+      if (toggleEvent.newState === 'closed') {
+        this.closeSelect();
+      }
+    });
   }
 
   override willUpdate(_changedProperties: PropertyValues): void {
@@ -204,17 +215,9 @@ export class AppSelect extends FormElement(LitElement) {
     }
   }
 
-  private handleMouseDown = (event: MouseEvent) => {
-    const path = event.composedPath();
-    if (!path.includes(this) && this.open) {
-      this.closeSelect();
-    }
-  };
-
   private handleKeyup = (event: KeyboardEvent) => {
-    if (event.key === 'Escape' && this.open) {
-      this.closeSelect();
-      this.focus();
+    if (event.key === 'Enter') {
+      this.toggleSelect();
     }
     if (event.key === 'Tab' && this.open) {
       this.closeSelect();
@@ -273,16 +276,6 @@ export class AppSelect extends FormElement(LitElement) {
   onBlur() {
     this.touched = true;
     this.dispatchEvent(new Event('app-blur', { bubbles: true, composed: true }));
-  }
-
-  async onKeydown(event: KeyboardEvent) {
-    if (!['Enter', 'Space'].includes(event.code)) {
-      return;
-    }
-    event.preventDefault();
-    if (!this.open) {
-      void this.openSelect();
-    }
   }
 
   override formResetCallback() {
@@ -348,7 +341,6 @@ export class AppSelect extends FormElement(LitElement) {
             placeholder=${ifDefined(this.placeholder)}
             .value=${live(this.displayValue)}
             @click=${this.toggleSelect}
-            @keydown=${this.onKeydown}
           />
           <input
             id="input"
@@ -380,7 +372,7 @@ export class AppSelect extends FormElement(LitElement) {
         </small>
       </div>
 
-      <div popover="manual" part="popover" ?open=${this.open}>
+      <div popover part="popover" ?open=${this.open}>
         ${when(
           this.searchable,
           () => html`

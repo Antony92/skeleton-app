@@ -32,10 +32,6 @@ export class AppTablePage extends LitElement {
     pageStyle,
     tableStyle,
     css`
-      :host {
-        max-width: 100%;
-      }
-
       h3 {
         margin: 0 0 10px 0;
       }
@@ -284,7 +280,7 @@ export class AppTablePage extends LitElement {
           title="Create user"
           slot="actions"
           variant="primary"
-          @click=${this.openUserDialog}
+          @click=${() => this.openUserDialog()}
         >
           <app-icon>add</app-icon>
           Create

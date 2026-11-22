@@ -118,8 +118,8 @@ export class AppDropdownItem extends LitElement {
   @queryAssignedElements({ slot: 'submenu', selector: 'app-dropdown-item' })
   accessor submenuItems!: AppDropdownItem[];
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('mouseenter', (event) => {
       const target = event.target as HTMLElement;
       if (

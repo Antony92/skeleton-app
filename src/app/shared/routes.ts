@@ -59,6 +59,30 @@ export const routes: Route[] = [
     },
   },
   {
+    path: '/admin/users',
+    guards: [authGuard([Role.ADMIN])],
+    render: () => html`<app-users-page></app-users-page>`,
+    enter: async () => {
+      await import('@app/pages/admin/app-users.page');
+    },
+  },
+  {
+    path: '/admin/server-events',
+    guards: [authGuard([Role.ADMIN])],
+    render: () => html`<app-server-events-page></app-server-events-page>`,
+    enter: async () => {
+      await import('@app/pages/admin/app-server-events.page');
+    },
+  },
+  {
+    path: '/admin/audit-logs',
+    guards: [authGuard([Role.ADMIN])],
+    render: () => html`<app-audit-logs-page></app-audit-logs-page>`,
+    enter: async () => {
+      await import('@app/pages/admin/app-audit-logs.page');
+    },
+  },
+  {
     path: '/profile',
     guards: [authGuard()],
     render: () => html`<app-profile-page></app-profile-page>`,

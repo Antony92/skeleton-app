@@ -48,8 +48,8 @@ export class AppPopup extends LitElement {
   @property({ type: String })
   accessor behaviour: 'auto' | 'manual' = 'auto';
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (target.assignedSlot?.name === 'trigger') {
