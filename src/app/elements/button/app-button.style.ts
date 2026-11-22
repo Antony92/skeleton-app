@@ -4,7 +4,8 @@ export const appButtonStyle = css`
   button,
   a {
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
+    vertical-align: middle;
     width: fit-content;
     align-items: center;
     justify-content: center;

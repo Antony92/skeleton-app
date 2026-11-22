@@ -305,6 +305,7 @@ export class AppAuditLogsPage extends LitElement {
 
       <app-dialog header="Audit Log Details" id="data-dialog">
         <pre><code>${this.data}</code></pre>
+        <app-button slot="footer" variant="primary" app-dialog-close>Close</app-button>
       </app-dialog>
     `;
   }
