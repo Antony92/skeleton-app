@@ -25,13 +25,17 @@ export class AppRoot extends LitElement {
     );
 
     const serverEventSource = new EventSource(`${import.meta.env.VITE_API}/sse`);
-    serverEventSource.addEventListener('global', (event) => {
+    serverEventSource.addEventListener('system', (event) => {
       const data = JSON.parse(event.data);
       void systemMessage(data.message, data.type);
     });
     serverEventSource.addEventListener('error', () => {
       serverEventSource.close();
-      // notify({ variant: 'error', message: 'Could not establish connection to server', duration: 5000 })
+      void notify({
+        variant: 'error',
+        message: 'Could not establish connection to server',
+        duration: 5000,
+      });
     });
   }
 
