@@ -8,7 +8,7 @@ export const getDummyProducts = async (search?: string) => {
     `${import.meta.env.VITE_DUMMY_API}/products/search${searchParamsToQuery({ q: search })}`,
   );
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res?.products || [];
@@ -20,7 +20,7 @@ export const getDummyUser = async (id: string, loader = true) => {
     loader,
   });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res;
@@ -39,7 +39,7 @@ export const getDummyUsers = async (
   });
   const req = await request(`${import.meta.env.VITE_DUMMY_API}/users${query}`, { signal });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return {

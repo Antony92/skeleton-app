@@ -3,7 +3,7 @@ import { request } from '@app/http/request';
 export const getServerEvents = async () => {
   const req = await request(`${import.meta.env.VITE_API}/server-events`, { auth: true });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res;
@@ -20,7 +20,7 @@ export const createServerEvent = async (event: {
     body: JSON.stringify(event),
   });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res;
@@ -38,7 +38,7 @@ export const updateServerEvent = async (event: {
     body: JSON.stringify(event),
   });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res;
@@ -50,7 +50,7 @@ export const deleteServerEvent = async (id: string) => {
     auth: true,
   });
   const res = await req.json();
-  if (!res.ok) {
+  if (!req.ok) {
     throw res;
   }
   return res;
