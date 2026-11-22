@@ -62,8 +62,8 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
     #customError = '';
     internals = this.attachInternals();
 
-    override connectedCallback() {
-      super.connectedCallback();
+    constructor(...args: any[]) {
+      super(args);
       this.addEventListener('invalid', async () => {
         this.touched = true;
       });
