@@ -19,7 +19,12 @@ import type { AppDialog } from '@app/elements/dialog/app-dialog.element';
 import type { AppPaginator } from '@app/elements/paginator/app-paginator.element';
 import type { AppPaginateEvent } from '@app/events/pagination.event';
 import { confirmDialog } from '@app/shared/dialogs';
-import { addSearchToRoute, clearRouteSearch, getRouteSearchMap } from '@app/shared/navigation';
+import {
+  addSearchToRoute,
+  clearRouteSearch,
+  getRouteSearchMap,
+  navigate,
+} from '@app/shared/navigation';
 import { notify } from '@app/shared/notification';
 import { formStyle } from '@app/styles/form.style';
 import { pageStyle } from '@app/styles/page.style';
@@ -28,7 +33,8 @@ import { when } from 'lit/directives/when.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { formatDate } from '@app/utils/format';
-import type { DbUser } from '@app/types/user.type';
+import type { DbUser, User } from '@app/types/user.type';
+import { getUser, impersonate } from '@app/shared/auth';
 
 @customElement('app-users-page')
 export class AppUsersPage extends LitElement {
@@ -50,10 +56,10 @@ export class AppUsersPage extends LitElement {
   };
 
   @state()
-  selectedUser: DbUser | undefined;
+  selectedUser?: DbUser;
 
   @state()
-  selection: Map<string, any> = new Map();
+  selection: Map<string, DbUser> = new Map();
 
   @state()
   loading = true;
@@ -70,19 +76,20 @@ export class AppUsersPage extends LitElement {
   filtersMap = new Map();
   skip = 0;
   limit = 10;
-  storageLimitName = 'table-limit';
+  storageLimitName = 'user-table-limit';
   private abortController?: AbortController;
+
+  currentUser?: User;
 
   columns: TableColumn<DbUser>[] = [
     {
-      header: '#',
+      header: 'ID',
       field: 'id',
       type: 'number',
       sortable: true,
       filterable: true,
       default: true,
       freezable: true,
-      render: (value) => html`<a href="/test/${value.id}">${value.id}</a>`,
     },
     {
       header: 'Username',
@@ -195,10 +202,11 @@ export class AppUsersPage extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    setPageTitle('Table');
+    setPageTitle('Users');
     this.filtersMap = getRouteSearchMap();
     this.limit = Number(localStorage.getItem(this.storageLimitName)) || this.limit;
     this.skip = Number(this.filtersMap.get('skip')) || this.skip;
+    this.currentUser = getUser();
     void this.loadUsers();
   }
 
@@ -272,6 +280,25 @@ export class AppUsersPage extends LitElement {
     this.requestUpdate();
   }
 
+  get isAllSelected(): boolean {
+    const len = this.users.data.length;
+    return (
+      len > 0 &&
+      this.selection.size >= len &&
+      this.users.data.every((u) => this.selection.has(u.id))
+    );
+  }
+
+  get isIndeterminate(): boolean {
+    const len = this.users.data.length;
+    const count = this.users.data.filter((u) => this.selection.has(u.id)).length;
+    return count > 0 && count < len;
+  }
+
+  get visibleColumns(): TableColumn<DbUser>[] {
+    return this.columns.filter((column) => !column.hidden);
+  }
+
   async saveUser(event: Event) {
     event.preventDefault();
     if (!this.userForm.checkValidity()) {
@@ -339,29 +366,30 @@ export class AppUsersPage extends LitElement {
     }
   }
 
-  get isAllSelected(): boolean {
-    const len = this.users.data.length;
-    return (
-      len > 0 &&
-      this.selection.size >= len &&
-      this.users.data.every((u) => this.selection.has(u.id))
-    );
-  }
-
-  get isIndeterminate(): boolean {
-    const len = this.users.data.length;
-    const count = this.users.data.filter((u) => this.selection.has(u.id)).length;
-    return count > 0 && count < len;
-  }
-
-  get visibleColumns(): TableColumn<DbUser>[] {
-    return this.columns.filter((column) => !column.hidden);
+  async impersonateUser(user: DbUser) {
+    const confirmed = await confirmDialog({
+      message: `Are you sure you want to impersonate user '${user.username}'?`,
+    });
+    if (!confirmed) return;
+    const impersonation = await impersonate(user.username);
+    if (impersonation) {
+      navigate('/');
+      void notify({
+        variant: 'warning',
+        message: `You are now impersonating user '${user.username}'.`,
+        action: {
+          label: 'Stop',
+          onAction: () => location.reload(),
+        },
+        duration: 0,
+      });
+    }
   }
 
   override render() {
     return html`
       <app-table
-        header="Table"
+        header="Users"
         searchable
         clearable
         configurable
@@ -454,9 +482,19 @@ export class AppUsersPage extends LitElement {
                         ${user.blocked ? 'Unblock' : 'Block'}
                       </app-dropdown-item>
                       <app-dropdown-item
+                        @click=${() => this.impersonateUser(user)}
+                        variant="warning"
+                        ?disabled=${user.id === this.currentUser?.id}
+                        title=${user.id === this.currentUser?.id ? 'Cannot impersonate yourself' : 'Impersonate'}
+                      >
+                        <app-icon slot="prefix">supervisor_account</app-icon>
+                        Impersonate
+                      </app-dropdown-item>
+                      <app-dropdown-item
                         @click=${() => this.deleteUser(user)}
                         variant="error"
                         ?disabled=${!user.internal}
+                        title=${!user.internal ? 'Cannot delete internal user' : 'Delete'}
                       >
                         <app-icon slot="prefix">delete</app-icon>
                         Delete

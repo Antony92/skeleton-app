@@ -11,7 +11,8 @@ export const appBadgeStyle = css`
     cursor: default;
     color: var(--color);
     background: var(--background);
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
 
     &.outlined {
       border: 1px solid var(--border);

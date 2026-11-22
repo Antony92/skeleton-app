@@ -2,6 +2,7 @@ import '@app/elements/button/app-button.element';
 import '@app/elements/dropdown/app-dropdown.element';
 import '@app/elements/dropdown-item/app-dropdown-item.element';
 import '@app/elements/theme-switcher/app-theme-switcher.element';
+import '@app/elements/badge/app-badge.element';
 import { appHeaderStyle } from '@app/elements/header/app-header.style';
 import { $user, login, logout } from '@app/shared/auth';
 import { navigate } from '@app/shared/navigation';
@@ -47,9 +48,9 @@ export class AppHeader extends LitElement {
   override render() {
     return html`
       <header>
-        <img class="logo" src="/images/logo.png" />
+        <a href="/"><img class="logo" src="/images/logo.png" /></a>
         <h2 class="title" title=${this.appVersion}>${this.appTitle}</h2>
-        ${when(this.user?.impersonated, () => html`Impersonate mode`)}
+        ${when(this.user?.impersonated, () => html`<app-badge variant="warning">Impersonate mode</app-badge>`)}
         <div class="spacer"></div>
         <app-theme-switcher></app-theme-switcher>
         ${when(
