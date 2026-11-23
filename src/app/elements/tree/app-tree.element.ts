@@ -23,8 +23,8 @@ export class AppTree extends LitElement {
   @property({ type: Boolean })
   accessor disabled = false;
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('app-change', async (event) => {
       event.stopPropagation();
       const allTreeItems = Array.from(this.querySelectorAll<AppTreeItem>('app-tree-item'));

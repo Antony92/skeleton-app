@@ -113,8 +113,8 @@ export class AppTable extends LitElement {
   private debouncedSearch?: ReturnType<typeof debounce>;
   private tableObserver?: MutationObserver;
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('app-table-header-filter', (event) => {
       event.stopPropagation();
       const { type } = event.filter;
@@ -122,6 +122,10 @@ export class AppTable extends LitElement {
       if (type === 'value') this.onHeaderValueFilter(event);
       this.dispatchFilterEvent();
     });
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
     this.filtersApplied = this.hasFiltersApplied();
     this.syncColumnsWithFilters();
   }

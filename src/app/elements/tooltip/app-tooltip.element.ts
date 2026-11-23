@@ -100,8 +100,8 @@ export class AppTooltip extends LitElement {
     return this.triggers[0];
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('mouseover', () => {
       if (this.timeout !== 0) return;
       const isOverflowing = this.trigger && this.trigger.scrollWidth > this.trigger.clientWidth;

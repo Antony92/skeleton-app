@@ -29,8 +29,8 @@ export class AppCheckboxGroup extends FormElement(LitElement) {
   @queryAssignedElements()
   accessor checkboxes!: AppCheckbox[];
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('app-change', () => {
       this.value = this.checkboxes
         .filter((c) => c.checked)

@@ -23,8 +23,8 @@ export class AppRadioGroup extends FormElement(LitElement) {
   @queryAssignedElements()
   accessor radios!: AppRadio[];
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('app-change', (event) => {
       const radio = event.target as AppRadio;
       this.value = radio.value;

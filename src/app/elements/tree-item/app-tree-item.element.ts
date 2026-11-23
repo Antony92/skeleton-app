@@ -91,8 +91,8 @@ export class AppTreeItem extends LitElement {
 
   private isExternalChange = false;
 
-  override connectedCallback() {
-    super.connectedCallback();
+  constructor() {
+    super();
     this.addEventListener('app-change', (event) => {
       if (event.target !== this && this.selection !== 'leaf') {
         this.isExternalChange = true;
@@ -102,6 +102,10 @@ export class AppTreeItem extends LitElement {
           this.treeItems.some((item) => !item.selected);
       }
     });
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
     if (this.parentElement?.tagName === 'APP-TREE-ITEM') {
       this.setAttribute('slot', 'children');
     }
