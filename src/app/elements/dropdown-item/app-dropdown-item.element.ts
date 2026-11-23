@@ -146,15 +146,6 @@ export class AppDropdownItem extends LitElement {
     });
   }
 
-  override firstUpdated() {
-    this.popup.addEventListener('toggle', (event: Event) => {
-      const toggleEvent = event as ToggleEvent;
-      if (toggleEvent.newState === 'closed') {
-        this.popup.hidePopover();
-      }
-    });
-  }
-
   override render() {
     return html`
       ${when(

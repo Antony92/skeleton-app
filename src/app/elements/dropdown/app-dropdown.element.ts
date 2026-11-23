@@ -57,15 +57,6 @@ export class AppDropdown extends LitElement {
     });
   }
 
-  override firstUpdated() {
-    this.popup.addEventListener('toggle', (event: Event) => {
-      const toggleEvent = event as ToggleEvent;
-      if (toggleEvent.newState === 'closed') {
-        this.closeDropdown();
-      }
-    });
-  }
-
   closeDropdown() {
     this.open = false;
     this.popup.hidePopover();
@@ -88,12 +79,18 @@ export class AppDropdown extends LitElement {
     }
   }
 
+  onPopupToggle(event: ToggleEvent) {
+    if (event.newState === 'closed') {
+      this.closeDropdown();
+    }
+  }
+
   override render() {
     return html`
       <div class="container">
         <slot name="trigger"></slot>
       </div>
-      <div popover part="popover" ?open=${this.open}>
+      <div popover part="popover" ?open=${this.open} @toggle=${this.onPopupToggle}>
         <slot></slot>
       </div>
     `;

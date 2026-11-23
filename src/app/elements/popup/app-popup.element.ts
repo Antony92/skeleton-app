@@ -62,13 +62,10 @@ export class AppPopup extends LitElement {
     });
   }
 
-  override firstUpdated() {
-    this.popup.addEventListener('toggle', (event: Event) => {
-      const toggleEvent = event as ToggleEvent;
-      if (toggleEvent.newState === 'closed') {
-        this.close();
-      }
-    });
+  onPopupToggle(event: ToggleEvent) {
+    if (event.newState === 'closed') {
+      this.close();
+    }
   }
 
   close() {
@@ -103,7 +100,7 @@ export class AppPopup extends LitElement {
         <slot name="trigger"></slot>
       </div>
 
-      <div part="popover" popover=${this.behaviour}>
+      <div part="popover" popover=${this.behaviour} @toggle=${this.onPopupToggle}>
         <slot></slot>
       </div>
     `;

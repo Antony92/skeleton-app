@@ -157,13 +157,10 @@ export class AppSelect extends FormElement(LitElement) {
     window.removeEventListener('keyup', this.handleKeyup);
   }
 
-  override firstUpdated() {
-    this.popup.addEventListener('toggle', (event: Event) => {
-      const toggleEvent = event as ToggleEvent;
-      if (toggleEvent.newState === 'closed') {
-        this.closeSelect();
-      }
-    });
+  onPopupToggle(event: ToggleEvent) {
+    if (event.newState === 'closed') {
+      this.closeSelect();
+    }
   }
 
   override willUpdate(_changedProperties: PropertyValues): void {
@@ -370,24 +367,24 @@ export class AppSelect extends FormElement(LitElement) {
         <small class="invalid" part="invalid" ?hidden=${this.disabled || !this.message}>
           ${this.message}
         </small>
-      </div>
 
-      <div popover part="popover" ?open=${this.open}>
-        ${when(
-          this.searchable,
-          () => html`
-            <input
-              autocomplete="off"
-              type="search"
-              id="search"
-              placeholder="Search..."
-              @input=${this.onSearch}
-            />
-          `,
-        )}
-        ${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
-        ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
-        <slot @slotchange=${this.onOptionsAdded}></slot>
+        <div popover part="popover" ?open=${this.open} @toggle=${this.onPopupToggle}>
+          ${when(
+            this.searchable,
+            () => html`
+              <input
+                autocomplete="off"
+                type="search"
+                id="search"
+                placeholder="Search..."
+                @input=${this.onSearch}
+              />
+            `,
+          )}
+          ${when(!this.hasOptions, () => html`<small class="no-results">No options available</small>`)}
+          ${when(this.searchable && !this.hasSearchResults, () => html`<small class="no-results">No results found</small>`)}
+          <slot @slotchange=${this.onOptionsAdded}></slot>
+        </div>
       </div>
     `;
   }
