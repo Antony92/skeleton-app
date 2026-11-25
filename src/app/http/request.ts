@@ -39,26 +39,22 @@ export const request = async (url: URL | RequestInfo, options?: RequestOptions) 
       }
     }
 
-    if (!response.ok) {
+    if (!response.ok && !silent) {
       const error = await response.clone().json();
-      if (!silent) {
-        void notify({
-          message: `${error?.message}`,
-          variant: 'error',
-          action: { label: 'Close' },
-        });
-      }
-    }
-
-    return response;
-  } catch (error: unknown) {
-    if (!silent) {
       void notify({
-        message: `${JSON.stringify(url)} failed`,
+        message: `${error?.message}`,
         variant: 'error',
         action: { label: 'Close' },
       });
     }
+
+    return response;
+  } catch (error: unknown) {
+    void notify({
+      message: `${JSON.stringify(url)} failed`,
+      variant: 'error',
+      action: { label: 'Close' },
+    });
     throw error;
   } finally {
     requestCount--;

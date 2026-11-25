@@ -29,6 +29,38 @@ export class AppPopup extends LitElement {
         white-space: nowrap;
         box-shadow: var(--shadow-4);
 
+        &.top {
+          position-area: top span-all;
+        }
+
+        &.bottom {
+          position-area: bottom span-all;
+        }
+
+        &.left {
+          position-area: left span-all;
+        }
+
+        &.right {
+          position-area: right span-all;
+        }
+
+        &.top-left {
+          position-area: top span-left;
+        }
+
+        &.top-right {
+          position-area: top span-right;
+        }
+
+        &.bottom-left {
+          position-area: bottom span-left;
+        }
+
+        &.bottom-right {
+          position-area: bottom span-right;
+        }
+
         &:popover-open {
           display: flex;
           align-items: center;
@@ -47,6 +79,17 @@ export class AppPopup extends LitElement {
 
   @property({ type: String })
   accessor behaviour: 'auto' | 'manual' = 'auto';
+
+  @property({ type: String })
+  accessor position:
+    | 'top'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'left'
+    | 'right' = 'bottom';
 
   constructor() {
     super();
@@ -100,7 +143,12 @@ export class AppPopup extends LitElement {
         <slot name="trigger"></slot>
       </div>
 
-      <div part="popover" popover=${this.behaviour} @toggle=${this.onPopupToggle}>
+      <div
+        part="popover"
+        popover=${this.behaviour}
+        @toggle=${this.onPopupToggle}
+        class="${this.position}"
+      >
         <slot></slot>
       </div>
     `;

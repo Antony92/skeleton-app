@@ -68,7 +68,7 @@ export class AppTablePage extends LitElement {
   storageLimitName = 'table-limit';
   private abortController?: AbortController;
 
-  columns: TableColumn[] = [
+  columns: TableColumn<string>[] = [
     {
       header: '#',
       field: 'id',
@@ -104,8 +104,10 @@ export class AppTablePage extends LitElement {
       type: 'text',
       filterable: true,
       render: (value) => html`
-        <span data-clamp data-clamp-active>${value}</span>
-        <button data-clamp-button @click=${toggleClamp}>Show more</button>
+        <span data-clamp ?data-clamp-active=${value.length > 100}>${value}</span>
+        <button data-clamp-button @click=${toggleClamp} ?hidden=${value.length <= 100}>
+          Show more
+        </button>
       `,
     },
     {

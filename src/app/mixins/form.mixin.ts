@@ -94,9 +94,9 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
       ];
     }
 
-    override updated(_changedProperties: PropertyValues) {
-      super.updated(_changedProperties);
-      const shouldValidate = this.validationTriggers.some((prop) => _changedProperties.has(prop));
+    override updated(changedProperties: PropertyValues) {
+      super.updated(changedProperties);
+      const shouldValidate = this.validationTriggers.some((prop) => changedProperties.has(prop));
       if (shouldValidate) {
         void this.validate();
       }
@@ -178,5 +178,5 @@ export const FormElement = <T extends Constructor<LitElement>>(superClass: T) =>
     }
   }
 
-  return FormElementClass as unknown as Constructor<FormControl> & T;
+  return FormElementClass as Constructor<FormControl> & T;
 };

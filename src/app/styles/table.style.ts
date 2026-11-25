@@ -96,6 +96,7 @@ export const tableStyle = css`
           display: block;
           overflow: hidden;
           white-space: normal;
+          max-width: 20rem;
 
           &[data-clamp-active] {
             display: -webkit-box;
