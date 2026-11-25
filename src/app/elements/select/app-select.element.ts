@@ -87,6 +87,11 @@ export class AppSelect extends FormElement(LitElement) {
   constructor() {
     super();
     this.addEventListener('keydown', (event) => {
+      if (event.key === 'Tab' && this.open) {
+        this.closeSelect();
+        return;
+      }
+
       const keys = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
       if (!keys.includes(event.key) || !this.open) return;
 
@@ -101,11 +106,9 @@ export class AppSelect extends FormElement(LitElement) {
 
       switch (event.key) {
         case 'ArrowDown':
-          // If nothing is selected yet, start at 0. Otherwise, move down with wrap-around.
           newIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % len;
           break;
         case 'ArrowUp':
-          // If nothing is selected yet, start at the end. Otherwise, move up with wrap-around.
           newIndex = currentIndex === -1 ? len - 1 : (currentIndex - 1 + len) % len;
           break;
         case 'Home':
@@ -122,6 +125,7 @@ export class AppSelect extends FormElement(LitElement) {
         if (isMatch) option.focus();
       });
     });
+
     this.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (target.tagName === 'APP-OPTION') {
@@ -145,16 +149,6 @@ export class AppSelect extends FormElement(LitElement) {
         this.onChange();
       }
     });
-  }
-
-  override connectedCallback() {
-    super.connectedCallback();
-    window.addEventListener('keyup', this.handleKeyup);
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    window.removeEventListener('keyup', this.handleKeyup);
   }
 
   onPopupToggle(event: ToggleEvent) {
@@ -212,12 +206,10 @@ export class AppSelect extends FormElement(LitElement) {
     }
   }
 
-  private handleKeyup = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+  private onKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
       this.toggleSelect();
-    }
-    if (event.key === 'Tab' && this.open) {
-      this.closeSelect();
     }
   };
 
@@ -338,6 +330,7 @@ export class AppSelect extends FormElement(LitElement) {
             placeholder=${ifDefined(this.placeholder)}
             .value=${live(this.displayValue)}
             @click=${this.toggleSelect}
+            @keydown=${this.onKeydown}
           />
           <input
             id="input"
