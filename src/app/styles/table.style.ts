@@ -32,6 +32,14 @@ export const tableStyle = css`
       }
     }
 
+    &.clamp {
+      tbody {
+        td {
+          vertical-align: top;
+        }
+      }
+    }
+
     thead {
       th {
         white-space: nowrap;
@@ -74,8 +82,38 @@ export const tableStyle = css`
           text-overflow: ellipsis;
         }
 
+        &[data-action] {
+          text-align: center;
+        }
+
         &[data-textwrap] {
           white-space: normal;
+        }
+
+        span[data-clamp] {
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          display: block;
+          overflow: hidden;
+          white-space: normal;
+
+          &[data-clamp-active] {
+            display: -webkit-box;
+          }
+
+          + button[data-clamp-button] {
+            margin-top: 5px;
+          }
+        }
+
+        button[data-clamp-button] {
+          border: none;
+          background: none;
+          color: var(--theme-primary-color);
+          cursor: pointer;
+          font-size: var(--theme-font-size-1);
+          font-weight: 600;
+          padding: 0;
         }
 
         &.frozen {

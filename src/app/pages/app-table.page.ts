@@ -1,7 +1,7 @@
 import { getDummyUsers } from '@app/services/api.service';
 import { tableStyle } from '@app/styles/table.style';
 import type { PaginatedResponse } from '@app/types/response.type';
-import { serializeForm, setPageTitle } from '@app/utils/html';
+import { serializeForm, setPageTitle, toggleClamp } from '@app/utils/html';
 import { css, html, LitElement } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import '@app/elements/table/app-table.element';
@@ -103,7 +103,10 @@ export class AppTablePage extends LitElement {
       field: 'userAgent',
       type: 'text',
       filterable: true,
-      textlimit: true,
+      render: (value) => html`
+        <span data-clamp data-clamp-active>${value}</span>
+        <button data-clamp-button @click=${toggleClamp}>Show more</button>
+      `,
     },
     {
       header: 'Role',
@@ -285,7 +288,7 @@ export class AppTablePage extends LitElement {
           <app-icon>add</app-icon>
           Create
         </app-button>
-        <table slot="table" class="hoverable">
+        <table slot="table" class="hoverable clamp">
           <thead>
             <tr>
               <th data-action data-frozen>
@@ -336,7 +339,7 @@ export class AppTablePage extends LitElement {
                       @change=${(event: Event) => this.toggleSelected(event, user)}
                     />
                   </td>
-                  <td>
+                  <td data-action>
                     <app-dropdown>
                       <app-button slot="trigger" variant="primary" appearance="plain" size="small">
                         <app-icon filled>more_horiz</app-icon>

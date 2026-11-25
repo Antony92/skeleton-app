@@ -62,3 +62,10 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, tim
 export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text);
 };
+
+export const toggleClamp = (event: Event) => {
+  const button = event.target as HTMLButtonElement;
+  const clamp = button.previousElementSibling as HTMLSpanElement;
+  clamp.toggleAttribute('data-clamp-active');
+  button.textContent = clamp.hasAttribute('data-clamp-active') ? 'Show more' : 'Show less';
+};

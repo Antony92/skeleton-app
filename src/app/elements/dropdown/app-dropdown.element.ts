@@ -9,9 +9,12 @@ export class AppDropdown extends LitElement {
   static override styles = [
     defaultStyle,
     css`
+      :host {
+        display: contents;
+      }
+
       .container {
         anchor-name: --anchor;
-        width: fit-content;
       }
 
       [popover] {
