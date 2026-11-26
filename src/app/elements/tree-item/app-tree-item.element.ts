@@ -68,7 +68,7 @@ export class AppTreeItem extends LitElement {
   @property({ type: String })
   accessor value = '';
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   accessor expanded = false;
 
   @property({ type: Boolean, reflect: true })
